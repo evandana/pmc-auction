@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "watch": "webpack-dev-server --hot --inline --progress --colors",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +27,18 @@
     "babel-runtime": "^6.3.19",
     "bluebird": "^3.1.1",
     "react": "^0.14.5",
-    "react-dom": "^0.14.5"
+    "react-dom": "^0.14.5",
+    "event-emitter": "^0.3.4",
+    "file-loader": "^0.8.5",
+    "firebase": "^2.4.0",
+    "flux": "^2.1.1",
+    "immutable": "^3.7.6",
+    "json-load": "^1.0.1",
+    "json-loader": "^0.5.4",
+    "keymirror": "^0.1.1",
+    "object-assign": "^4.0.1",
+    "react": "^0.14.5",
+    "react-dom": "^0.14.5",
+    "url-loader": "^0.5.7"
   }
 }

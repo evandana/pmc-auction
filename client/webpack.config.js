@@ -33,6 +33,9 @@ module.exports = {
         modulesDirectories: ['node_modules', 'src']
     },
     module: {
+
+        exprContextCritical: false,
+
         loaders: [
             // Babel
             {
@@ -44,7 +47,14 @@ module.exports = {
             {
                test: /\.scss$/,
                loaders: sassLoaders
+
             }
+           // Images
+        //    { 
+        //        test: /\.(png|jpg)$/, 
+        //        loader: 'url-loader?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
+        //    }
+
         ]
     },
     sassLoader: {

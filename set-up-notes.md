@@ -48,6 +48,16 @@ Doc root
 Set up
 http://sanketdangi.com/post/62715793234/install-configure-jenkins-on-amazon-linux
 
+Change port
+```
+vim /etc/sysconfig/jenkins
+
+# Port Jenkins is listening on.
+# Set to -1 to disable
+#
+JENKINS_PORT="8080"
+```
+
 Hook up to Github
 http://sanketdangi.com/post/62740311628/integrate-jenkins-github-trigger-build-process
 http://fourkitchens.com/blog/article/trigger-jenkins-builds-pushing-github
@@ -68,6 +78,14 @@ Initiated repo in `doc root`
 
 testing
 
+Install Node/NPM
+http://iconof.com/blog/how-to-install-setup-node-js-on-amazon-aws-ec2-complete-guide/
+
+`sudo yum install nodejs npm --enablerepo=epel`
+
+`git pull origin server`
+
+http://www.lauradhamilton.com/how-to-set-up-a-nodejs-web-server-on-amazon-ec2
 
 ### might need these later
 

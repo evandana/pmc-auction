@@ -1,31 +1,22 @@
-// Globals
+// Libraries
 import React from 'react';
-
 // Styles
 import './listingTable.scss';
-
+// Application Components
+import AuctionActions from 'actions/AuctionActions';
 // React Components
-import ListingRow from 'components/listingRow/listingRow';
+import ListingTableBody from 'components/listingTableBody/listingTableBody';
+import ListingTableHead from 'components/listingTableHead/listingTableHead';
 
-console.log('Loading Listing Row');
 
-let ListingTable = React.createClass({
-    render: function() {
-        
-        const stubData = [
-            'Test One',
-            'Test Two',
-            'Test Three'
-        ];
-        
+let ListingTable = {};
+
+ListingTable = React.createClass({
+    render () {
         return (
-            <table id="listing-table" className="listing-table-l">
-                <thead><tr>
-                    <td>Sample Header</td>
-                </tr></thead>
-                <tbody>{
-                    stubData.map( (name, index) => <ListingRow key={index} data={name} /> )
-                }</tbody>
+            <table id="listing-table" className="listing-table-l pure-table pure-table-bordered">
+                <ListingTableHead headers={this.props.listingHeaders} />
+                <ListingTableBody listings={this.props.listings} />
             </table>
         );
     }
