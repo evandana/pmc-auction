@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Simple Server
 A fundraising auction application.
 
@@ -23,3 +24,6 @@ Run the application locally:
 
 To verify that the application is working correctly, point your browser to [ADD LINK HERE] - you should see a response with two assignments for staffing owner kbunnell.
 
+=======
+Server Readme
+>>>>>>> master

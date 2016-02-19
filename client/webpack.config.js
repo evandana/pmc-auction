@@ -47,7 +47,7 @@ module.exports = {
             {
                test: /\.scss$/,
                loaders: sassLoaders
-           }
+            }
            // Images
         //    { 
         //        test: /\.(png|jpg)$/, 

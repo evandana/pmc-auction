@@ -58,7 +58,10 @@ vim /etc/sysconfig/jenkins
 JENKINS_PORT="8080"
 ```
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 Hook up to Github
 http://sanketdangi.com/post/62740311628/integrate-jenkins-github-trigger-build-process
 http://fourkitchens.com/blog/article/trigger-jenkins-builds-pushing-github
@@ -87,7 +90,10 @@ http://iconof.com/blog/how-to-install-setup-node-js-on-amazon-aws-ec2-complete-g
 `git pull origin server`
 
 http://www.lauradhamilton.com/how-to-set-up-a-nodejs-web-server-on-amazon-ec2
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 
 ### might need these later
 

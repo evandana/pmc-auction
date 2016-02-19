@@ -29,7 +29,7 @@ let ListingRow = React.createClass({
     rowClick (data) {
         AuctionActions.toggleAuctionRow(data.id);
     }
-    
+
 });
 
 export default ListingRow;
