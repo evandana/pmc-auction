@@ -19,10 +19,21 @@ let UserPanel = React.createClass({
     render () {
         return (
             <section className="user-panel-l">
-                Logged in as: {this.state.google.cachedUserProfile.given_name} {this.state.google.cachedUserProfile.family_name}
+                <div className="pure-g">
+                    <div className="pure-u-1-2">
+                        Logged in as: {this.state.name}
+                    </div>
+                    <div className="pure-u-1-2 user-panel-logoutCol">
+                        <span onClick={this.logout}>LOGOUT</span>
+                    </div>
+                </div>
             </section>
         );
     },
+    
+    logout () {
+        UserActions.logoutUser();
+    }
 });
 
 export default UserPanel;

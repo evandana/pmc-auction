@@ -17,8 +17,8 @@ let app = {
     
     authCallback (authData) {
         if (authData) {
-            UserStore.setUser(authData);
-            this.loadListingPage();
+            UserStore.setUser(authData)
+                .then( () => { this.loadListingPage() });
         } else {
             this.loadAuthPage();
         }
