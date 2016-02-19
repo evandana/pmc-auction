@@ -5,10 +5,7 @@ Bare bones repo for connecting relevant technology. Intended to be used as a boi
 - Set up EC2 instance (Evan)
 - Set up Front End tech: Webpack, React, SASS, Babel (David)
 - Set up DB with fields and seed data (Evan)
-<<<<<<< HEAD
 - Drink beer and pretend to help (Jon)
-=======
->>>>>>> 0dc1706f6809cc10179086fd25e8f9d52bea797b
 
 
 Babel
@@ -37,4 +34,3 @@ https://auth0.com/blog/2015/04/09/adding-authentication-to-your-react-flux-app/
 https://preact.gitbooks.io/react-book/content/flux/auth.html
 https://stormpath.com/blog/build-a-react-app-with-user-authentication/
 http://wmyers.github.io/technical/react-flux/Authentication-routing-in-a-React-Flux-application/
-
