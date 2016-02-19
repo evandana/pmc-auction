@@ -1,6 +1,7 @@
 # Ignore Node modules
 client/node_modules
 server/node_modules
+node_modules
 
 # Ignore Web Storm
 .idea
