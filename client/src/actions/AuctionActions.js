@@ -3,9 +3,10 @@ import AuctionConstants from 'constants/AuctionConstants';
 
 let AuctionActions = {
     
-    addAuction: function() {
+    addAuction: function(auctionObj) {
         AppDispatcher.handleViewAction({
-            actionType: AuctionConstants.ADD_AUCTION
+            actionType: AuctionConstants.ADD_AUCTION,
+            auctionData: auctionObj
         })
     },
     

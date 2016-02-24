@@ -10,13 +10,18 @@ import ListingManager from 'components/listingManager/listingManager';
 import UserPanel from 'components/userPanel/userPanel';
 
 let ListingPage = React.createClass({
+
+    componentDidMount () {
+        AuctionStore.initialize();
+        AuctionStore.addChangeListener(this.onChangeHandler);
+    },
     
     getInitialState () {
         return getAuctionState();
     },
     
-    componentDidMount () {
-        AuctionStore.addChangeListener(this.onChange);
+    onChangeHandler () {
+        this.setState(getAuctionState());
     },
 
     render () {
@@ -25,26 +30,21 @@ let ListingPage = React.createClass({
                 <UserPanel />
                 <h3>Auctions</h3>
                 <ListingTable
-                    listings={this.state.listings} 
-                    listingHeaders={this.state.listingHeaders}
+                    listings={this.state.listings}
                 />
                 <br />
                 <ListingManager />
             </div>
         );
-    },
-    
-    onChange () {
-        this.setState(getAuctionState());
     }
-    
+        
 });
 
 export default ListingPage;
 
 function getAuctionState () {
     return {
-        listings: AuctionStore.getAll(),
-        listingHeaders: AuctionStore.getAllHeaders()
+        listings: AuctionStore.getAll()
     };
+
 }
