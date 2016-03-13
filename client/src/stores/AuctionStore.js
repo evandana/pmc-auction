@@ -4,39 +4,24 @@ import assign from 'object-assign';
 import AuctionConstants from 'constants/AuctionConstants';
 import Immutable from 'immutable';
 import rw from 'utils/firebaseAdapter';
+import UserStore from 'stores/UserStore';
 
-let _auctions,
-    _auctionHeaders,
-    AuctionStore,
-    AuctionRecord,
-    changeEvent = 'change',
-    stubJSON = require("json!../stubs/auctions/auctions.json");
+let AuctionStore,
+    _changeEvent = 'ON_CHANGE',
+    _auctions = loadData([]),
+    AuctionRecord = Immutable.Record(require("json!../stubs/auctions/auctionRecord.json"));
 
-// define Auction Records
-AuctionRecord = Immutable.Record(require("json!../stubs/auctions/auctionRecord.json"));
-
-// stub the auction data
-_auctions = loadData(stubJSON);
-_auctionHeaders = getAuctionHeaders();
 
 AuctionStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
+
+    addChangeListener : (callback) => { AuctionStore.on(_changeEvent, callback); },
     
-    getAll : () => _auctions,
-    
-    getAllHeaders : () => _auctionHeaders,
-
-    emitChange : () => { AuctionStore.emit(changeEvent); },
-
-    addChangeListener : (callback) => { AuctionStore.on(changeEvent, callback); },
-
-    sortByCol : (colIndex) => sortByColumn(colIndex),
-
     dispatcherIndex: AppDispatcher.register( function(dispatch) {
         let actionType = dispatch.action.actionType;
 
         switch(actionType) {
             case AuctionConstants.ADD_AUCTION:
-                addAuction();
+                addAuction(dispatch.action.auctionData);
                 break;
             case AuctionConstants.TOGGLE_AUCTION_ROW:
                 _auctions = toggleAuctionRow(_auctions, dispatch.action.id);
@@ -55,23 +40,43 @@ AuctionStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
         }
 
         return true;
-    })
+    }),
+
+    emitChange : () => { AuctionStore.emit(_changeEvent); },
+
+    getAll : () => _auctions,
+    
+    initialize () {
+
+        UserStore.rwAdapter.loadAuctions(AuctionStore.loadAuctionObj);
+
+    },
+    
+    loadAuctionObj (auctionObj) {
+        _auctions = _auctions.push(new AuctionRecord(auctionObj));
+        AuctionStore.emitChange();
+    },
+
+    sortByCol : (colIndex) => sortByColumn(colIndex)
+    
 });
 
 export default AuctionStore;
 
-function addAuction() {
-     AuctionStore.rwAdapter.addAuction();
+function addAuction(auctionObj) {
+    
+     let user = UserStore.getUser();
      
-}
-
-function toggleAuctionRow(list, id) {
-    list = list.update(
-        list.findIndex( (obj, index) => obj.get('id') === id),
-        (item) => item.get('detailState') === 'CLOSED' ? item.set('detailState', 'OPEN') :
-            item.set('detailState', 'CLOSED')
-    );
-    return list
+     assign(auctionObj, {
+         donorId: user.uid,
+         donorName: user.name,
+         highestBid: null,
+         expiration: "12/31/2016",
+         openDate: "01/30/2016",
+         closeDate: "12/31/2016",
+     });
+     
+     AuctionStore.rwAdapter.addAuction(auctionObj);
 }
 
 function loadData(dataList) {
@@ -109,23 +114,11 @@ function sortByColumn(list, key, direction) {
     });
 }
 
-function getAuctionHeaders() {
-    return [
-        {
-            copy: 'Auction Item',
-            key: 'title'
-        },
-        {
-            copy: 'Highest Bid',
-            key: 'highestBid'
-        },
-        {
-            copy: 'Status',
-            key: 'status'
-        },
-        {
-            copy: 'Close Date',
-            key: 'closeDate'
-        }
-    ];
+function toggleAuctionRow(list, id) {
+    list = list.update(
+        list.findIndex( (obj, index) => obj.get('id') === id),
+        (item) => item.get('detailState') === 'CLOSED' ? item.set('detailState', 'OPEN') :
+            item.set('detailState', 'CLOSED')
+    );
+    return list
 }

@@ -8,57 +8,8 @@ let Adapter = function Adapter () {
     
     return {
 
-        authCheck (callback) {
-            ref.onAuth(callback);
-        },
-        
-        auth () {
-            ref.onAuth(function(data) {
-                console.log("WE GOT THE DATA ", data);
-            });
-        },
-        
-        loginGoogle () {
-            ref.authWithOAuthRedirect("google", function(error, authData) {
-                if (error) {
-                    console.log("Login Failed!", error);
-                } else {
-                    console.log("Authenticated successfully with payload:", authData);
-                }
-            });
-        },
-        
-        logoutUser () {
-            ref.unauth();
-            document.location.reload(true);
-        },
-        
-        addAuction () {
-            auctionsRef.push({
-                "donor" : [0],
-                "title" : "Auction Record Template",
-                "description" : "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-                "imageLink" : "images/pancakeBunny.png",
-                "openingBid" : {
-                    "id" : 0,
-                    "donor" : 0,
-                    "bidAmount" : 0
-                },
-                "highestBid" : 0,
-                "location" : 0,
-                "expiration" : "12/31/2016",
-                "incrementAmount" : 1,
-                "status" : "OPEN",
-                "openDate" : "01/01/2016",
-                "closeDate" : "12/31/2016",
-            });
-            
-        },
-        
-        getAllUsers () {
-            return new Promise(function(resolve, reject) {
-                usersRef.once('value', (snapshot) => { resolve(snapshot.val()) });
-            });
+        addAuction (auctionObj) {
+            auctionsRef.push(auctionObj);
         },
         
         addNewUser (uid, userObj) {
@@ -77,8 +28,41 @@ let Adapter = function Adapter () {
                    .set(userObj, firebaseCallback);
 
             });
+        },
 
+        authCheck (callback) {
+            ref.onAuth(callback);
+        },
+        
+        getAllUsers () {
+            return new Promise(function(resolve, reject) {
+                usersRef.once('value', (snapshot) => { resolve(snapshot.val()) });
+            });
+        },
+
+        loadAuctions (callback) {
+            auctionsRef.on("child_added", (snapshot) => {
+                let auction = snapshot.val();
+                auction.id = snapshot.key();
+                callback(auction); 
+            });
+        },
+
+        loginGoogle () {
+            ref.authWithOAuthRedirect("google", function(error, authData) {
+                if (error) {
+                    console.log("Login Failed!", error);
+                } else {
+                    console.log("Authenticated successfully with payload:", authData);
+                }
+            });
+        },
+        
+        logoutUser () {
+            ref.unauth();
+            document.location.reload(true);
         }
+        
     }
 };
 export default new Adapter();
