@@ -13,7 +13,7 @@ const babelSettings = {
     presets:[
         'react',
         'es2015',
-        'stage-2'
+        'stage-0'
     ]
 };
 

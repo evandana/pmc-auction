@@ -16,6 +16,7 @@ import './app.scss';
 import ListingPage from 'components/listingPage/listingPage';
 import ListingManager from 'components/listingManager/listingManager';
 import AuthPage from 'components/authPage/authPage';
+import AppPage from 'components/appPage/appPage';
 // Application Components
 import UserStore from 'stores/UserStore';
 
@@ -43,9 +44,9 @@ ReactDOM.render(
   <Provider store={store}>
     <div>
       <Router history={history}>
-        <Route path="/" component={AuthPage}>
-          <IndexRoute component={ListingPage}/>
-          <Route path="foo" component={ListingPage}/>
+        <Route path="/" component={AppPage}>
+          <IndexRoute component={AuthPage}/>
+          <Route path="/foo" component={ListingPage}/>
         </Route>
       </Router>
       <DevTools />

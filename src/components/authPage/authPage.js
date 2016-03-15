@@ -16,6 +16,7 @@ let AuthPage = React.createClass({
                 <fieldset>
                     <legend>Login</legend>
                     <div className="pure-controls">
+                        <Link to="/foo">foo link</Link>
                         <button onClick={() => browserHistory.push('/foo')}>Go to /foo</button>
                         <button
                             className="pure-button pure-button-primary"
