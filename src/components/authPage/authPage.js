@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { Link, browserHistory } from 'react-router'
+import { Link, hashHistory } from 'react-router'
 // Styles
 import './authPage.scss';
 // Application Components
@@ -17,7 +17,7 @@ let AuthPage = React.createClass({
                     <legend>Login</legend>
                     <div className="pure-controls">
                         <Link to="/foo">foo link</Link>
-                        <button onClick={() => browserHistory.push('/foo')}>Go to /foo</button>
+                        <button onClick={() => hashHistory.push('/foo')}>Go to /foo</button>
                         <button
                             className="pure-button pure-button-primary"
                             onClick={this.googleLogin}>
