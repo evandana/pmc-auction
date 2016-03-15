@@ -1,8 +1,12 @@
 // Libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
-// using an ES6 transpiler, like babel
-import { Router, Route, Link, browserHistory } from 'react-router'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import { Router, Route, browserHistory } from 'react-router'
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+
+import reducers from 'reducers'
 
 // Styles
 import './app.scss';
@@ -13,41 +17,78 @@ import AuthPage from 'components/authPage/authPage';
 // Application Components
 import UserStore from 'stores/UserStore';
 
-let app = {
+import * as reducers from 'reducers'
+import { App, Home, Foo, Bar } from 'components'
 
-    run () {
-        UserStore.authCheck(this.authCallback.bind(this));
-    },
 
-    authCallback (authData) {
-        if (authData) {
-            UserStore.setUser(authData)
-                .then( () => { this.loadListingPage() });
-        } else {
-            this.loadAuthPage();
-        }
+const reducer = combineReducers({
+  ...reducers,
+  routing: routerReducer
+})
 
-    },
+const DevTools = createDevTools(
+  <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
+    <LogMonitor theme="tomorrow" preserveScrollTop={false} />
+  </DockMonitor>
+)
 
-    loadAuthPage () {
-        ReactDOM.render(
-            <AuthPage />,
-            document.getElementById('app-page')
-        );
-    },
+const store = createStore(
+  reducer,
+  DevTools.instrument()
+)
+const history = syncHistoryWithStore(browserHistory, store)
 
-    loadListingPage () {
-        ReactDOM.render(
-              <Router history={browserHistory}>
-                <Route path="/" component={ListingPage}>
-                    <Route path="listingPage" component={ListingPage}/>
-                </Route>
+ReactDOM.render(
+  <Provider store={store}>
+    <div>
+      <Router history={history}>
+        <Route path="/" component={App}>
+          <IndexRoute component={ListingPage}/>
+          <Route path="foo" component={Foo}/>
+          <Route path="bar" component={Bar}/>
+        </Route>
+      </Router>
+      <DevTools />
+    </div>
+  </Provider>,
+  document.getElementById('app-page')
+)
 
-                <Route path="*" component={ListingPage}/>
-              </Router>,
-            document.getElementById('app-page')
-        );
-    }
-};
+// let app = {
+
+//     run () {
+//         UserStore.authCheck(this.authCallback.bind(this));
+//     },
+
+//     authCallback (authData) {
+//         if (authData) {
+//             UserStore.setUser(authData)
+//                 .then( () => { this.loadListingPage() });
+//         } else {
+//             this.loadAuthPage();
+//         }
+
+//     },
+
+//     loadAuthPage () {
+//         ReactDOM.render(
+//             <AuthPage />,
+//             document.getElementById('app-page')
+//         );
+//     },
+
+//     loadListingPage () {
+//         ReactDOM.render(
+//               <Router history={browserHistory}>
+//                 <Route path="/" component={ListingPage}>
+//                     <Route path="listingPage" component={ListingPage}/>
+//                 </Route>
+
+//                 <Route path="*" component={ListingPage}/>
+//               </Router>,
+//             document.getElementById('app-page')
+//         );
+//     }
+// };
 
 app.run();
