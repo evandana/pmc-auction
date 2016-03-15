@@ -1,12 +1,14 @@
 // Libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
-import { Router, Route, browserHistory } from 'react-router'
+import { createDevTools } from 'redux-devtools'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-
-import reducers from 'reducers'
+import LogMonitor from 'redux-devtools-log-monitor'
+import DockMonitor from 'redux-devtools-dock-monitor'
 
 // Styles
 import './app.scss';
@@ -17,8 +19,7 @@ import AuthPage from 'components/authPage/authPage';
 // Application Components
 import UserStore from 'stores/UserStore';
 
-import * as reducers from 'reducers'
-import { App, Home, Foo, Bar } from 'components'
+import * as reducers from 'reducers/count'
 
 
 const reducer = combineReducers({
@@ -42,10 +43,9 @@ ReactDOM.render(
   <Provider store={store}>
     <div>
       <Router history={history}>
-        <Route path="/" component={App}>
+        <Route path="/" component={AuthPage}>
           <IndexRoute component={ListingPage}/>
-          <Route path="foo" component={Foo}/>
-          <Route path="bar" component={Bar}/>
+          <Route path="foo" component={ListingPage}/>
         </Route>
       </Router>
       <DevTools />
@@ -90,5 +90,5 @@ ReactDOM.render(
 //         );
 //     }
 // };
-
-app.run();
+//
+// app.run();

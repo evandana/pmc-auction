@@ -1,5 +1,6 @@
 // Libraries
 import React from 'react';
+import { Link, browserHistory } from 'react-router'
 // Styles
 import './authPage.scss';
 // Application Components
@@ -15,6 +16,7 @@ let AuthPage = React.createClass({
                 <fieldset>
                     <legend>Login</legend>
                     <div className="pure-controls">
+                        <button onClick={() => browserHistory.push('/foo')}>Go to /foo</button>
                         <button
                             className="pure-button pure-button-primary"
                             onClick={this.googleLogin}>
@@ -25,11 +27,11 @@ let AuthPage = React.createClass({
             </div>
         );
     },
-    
+
     googleLogin () {
         UserActions.loginGoogle();
     }
-        
+
 });
 
 export default AuthPage;

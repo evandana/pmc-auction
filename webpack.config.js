@@ -12,7 +12,8 @@ const sassLoaders = [
 const babelSettings = {
     presets:[
         'react',
-        'es2015'
+        'es2015',
+        'stage-2'
     ]
 };
 
@@ -49,8 +50,8 @@ module.exports = {
                loaders: sassLoaders
             }
            // Images
-        //    { 
-        //        test: /\.(png|jpg)$/, 
+        //    {
+        //        test: /\.(png|jpg)$/,
         //        loader: 'url-loader?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
         //    }
         ]
