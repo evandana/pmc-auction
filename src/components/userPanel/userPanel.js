@@ -19,11 +19,11 @@ let UserPanel = React.createClass({
     render () {
         return (
             <section className="user-panel-l">
-                <div className="pure-g">
-                    <div className="pure-u-1-2">
+                <div className="clearfix">
+                    <div className="float-l">
                         Logged in as: {this.state.name}
                     </div>
-                    <div className="pure-u-1-2 user-panel-logoutCol">
+                    <div className="float-r user-panel-logoutCol">
                         <span onClick={this.logout}>LOGOUT</span>
                     </div>
                 </div>
