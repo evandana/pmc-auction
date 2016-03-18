@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// Components
 import { Router, Route, IndexRoute, hashHistory, UPDATE_LOCATION } from 'react-router'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
@@ -21,6 +22,9 @@ import {
     HomePage,
     LoginPage
     } from 'components';
+
+// Actions
+import { loadAuth } from 'actions/auth'
 
 // Reducers
 import * as reducers from 'reducers/index'
@@ -42,6 +46,8 @@ const store = createStore(
 )
 const history = syncHistoryWithStore(hashHistory, store)
 
+// store.dispatch(requestAuth());
+
 ReactDOM.render(
   <Provider store={store}>
     <div>
@@ -59,46 +65,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('app-page')
 )
-
-
-
-
-
-// let app = {
-
-//     run () {
-//         UserStore.authCheck(this.authCallback.bind(this));
-//     },
-
-//     authCallback (authData) {
-//         if (authData) {
-//             UserStore.setUser(authData)
-//                 .then( () => { this.loadListingPage() });
-//         } else {
-//             this.loadAuthPage();
-//         }
-
-//     },
-
-//     loadAuthPage () {
-//         ReactDOM.render(
-//             <AuthPage />,
-//             document.getElementById('app-page')
-//         );
-//     },
-
-//     loadListingPage () {
-//         ReactDOM.render(
-//               <Router history={browserHistory}>
-//                 <Route path="/" component={ListingPage}>
-//                     <Route path="listingPage" component={ListingPage}/>
-//                 </Route>
-
-//                 <Route path="*" component={ListingPage}/>
-//               </Router>,
-//             document.getElementById('app-page')
-//         );
-//     }
-// };
-//
-// app.run();
