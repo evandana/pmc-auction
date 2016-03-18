@@ -107,3 +107,22 @@ Change the directory permissions of /var/www and its subdirectories to add group
 Recursively change the file permissions of /var/www and its subdirectories to add group write permissions.
 
 [ec2-user ~]$ find /var/www -type f -exec sudo chmod 0664 {} +
+
+
+=========
+Clone new repo
+`https://github.com/evandana/pmc-auction`
+
+Get into repo
+`cd pmc-auction`
+
+Switch branch
+`git checkout dev`
+
+NPM install
+`npm install`
+
+Run
+`npm run watch`
+
+`git pull`

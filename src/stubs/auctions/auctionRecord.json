@@ -1,0 +1,15 @@
+{
+    "id" : "uidstring",
+    "title" : "Auction Record Template",
+    "description" : "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+    "donorId" : "donorUID",
+    "donorName" : "John Doe",
+    "imageLink" : "images/pancakeBunny.png",
+    "openingBid" : 50,
+    "highestBid" : "bidUID",
+    "expiration" : "12/31/2016",
+    "status" : "OPEN",
+    "openDate" : "01/01/2016",
+    "closeDate" : "12/31/2016",
+    "detailState" : "CLOSED"
+}
