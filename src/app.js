@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Router, Route, IndexRoute, hashHistory } from 'react-router'
+import { Router, Route, IndexRoute, hashHistory, UPDATE_LOCATION } from 'react-router'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import { createDevTools } from 'redux-devtools'
@@ -13,15 +13,17 @@ import DockMonitor from 'redux-devtools-dock-monitor'
 // Styles
 import './app.scss';
 // React Components
-import ListingPage from 'components/listingPage/listingPage';
-import ListingManager from 'components/listingManager/listingManager';
-import AuthPage from 'components/authPage/authPage';
-import AppPage from 'components/appPage/appPage';
-// Application Components
-import UserStore from 'stores/UserStore';
+import {
+    AddAuctionPage,
+    AppPage,
+    AuctionsPage,
+    ConfirmWinnersPage,
+    HomePage,
+    LoginPage
+    } from 'components';
 
-import * as reducers from 'reducers/count'
-
+// Reducers
+import * as reducers from 'reducers/index'
 
 const reducer = combineReducers({
   ...reducers,
@@ -45,8 +47,11 @@ ReactDOM.render(
     <div>
       <Router history={history}>
         <Route path="/" component={AppPage}>
-          <IndexRoute component={AuthPage}/>
-          <Route path="/foo" component={ListingPage}/>
+            <IndexRoute component={HomePage}/>
+            <Route path="/auctions" component={AuctionsPage}/>
+            <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
+            <Route path="/auctions/add" component={AddAuctionPage} />
+            <Route path="/login" component={LoginPage}/>
         </Route>
       </Router>
       <DevTools />
@@ -54,6 +59,10 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('app-page')
 )
+
+
+
+
 
 // let app = {
 
