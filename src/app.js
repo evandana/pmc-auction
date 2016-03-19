@@ -20,10 +20,10 @@ import {
     ConfirmWinnersPage,
     HomePage,
     LoginPage
-    } from 'components';
+    } from './components/index';
 
 // Reducers
-import * as reducers from 'reducers/index'
+import * as reducers from './reducers/index'
 
 const reducer = combineReducers({
   ...reducers,
