@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node server",
     "postinstall": "webpack --config ./webpack-prod.config.js --progress --colors",
     "watch": "webpack-dev-server --hot --inline --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,12 +16,11 @@
     "babel-core": "^6.3.26",
     "babel-loader": "^6.2.0",
     "babel-preset-es2015": "^6.3.13",
-    "babel-preset-stage-0": "^6.3.13",
     "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
     "css-loader": "^0.23.1",
     "html-webpack-plugin": "^1.7.0",
     "node-sass": "^3.4.2",
-    "express": "^4.13.1",
     "redux-devtools": "^3.1.1",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
@@ -31,8 +30,10 @@
     "babel-runtime": "^6.3.19",
     "bluebird": "^3.3.0",
     "event-emitter": "^0.3.4",
+    "express": "^4.13.1",
     "file-loader": "^0.8.5",
     "firebase": "^2.4.0",
+    "http-proxy": "^1.13.2",
     "immutable": "^3.7.6",
     "json-load": "^1.0.1",
     "json-loader": "^0.5.4",
@@ -46,7 +47,7 @@
     "redux": "^3.3.1",
     "redux-devtools-dock-monitor": "^1.1.0",
     "redux-devtools-log-monitor": "^1.0.5",
-    "webpack": "^1.12.9",
-    "url-loader": "^0.5.7"
+    "url-loader": "^0.5.7",
+    "webpack": "^1.12.14"
   }
 }
