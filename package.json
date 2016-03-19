@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "npm run watch",
+    "start": "npm server.js",
     "watch": "webpack-dev-server --hot --inline --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
@@ -20,10 +20,10 @@
     "css-loader": "^0.23.1",
     "html-webpack-plugin": "^1.7.0",
     "node-sass": "^3.4.2",
+    "express": "^4.13.1",
     "redux-devtools": "^3.1.1",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
-    "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
@@ -45,6 +45,7 @@
     "redux": "^3.3.1",
     "redux-devtools-dock-monitor": "^1.1.0",
     "redux-devtools-log-monitor": "^1.0.5",
+    "webpack": "^1.12.9",
     "url-loader": "^0.5.7"
   }
 }
