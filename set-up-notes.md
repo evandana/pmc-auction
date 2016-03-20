@@ -32,8 +32,10 @@ Start Web Server
 Start Web Server at system boot
 `sudo chkconfig httpd on`
 
+Update web server
+
 Public IP
-52.90.140.202
+52.207.222.108
 
 Connect to instance with: 
 TODO: ` ssh -i ..../newkeypair.pem ec2-user@52.90.140.202`
@@ -79,6 +81,8 @@ Followed steps at http://stackoverflow.com/questions/12370921/ec2-cant-ssh-into-
 Set up deploy key in github repo
 
 Initiated repo in `doc root`
+`/etc/httpd/conf/httpd.conf`
+restart apache `service httpd restart`
 
 testing
 
