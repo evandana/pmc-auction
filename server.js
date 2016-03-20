@@ -9,7 +9,7 @@ var app = express();
 // ----- PROD --------------------------------
 // setting this to production since dev doesn't use this flow
 // process.env.NODE_ENV = 'production';
-process.env.PORT = 8090
+process.env.PORT = 3000
 // -------------------------------------------
 
 
