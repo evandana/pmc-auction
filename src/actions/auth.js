@@ -15,6 +15,8 @@
 //   };
 // };
 
+export function auth() {}
+
 // export function login(data) {
 //   return (dispatch) => {
 //     dispatch(loginRequest(data));
