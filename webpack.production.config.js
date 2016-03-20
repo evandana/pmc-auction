@@ -1,9 +1,18 @@
-var Webpack = require('webpack');
+var webpack = require('webpack');
 var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var buildPath = path.resolve(__dirname, 'public', 'build');
 var mainPath = path.resolve(__dirname, 'src', 'app.js');
 
+const basePlugins = [
+  new webpack.DefinePlugin({
+    __DEV__: false,
+    __PRODUCTION__: true,
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+  })
+]
+
+const plugins = basePlugins;
 
 
 const babelSettings = {
@@ -23,6 +32,7 @@ var config = {
     path: buildPath,
     filename: 'bundle.js'
   },
+  plugins: plugins,
   module: {
     loaders: [{
       test: /\.js$/,
