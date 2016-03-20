@@ -29,7 +29,7 @@ import {
     } from './components/index';
 
 // Actions
-import { loadAuth } from 'actions/auth'
+import { loadAuth } from './actions/auth'
 
 // Reducers
 import * as reducers from './reducers/index'

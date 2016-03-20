@@ -15,7 +15,7 @@
 //   };
 // };
 
-export function auth() {}
+export function loadAuth() {}
 
 // export function login(data) {
 //   return (dispatch) => {
