@@ -17,6 +17,16 @@ const babelSettings = {
     ]
 };
 
+const basePlugins = [
+  new webpack.DefinePlugin({
+    __DEV__: true,
+    __PRODUCTION__: false,
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+  })
+]
+
+const plugins = basePlugins
+
 module.exports = {
     target: 'web',
     entry: {
@@ -64,7 +74,7 @@ module.exports = {
             inject: true,
             template: 'src/index.html'
         })
-    ],
+    ].concat(plugins),
     devServer: {
         contentBase: './tmp'
     }

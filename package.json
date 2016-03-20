@@ -4,9 +4,13 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "watch": "webpack-dev-server --hot --inline --progress --colors",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "dev": "npm run dev-serve",
+    "dev-serve": "webpack-dev-server --hot --inline --progress --colors",
+
+    "prod-build-serve": "npm run build && npm run prod",
+    "build": "node server/deploy",
+    "prod": "npm start",
+    "start": "export NODE_ENV=production && node server"
   },
   "author": "",
   "license": "ISC",
@@ -14,23 +18,24 @@
     "babel-core": "^6.3.26",
     "babel-loader": "^6.2.0",
     "babel-preset-es2015": "^6.3.13",
-    "babel-preset-stage-0": "^6.3.13",
     "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
     "css-loader": "^0.23.1",
     "html-webpack-plugin": "^1.7.0",
     "node-sass": "^3.4.2",
     "redux-devtools": "^3.1.1",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
-    "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
     "babel-runtime": "^6.3.19",
     "bluebird": "^3.3.0",
     "event-emitter": "^0.3.4",
+    "express": "^4.13.1",
     "file-loader": "^0.8.5",
     "firebase": "^2.4.0",
+    "http-proxy": "^1.13.2",
     "immutable": "^3.7.6",
     "isomorphic-fetch": "^2.2.1",
     "json-load": "^1.0.1",
@@ -46,6 +51,7 @@
     "redux-actions": "^0.9.1",
     "redux-devtools-dock-monitor": "^1.1.0",
     "redux-devtools-log-monitor": "^1.0.5",
-    "url-loader": "^0.5.7"
+    "url-loader": "^0.5.7",
+    "webpack": "^1.12.14"
   }
 }

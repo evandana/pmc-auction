@@ -11,6 +11,10 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import LogMonitor from 'redux-devtools-log-monitor'
 import DockMonitor from 'redux-devtools-dock-monitor'
 
+// set in webpack
+// console.log('__PRODUCTION__', __PRODUCTION__)
+// console.log('__DEV__', __DEV__)
+
 // Styles
 import './app.scss';
 // React Components
@@ -21,47 +25,76 @@ import {
     ConfirmWinnersPage,
     HomePage,
     LoginPage
-    } from 'components';
+    } from './components/index';
 
 // Actions
 import { loadAuth } from 'actions/auth'
 
 // Reducers
-import * as reducers from 'reducers/index'
+import * as reducers from './reducers/index'
 
 const reducer = combineReducers({
   ...reducers,
   routing: routerReducer
 })
 
-const DevTools = createDevTools(
-  <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
-    <LogMonitor theme="tomorrow" preserveScrollTop={false} />
-  </DockMonitor>
-)
+let store = {}
+if ( __DEV__ ) {
+    // TODO: dev tools should be conditionally handled better
+    // using 'var' for normal scoping
+    var DevTools = createDevTools(
+      <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
+        <LogMonitor theme="tomorrow" preserveScrollTop={false} />
+      </DockMonitor>
+    )
 
-const store = createStore(
-  reducer,
-  DevTools.instrument()
-)
+    store = createStore(
+      reducer,
+      DevTools.instrument()
+    )
+} else {
+    store = createStore(
+      reducer
+    )
+}
+
+
 const history = syncHistoryWithStore(hashHistory, store)
 
-// store.dispatch(requestAuth());
-
-ReactDOM.render(
-  <Provider store={store}>
-    <div>
-      <Router history={history}>
-        <Route path="/" component={AppPage}>
-            <IndexRoute component={HomePage}/>
-            <Route path="/auctions" component={AuctionsPage}/>
-            <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
-            <Route path="/auctions/add" component={AddAuctionPage} />
-            <Route path="/login" component={LoginPage}/>
-        </Route>
-      </Router>
-      <DevTools />
-    </div>
-  </Provider>,
-  document.getElementById('app-page')
-)
+if ( __DEV__ ) {
+    // TODO: dev tools should be conditionally handled better
+    ReactDOM.render(
+      <Provider store={store}>
+        <div>
+          <Router history={history}>
+            <Route path="/" component={AppPage}>
+                <IndexRoute component={HomePage}/>
+                <Route path="/auctions" component={AuctionsPage}/>
+                <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
+                <Route path="/auctions/add" component={AddAuctionPage} />
+                <Route path="/login" component={LoginPage}/>
+            </Route>
+          </Router>
+          <DevTools />
+        </div>
+      </Provider>,
+      document.getElementById('app-page')
+    )
+} else {
+    ReactDOM.render(
+      <Provider store={store}>
+        <div>
+          <Router history={history}>
+            <Route path="/" component={AppPage}>
+                <IndexRoute component={HomePage}/>
+                <Route path="/auctions" component={AuctionsPage}/>
+                <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
+                <Route path="/auctions/add" component={AddAuctionPage} />
+                <Route path="/login" component={LoginPage}/>
+            </Route>
+          </Router>
+        </div>
+      </Provider>,
+      document.getElementById('app-page')
+    )
+}
