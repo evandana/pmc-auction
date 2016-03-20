@@ -12,8 +12,9 @@ var app = express();
 process.env.PORT = 3000
 // -------------------------------------------
 
-
-var isProduction = process.env.NODE_ENV === 'production';
+// for some reason process.env.NODE_ENV is always wrong
+//var isProduction = process.env.NODE_ENV === 'production';
+var isProduction = true;
 var port = isProduction ? process.env.PORT : 3000;
 var publicPath = path.resolve(__dirname, 'public');
 

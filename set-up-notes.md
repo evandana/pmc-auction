@@ -161,6 +161,8 @@ git fetch
 git pull
 git checkout master
 npm install
+npm run build
 git push heroku master
 heroku ps:scale web=1
 heroku open
+// on error: heroku logs
