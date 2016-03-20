@@ -140,3 +140,23 @@ or you can run your app like this:
 
 You can also set it in your js file:
 `process.env.NODE_ENV = 'production';`
+
+++++++++++++++++++++++
+
+##EC2
+git fetch
+git pull
+git checkout master
+npm install
+npm run prod-build-serve
+
++++++++++++++++++++++++
+
+#HEROKU
+git fetch
+git pull
+git checkout master
+npm install
+git push heroku master
+heroku ps:scale web=1
+heroku open
