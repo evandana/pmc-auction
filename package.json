@@ -7,7 +7,7 @@
     "dev": "export NODE_ENV=development && npm run dev-serve",
     "dev-serve": "webpack-dev-server --hot --inline --progress --colors",
 
-    "refresh-prod": "npm run build && npm run prod",
+    "prod-build-serve": "npm run build && npm run prod",
     "build": "node server/deploy",
     "prod": "npm start",
     "start": "export NODE_ENV=production && node server"
