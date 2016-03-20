@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "export NODE_ENV=development && npm run dev-serve",
+    "dev": "npm run dev-serve",
     "dev-serve": "webpack-dev-server --hot --inline --progress --colors",
 
     "prod-build-serve": "npm run build && npm run prod",
