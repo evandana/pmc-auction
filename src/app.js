@@ -10,6 +10,10 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import LogMonitor from 'redux-devtools-log-monitor'
 import DockMonitor from 'redux-devtools-dock-monitor'
 
+// set in webpack
+// console.log('__PRODUCTION__', __PRODUCTION__)
+// console.log('__DEV__', __DEV__)
+
 // Styles
 import './app.scss';
 // React Components
@@ -30,75 +34,63 @@ const reducer = combineReducers({
   routing: routerReducer
 })
 
-const DevTools = createDevTools(
-  <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
-    <LogMonitor theme="tomorrow" preserveScrollTop={false} />
-  </DockMonitor>
-)
+let store = {}
+if ( __DEV__ ) {
+    // TODO: dev tools should be conditionally handled better
+    // using 'var' for normal scoping
+    var DevTools = createDevTools(
+      <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
+        <LogMonitor theme="tomorrow" preserveScrollTop={false} />
+      </DockMonitor>
+    )
 
-const store = createStore(
-  reducer,
-  DevTools.instrument()
-)
+    store = createStore(
+      reducer,
+      DevTools.instrument()
+    )
+} else {
+    store = createStore(
+      reducer
+    )
+}
+
+
 const history = syncHistoryWithStore(hashHistory, store)
 
-ReactDOM.render(
-  <Provider store={store}>
-    <div>
-      <Router history={history}>
-        <Route path="/" component={AppPage}>
-            <IndexRoute component={HomePage}/>
-            <Route path="/auctions" component={AuctionsPage}/>
-            <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
-            <Route path="/auctions/add" component={AddAuctionPage} />
-            <Route path="/login" component={LoginPage}/>
-        </Route>
-      </Router>
-      <DevTools />
-    </div>
-  </Provider>,
-  document.getElementById('app-page')
-)
-
-
-
-
-
-// let app = {
-
-//     run () {
-//         UserStore.authCheck(this.authCallback.bind(this));
-//     },
-
-//     authCallback (authData) {
-//         if (authData) {
-//             UserStore.setUser(authData)
-//                 .then( () => { this.loadListingPage() });
-//         } else {
-//             this.loadAuthPage();
-//         }
-
-//     },
-
-//     loadAuthPage () {
-//         ReactDOM.render(
-//             <AuthPage />,
-//             document.getElementById('app-page')
-//         );
-//     },
-
-//     loadListingPage () {
-//         ReactDOM.render(
-//               <Router history={browserHistory}>
-//                 <Route path="/" component={ListingPage}>
-//                     <Route path="listingPage" component={ListingPage}/>
-//                 </Route>
-
-//                 <Route path="*" component={ListingPage}/>
-//               </Router>,
-//             document.getElementById('app-page')
-//         );
-//     }
-// };
-//
-// app.run();
+if ( __DEV__ ) {
+    // TODO: dev tools should be conditionally handled better
+    ReactDOM.render(
+      <Provider store={store}>
+        <div>
+          <Router history={history}>
+            <Route path="/" component={AppPage}>
+                <IndexRoute component={HomePage}/>
+                <Route path="/auctions" component={AuctionsPage}/>
+                <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
+                <Route path="/auctions/add" component={AddAuctionPage} />
+                <Route path="/login" component={LoginPage}/>
+            </Route>
+          </Router>
+          <DevTools />
+        </div>
+      </Provider>,
+      document.getElementById('app-page')
+    )
+} else {
+    ReactDOM.render(
+      <Provider store={store}>
+        <div>
+          <Router history={history}>
+            <Route path="/" component={AppPage}>
+                <IndexRoute component={HomePage}/>
+                <Route path="/auctions" component={AuctionsPage}/>
+                <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
+                <Route path="/auctions/add" component={AddAuctionPage} />
+                <Route path="/login" component={LoginPage}/>
+            </Route>
+          </Router>
+        </div>
+      </Provider>,
+      document.getElementById('app-page')
+    )
+}

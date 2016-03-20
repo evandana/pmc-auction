@@ -5,7 +5,16 @@ var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
 var app = express();
 
-var isProduction = process.env.NODE_ENV === 'production';
+
+// ----- PROD --------------------------------
+// setting this to production since dev doesn't use this flow
+// process.env.NODE_ENV = 'production';
+process.env.PORT = 3000
+// -------------------------------------------
+
+// for some reason process.env.NODE_ENV is always wrong
+//var isProduction = process.env.NODE_ENV === 'production';
+var isProduction = true;
 var port = isProduction ? process.env.PORT : 3000;
 var publicPath = path.resolve(__dirname, 'public');
 

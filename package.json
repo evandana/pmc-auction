@@ -4,10 +4,13 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node server",
-    "watch": "webpack-dev-server --hot --inline --progress --colors",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "dev": "npm run dev-serve",
+    "dev-serve": "webpack-dev-server --hot --inline --progress --colors",
+
+    "prod-build-serve": "npm run build && npm run prod",
+    "build": "node server/deploy",
+    "prod": "npm start",
+    "start": "export NODE_ENV=production && node server"
   },
   "author": "",
   "license": "ISC",

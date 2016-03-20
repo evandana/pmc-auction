@@ -32,8 +32,10 @@ Start Web Server
 Start Web Server at system boot
 `sudo chkconfig httpd on`
 
+Update web server
+
 Public IP
-52.90.140.202
+52.207.222.108
 
 Connect to instance with: 
 TODO: ` ssh -i ..../newkeypair.pem ec2-user@52.90.140.202`
@@ -79,6 +81,8 @@ Followed steps at http://stackoverflow.com/questions/12370921/ec2-cant-ssh-into-
 Set up deploy key in github repo
 
 Initiated repo in `doc root`
+`/etc/httpd/conf/httpd.conf`
+restart apache `service httpd restart`
 
 testing
 
@@ -126,3 +130,39 @@ Run
 `npm run watch`
 
 `git pull`
+
+-------------
+
+Before running your app, you can do this in console,
+`export NODE_ENV=production`
+
+Or if you are in windows you could try this:
+`SET NODE_ENV=production`
+
+or you can run your app like this:
+`NODE_ENV=production node app.js`
+
+You can also set it in your js file:
+`process.env.NODE_ENV = 'production';`
+
+++++++++++++++++++++++
+
+##EC2
+git fetch
+git pull
+git checkout master
+npm install
+npm run prod-build-serve
+
++++++++++++++++++++++++
+
+#HEROKU
+git fetch
+git pull
+git checkout master
+npm install
+npm run build
+git push heroku master
+heroku ps:scale web=1
+heroku open
+// on error: heroku logs
