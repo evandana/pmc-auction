@@ -159,6 +159,11 @@ autorestart=true
 stderr_logfile=/var/log/pmc-auction.err.log -->
 `supervisor server` //what's run by npm start
 
+adjusted timeout on ec2?
+http://stackoverflow.com/questions/7210011/amazon-ec2-ssh-timeout-due-inactivity
+
+https://www.npmjs.com/package/pm2
+
 ++++++++++++++++++++++
 
 ##EC2
@@ -167,8 +172,7 @@ git pull
 git checkout master
 npm install
 npm run build
-// add NODE_ENV=production ?
-supervisor server// npm run prod-build-serve
+pm2 start server // pm2 stop all
 
 +++++++++++++++++++++++
 
