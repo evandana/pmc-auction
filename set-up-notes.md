@@ -146,13 +146,29 @@ You can also set it in your js file:
 `process.env.NODE_ENV = 'production';`
 
 ++++++++++++++++++++++
+# make EC2 run indefinitely
+npm install supervisor -g
+http://josephralph.co.uk/supervisor-monitoring-and-running-commands/
+<!-- pmc-auction/server/pmc-auction-supervisor.conf
+
+[program:pmc-auction-supervisor]
+directory=/var/www/html/pmc-auction
+command=npm run prod
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/pmc-auction.err.log -->
+`supervisor server` //what's run by npm start
+
+++++++++++++++++++++++
 
 ##EC2
 git fetch
 git pull
 git checkout master
 npm install
-npm run prod-build-serve
+npm run build
+// add NODE_ENV=production ?
+supervisor server// npm run prod-build-serve
 
 +++++++++++++++++++++++
 
