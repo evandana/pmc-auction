@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// Components
 import { Router, Route, IndexRoute, hashHistory, UPDATE_LOCATION } from 'react-router'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
@@ -11,8 +12,9 @@ import LogMonitor from 'redux-devtools-log-monitor'
 import DockMonitor from 'redux-devtools-dock-monitor'
 
 // set in webpack
-// console.log('__PRODUCTION__', __PRODUCTION__)
-// console.log('__DEV__', __DEV__)
+console.log('__PRODUCTION__', __PRODUCTION__)
+console.log('__DEV__', __DEV__)
+console.log('JSON.stringify(process.env.NODE_ENV)', JSON.stringify(process.env.NODE_ENV))
 
 // Styles
 import './app.scss';
@@ -25,6 +27,9 @@ import {
     HomePage,
     LoginPage
     } from './components/index';
+
+// Actions
+import { loadAuth } from './actions/auth'
 
 // Reducers
 import * as reducers from './reducers/index'
@@ -53,6 +58,8 @@ if ( __DEV__ ) {
       reducer
     )
 }
+
+// store.dispatch(requestAuth());
 
 
 const history = syncHistoryWithStore(hashHistory, store)
