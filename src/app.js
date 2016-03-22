@@ -12,9 +12,9 @@ import LogMonitor from 'redux-devtools-log-monitor'
 import DockMonitor from 'redux-devtools-dock-monitor'
 
 // set in webpack
-// console.log('__PRODUCTION__', __PRODUCTION__)
-// console.log('__DEV__', __DEV__)
-// console.log('JSON.stringify(process.env.NODE_ENV)', JSON.stringify(process.env.NODE_ENV))
+console.log('__PRODUCTION__', __PRODUCTION__)
+console.log('__DEV__', __DEV__)
+console.log('JSON.stringify(process.env.NODE_ENV)', JSON.stringify(process.env.NODE_ENV))
 
 // Styles
 import './app.scss';
