@@ -3,11 +3,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // Components
-import { Router, Route, IndexRoute, hashHistory, UPDATE_LOCATION } from 'react-router'
+import { Router, Route, IndexRoute, UPDATE_LOCATION } from 'react-router'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
-import { createDevTools } from 'redux-devtools'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { Provider } from 'react-redux'
+import { render } from 'react-dom'
+import { createDevTools } from 'redux-devtools'
 import LogMonitor from 'redux-devtools-log-monitor'
 import DockMonitor from 'redux-devtools-dock-monitor'
 
@@ -27,77 +28,38 @@ import {
     HomePage,
     LoginPage
     } from './components/index';
-
 // Actions
-import { loadAuth } from './actions/auth'
+import { requestAuth } from './actions/auth'
+// Store
+import configureStore from './stores/configureStore'
+// History
+import hashHistory from './history'
+// DevTools
+import DevTools from './components/containers/devTools/DevTools'
 
-// Reducers
-import * as reducers from './reducers/index'
+const store = configureStore()
+const routerHistory = syncHistoryWithStore(hashHistory, store)
 
-const reducer = combineReducers({
-  ...reducers,
-  routing: routerReducer
-})
-
-let store = {}
-if ( __DEV__ ) {
-    // TODO: dev tools should be conditionally handled better
-    // using 'var' for normal scoping
-    var DevTools = createDevTools(
-      <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
-        <LogMonitor theme="tomorrow" preserveScrollTop={false} />
-      </DockMonitor>
-    )
-
-    store = createStore(
-      reducer,
-      DevTools.instrument()
-    )
-} else {
-    store = createStore(
-      reducer
-    )
-}
-
-// store.dispatch(requestAuth());
-
-
-const history = syncHistoryWithStore(hashHistory, store)
-
-if ( __DEV__ ) {
-    // TODO: dev tools should be conditionally handled better
-    ReactDOM.render(
-      <Provider store={store}>
-        <div>
-          <Router history={history}>
-            <Route path="/" component={AppPage}>
-                <IndexRoute component={HomePage}/>
-                <Route path="/auctions" component={AuctionsPage}/>
-                <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
-                <Route path="/auctions/add" component={AddAuctionPage} />
-                <Route path="/login" component={LoginPage}/>
-            </Route>
-          </Router>
-          <DevTools />
-        </div>
-      </Provider>,
-      document.getElementById('app-page')
-    )
-} else {
-    ReactDOM.render(
-      <Provider store={store}>
-        <div>
-          <Router history={history}>
-            <Route path="/" component={AppPage}>
-                <IndexRoute component={HomePage}/>
-                <Route path="/auctions" component={AuctionsPage}/>
-                <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
-                <Route path="/auctions/add" component={AddAuctionPage} />
-                <Route path="/login" component={LoginPage}/>
-            </Route>
-          </Router>
-        </div>
-      </Provider>,
-      document.getElementById('app-page')
-    )
-}
+render(
+  <Provider store={store}>
+    <div>
+      <Router history={hashHistory}>
+        <Route path="/" component={AppPage}>
+            <IndexRoute component={HomePage}/>
+            <Route path="/auctions" component={AuctionsPage}/>
+            <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
+            <Route path="/auctions/add" component={AddAuctionPage} />
+            <Route path="/login" component={LoginPage}/>
+        </Route>
+      </Router>
+      {
+        (() => {
+          if (__DEV__) {
+              return <DevTools />;
+          }
+        })() || ''
+      }
+    </div>
+  </Provider>,
+  document.getElementById('app-page')
+)
