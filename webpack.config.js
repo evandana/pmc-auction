@@ -17,11 +17,17 @@ const babelSettings = {
     ]
 };
 
+process.env.NODE_ENV = 'production'
+
 const basePlugins = [
   new webpack.DefinePlugin({
     __DEV__: true,
     __PRODUCTION__: false,
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    process: {
+        env: {
+            NODE_ENV: '"dev"'
+        }
+    }
   })
 ]
 

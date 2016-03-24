@@ -146,13 +146,34 @@ You can also set it in your js file:
 `process.env.NODE_ENV = 'production';`
 
 ++++++++++++++++++++++
+# make EC2 run indefinitely
+npm install supervisor -g
+http://josephralph.co.uk/supervisor-monitoring-and-running-commands/
+<!-- pmc-auction/server/pmc-auction-supervisor.conf
+
+[program:pmc-auction-supervisor]
+directory=/var/www/html/pmc-auction
+command=npm run prod
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/pmc-auction.err.log -->
+`supervisor server` //what's run by npm start
+
+adjusted timeout on ec2?
+http://stackoverflow.com/questions/7210011/amazon-ec2-ssh-timeout-due-inactivity
+
+#pm2 for no hangup
+https://www.npmjs.com/package/pm2
+
+++++++++++++++++++++++
 
 ##EC2
 git fetch
 git pull
 git checkout master
 npm install
-npm run prod-build-serve
+npm run build
+pm2 start server // pm2 stop all
 
 +++++++++++++++++++++++
 
