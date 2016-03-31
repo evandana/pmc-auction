@@ -1,16 +1,25 @@
 // Libraries
 import React from 'react';
+import { connect } from 'react-redux'
+
 // Styles
 // import './header.scss';
 // Application Components
+import AuctionList from '../../auctionList/auctionList';
 
-const Auctions = () => {
+let Auctions = React.createClass({
+    
+    render() {
+        
+        console.log(this.props)
+        
+        return (
+            <div>
+                <AuctionList auctions={this.props.auctions} />
+            </div>
+        )
+    }
 
-    return (
-        <div>
-            Auctions
-        </div>
-    )
-}
+});
 
-export default Auctions
+export default connect()(Auctions)

@@ -30,6 +30,7 @@ import {
     } from './components/index';
 // Actions
 import { requestAuth } from './actions/auth'
+import { fetchAuctions } from './actions/AuctionActions'
 // Store
 import configureStore from './stores/configureStore'
 // History
@@ -63,3 +64,7 @@ render(
   </Provider>,
   document.getElementById('app-page')
 )
+
+// Fetch Once to Rule Them ALL
+store.dispatch(fetchAuctions())
+
