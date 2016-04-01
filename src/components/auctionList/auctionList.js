@@ -15,7 +15,12 @@ let AuctionList = React.createClass({
         let auctionItems = [];
         
         this.props.auctions.forEach( (obj, index) => { 
-            auctionItems.push(<AuctionItem key={index} data={obj} />);
+            auctionItems.push(<AuctionItem 
+                key={index}
+                data={obj}
+                placeBid={this.props.placeBid}
+                showAuctionDetail={this.props.showAuctionDetail}
+            />);
         });
         
         return (

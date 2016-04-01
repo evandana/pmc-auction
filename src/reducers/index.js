@@ -4,7 +4,9 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 import {
     FETCH_AUCTIONS,
-    LOAD_AUCTION
+    LOAD_AUCTION,
+    PLACE_BID,
+    TOGGLE_AUCTION_DETAIL
 } from '../actions/AuctionActions'
 
 
@@ -17,6 +19,12 @@ function auctions(state = { auctionCollection : [] }, action) {
                     action.auction
                 ]
             });
+        case PLACE_BID:
+            console.log("Place Bid")
+            return state
+        case TOGGLE_AUCTION_DETAIL:
+            console.log("Toggle Auction State")
+            return state
         default:
             return state;
     }
