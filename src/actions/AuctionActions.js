@@ -1,39 +1,35 @@
-// import AppDispatcher from 'AppDispatcher';
-// import AuctionConstants from 'constants/AuctionConstants';
+// firebase read/write adapter
+import firebase from 'utils/firebaseAdapter'
 
-// let AuctionActions = {
+export const FETCH_AUCTIONS = 'FETCH_AUCTIONS'
+export const LOAD_AUCTION = 'LOAD_AUCTION'
+export const PLACE_BID = 'PLACE_BID'
+export const TOGGLE_AUCTION_DETAIL = 'TOGGLE_AUCTION_DETAIL'
 
-//     addAuction: function(auctionObj) {
-//         AppDispatcher.handleViewAction({
-//             actionType: AuctionConstants.ADD_AUCTION,
-//             auctionData: auctionObj
-//         })
-//     },
+export function fetchAuctions() {
+    return dispatch => {
+        firebase.loadAuctions( auction => dispatch(loadAuctionObj(auction)) )
+    }
+}
 
-//     toggleAuctionRow: function(id) {
-//         AppDispatcher.handleViewAction({
-//             actionType: AuctionConstants.TOGGLE_AUCTION_ROW,
-//             id: id
-//         })
-//     },
+export function loadAuctionObj(auction) {
+    return {
+        type: LOAD_AUCTION,
+        auction
+    }
+}
 
-//     // View Actions
-//     sortByCol: function(key, order) {
-//         AppDispatcher.handleViewAction({
-//             actionType: AuctionConstants.SORT_BY_COL,
-//             key: key,
-//             order: order
-//         });
-//     },
+export function placeBid(auctionId, bidAmount) {
+    return {
+        type: PLACE_BID,
+        auctionId,
+        bidAmount
+    }
+}
 
-//     // Data Actions
-//     socketUpdate: function(data) {
-//         AppDispatcher.handleDataAction({
-//             actionType: AuctionConstants.SOCKET_UPDATE,
-//             data: data
-//         });
-//     }
-
-// };
-
-// export default AuctionActions;
+export function toggleAuctionDetail(auctionId) {
+    return {
+        type: TOGGLE_AUCTION_DETAIL,
+        auctionId
+    }
+}

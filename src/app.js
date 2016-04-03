@@ -29,8 +29,8 @@ import {
     LoginPage
     } from './components/index';
 // Actions
-// import auth
-import { checkAuth, authorizedRouteChange } from './actions/Auth'
+import { requestCheckAuth, requestAuthorizeRouteChange } from './actions/auth'
+import { fetchAuctions } from './actions/AuctionActions'
 // Store
 import configureStore from './stores/configureStore'
 // History
@@ -41,8 +41,8 @@ import DevTools from './components/containers/devTools/DevTools'
 const store = configureStore()
 const routerHistory = syncHistoryWithStore(hashHistory, store)
 // force auth
-checkAuth();
-hashHistory.listen(location => authorizedRouteChange(location))
+requestCheckAuth();
+hashHistory.listen(location => requestAuthorizeRouteChange(location))
 
 render(
   <Provider store={store}>
@@ -67,3 +67,7 @@ render(
   </Provider>,
   document.getElementById('app-page')
 )
+
+// Fetch Once to Rule Them ALL
+store.dispatch(fetchAuctions())
+
