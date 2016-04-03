@@ -9,6 +9,20 @@ import {
     TOGGLE_AUCTION_DETAIL
 } from '../actions/AuctionActions'
 
+import {
+    REQUEST_ROUTE_CHANGE
+} from '../actions/AuthActions'
+
+function login(state = { user : {} }, action ) {
+    switch (action.type) {
+        case REQUEST_ROUTE_CHANGE:
+            console.log('REQUESTED ROUTE CHANGE state', state);
+            return state;
+            break;
+        default:
+            return state;
+    }
+}
 
 function auctions(state = { auctionCollection : [] }, action) {
     switch (action.type) {
@@ -32,6 +46,7 @@ function auctions(state = { auctionCollection : [] }, action) {
 
 const rootReducer = combineReducers({
   auctions,
+  login,
   routing: routerReducer
 })
 

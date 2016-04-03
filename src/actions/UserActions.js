@@ -1,20 +1,23 @@
-// import AppDispatcher from 'AppDispatcher';
-// import UserConstants from 'constants/UserConstants';
+import AppDispatcher from 'AppDispatcher';
 
-// let UserActions = {
+const LOGIN_GOOGLE = 'LOGIN_GOOGLE';
+const LOGOUT_USER = 'LOGOUT_USER';
 
-//     loginGoogle () {
-//         AppDispatcher.handleViewAction({
-//             actionType: UserConstants.LOGIN_GOOGLE
-//         })
-//     },
+const UserActions = {
 
-//     logoutUser () {
-//         AppDispatcher.handleViewAction({
-//             actionType: UserConstants.LOGOUT_USER
-//         })
-//     }
+    loginGoogle(user) {
+        return {
+            type: LOGIN_GOOGLE,
+            user
+        }
+    },
 
-// };
+    logoutUser(user) {
+        return {
+            type: LOGOUT_USER,
+            user
+        }
+    }
+}
 
-// export default UserActions;
+export default UserActions
