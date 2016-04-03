@@ -3,7 +3,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import {
   SELECT_REDDIT, INVALIDATE_REDDIT,
   REQUEST_POSTS, RECEIVE_POSTS
-} from '../actions/auth'
+} from '../actions/Auth'
 
 function selectedReddit(state = 'reactjs', action) {
   switch (action.type) {

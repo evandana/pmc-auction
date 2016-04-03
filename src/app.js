@@ -29,7 +29,8 @@ import {
     LoginPage
     } from './components/index';
 // Actions
-import { requestAuth } from './actions/auth'
+// import auth
+import { checkAuth, authorizedRouteChange } from './actions/Auth'
 // Store
 import configureStore from './stores/configureStore'
 // History
@@ -39,6 +40,9 @@ import DevTools from './components/containers/devTools/DevTools'
 
 const store = configureStore()
 const routerHistory = syncHistoryWithStore(hashHistory, store)
+// force auth
+checkAuth();
+hashHistory.listen(location => authorizedRouteChange(location))
 
 render(
   <Provider store={store}>

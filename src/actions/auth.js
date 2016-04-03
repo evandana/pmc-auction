@@ -16,18 +16,44 @@
 // };
 
 
-import fetch from 'isomorphic-fetch'
-
-export function requestAuth() {
+// import fetch from 'isomorphic-fetch'
 
 
+export const REQUEST_AUTH = 'REQUEST_AUTH'
+export const REQUEST_ROUTE_CHANGE = 'REQUEST_ROUTE_CHANGE'
 
+// export function requestAuth() {}
+
+export function requestAuthorizeRouteChange(route) {
+    console.log('route change requested')
+    return {
+        type: REQUEST_ROUTE_CHANGE,
+        route: route
+    }
+}
+export function requestCheckAuth(auth) {
+    console.log('auth check requested')
+    return {
+        type: REQUEST_AUTH
+    }
 }
 
-export const REQUEST_POSTS = 'REQUEST_POSTS'
-export const RECEIVE_POSTS = 'RECEIVE_POSTS'
-export const SELECT_REDDIT = 'SELECT_REDDIT'
-export const INVALIDATE_REDDIT = 'INVALIDATE_REDDIT'
+export function respondAuthorizeRouteChange(authorization) {
+    console.log('route change response')
+    return {
+        type: REQUEST_ROUTE_CHANGE,
+        isLoggedIn: authorization
+    }
+}
+export function respondCheckAuth(auth) {
+    console.log('auth check response')
+    return {
+        type: REQUEST_AUTH,
+        isLoggedIn: auth
+    }
+}
+
+
 
 // export function selectReddit(reddit) {
 //   return {
