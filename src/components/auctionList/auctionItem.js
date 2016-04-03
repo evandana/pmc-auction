@@ -1,19 +1,18 @@
 // Libraries
-import React from 'react';
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 // Styles
 // import './header.scss';
 // Application Components
 
-let AuctionItem = React.createClass({
+class AuctionItem extends Component {
 
     render() {
-        
-        console.log("GOYD ", this.props);
-        
+        const { placeBid, showAuctionDetail } = this.props
+
         return (
-            <div className="listing-row-container pure-g">
+            <div className="listing-row-container pure-g" onClick={ e => showAuctionDetail(1,e) }>
                 <div className="listing-row-infoCol pure-u-1-2">
                     <div className="listing-row-title">{this.props.data.title}</div>
                     <div className="listing-row-infoContainer pure-g">
@@ -23,11 +22,15 @@ let AuctionItem = React.createClass({
                 </div>
                 <div className="listing-row-bidCol pure-u-1-2">
                     <div>{this.props.data.openingBid}</div>
+                    <button
+                        onClick={e => placeBid(1,2,e)}>
+                        BID
+                    </button>
                 </div>
             </div>
         )
     }
 
-});
+}
 
 export default AuctionItem;
