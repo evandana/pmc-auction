@@ -12,9 +12,26 @@ const sassLoaders = [
 const babelSettings = {
     presets:[
         'react',
-        'es2015'
+        'es2015',
+        'stage-0'
     ]
 };
+
+process.env.NODE_ENV = 'production'
+
+const basePlugins = [
+  new webpack.DefinePlugin({
+    __DEV__: true,
+    __PRODUCTION__: false,
+    process: {
+        env: {
+            NODE_ENV: '"dev"'
+        }
+    }
+  })
+]
+
+const plugins = basePlugins
 
 module.exports = {
     target: 'web',
@@ -49,8 +66,8 @@ module.exports = {
                loaders: sassLoaders
             }
            // Images
-        //    { 
-        //        test: /\.(png|jpg)$/, 
+        //    {
+        //        test: /\.(png|jpg)$/,
         //        loader: 'url-loader?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
         //    }
         ]
@@ -63,7 +80,7 @@ module.exports = {
             inject: true,
             template: 'src/index.html'
         })
-    ],
+    ].concat(plugins),
     devServer: {
         contentBase: './tmp'
     }

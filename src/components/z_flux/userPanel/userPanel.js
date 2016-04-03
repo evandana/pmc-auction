@@ -11,11 +11,14 @@ import ListingTableHead from 'components/listingTableHead/listingTableHead';
 
 
 let UserPanel = React.createClass({
-    
+
     getInitialState () {
-        return UserStore.getUser();
+        //return UserStore.getUser();
+        return {
+            name: 'Chris'
+        }
     },
-    
+
     render () {
         return (
             <section className="user-panel-l">
@@ -30,7 +33,7 @@ let UserPanel = React.createClass({
             </section>
         );
     },
-    
+
     logout () {
         UserActions.logoutUser();
     }

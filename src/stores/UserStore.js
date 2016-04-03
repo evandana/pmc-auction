@@ -10,11 +10,11 @@ let _curUser,
     UserStore;
 
 UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
-    
+
     authCheck (callback) {
         UserStore.rwAdapter.authCheck(callback);
     },
-    
+
     authenticate () {
         UserStore.rwAdapter.auth();
     },
@@ -36,15 +36,15 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
 
         return true;
     }),
-    
+
     getUser () {
         return _curUser;
     },
-    
+
     getAllUsers () {
         return UserStore.rwAdapter.getAllUsers();
     },
-    
+
     getUidFromAuth (authData) {
 
         // Google Auth
@@ -56,7 +56,7 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
         }
 
     },
-    
+
     setUser (authData) {
         return new Promise( (resolve, reject) => {
             UserStore.getAllUsers()
@@ -75,7 +75,7 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
                 });
         });
     },
-    
+
     storeNewUser (userData) {
         return new Promise( (resolve, reject) => {
             // Google users
@@ -85,18 +85,18 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
                     name: userData.google.displayName,
                     permissionLevel: 'GUEST'
                 };
-                
+
                 UserStore.rwAdapter.addNewUser(userData.uid, user)
                     .then( (newUser) => {
                         resolve(newUser);
                     });
-                
+
             } else {
                 console.log('UserStore.storeNewUser error, authentication type unknown.');
             }
         });
     }
-    
+
 });
 
 export default UserStore;
