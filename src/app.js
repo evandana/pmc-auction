@@ -29,7 +29,7 @@ import {
     LoginPage
     } from './components/index';
 // Actions
-import { requestRouteChange } from './actions/AuthActions'
+import { LoginActions } from './actions/LoginActions'
 import { fetchAuctions } from './actions/AuctionActions'
 // Store
 import configureStore from './stores/configureStore'
@@ -42,7 +42,7 @@ const store = configureStore()
 const routerHistory = syncHistoryWithStore(hashHistory, store)
 // force auth
 // requestCheckAuth();
-hashHistory.listen(location => requestRouteChange(location, store))
+hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
 
 render(
   <Provider store={store}>

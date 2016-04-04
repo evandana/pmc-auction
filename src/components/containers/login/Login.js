@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 
-import UserActions from '../../../actions/UserActions'
+import { LoginActions } from '../../../actions/LoginActions'
 
 
 
@@ -11,8 +11,8 @@ import UserActions from '../../../actions/UserActions'
 
 const Login = React.createClass({
 
-    googleLogin() {
-        UserActions.loginGoogle();
+    requestLoginGoogle() {
+        LoginActions.requestLoginGoogle();
     },
 
     render() {
@@ -23,7 +23,7 @@ const Login = React.createClass({
                     <div className="pure-controls">
                         <button
                             className="pure-button pure-button-primary"
-                            onClick={this.googleLogin}>
+                            onClick={this.requestLoginGoogle}>
                             Google Login
                         </button>
                     </div>

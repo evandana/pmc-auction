@@ -1,23 +1,23 @@
-import AppDispatcher from 'AppDispatcher';
+// import AppDispatcher from 'AppDispatcher';
 
-const LOGIN_GOOGLE = 'LOGIN_GOOGLE';
-const LOGOUT_USER = 'LOGOUT_USER';
+// const LOGIN_GOOGLE = 'LOGIN_GOOGLE';
+// const LOGOUT_USER = 'LOGOUT_USER';
 
-const UserActions = {
+// const UserActions = {
 
-    loginGoogle(user) {
-        return {
-            type: LOGIN_GOOGLE,
-            user
-        }
-    },
+//     loginGoogle(user) {
+//         return {
+//             type: LOGIN_GOOGLE,
+//             user
+//         }
+//     },
 
-    logoutUser(user) {
-        return {
-            type: LOGOUT_USER,
-            user
-        }
-    }
-}
+//     logoutUser(user) {
+//         return {
+//             type: LOGOUT_USER,
+//             user
+//         }
+//     }
+// }
 
-export default UserActions
+// export default UserActions
