@@ -11,9 +11,7 @@ function login(state = { user : {} }, action ) {
         case LOGIN_CONSTANTS.AUTH_CHECK_SUCCESS:
             console.log('AUTH_CHECK_SUCCESS', this, state, action)
             return Object.assign({}, state, {
-                user: {
-                    username: 'apple'
-                }
+                user: action.user
             });
             break;
         case LOGIN_CONSTANTS.AUTH_CHECK_ERROR:

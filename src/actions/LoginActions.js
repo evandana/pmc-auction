@@ -31,9 +31,9 @@ export const LoginActions = {
     requestRouteChange(route, store) {
 
         let user = store.getState().login.user;
-        console.log('requestRouteChange', route, user, !!user.username);
+        console.log('requestRouteChange', route, user, !!user.uid);
 
-        if (route.pathname !== '/login' && !user.username) {
+        if (route.pathname !== '/login' && !user.uid) {
             hashHistory.push('/login');
         }
     },
