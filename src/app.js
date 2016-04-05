@@ -1,6 +1,7 @@
 // Libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Promise from 'bluebird';
 
 // Components
 import { Router, Route, IndexRoute, UPDATE_LOCATION } from 'react-router'
@@ -29,7 +30,7 @@ import {
     LoginPage
     } from './components/index';
 // Actions
-import { requestAuth } from './actions/auth'
+import { LoginActions } from './actions/LoginActions'
 import { fetchAuctions } from './actions/AuctionActions'
 // Store
 import configureStore from './stores/configureStore'
@@ -37,34 +38,62 @@ import configureStore from './stores/configureStore'
 import hashHistory from './history'
 // DevTools
 import DevTools from './components/containers/devTools/DevTools'
+// firebase read/write adapter
+import firebase from 'utils/firebaseAdapter'
 
 const store = configureStore()
 const routerHistory = syncHistoryWithStore(hashHistory, store)
 
-render(
-  <Provider store={store}>
-    <div>
-      <Router history={hashHistory}>
-        <Route path="/" component={AppPage}>
-            <IndexRoute component={HomePage}/>
-            <Route path="/auctions" component={AuctionsPage}/>
-            <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
-            <Route path="/auctions/add" component={AddAuctionPage} />
-            <Route path="/login" component={LoginPage}/>
-        </Route>
-      </Router>
-      {
-        (() => {
-          if (__DEV__) {
-              return <DevTools />;
-          }
-        })() || ''
-      }
-    </div>
-  </Provider>,
-  document.getElementById('app-page')
-)
+const authCheck = new Promise( (resolve) => {  
+    firebase.authCheck( user => { resolve(user) })
+})
 
-// Fetch Once to Rule Them ALL
-store.dispatch(fetchAuctions())
+// force auth
+// requestCheckAuth();
+
+authCheck.then( user => { 
+    user ? loadAppView() : loadLoginView()
+});
+
+function loadAppView () {
+    
+    store.dispatch(LoginActions.authCheck());
+    hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
+    
+    render(
+        <Provider store={store}>
+            <div>
+                <Router history={hashHistory}>
+                    <Route path="/" component={AppPage}>
+                        <IndexRoute component={HomePage}/>
+                        <Route path="/auctions" component={AuctionsPage}/>
+                        <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
+                        <Route path="/auctions/add" component={AddAuctionPage} />
+                        <Route path="/login" component={LoginPage}/>
+                    </Route>
+                </Router>
+                {
+                    (() => {
+                        if (__DEV__) {
+                            return <DevTools />;
+                        }
+                    })() || ''
+                }
+            </div>
+        </Provider>,
+        document.getElementById('app-page')
+    )
+
+    // Fetch Once to Rule Them ALL
+    store.dispatch(fetchAuctions())
+}
+
+function loadLoginView () {
+    render(
+        <LoginPage />,
+        document.getElementById('app-page')
+    )        
+}
+
+
 

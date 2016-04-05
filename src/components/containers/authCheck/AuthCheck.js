@@ -4,7 +4,7 @@ import React from 'react';
 // import './header.scss';
 // Application Components
 
-export default function AuthCheck({ children }) {
+export default class AuthCheck({ children }) {
 
     const a = true;
 
@@ -27,7 +27,17 @@ export default function AuthCheck({ children }) {
         )
     }
 
+    function validateLogin () {
+
+    }
+
+
     return {
-        render
+        render,
+        validateLogin
     }
 }
+
+// export function validateLogin () {
+//     console.log('validate called')
+// }
