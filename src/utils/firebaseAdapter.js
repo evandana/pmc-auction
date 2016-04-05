@@ -50,13 +50,14 @@ let Adapter = function Adapter () {
 
         loginGoogle (successCallback, failCallback) {
             console.log('trying login')
-            ref.authWithOAuthRedirect("google", function(error, authData) {
+            return ref.authWithOAuthRedirect("google", function(error, authData) {
                 if (error) {
                     console.log("Login Failed!", error);
-                    failCallback(error);
+                    return failCallback(error);
                 } else {
+                    // We'll never get here, as the page will redirect on success.
                     console.log("Authenticated successfully with payload:", authData);
-                    successCallback(authData);
+                    return successCallback(authData);
                 }
             });
         },

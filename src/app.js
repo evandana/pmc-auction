@@ -42,6 +42,7 @@ const store = configureStore()
 const routerHistory = syncHistoryWithStore(hashHistory, store)
 // force auth
 // requestCheckAuth();
+LoginActions.authCheck();
 hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
 
 render(
