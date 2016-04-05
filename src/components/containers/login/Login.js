@@ -19,7 +19,6 @@ const Login = React.createClass({
         return (
             <div className="pure-form pure-form-aligned">
                 <fieldset>
-                    <legend>Login</legend>
                     <div className="pure-controls">
                         <button
                             className="pure-button pure-button-primary"

@@ -1,0 +1,39 @@
+header {
+    margin-top:0;
+    border-bottom:1px solid #ccc;
+    background:#eee;
+    font-size:80%;
+    bottom:0;
+
+    ul {
+        list-style: none;
+        padding:0;
+        margin: 0;
+        &::after {
+            content: '.';
+            float:none;
+            clear:both;
+        }
+
+
+        li {
+            float:left;
+            padding-right:2em;
+            &::after {
+                content: '|';
+                padding-left:2em;
+            }
+            &:last-of-type {
+                padding-right:0;
+            }
+            &:last-of-type::after {
+                content:'';
+                padding:0;
+            }
+        }
+    }
+
+    .header__greeting__username {
+        font-weight: bold;
+    }
+}
