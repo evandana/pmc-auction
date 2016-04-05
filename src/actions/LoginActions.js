@@ -18,10 +18,13 @@ export const LoginActions = {
 
     authCheck(user) {
         console.log('authCheck..............................................')
-        return firebase.authCheck( user => { return this.authCheckSuccessObj(user) } )
+        // return firebase.authCheck( user => { console.log('success'); return this.authCheckSuccessObj(user) } )
+        return dispatch => {
+            firebase.authCheck( user => dispatch(this.authCheckSuccessObj(user)) )
+        }
     },
     authCheckSuccessObj(user) {
-        console.log('authCheckSuccessObj')
+        console.log('authCheckSuccessObj', user)
         return {
             type: LOGIN_CONSTANTS.AUTH_CHECK_SUCCESS,
             user
@@ -31,10 +34,13 @@ export const LoginActions = {
     requestRouteChange(route, store) {
 
         let user = store.getState().login.user;
-        console.log('requestRouteChange', user, !!user.username);
+        console.log('requestRouteChange', route, user, !!user.username);
 
         if (route.pathname !== '/login' || user.username) {
-            hashHistory.push('/login');
+
+            // hashHistory.push('/login');
+        } else {
+            debugger;
         }
     },
 
