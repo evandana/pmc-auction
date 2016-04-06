@@ -14,7 +14,7 @@ class Auctions extends Component {
     constructor(props) {
         super(props)
         this.placeBid = this.placeBid.bind(this)
-        this.showAuctionDetail = this.showAuctionDetail.bind(this)
+        this.toggleAuctionDetail = this.toggleAuctionDetail.bind(this)
     }
 
     placeBid(auctionId, amount, event) {
@@ -22,7 +22,7 @@ class Auctions extends Component {
         dispatch(placeBid(auctionId, amount))
     }
     
-    showAuctionDetail(auctionId, event) {
+    toggleAuctionDetail(auctionId, event) {
         const { dispatch } = this.props
         // Doing trigger when target is button - button is used for placing bids
         if (event.target.nodeName !== 'BUTTON') {
@@ -32,14 +32,13 @@ class Auctions extends Component {
     
     render() {
         
-        console.log(this.props)
-        
         return (
             <div>
                 <AuctionList 
                     auctions={this.props.auctions}
+                    expandedAuctionIdList={this.props.expandedAuctionIdList}
                     placeBid={this.placeBid}
-                    showAuctionDetail={this.showAuctionDetail}
+                    toggleAuctionDetail={this.toggleAuctionDetail}
                 />
             </div>
         )

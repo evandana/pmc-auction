@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 // import './header.scss';
 // Application Components
 import AuctionItem from './auctionItem';
+import AuctionItemDetail from './AuctionItemDetail';
 
 
 let AuctionList = React.createClass({
@@ -15,12 +16,7 @@ let AuctionList = React.createClass({
         let auctionItems = [];
         
         this.props.auctions.forEach( (obj, index) => { 
-            auctionItems.push(<AuctionItem 
-                key={index}
-                data={obj}
-                placeBid={this.props.placeBid}
-                showAuctionDetail={this.props.showAuctionDetail}
-            />);
+            auctionItems.push( generateItem(obj, index, this.props) );
         });
         
         return (
@@ -33,3 +29,22 @@ let AuctionList = React.createClass({
 });
 
 export default AuctionList;
+
+function generateItem (obj, index, props) {
+    
+    if ( props.expandedAuctionIdList.includes(obj.id) ) {
+        return (<AuctionItemDetail
+            key={index}
+            data={obj}
+            placeBid={props.placeBid}
+            toggleAuctionDetail={props.toggleAuctionDetail}
+        />)
+    } else {
+        return (<AuctionItem
+            key={index}
+            data={obj}
+            placeBid={props.placeBid}
+            toggleAuctionDetail={props.toggleAuctionDetail}
+        />)
+    }
+}

@@ -12,10 +12,13 @@ class AuctionsPage extends Component {
       }
 
     render () {
-        console.log("RENDER ", this.props)
+
         return (
             <div>
-                <Auctions auctions={this.props.auctions} />
+                <Auctions 
+                    auctions={this.props.auctions}
+                    expandedAuctionIdList={this.props.expandedAuctionIdList}
+                />
             </div>
         )
     }
@@ -28,7 +31,8 @@ class AuctionsPage extends Component {
 
 function mapStateToProps (state) {
     return {
-        auctions: state.auctions.auctionCollection
+        auctions: state.auctions.auctionCollection,
+        expandedAuctionIdList: state.auctions.expandedAuctionIdList
       }
 }
 
