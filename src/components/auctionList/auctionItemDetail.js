@@ -9,28 +9,21 @@ import { connect } from 'react-redux'
 class AuctionItemDetail extends Component {
 
 	render() {
-		const { placeBid } = this.props
+		const { placeBid, toggleAuctionDetail } = this.props
 		
-		console.log(this.props)
+		let loc = 'pancakeBunny.png',
+			 urlStr = require('url-loader?limit=8192!' + 'images/pancakeBunny.png');
 
 		return (
-			<div className="listing-row-container pure-g">
-				<div className="listing-row-infoCol pure-u-1-2">
-					<div className="listing-row-title">{this.props.data.title}</div>
-					<div className="listing-row-infoContainer pure-g">
-						<div className="listing-row-infoColLeft pure-u-1-2">Info Col Left</div>
-						<div className="listing-row-infoColRight pure-u-1-2">Info Col Right</div>
-					</div>
-				</div>
-				<div className="listing-row-bidCol pure-u-1-2">
-					<div>{this.props.data.openingBid}</div>
-					<button
-						onClick={e => placeBid(1,2)}>
-						BID
-					</button>
+			<div className="detail-row-l"
+				onClick={ e => toggleAuctionDetail(this.props.data.id, e) }
+			>
+				<div colSpan="4">
+					<div>{this.props.data.description}</div>
+					<div className="detail-row-image"><img src={urlStr} /></div>
 				</div>
 			</div>
-		)
+		);
 	}
 
 }

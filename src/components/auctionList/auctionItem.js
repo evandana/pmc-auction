@@ -9,10 +9,12 @@ import { connect } from 'react-redux'
 class AuctionItem extends Component {
 
     render() {
-        const { placeBid, showAuctionDetail } = this.props
+        const { placeBid, toggleAuctionDetail } = this.props
 
         return (
-            <div className="listing-row-container pure-g" onClick={ e => showAuctionDetail(1,e) }>
+            <div className="listing-row-container pure-g" 
+                onClick={ e => toggleAuctionDetail(this.props.data.id, e) }
+            >
                 <div className="listing-row-infoCol pure-u-1-2">
                     <div className="listing-row-title">{this.props.data.title}</div>
                     <div className="listing-row-infoContainer pure-g">
