@@ -13,6 +13,14 @@ import { createDevTools } from 'redux-devtools'
 import LogMonitor from 'redux-devtools-log-monitor'
 import DockMonitor from 'redux-devtools-dock-monitor'
 
+// Material UI
+import injectTapEventPlugin from 'react-tap-event-plugin';
+// Needed for onTouchTap
+// Can go away when react 1.0 release
+// Check this repo:
+// https://github.com/zilverline/react-tap-event-plugin
+injectTapEventPlugin();
+
 // set in webpack
 console.log('__PRODUCTION__', __PRODUCTION__)
 console.log('__DEV__', __DEV__)
@@ -44,22 +52,22 @@ import firebase from 'utils/firebaseAdapter'
 const store = configureStore()
 const routerHistory = syncHistoryWithStore(hashHistory, store)
 
-const authCheck = new Promise( (resolve) => {  
+const authCheck = new Promise( (resolve) => {
     firebase.authCheck( user => { resolve(user) })
 })
 
 // force auth
 // requestCheckAuth();
 
-authCheck.then( user => { 
+authCheck.then( user => {
     user ? loadAppView() : loadLoginView()
 });
 
 function loadAppView () {
-    
+
     store.dispatch(LoginActions.authCheck());
     hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
-    
+
     render(
         <Provider store={store}>
             <div>
@@ -92,7 +100,7 @@ function loadLoginView () {
     render(
         <LoginPage />,
         document.getElementById('app-page')
-    )        
+    )
 }
 
 
