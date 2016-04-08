@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 // CONTAINER COMPONENTS
-import Auctions from './containers/auctions/Auctions'
+//import Auctions from './containers/auctions/Auctions'
 
 class AuctionsPage extends Component {
 
@@ -15,10 +15,11 @@ class AuctionsPage extends Component {
 
         return (
             <div>
-                <Auctions 
+             /*   <Auctions 
                     auctions={this.props.auctions}
                     expandedAuctionIdList={this.props.expandedAuctionIdList}
                 />
+            */
             </div>
         )
     }
