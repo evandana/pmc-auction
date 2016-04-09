@@ -23,19 +23,20 @@ function auctions(state = defaultAuctionState, action) {
             console.log("Place Bid")
             return state
         case TOGGLE_AUCTION_DETAIL:
-    
+
+            console.log('TOGGLE_AUCTION_DETAIL')
             if ( state.expandedAuctionIdList.includes(action.auctionId) ) {
-                
+
                 state.expandedAuctionIdList.splice(
                     state.expandedAuctionIdList.findIndex( element => element === action.auctionId ), 1
                 )
-                
+
                 return Object.assign({}, state, {
                     expandedAuctionIdList: [...state.expandedAuctionIdList]
                 });
-    
+
             } else {
-                
+
                 return Object.assign({}, state, {
                     expandedAuctionIdList: [
                         ...state.expandedAuctionIdList,
