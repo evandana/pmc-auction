@@ -1,15 +1,25 @@
 // Libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Promise from 'bluebird';
 
 // Components
-import { Router, Route, IndexRoute, hashHistory, UPDATE_LOCATION } from 'react-router'
+import { Router, Route, IndexRoute, UPDATE_LOCATION } from 'react-router'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
-import { createDevTools } from 'redux-devtools'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { Provider } from 'react-redux'
+import { render } from 'react-dom'
+import { createDevTools } from 'redux-devtools'
 import LogMonitor from 'redux-devtools-log-monitor'
 import DockMonitor from 'redux-devtools-dock-monitor'
+
+// Material UI
+import injectTapEventPlugin from 'react-tap-event-plugin';
+// Needed for onTouchTap
+// Can go away when react 1.0 release
+// Check this repo:
+// https://github.com/zilverline/react-tap-event-plugin
+injectTapEventPlugin();
 
 // set in webpack
 console.log('__PRODUCTION__', __PRODUCTION__)
@@ -27,77 +37,71 @@ import {
     HomePage,
     LoginPage
     } from './components/index';
-
 // Actions
-import { loadAuth } from './actions/auth'
+import { LoginActions } from './actions/LoginActions'
+import { fetchAuctions } from './actions/AuctionActions'
+// Store
+import configureStore from './stores/configureStore'
+// History
+import hashHistory from './history'
+// DevTools
+import DevTools from './components/containers/devTools/DevTools'
+// firebase read/write adapter
+import firebase from 'utils/firebaseAdapter'
 
-// Reducers
-import * as reducers from './reducers/index'
+const store = configureStore()
+const routerHistory = syncHistoryWithStore(hashHistory, store)
 
-const reducer = combineReducers({
-  ...reducers,
-  routing: routerReducer
+const authCheck = new Promise( (resolve) => {
+    firebase.authCheck( user => { resolve(user) })
 })
 
-let store = {}
-if ( __DEV__ ) {
-    // TODO: dev tools should be conditionally handled better
-    // using 'var' for normal scoping
-    var DevTools = createDevTools(
-      <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
-        <LogMonitor theme="tomorrow" preserveScrollTop={false} />
-      </DockMonitor>
+// force auth
+// requestCheckAuth();
+
+authCheck.then( user => {
+    user ? loadAppView() : loadLoginView()
+});
+
+function loadAppView () {
+
+    store.dispatch(LoginActions.authCheck());
+    hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
+
+    render(
+        <Provider store={store}>
+            <div>
+                <Router history={hashHistory}>
+                    <Route path="/" component={AppPage}>
+                        <IndexRoute component={HomePage}/>
+                        <Route path="/auctions" component={AuctionsPage}/>
+                        <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
+                        <Route path="/auctions/add" component={AddAuctionPage} />
+                        <Route path="/login" component={LoginPage}/>
+                    </Route>
+                </Router>
+                {
+                    (() => {
+                        if (__DEV__ && false) {
+                            return <DevTools />;
+                        }
+                    })() || ''
+                }
+            </div>
+        </Provider>,
+        document.getElementById('app-page')
     )
 
-    store = createStore(
-      reducer,
-      DevTools.instrument()
-    )
-} else {
-    store = createStore(
-      reducer
+    // Fetch Once to Rule Them ALL
+    store.dispatch(fetchAuctions())
+}
+
+function loadLoginView () {
+    render(
+        <LoginPage />,
+        document.getElementById('app-page')
     )
 }
 
-// store.dispatch(requestAuth());
 
 
-const history = syncHistoryWithStore(hashHistory, store)
-
-if ( __DEV__ ) {
-    // TODO: dev tools should be conditionally handled better
-    ReactDOM.render(
-      <Provider store={store}>
-        <div>
-          <Router history={history}>
-            <Route path="/" component={AppPage}>
-                <IndexRoute component={HomePage}/>
-                <Route path="/auctions" component={AuctionsPage}/>
-                <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
-                <Route path="/auctions/add" component={AddAuctionPage} />
-                <Route path="/login" component={LoginPage}/>
-            </Route>
-          </Router>
-          <DevTools />
-        </div>
-      </Provider>,
-      document.getElementById('app-page')
-    )
-} else {
-    ReactDOM.render(
-      <Provider store={store}>
-        <div>
-          <Router history={history}>
-            <Route path="/" component={AppPage}>
-                <IndexRoute component={HomePage}/>
-                <Route path="/auctions" component={AuctionsPage}/>
-                <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
-                <Route path="/auctions/add" component={AddAuctionPage} />
-                <Route path="/login" component={LoginPage}/>
-            </Route>
-          </Router>
-        </div>
-      </Provider>,
-      document.getElementById('app-page')
-    )
-}

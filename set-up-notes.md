@@ -38,7 +38,7 @@ Public IP
 52.207.222.108
 
 Connect to instance with: 
-TODO: ` ssh -i ..../newkeypair.pem ec2-user@52.90.140.202`
+TODO: ` ssh -i ..../newkeypair.pem ec2-user@52.207.222.108`
 
 TODO: make key accessible on necessary computers
 

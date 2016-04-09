@@ -4,11 +4,17 @@ var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var buildPath = path.resolve(__dirname, 'public', 'build');
 var mainPath = path.resolve(__dirname, 'src', 'app.js');
 
+process.env.NODE_ENV = 'dev'
+
 const basePlugins = [
   new webpack.DefinePlugin({
     __DEV__: false,
     __PRODUCTION__: true,
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    process: {
+        env: {
+            NODE_ENV: '"production"'
+        }
+    }
   })
 ]
 
