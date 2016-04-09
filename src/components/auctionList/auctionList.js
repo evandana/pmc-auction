@@ -22,11 +22,19 @@ let AuctionList = React.createClass({
 
         let auctionItems = [];
 
+        const urlStr = require('url-loader?limit=8192!' + 'images/pancakeBunny.png');
+
         this.props.auctions.forEach( (obj, index) => {
-            auctionItems.push( generateItem(obj, index, this.props) );
+
+            auctionItems.push( Object.assign( {}, obj, {
+                key: urlStr + '?q=' + index,
+                img: urlStr + '?q=' + index,
+                featured: index % 2 > 0 // TODO: remove this once data is in place
+            } ) )
+
         });
 
-        const urlStr = require('url-loader?limit=8192!' + 'images/pancakeBunny.png');
+        console.log('auctionItems', auctionItems)
 
         const styles = {
           root: {
@@ -43,70 +51,27 @@ let AuctionList = React.createClass({
           },
         };
 
-        const tilesData = [
-          {
-            img: urlStr,
-            title: 'Breakfast',
-            author: 'jill111',
-            featured: true,
-          },
-          {
-            img: urlStr + '?q=a',
-            title: 'Tasty burger',
-            author: 'pashminu',
-          },
-          {
-            img: urlStr + '?q=b',
-            title: 'Camera',
-            author: 'Danson67',
-          },
-          {
-            img: urlStr + '?q=c',
-            title: 'Morning',
-            author: 'fancycrave1',
-            featured: true,
-          },
-          {
-            img: urlStr + '?q=d',
-            title: 'Hats',
-            author: 'Hans',
-          },
-          {
-            img: urlStr + '?q=e',
-            title: 'Honey',
-            author: 'fancycravel',
-          },
-          {
-            img: urlStr + '?q=f',
-            title: 'Vegetables',
-            author: 'jill111',
-          },
-          {
-            img: urlStr + '?q=g',
-            title: 'Water plant',
-            author: 'BkrmadtyaKarki',
-          },
-        ];
-
         return (
-            <div style={styles.root}>
+              <div style={styles.root}>
                 <GridList
-                  cols={2}
+                  cols={3}
                   cellHeight={200}
                   padding={1}
                   style={styles.gridList}
                 >
-                  {tilesData.map(tile => (
+                  {auctionItems.map(tile => (
                     <GridTile
+                      placeBid={this.props.placeBid}
+                      onClick={ e => this.props.toggleAuctionDetail(tile.id, e) }
                       key={tile.img}
                       title={tile.title}
-                      subtitle={<span>by <b>{tile.author}</b></span>}
+                      subtitle={<span>with <b>{tile.donorName}</b></span>}
                       actionIcon={<IconButton><PlusOne color="white"/></IconButton>}
                       actionPosition="right"
                       titlePosition="top"
                       titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.2) 70%,rgba(0,0,0,0) 100%)"
                       cols={tile.featured ? 2 : 1}
-                      rows={tile.featured ? 2 : 1}
+                      rows={tile.featured ? 1 : 1}
                     >
                       <img src={tile.img} />
                     </GridTile>
@@ -114,43 +79,9 @@ let AuctionList = React.createClass({
                 </GridList>
               </div>
         )
+
     }
 
 });
-
-
-
-
-
-
-// class Auctions extends Component {
-
-//     render() {
-//         return (
-
-//         );
-//     }
-// }
-
-
-
-function generateItem (obj, index, props) {
-
-    if ( props.expandedAuctionIdList.includes(obj.id) ) {
-        return (<AuctionItemDetail
-            key={index}
-            data={obj}
-            placeBid={props.placeBid}
-            toggleAuctionDetail={props.toggleAuctionDetail}
-        />)
-    } else {
-        return (<AuctionItem
-            key={index}
-            data={obj}
-            placeBid={props.placeBid}
-            toggleAuctionDetail={props.toggleAuctionDetail}
-        />)
-    }
-}
 
 export default AuctionList;
