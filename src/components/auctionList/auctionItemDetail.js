@@ -11,8 +11,7 @@ class AuctionItemDetail extends Component {
 	render() {
 		const { placeBid, toggleAuctionDetail } = this.props
 
-		let loc = 'pancakeBunny.png',
-			 urlStr = require('url-loader?limit=8192!' + 'images/pancakeBunny.png');
+		let urlStr = require('url-loader?limit=8192!' + '../../images/pancakeBunny.png');
 
 		console.log('item detail props', this.props, this.props.data.id)
 

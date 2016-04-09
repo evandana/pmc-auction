@@ -1,5 +1,5 @@
 export AddAuctionPage from './AddAuctionPage';
-export AppPage from './containers/appPage/AppPage.js'
+export AppPage from './containers/appPage/AppPage'
 export AuctionsPage from './AuctionsPage';
 export ConfirmWinnersPage from './ConfirmWinnersPage';
 export HomePage from './containers/homePage/HomePage';
