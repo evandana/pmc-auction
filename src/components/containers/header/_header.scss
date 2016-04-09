@@ -1,12 +1,12 @@
-$med-screen-width: 767px;
+$sml-screen-width: 767px;
+$header-desktop-height: 113px;
+$header-mobile-height: 64px;
 
 .header {
     margin-top:0;
-    border-bottom:1px solid #ccc;
-    background:#eee;
-    font-size:80%;
-    bottom:0;
+    font-size: 10pt;
     flex-wrap: wrap;
+    top: 0;
 
     h1 {
         font-size: 80%;
@@ -15,7 +15,7 @@ $med-screen-width: 767px;
     > button {
         visibility: hidden;
 
-        @media all and (max-width: $med-screen-width) {
+        @media all and (max-width: $sml-screen-width) {
             visibility: visible;
         }
     }
@@ -27,7 +27,7 @@ $med-screen-width: 767px;
         width: 90%;
         margin-right: 10%;
 
-        @media all and (max-width: $med-screen-width) {
+        @media all and (max-width: $sml-screen-width) {
             display: none;
         }
     }

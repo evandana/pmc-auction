@@ -53,6 +53,7 @@ class Header extends Component {
     handleTabChange (tab) {
         //${tab.props.route}
         hashHistory.push(tab.props.route); 
+        this.setState({currentPage: tab.props.label});
     }  
 
     // Handling Toggle Nav
@@ -60,7 +61,7 @@ class Header extends Component {
 
     // Handling Click on Left Nav Menu Item
     handleNavItemTap (tab) {
-        this.setState({openNav: false});
+        this.setState({openNav: false, currentPage: tab.label});
         hashHistory.push(tab.route);
     }
 
@@ -88,6 +89,9 @@ class Header extends Component {
             header_title: {
                 fontSize: "130%"
             },
+            header: {
+                position: "fixed"
+            },
             tab:{
                 label:{
                     fontSize: "100%"
@@ -102,7 +106,8 @@ class Header extends Component {
         return (
             <header>
                 <AppBar 
-                    className="header" 
+                    className="header"
+                    style={styles.header}
                     title={(this.state.loggedIn) ? "Welcome, " + this.props.user.google.displayName : this.props.defaultTitle}
                     titleStyle={styles.header_title}
                     onLeftIconButtonTouchTap={this.handleToggleNav}
@@ -125,6 +130,7 @@ class Header extends Component {
                 <LeftNav
                   docked={false}
                   width={200}
+                  className="header__leftNav"
                   open={this.state.openNav}
                   onRequestChange={openNav => this.setState({openNav})}
                 >
