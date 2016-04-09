@@ -20,6 +20,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^1.7.0",
     "material-ui": "^0.15.0-alpha.2",
     "node-sass": "^3.4.2",

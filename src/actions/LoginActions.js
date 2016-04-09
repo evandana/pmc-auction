@@ -1,6 +1,6 @@
 import { hashHistory } from 'react-router'
 // firebase read/write adapter
-import firebase from 'utils/firebaseAdapter'
+import firebase from '../utils/firebaseAdapter'
 
 export const LOGIN_CONSTANTS = {
     AUTH_CHECK_ERROR: 'AUTH_CHECK_ERROR',

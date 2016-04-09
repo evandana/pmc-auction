@@ -47,7 +47,8 @@ import hashHistory from './history'
 // DevTools
 import DevTools from './components/containers/devTools/DevTools'
 // firebase read/write adapter
-import firebase from 'utils/firebaseAdapter'
+import firebase from './utils/firebaseAdapter'
+
 
 const store = configureStore()
 const routerHistory = syncHistoryWithStore(hashHistory, store)
