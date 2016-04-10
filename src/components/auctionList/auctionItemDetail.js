@@ -2,6 +2,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import { getImageForEnv } from '../../images/index'
+
 // Styles
 import './_auctionItemDetail.scss';
 // Application Components
@@ -11,7 +13,7 @@ class AuctionItemDetail extends Component {
 	render() {
 		const { placeBid, toggleAuctionDetail } = this.props
 
-		let urlStr = require('url-loader?limit=8192!' + '../../images/pancakeBunny.png');
+		let urlStr = getImageForEnv('../images/pancakeBunny.png');
 
 		console.log('item detail props', this.props, this.props.data.id)
 
