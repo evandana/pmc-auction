@@ -54,17 +54,17 @@ const store = configureStore()
 const routerHistory = syncHistoryWithStore(hashHistory, store)
 
 const authCheck = new Promise( (resolve) => {
-    firebase.authCheck( user => { resolve(user) })
+    firebase.authCheck(
+        user => { resolve(user) },
+        err => { console.log('error connecting', err) }
+    )
 })
 
 // force auth
 // requestCheckAuth();
 
-console.log('running app');
-
-
 authCheck.then( user => {
-    console.log('auth: user', user)
+    console.log('auth is good', user)
     user ? loadAppView() : loadLoginView()
 }, err => {
     console.log('error on auth check')
