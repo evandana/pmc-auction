@@ -1,5 +1,5 @@
 $sml-screen-width: 767px;
-$header-desktop-height: 103px;
+$header-desktop-height: 100px;
 $header-mobile-height: 64px;
 
 .header {
@@ -24,9 +24,9 @@ $header-mobile-height: 64px;
         list-style: none;
         padding:0;
         margin: 0;
-        width: 90%;
-        margin-right: 10%;
-        margin-top: -10px;
+        width: 85%;
+        margin-right: 15%;
+        margin-top: -13px;
 
         @media all and (max-width: $sml-screen-width) {
             display: none;

@@ -42,7 +42,7 @@ class Header extends Component {
 
     constructor(props) {
         super(props)
-
+        console.log(this.props);
         this.state = {
             openNav : false,
             loggedIn : (this.props.user.google) ? true : false,
@@ -71,6 +71,8 @@ class Header extends Component {
         tabs.map( function(tab, index){
             switch(tab.id){
                 case "confirmWinners":
+                    // add check for user permissions to confirm winner
+                    tabs.splice(index,1);
                     break;
                 case "login":
                     if( this.state.loggedIn ){
