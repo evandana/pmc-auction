@@ -22,13 +22,13 @@ let AuctionList = React.createClass({
 
         let auctionItems = [];
 
-        const urlStr = require('url-loader?limit=8192!' + 'images/pancakeBunny.png');
+        const urlStr = require('url-loader?limit=8192!' + '../../images/pancakeBunny.png');
 
         this.props.auctions.forEach( (obj, index) => {
 
             auctionItems.push( Object.assign( {}, obj, {
                 key: urlStr + '?q=' + index,
-                img: urlStr + '?q=' + index,
+                img: urlStr,
                 featured: index % 2 > 0 // TODO: remove this once data is in place
             } ) )
 
