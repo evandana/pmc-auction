@@ -61,6 +61,7 @@ const authCheck = new Promise( (resolve) => {
 // requestCheckAuth();
 
 authCheck.then( user => {
+    console.log('auth is good')
     user ? loadAppView() : loadLoginView()
 }, err => {
     console.log('error on auth check')
@@ -68,8 +69,10 @@ authCheck.then( user => {
 
 function loadAppView () {
 
+
+    console.log('load app view');
     // store.dispatch(LoginActions.authCheck());
-    hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
+    // hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
 
     render(
         <Provider store={store}>
@@ -99,6 +102,9 @@ function loadAppView () {
 }
 
 function loadLoginView () {
+
+    console.log('load login view')
+
     render(
         <LoginPage />,
         document.getElementById('app-page')

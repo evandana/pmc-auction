@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=dev npm run dev-serve",
     "dev-serve": "webpack-dev-server --hot --inline --progress --colors",
-    "prod": "npm run build && npm run prod",
+    "prod": "npm run build && npm run serve",
     "build": "node server/deploy",
     "serve": "NODE_ENV=production && npm start",
     "start": "node server"
