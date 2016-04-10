@@ -175,6 +175,8 @@ npm install
 npm run build
 pm2 start server // pm2 stop all
 
+// even after all that, something with firebase login didn't work on aws
+
 +++++++++++++++++++++++
 
 #HEROKU
@@ -187,3 +189,11 @@ git push heroku master
 heroku ps:scale web=1
 heroku open
 // on error: heroku logs
+
++++++++++++++++++++++++
+
+#FIREBASE
+[https://www.firebase.com/docs/hosting/guide/deploying.html]
+
+npm run build
+firebase deploy

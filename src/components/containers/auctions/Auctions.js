@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 // import './header.scss';
 // Application Components
 import AuctionList from '../../auctionList/auctionList'
-import AuctionItemDetail from '../../auctionList/AuctionItemDetail';
+import AuctionItemDetail from '../../auctionList/auctionItemDetail';
 
 import { placeBid, toggleAuctionDetail } from '../../../actions/AuctionActions'
 
