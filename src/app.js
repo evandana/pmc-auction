@@ -62,11 +62,13 @@ const authCheck = new Promise( (resolve) => {
 
 authCheck.then( user => {
     user ? loadAppView() : loadLoginView()
+}, err => {
+    console.log('error on auth check')
 });
 
 function loadAppView () {
 
-    store.dispatch(LoginActions.authCheck());
+    // store.dispatch(LoginActions.authCheck());
     hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
 
     render(
@@ -78,7 +80,6 @@ function loadAppView () {
                         <Route path="/auctions" component={AuctionsPage}/>
                         <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
                         <Route path="/auctions/add" component={AddAuctionPage} />
-                        <Route path="/login" component={LoginPage}/>
                     </Route>
                 </Router>
                 {
