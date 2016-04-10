@@ -40,14 +40,20 @@ var config = {
   },
   plugins: plugins,
   module: {
-    loaders: [{
-      test: /\.js$/,
-      loaders: ['babel?'+JSON.stringify(babelSettings)],
-      exclude: [nodeModulesPath]
-    },{
-      test: /\.css$/,
-      loader: 'style!css'
-    }]
+    loaders: [
+      {
+        test: /\.js$/,
+        loaders: ['babel?'+JSON.stringify(babelSettings)],
+        exclude: [nodeModulesPath]
+      },{
+        test: /\.css$/,
+        loader: 'style!css'
+      },{
+        test: /\.scss$/,
+        loaders: ['style', 'css', 'sass'],
+        include: PATHS.style
+      }
+    ]
   }
 };
 
