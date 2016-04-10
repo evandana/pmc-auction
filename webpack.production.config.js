@@ -3,12 +3,23 @@ var path = require('path');
 var nodeModulesPath = path.resolve(__dirname, 'node_modules');
 var buildPath = path.resolve(__dirname, 'public', 'build');
 var mainPath = path.resolve(__dirname, 'src', 'app.js');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+process.env.NODE_ENV = 'dev'
 
 const basePlugins = [
   new webpack.DefinePlugin({
     __DEV__: false,
     __PRODUCTION__: true,
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    process: {
+        env: {
+            NODE_ENV: '"production"'
+        }
+    }
+  }),
+  // path is relative to ./public/build
+  new ExtractTextPlugin('./style.css', {
+    allChunks: true
   })
 ]
 
@@ -41,6 +52,9 @@ var config = {
     },{
       test: /\.css$/,
       loader: 'style!css'
+    },{
+      test: /\.scss$/,
+      loader: ExtractTextPlugin.extract('css!sass')
     }]
   }
 };

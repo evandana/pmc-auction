@@ -16,9 +16,6 @@ let AuthPage = React.createClass({
                 <fieldset>
                     <legend>Login</legend>
                     <div className="pure-controls">
-
-
-
                         <button
                             className="pure-button pure-button-primary"
                             onClick={this.googleLogin}>

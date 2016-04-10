@@ -38,7 +38,7 @@ Public IP
 52.207.222.108
 
 Connect to instance with: 
-TODO: ` ssh -i ..../newkeypair.pem ec2-user@52.90.140.202`
+TODO: ` ssh -i ..../newkeypair.pem ec2-user@52.207.222.108`
 
 TODO: make key accessible on necessary computers
 
@@ -162,6 +162,7 @@ stderr_logfile=/var/log/pmc-auction.err.log -->
 adjusted timeout on ec2?
 http://stackoverflow.com/questions/7210011/amazon-ec2-ssh-timeout-due-inactivity
 
+#pm2 for no hangup
 https://www.npmjs.com/package/pm2
 
 ++++++++++++++++++++++

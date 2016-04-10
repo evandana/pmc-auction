@@ -4,13 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "npm run dev-serve",
+    "dev": "NODE_ENV=dev npm run dev-serve",
     "dev-serve": "webpack-dev-server --hot --inline --progress --colors",
-
     "prod-build-serve": "npm run build && npm run prod",
     "build": "node server/deploy",
-    "prod": "npm start",
-    "start": "export NODE_ENV=production && node server"
+    "prod": "NODE_ENV=production && npm start",
+    "start": "node server"
   },
   "author": "",
   "license": "ISC",
@@ -21,8 +20,11 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^1.7.0",
+    "material-ui": "^0.15.0-alpha.2",
     "node-sass": "^3.4.2",
+    "react-tap-event-plugin": "^0.2.2",
     "redux-devtools": "^3.1.1",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
@@ -37,6 +39,7 @@
     "firebase": "^2.4.0",
     "http-proxy": "^1.13.2",
     "immutable": "^3.7.6",
+    "isomorphic-fetch": "^2.2.1",
     "json-load": "^1.0.1",
     "json-loader": "^0.5.4",
     "keymirror": "^0.1.1",
@@ -47,8 +50,11 @@
     "react-router": "^2.0.1",
     "react-router-redux": "^4.0.0",
     "redux": "^3.3.1",
+    "redux-actions": "^0.9.1",
     "redux-devtools-dock-monitor": "^1.1.0",
     "redux-devtools-log-monitor": "^1.0.5",
+    "redux-logger": "^2.6.1",
+    "redux-thunk": "^2.0.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.14"
   }

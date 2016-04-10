@@ -17,11 +17,17 @@ const babelSettings = {
     ]
 };
 
+process.env.NODE_ENV = 'production'
+
 const basePlugins = [
   new webpack.DefinePlugin({
     __DEV__: true,
     __PRODUCTION__: false,
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    process: {
+        env: {
+            NODE_ENV: '"dev"'
+        }
+    }
   })
 ]
 
@@ -60,10 +66,10 @@ module.exports = {
                loaders: sassLoaders
             }
            // Images
-        //    {
-        //        test: /\.(png|jpg)$/,
-        //        loader: 'url-loader?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
-        //    }
+           {
+               test: /\.(png|jpg)$/,
+               loader: 'url-loader?limit=8192' // inline base64 URLs for <=8k images, direct URLs for the rest
+           }
         ]
     },
     sassLoader: {
