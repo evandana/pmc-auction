@@ -60,8 +60,11 @@ const authCheck = new Promise( (resolve) => {
 // force auth
 // requestCheckAuth();
 
+console.log('running app');
+
+
 authCheck.then( user => {
-    console.log('auth is good')
+    console.log('auth: user', user)
     user ? loadAppView() : loadLoginView()
 }, err => {
     console.log('error on auth check')
