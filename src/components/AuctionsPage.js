@@ -15,15 +15,14 @@ class AuctionsPage extends Component {
 
         return (
             <div>
-             /*   <Auctions 
+                <Auctions
                     auctions={this.props.auctions}
                     expandedAuctionIdList={this.props.expandedAuctionIdList}
                 />
-            */
             </div>
         )
     }
-    
+
     componentDidMount () {
         const { dispatch } = this.props
     }

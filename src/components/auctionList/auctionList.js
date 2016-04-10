@@ -9,6 +9,8 @@ import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
 import PlusOne from 'material-ui/lib/svg-icons/social/plus-one';
 import IconButton from 'material-ui/lib/icon-button';
 
+import { getImageForEnv } from '../../images/index'
+
 // Styles
 // import './header.scss';
 // Application Components
@@ -22,13 +24,13 @@ let AuctionList = React.createClass({
 
         let auctionItems = [];
 
-        const urlStr = require('url-loader?limit=8192!' + '../../images/pancakeBunny.png');
+        const urlStr = getImageForEnv( 'pancakeBunny.png' );
 
         this.props.auctions.forEach( (obj, index) => {
 
             auctionItems.push( Object.assign( {}, obj, {
                 key: urlStr + '?q=' + index,
-                img: urlStr + '?q=' + index
+                img: urlStr
             } ) )
 
         });
@@ -62,7 +64,7 @@ let AuctionList = React.createClass({
                     <GridTile
                       placeBid={this.props.placeBid}
                       onClick={ e => this.props.toggleAuctionDetail(tile.id, e) }
-                      key={tile.img}
+                      key={tile.key}
                       title={tile.title}
                       subtitle={<span>with <b>{tile.donorName}</b></span>}
                       actionIcon={<IconButton><PlusOne color="white"/></IconButton>}
