@@ -63,7 +63,7 @@ let AuctionList = React.createClass({
                     <GridTile
                       placeBid={this.props.placeBid}
                       onClick={ e => this.props.toggleAuctionDetail(tile.id, e) }
-                      key={tile.img}
+                      key={tile.key}
                       title={tile.title}
                       subtitle={<span>with <b>{tile.donorName}</b></span>}
                       actionIcon={<IconButton><PlusOne color="white"/></IconButton>}
