@@ -15,7 +15,7 @@ import { getImageForEnv } from '../../images/index'
 // import './header.scss';
 // Application Components
 import AuctionItem from './auctionItem';
-import AuctionItemDetail from './AuctionItemDetail';
+import AuctionItemDetail from './auctionItemDetail';
 
 
 let AuctionList = React.createClass({
