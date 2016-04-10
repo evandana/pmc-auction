@@ -1,0 +1,9 @@
+{
+  "firebase": "pmc-auction",
+  "public": "public",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}

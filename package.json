@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "NODE_ENV=dev npm run dev-serve",
     "dev-serve": "webpack-dev-server --hot --inline --progress --colors",
-    "prod-build-serve": "npm run build && npm run prod",
+    "prod": "npm run build && npm run serve",
     "build": "node server/deploy",
-    "prod": "NODE_ENV=production && npm start",
+    "serve": "NODE_ENV=production && npm start",
     "start": "node server"
   },
   "author": "",
