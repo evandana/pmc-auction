@@ -1,10 +1,18 @@
 // firebase read/write adapter
 import firebase from '../utils/firebaseAdapter'
 
+export const ADD_AUCTION = 'ADD_AUCTION'
 export const FETCH_AUCTIONS = 'FETCH_AUCTIONS'
 export const LOAD_AUCTION = 'LOAD_AUCTION'
 export const PLACE_BID = 'PLACE_BID'
 export const TOGGLE_AUCTION_DETAIL = 'TOGGLE_AUCTION_DETAIL'
+
+export function addAuction (fields) {
+    return {
+        type: ADD_AUCTION,
+        fields
+    }
+}
 
 export function fetchAuctions() {
     return dispatch => {

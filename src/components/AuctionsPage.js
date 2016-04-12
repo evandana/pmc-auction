@@ -23,10 +23,6 @@ class AuctionsPage extends Component {
         )
     }
 
-    componentDidMount () {
-        const { dispatch } = this.props
-    }
-
 }
 
 function mapStateToProps (state) {

@@ -1,5 +1,14 @@
 // Libraries
-import React from 'react';
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+
+import { addAuction } from '../../../actions/AuctionActions'
+
+import AuctionForm from '../../auctionForm/auctionForm'
+
+
+//import { addAuction} from '../../../actions/AuctionActions'
+
 // Styles
 // import './header.scss';
 // Application Components
@@ -7,7 +16,13 @@ import React from 'react';
 const AddAuction = () => {
     return (
         <div>
-            Add Auction
+            <AuctionForm 
+                title={''}
+                description={''}
+                openingBid={0}
+                onSubmit={addAuction}
+                
+            />
         </div>
     )
 }
