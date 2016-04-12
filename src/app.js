@@ -62,7 +62,6 @@ function authCheckHandler() {
     const state = store.getState()
     
     if (state.login.forceLoginView) {
-        alert("not logged in")
         unsubscribe()
         loadLoginView()
     } else if (state.login.user) {
