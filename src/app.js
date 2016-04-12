@@ -13,6 +13,14 @@ import { createDevTools } from 'redux-devtools'
 import LogMonitor from 'redux-devtools-log-monitor'
 import DockMonitor from 'redux-devtools-dock-monitor'
 
+// Material UI
+import injectTapEventPlugin from 'react-tap-event-plugin';
+// Needed for onTouchTap
+// Can go away when react 1.0 release
+// Check this repo:
+// https://github.com/zilverline/react-tap-event-plugin
+injectTapEventPlugin();
+
 // set in webpack
 console.log('__PRODUCTION__', __PRODUCTION__)
 console.log('__DEV__', __DEV__)
@@ -39,27 +47,36 @@ import hashHistory from './history'
 // DevTools
 import DevTools from './components/containers/devTools/DevTools'
 // firebase read/write adapter
-import firebase from 'utils/firebaseAdapter'
+import firebase from './utils/firebaseAdapter'
+
 
 const store = configureStore()
 const routerHistory = syncHistoryWithStore(hashHistory, store)
 
-const authCheck = new Promise( (resolve) => {  
-    firebase.authCheck( user => { resolve(user) })
+const authCheck = new Promise( (resolve) => {
+    firebase.authCheck(
+        user => { resolve(user) },
+        err => { console.log('error connecting', err) }
+    )
 })
 
 // force auth
 // requestCheckAuth();
 
-authCheck.then( user => { 
+authCheck.then( user => {
+    console.log('auth is good', user)
     user ? loadAppView() : loadLoginView()
+}, err => {
+    console.log('error on auth check')
 });
 
 function loadAppView () {
-    
-    store.dispatch(LoginActions.authCheck());
-    hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
-    
+
+
+    console.log('load app view');
+    // store.dispatch(LoginActions.authCheck());
+    // hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
+
     render(
         <Provider store={store}>
             <div>
@@ -69,12 +86,11 @@ function loadAppView () {
                         <Route path="/auctions" component={AuctionsPage}/>
                         <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
                         <Route path="/auctions/add" component={AddAuctionPage} />
-                        <Route path="/login" component={LoginPage}/>
                     </Route>
                 </Router>
                 {
                     (() => {
-                        if (__DEV__) {
+                        if (__DEV__ && false) {
                             return <DevTools />;
                         }
                     })() || ''
@@ -89,10 +105,13 @@ function loadAppView () {
 }
 
 function loadLoginView () {
+
+    console.log('load login view')
+
     render(
         <LoginPage />,
         document.getElementById('app-page')
-    )        
+    )
 }
 
 

@@ -1,6 +1,6 @@
 import { hashHistory } from 'react-router'
 // firebase read/write adapter
-import firebase from 'utils/firebaseAdapter'
+import firebase from '../utils/firebaseAdapter'
 
 export const LOGIN_CONSTANTS = {
     AUTH_CHECK_ERROR: 'AUTH_CHECK_ERROR',
@@ -31,7 +31,7 @@ export const LoginActions = {
     requestRouteChange(route, store) {
 
         let user = store.getState().login;
-        console.log('requestRouteChange', route, user, !!user);
+        // console.log('requestRouteChange', route, user, !!user);
 
         if (route.pathname !== '/login' && !user) {
             hashHistory.push('/login');

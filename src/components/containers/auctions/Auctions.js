@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 // import './header.scss';
 // Application Components
 import AuctionList from '../../auctionList/auctionList'
+import AuctionItemDetail from '../../auctionList/auctionItemDetail';
 
 import { placeBid, toggleAuctionDetail } from '../../../actions/AuctionActions'
 
@@ -21,7 +22,7 @@ class Auctions extends Component {
         const { dispatch } = this.props
         dispatch(placeBid(auctionId, amount))
     }
-    
+
     toggleAuctionDetail(auctionId, event) {
         const { dispatch } = this.props
         // Doing trigger when target is button - button is used for placing bids
@@ -29,19 +30,33 @@ class Auctions extends Component {
             dispatch(toggleAuctionDetail(auctionId))
         }
     }
-    
+
     render() {
-        
-        return (
-            <div>
-                <AuctionList 
-                    auctions={this.props.auctions}
-                    expandedAuctionIdList={this.props.expandedAuctionIdList}
+        if ( this.props.expandedAuctionIdList.length > 0 ) {
+            let detailObjKey = this.props.expandedAuctionIdList[0];
+            let detailObj = this.props.auctions.find(item => { return detailObjKey === item.id; });
+            console.log('detailObj', detailObj);
+            return (
+                <AuctionItemDetail
+                    key={detailObj.id}
+                    data={detailObj}
                     placeBid={this.placeBid}
                     toggleAuctionDetail={this.toggleAuctionDetail}
                 />
-            </div>
-        )
+            )
+        } else {
+
+            return (
+                <div>
+                    <AuctionList
+                        auctions={this.props.auctions}
+                        expandedAuctionIdList={this.props.expandedAuctionIdList}
+                        placeBid={this.placeBid}
+                        toggleAuctionDetail={this.toggleAuctionDetail}
+                    />
+                </div>
+            )
+        }
     }
 
 }

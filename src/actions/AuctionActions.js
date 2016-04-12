@@ -1,5 +1,5 @@
 // firebase read/write adapter
-import firebase from 'utils/firebaseAdapter'
+import firebase from '../utils/firebaseAdapter'
 
 export const FETCH_AUCTIONS = 'FETCH_AUCTIONS'
 export const LOAD_AUCTION = 'LOAD_AUCTION'
