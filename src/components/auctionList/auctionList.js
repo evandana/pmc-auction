@@ -9,11 +9,13 @@ import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
 import PlusOne from 'material-ui/lib/svg-icons/social/plus-one';
 import IconButton from 'material-ui/lib/icon-button';
 
+import { getImageForEnv } from '../../images/index'
+
 // Styles
 // import './header.scss';
 // Application Components
 import AuctionItem from './auctionItem';
-import AuctionItemDetail from './AuctionItemDetail';
+import AuctionItemDetail from './auctionItemDetail';
 
 
 let AuctionList = React.createClass({
@@ -22,14 +24,13 @@ let AuctionList = React.createClass({
 
         let auctionItems = [];
 
-        const urlStr = require('url-loader?limit=8192!' + '../../images/pancakeBunny.png');
+        const urlStr = getImageForEnv( 'pancakeBunny.png' );
 
         this.props.auctions.forEach( (obj, index) => {
 
             auctionItems.push( Object.assign( {}, obj, {
                 key: urlStr + '?q=' + index,
-                img: urlStr,
-                featured: index % 2 > 0 // TODO: remove this once data is in place
+                img: urlStr
             } ) )
 
         });
