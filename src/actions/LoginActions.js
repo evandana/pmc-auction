@@ -3,24 +3,71 @@ import { hashHistory } from 'react-router'
 import firebase from '../utils/firebaseAdapter'
 
 export const LOGIN_CONSTANTS = {
-    AUTH_CHECK_ERROR: 'AUTH_CHECK_ERROR',
-    AUTH_CHECK_SUCCESS: 'AUTH_CHECK_SUCCESS',
-    LOGIN_GOOGLE: 'LOGIN_GOOGLE',
-    LOGIN_GOOGLE_ERROR: 'LOGIN_GOOGLE_ERROR',
-    LOGIN_GOOGLE_SUCCESS: 'LOGIN_GOOGLE_SUCCESS',
-    LOGOUT_USER: 'LOGOUT_USER',
-    REQUEST_AUTH: 'REQUEST_AUTH',
-    REQUEST_LOGIN_GOOGLE: 'REQUEST_LOGIN_GOOGLE',
-    REQUEST_ROUTE_CHANGE: 'REQUEST_ROUTE_CHANGE'
+    // AUTH_CHECK_ERROR: 'AUTH_CHECK_ERROR',
+    // AUTH_CHECK_SUCCESS: 'AUTH_CHECK_SUCCESS',
+    AUTH_CHECK_REQUEST: 'AUTH_CHECK_REQUEST',
+    AUTH_CHECK_RESPONSE: 'AUTH_CHECK_RESPONSE',
+    AUTH_SUCCESS: 'AUTH_SUCCESS',
+    AUTH_FAIL: 'AUTH_FAIL',
+    SET_USER: 'SET_USER'
+    // LOGIN_GOOGLE: 'LOGIN_GOOGLE',
+    // LOGIN_GOOGLE_ERROR: 'LOGIN_GOOGLE_ERROR',
+    // LOGIN_GOOGLE_SUCCESS: 'LOGIN_GOOGLE_SUCCESS',
+    // LOGOUT_USER: 'LOGOUT_USER',
+    // REQUEST_AUTH: 'REQUEST_AUTH',
+    // REQUEST_LOGIN_GOOGLE: 'REQUEST_LOGIN_GOOGLE',
+    // REQUEST_ROUTE_CHANGE: 'REQUEST_ROUTE_CHANGE'
 }
 
 export const LoginActions = {
 
-    authCheck(user) {
+    authCheckRequest() {
+        
         return dispatch => {
-            firebase.authCheck( user => dispatch(this.authCheckSuccessObj(user)) )
+            firebase.authCheck( user => dispatch(this.authCheckResponse(user)) )
+        }
+
+    },
+    
+    authCheckResponse(user) {
+        console.log('auth response called ', user)
+        if (user) {
+            return dispatch => { dispatch(this.findUser(user)) }
+        } else {
+            return { type: LOGIN_CONSTANTS.AUTH_FAIL }
+        }
+
+    },
+    
+    findUser (authData) {
+        console.log('setting up findUser');
+
+        return dispatch => {
+
+            firebase.getAllUsers()
+                .then(function (users) {
+                    console.log('found all users', users);
+                    let uid = getUidFromAuth(authData);
+                    if (!users || !users[uid]) {
+                        storeNewUser(authData)
+                            .then((newUser) => {
+                                dispatch(LoginActions.setUser(newUser))
+                            })
+                    } else {
+                        dispatch(LoginActions.setUser(users[uid]))
+                    }
+                })
+        }
+
+    },
+    
+    setUser(user) {
+        return {
+            type: LOGIN_CONSTANTS.AUTH_SUCCESS,
+            user
         }
     },
+    
     authCheckSuccessObj(user) {
         return {
             type: LOGIN_CONSTANTS.AUTH_CHECK_SUCCESS,
@@ -88,3 +135,37 @@ export const LoginActions = {
 //         auctionId
 //     }
 // }
+
+
+function getUidFromAuth (authData) {
+
+    // Google Auth
+    if (authData.auth && authData.auth.provider === 'google') {
+        return authData.auth.uid
+    } else {
+        console.log('getUIdFromAuth could not find auth type')
+        return null
+    }
+
+}
+
+function storeNewUser (userData){
+    return new Promise((resolve, reject) => {
+        // Google users
+        if (userData.auth && userData.auth.provider === 'google') {
+            let user = {
+                uid: userData.uid,
+                name: userData.google.displayName,
+                permissionLevel: 'GUEST'
+            }
+
+            firebase.addNewUser(userData.uid, user)
+                .then( (newUser) => {
+                    resolve(newUser);
+                })
+
+        } else {
+            console.log('UserStore.storeNewUser error, authentication type unknown.');
+        }
+    });
+}
