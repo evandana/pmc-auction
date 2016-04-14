@@ -24,17 +24,17 @@ class Header extends Component {
                     label: "Confirm Winners",
                     id: "confirmWinners",
                     route: "/auctions/confirmWinners"
-                },
-                {
-                    label: "Add Auction",
-                    id: "addAuction",
-                    route: "/auctions/add"
-                },
-                {
-                    label: "Login",
-                    id: "login",
-                    route: "/login"
-                },
+                }//,
+                // {
+                //     label: "Add Auction",
+                //     id: "addAuction",
+                //     route: "/auctions/add"
+                // },
+                // {
+                //     label: "Login",
+                //     id: "login",
+                //     route: "/login"
+                // },
             ],
 
         defaultTitle: "PMC Auction"
@@ -52,9 +52,9 @@ class Header extends Component {
     // Handling Clicking on Tab Item on Tabs
     handleTabChange (tab) {
         //${tab.props.route}
-        hashHistory.push(tab.props.route); 
+        hashHistory.push(tab.props.route);
         this.setState({currentPage: tab.props.label});
-    }  
+    }
 
     // Handling Toggle Nav
     handleToggleNav = () => this.setState({openNav: !this.state.openNav});
@@ -86,7 +86,7 @@ class Header extends Component {
     }
 
     render () {
-        // styles to override material-ui 
+        // styles to override material-ui
         var styles = {
             header_title: {
                 fontSize: "130%"
@@ -107,7 +107,7 @@ class Header extends Component {
 
         return (
             <header>
-                <AppBar 
+                <AppBar
                     className="header"
                     style={styles.header}
                     title={(this.state.loggedIn) ? "Welcome, " + this.props.user.google.displayName : this.props.defaultTitle}
@@ -115,12 +115,12 @@ class Header extends Component {
                     onLeftIconButtonTouchTap={this.handleToggleNav}
                 >
                     <Tabs className="header__tabs" value={currentPath}>
-                        { 
+                        {
                             tabs.map( function(tab) {
-                                return <Tab 
-                                            onActive={::this.handleTabChange} 
-                                            style={styles.tab.label} 
-                                            route={tab.route} 
+                                return <Tab
+                                            onActive={::this.handleTabChange}
+                                            style={styles.tab.label}
+                                            route={tab.route}
                                             label={tab.label}
                                             value={tab.route}
                                             key={tab.id}
@@ -136,10 +136,10 @@ class Header extends Component {
                   open={this.state.openNav}
                   onRequestChange={openNav => this.setState({openNav})}
                 >
-                    { 
+                    {
                         tabs.map( function(tab) {
-                            return <MenuItem 
-                                        onTouchTap={::this.handleNavItemTap.bind(this, tab)} 
+                            return <MenuItem
+                                        onTouchTap={::this.handleNavItemTap.bind(this, tab)}
                                         route={tab.route}
                                         key={tab.id}
                                     >{tab.label}
