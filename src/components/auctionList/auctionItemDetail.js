@@ -39,11 +39,11 @@ class AuctionItemDetail extends Component {
 							title="Card title"
 							subtitle="Card subtitle"
 						/>
-						<CardActions>
+						{ false ? <CardActions>
 							<FlatButton label="-" />
 							<FlatButton label={ 'bid $' + (parseInt(data.openingBid, 10) + 5) } />
 							<FlatButton label="+" />
-						</CardActions>
+						</CardActions> : ''}
 						<CardText>
 							<div className="detail-field"><label>Offered by</label><span>{data.donorName}</span></div>
 							<div className="detail-field"><label>Description</label><span>{data.description}</span></div>
