@@ -49,29 +49,31 @@ import DevTools from './components/containers/devTools/DevTools'
 // firebase read/write adapter
 import firebase from './utils/firebaseAdapter'
 
-
 const store = configureStore()
 const routerHistory = syncHistoryWithStore(hashHistory, store)
 
-const authCheck = new Promise( (resolve) => {
-    firebase.authCheck(
-        user => { resolve(user) },
-        err => { console.log('error connecting', err) }
-    )
-})
+// listen for authorization event to load app
+let unsubscribe = store.subscribe(authCheckHandler);
 
-// force auth
-// requestCheckAuth();
+store.dispatch(LoginActions.authCheckRequest());
 
-authCheck.then( user => {
-    console.log('auth is good', user)
-    user ? loadAppView() : loadLoginView()
-}, err => {
-    console.log('error on auth check')
-});
+function authCheckHandler() {
+    
+    const state = store.getState()
+    
+    if (state.login.forceLoginView) {
+        unsubscribe()
+        loadLoginView()
+    } else if (state.login.user) {
+        unsubscribe()
+        loadAppView()
+    } else {
+        console.log("auth logic failed in app.js")
+        unsubscribe()
+    }
+}
 
 function loadAppView () {
-
 
     console.log('load app view');
     // store.dispatch(LoginActions.authCheck());

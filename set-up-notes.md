@@ -35,10 +35,10 @@ Start Web Server at system boot
 Update web server
 
 Public IP
-52.207.222.108
+52.90.26.128
 
 Connect to instance with: 
-TODO: ` ssh -i ..../newkeypair.pem ec2-user@52.207.222.108`
+TODO: ` ssh -i ..../newkeypair.pem ec2-user@52.90.26.128`
 
 TODO: make key accessible on necessary computers
 

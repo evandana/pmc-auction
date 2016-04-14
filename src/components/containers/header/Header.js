@@ -110,7 +110,7 @@ class Header extends Component {
                 <AppBar
                     className="header"
                     style={styles.header}
-                    title={(this.state.loggedIn) ? "Welcome, " + this.props.user.google.displayName : this.props.defaultTitle}
+                    title={ "Welcome, " + this.props.user.name }
                     titleStyle={styles.header_title}
                     onLeftIconButtonTouchTap={this.handleToggleNav}
                 >
