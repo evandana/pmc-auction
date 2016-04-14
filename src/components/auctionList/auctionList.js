@@ -52,11 +52,13 @@ let AuctionList = React.createClass({
           },
         };
 
+        const cols = window.innerWidth < 600 ? 2 : 3;
+                  // cellHeight={200}
+
         return (
               <div style={styles.root}>
                 <GridList
-                  cols={3}
-                  cellHeight={200}
+                  cols={cols}
                   padding={1}
                   style={styles.gridList}
                 >
