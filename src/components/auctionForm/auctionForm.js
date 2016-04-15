@@ -18,7 +18,6 @@ const validate = values => {
     if (!values.openingBid) {
         errors.age = 'Required'
     }
-    console.log("HHH", errors)
     return errors
 }
 
@@ -33,7 +32,8 @@ class AuctionForm extends Component {
                 openingBid
             },
             handleSubmit,
-            submitting
+            submitting,
+            resetForm
         } = this.props
 
         return (
@@ -44,7 +44,10 @@ class AuctionForm extends Component {
                 </div>
                 <div>
                     <label>Description</label>
-                    <input type="text" placeholder="Description" {...description}/>
+                    <textarea 
+                        {...description}
+                        value={description.value || ''}
+                    />
                 </div>
                 <div>
                     <label>Opening Bid</label>
@@ -53,6 +56,9 @@ class AuctionForm extends Component {
                 <div>
                     <button type="submit" disabled={submitting}>
                         {submitting ? <i/> : <i/>} Submit
+                    </button>
+                    <button type="button" disabled={submitting} onClick={resetForm}>
+                        Clear Values
                     </button>
                 </div>
                 
@@ -65,12 +71,13 @@ class AuctionForm extends Component {
 AuctionForm.propTypes = {
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+  resetForm: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired
 }
 
 
 AuctionForm = reduxForm({
-    form: 'auction-add',     // a unique name for this form
+    form: 'create-auction',     // a unique name for this form
     fields                  // all the fields in your form
     //validate                 // validation settings
 })(AuctionForm)
