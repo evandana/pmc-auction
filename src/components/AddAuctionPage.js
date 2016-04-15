@@ -10,9 +10,6 @@ class AddAuctionPage extends Component {
     }
       
     render () { 
-    
-        console.log("LL", this)
-    
         return (
             <AddAuction />
         )
@@ -21,14 +18,4 @@ class AddAuctionPage extends Component {
     
 }
 
-function mapStateToProps (state) {
-    
-    console.log("EE", state);
-    
-    return {
-        auctions: state.auctions.auctionCollection,
-        expandedAuctionIdList: state.auctions.expandedAuctionIdList
-      }
-}
-
-export default connect(mapStateToProps)(AddAuctionPage)
+export default connect()(AddAuctionPage)

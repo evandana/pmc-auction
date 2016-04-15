@@ -22,7 +22,6 @@ class AuctionsPage extends Component {
             </div>
         )
     }
-
 }
 
 function mapStateToProps (state) {

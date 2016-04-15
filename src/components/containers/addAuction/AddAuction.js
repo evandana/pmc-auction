@@ -2,12 +2,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { addAuction } from '../../../actions/AuctionActions'
-
 import AuctionForm from '../../auctionForm/auctionForm'
 
-
-//import { addAuction} from '../../../actions/AuctionActions'
+import { addAuction} from '../../../actions/AuctionActions'
 
 // Styles
 // import './header.scss';
@@ -21,7 +18,6 @@ const AddAuction = () => {
                 description={''}
                 openingBid={0}
                 onSubmit={addAuction}
-                
             />
         </div>
     )
