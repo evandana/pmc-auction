@@ -24,12 +24,12 @@ class Header extends Component {
                     label: "Confirm Winners",
                     id: "confirmWinners",
                     route: "/auctions/confirmWinners"
+                },
+                {
+                    label: "Add Auction",
+                    id: "addAuction",
+                    route: "/auctions/add"
                 }//,
-                // {
-                //     label: "Add Auction",
-                //     id: "addAuction",
-                //     route: "/auctions/add"
-                // },
                 // {
                 //     label: "Login",
                 //     id: "login",
@@ -72,7 +72,14 @@ class Header extends Component {
             switch(tab.id){
                 case "confirmWinners":
                     // add check for user permissions to confirm winner
+                    // console.log('confirm winners', tabs);
                     tabs.splice(index,1);
+                    break;
+                case "addAuction":
+                    let showAddAuction = this.props.user.permissionLevel === "ADMIN" || this.props.user.permissionLevel === "DONOR";
+                    if (!showAddAuction) {
+                        tabs.splice(index,1);
+                    }
                     break;
                 case "login":
                     if( this.state.loggedIn ){

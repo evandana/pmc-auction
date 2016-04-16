@@ -2,11 +2,15 @@
 import React, { Component, PropTypes } from 'react'
 import {reduxForm} from 'redux-form'
 
+import TextField from 'material-ui/lib/text-field';
+
+import './_auctionForm.scss'
+
 export const fields = [ 'title', 'description', 'openingBid' ]
 
 const validate = values => {
     const errors = {}
-    
+
     if (!values.title) {
         errors.username = 'Required'
     }
@@ -14,7 +18,7 @@ const validate = values => {
     if (!values.description) {
         errors.description = 'Required'
     }
-    
+
     if (!values.openingBid) {
         errors.age = 'Required'
     }
@@ -22,14 +26,16 @@ const validate = values => {
 }
 
 class AuctionForm extends Component {
-    
+
     render() {
 
         const {
             fields: {
                 title,
                 description,
-                openingBid
+                openingBid,
+                subTitle,
+                expiration
             },
             handleSubmit,
             submitting,
@@ -37,21 +43,32 @@ class AuctionForm extends Component {
         } = this.props
 
         return (
-            <form onSubmit={handleSubmit}>            
+            <form onSubmit={handleSubmit} className="auction-form">
                 <div>
                     <label>Title</label>
-                    <input type="text" placeholder="Auction Title" {...title}/>
+                    <TextField type="text" hintText="Auction Title" {...title}/>
                 </div>
                 <div>
                     <label>Description</label>
-                    <textarea 
+                    <TextField
                         {...description}
+                        multiLine={true}
+                        rows={2}
+                        rowsMax={4}
                         value={description.value || ''}
                     />
                 </div>
                 <div>
                     <label>Opening Bid</label>
-                    <input type="text" placeholder="0" {...openingBid}/>
+                    <TextField type="text" hintText="0" {...openingBid}/>
+                </div>
+                <div>
+                    <label>Sub title</label>
+                    <TextField type="text" hintText="0" {...subTitle}/>
+                </div>
+                <div>
+                    <label>Expiration</label>
+                    <TextField type="text" hintText="0" {...expiration}/>
                 </div>
                 <div>
                     <button type="submit" disabled={submitting}>
@@ -61,11 +78,11 @@ class AuctionForm extends Component {
                         Clear Values
                     </button>
                 </div>
-                
+
             </form>
         )
     }
-    
+
 }
 
 AuctionForm.propTypes = {
