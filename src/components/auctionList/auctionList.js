@@ -47,7 +47,7 @@ let AuctionList = React.createClass({
             justifyContent: 'flex-start' // for dev
           },
           gridList: {
-            // width: 400,
+            width: window.innerWidth < 600 ? window.innerWidth : window.innerWidth - 20,
             // height: 700,
             overflowY: 'auto',
             marginBottom: 24,
