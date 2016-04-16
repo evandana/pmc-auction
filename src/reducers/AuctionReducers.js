@@ -2,7 +2,8 @@ import {
     FETCH_AUCTIONS,
     LOAD_AUCTION,
     PLACE_BID,
-    TOGGLE_AUCTION_DETAIL
+    TOGGLE_AUCTION_DETAIL,
+    CREATE_AUCTION_SUCCESS
 } from '../actions/AuctionActions'
 
 const defaultAuctionState = {
@@ -12,6 +13,10 @@ const defaultAuctionState = {
 
 function auctions(state = defaultAuctionState, action) {
     switch (action.type) {
+        case CREATE_AUCTION_SUCCESS:
+            console.log('create success');
+            // TODO: clear form
+            return state;
         case LOAD_AUCTION:
             return Object.assign({}, state, {
                 auctionCollection: [
@@ -21,10 +26,10 @@ function auctions(state = defaultAuctionState, action) {
             });
         case PLACE_BID:
             console.log("Place Bid")
-            return state
+            return state;
         case TOGGLE_AUCTION_DETAIL:
 
-            console.log('TOGGLE_AUCTION_DETAIL')
+            // console.log('TOGGLE_AUCTION_DETAIL')
             if ( state.expandedAuctionIdList.includes(action.auctionId) ) {
 
                 state.expandedAuctionIdList.splice(

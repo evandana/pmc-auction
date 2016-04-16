@@ -13,15 +13,15 @@ export const LOGIN_CONSTANTS = {
 export const LoginActions = {
 
     authCheckRequest() {
-        
+
         return dispatch => {
             firebase.authCheck( user => dispatch(this.authCheckResponse(user)) )
         }
 
     },
-    
+
     authCheckResponse(user) {
-        console.log('auth response called ', user)
+        // console.log('auth response called ', user)
         if (user) {
             return dispatch => { dispatch(this.findAndSetUser(user)) }
         } else {
@@ -29,15 +29,15 @@ export const LoginActions = {
         }
 
     },
-    
+
     findAndSetUser (authData) {
-        console.log('setting up findUser');
+        // console.log('setting up findUser');
 
         return dispatch => {
 
             firebase.getAllUsers()
                 .then(function (users) {
-                    console.log('found all users', users);
+                    // console.log('found all users', users);
                     let uid = getUidFromAuth(authData);
                     if (!users || !users[uid]) {
                         storeNewUser(authData)
@@ -51,7 +51,7 @@ export const LoginActions = {
         }
 
     },
-    
+
     setUser(user) {
         return {
             type: LOGIN_CONSTANTS.AUTH_SUCCESS,
@@ -78,7 +78,7 @@ function getUidFromAuth (authData) {
     if (authData.auth && authData.auth.provider === 'google') {
         return authData.auth.uid
     } else {
-        console.log('getUIdFromAuth could not find auth type')
+        // console.log('getUIdFromAuth could not find auth type')
         return null
     }
 

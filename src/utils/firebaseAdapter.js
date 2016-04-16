@@ -52,11 +52,11 @@ let Adapter = function Adapter () {
             console.log('trying login')
             return ref.authWithOAuthRedirect("google", function(error, authData) {
                 if (error) {
-                    console.log("Login Failed!", error);
+                    // console.log("Login Failed!", error);
                     return failCallback(error);
                 } else {
                     // We'll never get here, as the page will redirect on success.
-                    console.log("Authenticated successfully with payload:", authData);
+                    // console.log("Authenticated successfully with payload:", authData);
                     return successCallback(authData);
                 }
             });
@@ -64,7 +64,7 @@ let Adapter = function Adapter () {
 
         logoutUser () {
             ref.unauth();
-            document.location.reload(true);
+            // document.location.reload(true);
         }
 
     }
