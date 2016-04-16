@@ -12,15 +12,15 @@ import { createAuction } from '../../../actions/AuctionActions'
 // Application Components
 
 class AddAuction extends Component {
-    
+
     constructor(props) {
         super(props)
     }
-    
+
     handleSubmit(formData) {
         this.props.dispatch(createAuction(formData, this.props.user))
     }
-    
+
     render () {
         return (
             <div>

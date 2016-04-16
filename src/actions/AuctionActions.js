@@ -14,10 +14,10 @@ export const TOGGLE_AUCTION_DETAIL = 'TOGGLE_AUCTION_DETAIL'
 
 export function auctionPushErrorHandler (error) {
     if (error) {
-        console.log('AUCTION CREATION ERROR', error)
+        // console.log('AUCTION CREATION ERROR', error)
         return { type: CREATE_AUCTION_ERROR, error }
     } else {
-        console.log('AUCTION CREATED SUCCESSFULLY')
+        // console.log('AUCTION CREATED SUCCESSFULLY')
         return { type: CREATE_AUCTION_SUCCESS }
     }
 }
@@ -28,16 +28,16 @@ export function createAuction (fields, user) {
         donorId: user.uid,
         donorName: user.name,
         highestBid: null,
-        expiration: "12/31/2016",
+        expiration: fields.expiration || "12/31/2016",
         openDate: "01/30/2016",
         closeDate: "12/31/2016"
     });
-    
-    console.log("CREATING AUCTION", auction)
+
+    // console.log("CREATING AUCTION", auction)
 
     return dispatch => {
-        firebase.addAuction(auction, 
-            error => dispatch(auctionPushErrorHandler(error)) 
+        firebase.addAuction(auction,
+            error => dispatch(auctionPushErrorHandler(error))
         )
     }
 

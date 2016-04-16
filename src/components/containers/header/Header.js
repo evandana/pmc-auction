@@ -42,7 +42,7 @@ class Header extends Component {
 
     constructor(props) {
         super(props)
-        console.log(this.props);
+        // console.log(this.props);
         this.state = {
             openNav : false,
             loggedIn : (this.props.user.google) ? true : false,
@@ -77,6 +77,9 @@ class Header extends Component {
                     break;
                 case "addAuction":
                     let showAddAuction = this.props.user.permissionLevel === "ADMIN" || this.props.user.permissionLevel === "DONOR";
+
+                    console.log('addAuction', showAddAuction, this.props.user.permissionLevel)
+
                     if (!showAddAuction) {
                         tabs.splice(index,1);
                     }

@@ -22,9 +22,9 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 // set in webpack
-console.log('__PRODUCTION__', __PRODUCTION__)
-console.log('__DEV__', __DEV__)
-console.log('JSON.stringify(process.env.NODE_ENV)', JSON.stringify(process.env.NODE_ENV))
+// console.log('__PRODUCTION__', __PRODUCTION__)
+// console.log('__DEV__', __DEV__)
+console.log('Environment:', JSON.stringify(process.env.NODE_ENV))
 
 // Styles
 import './app.scss';
@@ -58,9 +58,9 @@ let unsubscribe = store.subscribe(authCheckHandler);
 store.dispatch(LoginActions.authCheckRequest());
 
 function authCheckHandler() {
-    
+
     const state = store.getState()
-    
+
     if (state.login.forceLoginView) {
         unsubscribe()
         loadLoginView()
@@ -75,7 +75,7 @@ function authCheckHandler() {
 
 function loadAppView () {
 
-    console.log('load app view');
+    // console.log('load app view');
     // store.dispatch(LoginActions.authCheck());
     // hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
 
@@ -92,7 +92,7 @@ function loadAppView () {
                 </Router>
                 {
                     (() => {
-                        if (__DEV__ && false) {
+                        if (__DEV__ && true) {
                             return <DevTools />;
                         }
                     })() || ''
@@ -108,7 +108,7 @@ function loadAppView () {
 
 function loadLoginView () {
 
-    console.log('load login view')
+    // console.log('load login view')
 
     render(
         <LoginPage />,

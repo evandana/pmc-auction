@@ -6,7 +6,7 @@ import TextField from 'material-ui/lib/text-field';
 
 import './_auctionForm.scss'
 
-export const fields = [ 'title', 'description', 'openingBid' ]
+export const fields = [ 'title', 'description', 'openingBid', 'subTitle', 'expiration', 'donorName', 'show' ]
 
 const validate = values => {
     const errors = {}
@@ -35,7 +35,10 @@ class AuctionForm extends Component {
                 description,
                 openingBid,
                 subTitle,
-                expiration
+                expiration,
+                donorName,
+                show
+
             },
             handleSubmit,
             submitting,
@@ -64,11 +67,19 @@ class AuctionForm extends Component {
                 </div>
                 <div>
                     <label>Sub title</label>
-                    <TextField type="text" hintText="0" {...subTitle}/>
+                    <TextField type="text" {...subTitle}/>
+                </div>
+                <div>
+                    <label>Donor Name</label>
+                    <TextField type="text" {...donorName}/>
                 </div>
                 <div>
                     <label>Expiration</label>
-                    <TextField type="text" hintText="0" {...expiration}/>
+                    <TextField type="text" hintText="09/2016" {...expiration}/>
+                </div>
+                <div>
+                    <label>Show immediately?</label>
+                    <TextField type="text" hintText="true | false" {...show}/>
                 </div>
                 <div>
                     <button type="submit" disabled={submitting}>
