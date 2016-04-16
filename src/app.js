@@ -92,7 +92,7 @@ function loadAppView () {
                 </Router>
                 {
                     (() => {
-                        if (__DEV__ && true) {
+                        if (__DEV__ && false) {
                             return <DevTools />;
                         }
                     })() || ''

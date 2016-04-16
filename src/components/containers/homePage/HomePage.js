@@ -11,6 +11,7 @@ const HomePage = ( {prop} ) => {
             with the auction-providers and instructions on how to donate.</p>
             <p>Every penny of your winning bid will go directly to Dana Farber for cancer research.</p>
             <p>Thank you so much for your generosity and have fun bidding!</p>
+            <a href="#/auctions">View the auctions</a>
         </div>
     )
 }

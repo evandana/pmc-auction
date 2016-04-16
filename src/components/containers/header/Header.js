@@ -67,32 +67,41 @@ class Header extends Component {
 
     // Returns set of tabs based on User Credentials
     getTabsBasedOnUser (){
-        var tabs = this.props.tabs;
+
+        console.log('get tabs')
+
+        let tabs = this.props.tabs;
+        let allowedTabs = []
         tabs.map( function(tab, index){
             switch(tab.id){
                 case "confirmWinners":
                     // add check for user permissions to confirm winner
                     // console.log('confirm winners', tabs);
-                    tabs.splice(index,1);
+                    // tabs.splice(index,1);
                     break;
                 case "addAuction":
                     let showAddAuction = this.props.user.permissionLevel === "ADMIN" || this.props.user.permissionLevel === "DONOR";
 
                     console.log('addAuction', showAddAuction, this.props.user.permissionLevel)
 
+
                     if (!showAddAuction) {
-                        tabs.splice(index,1);
+                        // tabs.splice(index,1);
+                    } else {
+                        allowedTabs.push(tab);
                     }
                     break;
                 case "login":
                     if( this.state.loggedIn ){
-                        tabs.splice(index,1);
+                        // tabs.splice(index,1);
                     }
                     break;
+                default:
+                    allowedTabs.push(tab);
             }
         }, this)
 
-        return tabs;
+        return allowedTabs;
     }
 
     render () {
