@@ -28,10 +28,12 @@ let AuctionList = React.createClass({
 
         this.props.auctions.forEach( (obj, index) => {
 
+          if (obj.show) {
             auctionItems.push( Object.assign( {}, obj, {
                 key: urlStr + '?q=' + index,
                 img: urlStr
-            } ) )
+            } ) );
+          }
 
         });
 
