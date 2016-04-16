@@ -28,10 +28,12 @@ let AuctionList = React.createClass({
 
         this.props.auctions.forEach( (obj, index) => {
 
+          if (obj.show) {
             auctionItems.push( Object.assign( {}, obj, {
                 key: urlStr + '?q=' + index,
                 img: urlStr
-            } ) )
+            } ) );
+          }
 
         });
 
@@ -45,7 +47,7 @@ let AuctionList = React.createClass({
             justifyContent: 'flex-start' // for dev
           },
           gridList: {
-            // width: 400,
+            width: window.innerWidth < 600 ? window.innerWidth : window.innerWidth - 20,
             // height: 700,
             overflowY: 'auto',
             marginBottom: 24,

@@ -36,8 +36,8 @@ class AuctionItemDetail extends Component {
 				<div colSpan="4">
 					<Card>
 						<CardTitle
-							title="Card title"
-							subtitle="Card subtitle"
+							title={data.title}
+							subtitle={'with ' + data.donorName}
 						/>
 						{ false ? <CardActions>
 							<FlatButton label="-" />
@@ -45,12 +45,11 @@ class AuctionItemDetail extends Component {
 							<FlatButton label="+" />
 						</CardActions> : ''}
 						<CardText>
-							<div className="detail-field"><label>Offered by</label><span>{data.donorName}</span></div>
 							<div className="detail-field"><label>Description</label><span>{data.description}</span></div>
 							<div className="detail-field"><label>Please use by</label><span>{data.expiration}</span></div>
 						</CardText>
 						<CardMedia
-							overlay={<CardTitle title="Not pancakes and bunnies!" subtitle="delicious belgian beer and liege waffles" />}
+							overlay={<CardTitle title={data.title} />}
 							>
 							<img src={urlStr} />
 						</CardMedia>
