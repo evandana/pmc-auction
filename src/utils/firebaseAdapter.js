@@ -8,8 +8,8 @@ let Adapter = function Adapter () {
 
     return {
 
-        addAuction (auctionObj) {
-            auctionsRef.push(auctionObj);
+        addAuction (auctionObj, callback) {
+            auctionsRef.push(auctionObj, callback);
         },
 
         addNewUser (uid, userObj) {

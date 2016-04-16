@@ -22,11 +22,6 @@ class AuctionsPage extends Component {
             </div>
         )
     }
-
-    componentDidMount () {
-        const { dispatch } = this.props
-    }
-
 }
 
 function mapStateToProps (state) {

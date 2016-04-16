@@ -3,7 +3,6 @@ import {
 } from '../actions/LoginActions'
 
 function login(state = { user : {} }, action ) {
-    console.log("ACTION TYPE: ", action.type)
     switch (action.type) {
         case LOGIN_CONSTANTS.AUTH_SUCCESS:
             console.log("authorization was successful!!")
