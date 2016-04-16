@@ -24,12 +24,12 @@ class Header extends Component {
                     label: "Confirm Winners",
                     id: "confirmWinners",
                     route: "/auctions/confirmWinners"
+                },
+                {
+                    label: "Add Auction",
+                    id: "addAuction",
+                    route: "/auctions/add"
                 }//,
-                // {
-                //     label: "Add Auction",
-                //     id: "addAuction",
-                //     route: "/auctions/add"
-                // },
                 // {
                 //     label: "Login",
                 //     id: "login",
