@@ -35,7 +35,8 @@ import {
     AuctionsPage,
     ConfirmWinnersPage,
     HomePage,
-    LoginPage
+    LoginPage,
+    DonatePage
     } from './components/index';
 // Actions
 import { LoginActions } from './actions/LoginActions'
@@ -88,6 +89,7 @@ function loadAppView () {
                         <Route path="/auctions" component={AuctionsPage}/>
                         <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
                         <Route path="/auctions/add" component={AddAuctionPage} />
+                        <Route path="/donate" component={DonatePage} />
                     </Route>
                 </Router>
                 {
