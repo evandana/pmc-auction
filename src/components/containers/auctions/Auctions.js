@@ -46,10 +46,13 @@ class Auctions extends Component {
             )
         } else {
 
+            const filteredAuctions = this.props.auctions.filter( auction => auction.show )
+
             return (
+                
                 <div>
                     <AuctionList
-                        auctions={this.props.auctions}
+                        auctions={filteredAuctions}
                         expandedAuctionIdList={this.props.expandedAuctionIdList}
                         placeBid={this.placeBid}
                         toggleAuctionDetail={this.toggleAuctionDetail}
