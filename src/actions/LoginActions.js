@@ -80,9 +80,6 @@ function generateUserPersona(users) {
         validAnimals = userSpiritAnimals.slice(),
         newPersona
     
-    console.log('1 ', validDescriptives.length)
-    console.log('1 ', validAnimals.length)
-    
     Object.keys(users).forEach( user => {
 
         if (users[user].persona) {
@@ -98,9 +95,6 @@ function generateUserPersona(users) {
 
         }
     })
-    
-    console.log('2 ', validDescriptives.length)
-    console.log('2 ', validAnimals.length)
         
     newPersona = validDescriptives[Math.floor(Math.random() * (validDescriptives.length))] +
         ' ' +
