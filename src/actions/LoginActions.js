@@ -2,6 +2,8 @@ import { hashHistory } from 'react-router'
 // firebase read/write adapter
 import firebase from '../utils/firebaseAdapter'
 
+import { userDescriptives, userSpiritAnimals } from '../constants/UserPersonas'
+
 export const LOGIN_CONSTANTS = {
     AUTH_CHECK_REQUEST: 'AUTH_CHECK_REQUEST',
     AUTH_CHECK_RESPONSE: 'AUTH_CHECK_RESPONSE',
@@ -40,7 +42,7 @@ export const LoginActions = {
                     // console.log('found all users', users);
                     let uid = getUidFromAuth(authData);
                     if (!users || !users[uid]) {
-                        storeNewUser(authData)
+                        storeNewUser(authData, users)
                             .then((newUser) => {
                                 dispatch(LoginActions.setUser(newUser))
                             })
@@ -72,6 +74,41 @@ export const LoginActions = {
     }
 }
 
+function generateUserPersona(users) {
+
+    let validDescriptives = userDescriptives.slice(),
+        validAnimals = userSpiritAnimals.slice(),
+        newPersona
+    
+    console.log('1 ', validDescriptives.length)
+    console.log('1 ', validAnimals.length)
+    
+    Object.keys(users).forEach( user => {
+
+        if (users[user].persona) {
+            
+            validDescriptives.splice(
+                validDescriptives.indexOf(users[user].persona.split(' ')[0]), 1
+            )
+
+            
+            validAnimals.splice(
+                validAnimals.indexOf(users[user].persona.split(' ')[1]), 1
+            )
+
+        }
+    })
+    
+    console.log('2 ', validDescriptives.length)
+    console.log('2 ', validAnimals.length)
+        
+    newPersona = validDescriptives[Math.floor(Math.random() * (validDescriptives.length))] +
+        ' ' +
+        validAnimals[Math.floor(Math.random() * (validAnimals.length))]
+        
+    return  newPersona
+}
+
 function getUidFromAuth (authData) {
 
     // Google Auth
@@ -84,14 +121,15 @@ function getUidFromAuth (authData) {
 
 }
 
-function storeNewUser (userData){
+function storeNewUser (userData, users){
     return new Promise((resolve, reject) => {
         // Google users
         if (userData.auth && userData.auth.provider === 'google') {
             let user = {
                 uid: userData.uid,
                 name: userData.google.displayName,
-                permissionLevel: 'GUEST'
+                permissionLevel: 'GUEST',
+                persona: generateUserPersona(users)
             }
 
             firebase.addNewUser(userData.uid, user)

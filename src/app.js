@@ -55,6 +55,7 @@ const routerHistory = syncHistoryWithStore(hashHistory, store)
 
 // listen for authorization event to load app
 let unsubscribe = store.subscribe(authCheckHandler);
+let logoutUnsubscribe;
 
 store.dispatch(LoginActions.authCheckRequest());
 
@@ -68,9 +69,20 @@ function authCheckHandler() {
     } else if (state.login.user) {
         unsubscribe()
         loadAppView()
+        // post login logout handler
+        logoutUnsubscribe = store.subscribe(logoutHandler);
+        
     } else {
         console.log("auth logic failed in app.js")
         unsubscribe()
+    }
+}
+
+function logoutHandler() {
+    if (store.getState().login.forceLoginView) {
+        logoutUnsubscribe()
+        ReactDOM.unmountComponentAtNode(document.getElementById('app-page'))
+        loadLoginView()
     }
 }
 
