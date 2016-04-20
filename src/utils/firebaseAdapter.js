@@ -4,7 +4,8 @@ let Adapter = function Adapter () {
 
     let ref = new Firebase("https://pmc-auction.firebaseio.com"),
         auctionsRef = ref.child("auctions"),
-        usersRef = ref.child("users");
+        usersRef = ref.child("users"),
+        configRef = ref.child("CONFIG");
 
     return {
 
@@ -39,6 +40,12 @@ let Adapter = function Adapter () {
                 usersRef.once('value', (snapshot) => { resolve(snapshot.val()) });
             });
         },
+        
+        getConfig () {
+            return new Promise(function(resolve, reject) {
+                configRef.once('value', (snapshot) => { resolve(snapshot.val()) });
+            });
+        },
 
         loadAuctions (callback) {
             auctionsRef.on("child_added", (snapshot) => {
@@ -49,7 +56,6 @@ let Adapter = function Adapter () {
         },
 
         loginGoogle (successCallback, failCallback) {
-            console.log('trying login')
             return ref.authWithOAuthRedirect("google", function(error, authData) {
                 if (error) {
                     // console.log("Login Failed!", error);

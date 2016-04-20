@@ -9,6 +9,7 @@ export const LOGIN_CONSTANTS = {
     AUTH_CHECK_RESPONSE: 'AUTH_CHECK_RESPONSE',
     AUTH_SUCCESS: 'AUTH_SUCCESS',
     AUTH_FAIL: 'AUTH_FAIL',
+    LOCKDOWN_MODE: 'LOCKDOWN_MODE',
     SET_USER: 'SET_USER'
 }
 
@@ -36,16 +37,30 @@ export const LoginActions = {
         // console.log('setting up findUser');
 
         return dispatch => {
+            
+            const dataCalls = [
+                firebase.getConfig(),
+                firebase.getAllUsers()
+            ]
+            
+            Promise.all(dataCalls)            
+                .then( data => {
+                    
+                    let [config, users] = data
 
-            firebase.getAllUsers()
-                .then(function (users) {
-                    // console.log('found all users', users);
                     let uid = getUidFromAuth(authData);
-                    if (!users || !users[uid]) {
+                    
+                    if (config.LOCKDOWN_MODE === true && (!users || !users[uid])) {
+
+                        dispatch({ type: LOGIN_CONSTANTS.LOCKDOWN_MODE })
+
+                    } else if(!users || !users[uid]) {
+                        
                         storeNewUser(authData, users)
                             .then((newUser) => {
                                 dispatch(LoginActions.setUser(newUser))
                             })
+                        
                     } else {
                         dispatch(LoginActions.setUser(users[uid]))
                     }
