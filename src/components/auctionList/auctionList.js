@@ -55,12 +55,16 @@ let AuctionList = React.createClass({
             width: window.innerWidth < 600 ? window.innerWidth : window.innerWidth - 20,
             // height: 700,
             overflowY: 'auto',
-            marginBottom: 24,
-          },
-        };
+            marginBottom: 24
+          }
+        }
 
         const cols = window.innerWidth < 600 ? 2 : 3;
                   // cellHeight={200}
+
+
+        // TODO: put this back in
+        // actionIcon={<IconButton><PlusOne color="white"/></IconButton>}
 
         return (
               <div style={styles.root}>
@@ -76,12 +80,12 @@ let AuctionList = React.createClass({
                       key={tile.key}
                       title={tile.title}
                       subtitle={<span>with <b>{tile.donorName}</b></span>}
-                      actionIcon={<IconButton><PlusOne color="white"/></IconButton>}
                       actionPosition="right"
                       titlePosition="top"
                       titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
                       cols={tile.featured ? 2 : 1}
                       rows={tile.featured ? 1 : 1}
+                      className="auction-list__tile"
                     >
                       <img src={tile.img} />
                     </GridTile>
