@@ -127,15 +127,18 @@ class Header extends Component {
         };
 
         // Reference
-        var currentPath = window.location.hash.match(new RegExp("\#(.*)\\?"))[1];
-        var tabs = this.getTabsBasedOnUser();
+        let currentPath = window.location.hash.match(new RegExp("\#(.*)\\?"))[1];
+        let tabs = this.getTabsBasedOnUser();
+
+        let greeting = "Welcome, " + this.props.user.name + (this.props.user.persona ? ' a.k.a. "' + this.props.user.persona + '"' : '');
+
 
         return (
             <header>
                 <AppBar
                     className="header"
                     style={styles.header}
-                    title={ "Welcome, " + this.props.user.name }
+                    title={ greeting }
                     titleStyle={styles.header_title}
                     onLeftIconButtonTouchTap={this.handleToggleNav}
                 >
@@ -180,7 +183,7 @@ class Header extends Component {
                     }
                     <MenuItem
                         onTouchTap={firebase.logoutUser}
-                        
+
                     >Logout
                     </MenuItem>
                 </LeftNav>

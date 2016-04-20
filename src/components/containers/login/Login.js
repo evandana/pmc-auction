@@ -22,12 +22,12 @@ const Login = React.createClass({
                     <div className="pure-controls">
                         <h1>Welcome to the Happiness Exchange</h1>
                         <p>Login with a Google account to view the auctions!</p>
+                        <p>RSVP to the <a href="https://www.facebook.com/events/198978703805744/">event</a></p>
                         <button
-                            className="pure-button pure-button-primary"
+                            className="login-button pure-button pure-button-primary"
                             onClick={this.requestLoginGoogle}>
                             Google Login
                         </button>
-                        <p>RSVP to the <a href="https://www.facebook.com/events/198978703805744/">event</a></p>
                     </div>
                 </fieldset>
             </div>
