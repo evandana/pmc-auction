@@ -50,7 +50,7 @@ class AuctionItemDetail extends Component {
 							<div className="detail-field"><label>Please use by</label><span>{data.expiration}</span></div>
 						</CardText>
 						<CardMedia
-							overlay={<CardTitle title={data.title} />}
+							overlay={<CardTitle title={data.subTitle || data.title} />}
 							>
 							<img src={urlStr} />
 						</CardMedia>
