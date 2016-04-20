@@ -17,6 +17,8 @@ import { getImageForEnv } from '../../images/index'
 import AuctionItem from './auctionItem';
 import AuctionItemDetail from './auctionItemDetail';
 
+import './_auctionList.scss'
+
 
 let AuctionList = React.createClass({
 
@@ -24,12 +26,15 @@ let AuctionList = React.createClass({
 
         let auctionItems = [];
 
-        const urlStr = getImageForEnv( 'pancakeBunny.png' );
 
         this.props.auctions.forEach( (obj, index) => {
 
-          if (obj.show) {
+
+          if (obj.show && obj.image) {
+            const urlStr = getImageForEnv( obj.image + '.png' );
+
             auctionItems.push( Object.assign( {}, obj, {
+
                 key: urlStr + '?q=' + index,
                 img: urlStr
             } ) );
@@ -74,7 +79,7 @@ let AuctionList = React.createClass({
                       actionIcon={<IconButton><PlusOne color="white"/></IconButton>}
                       actionPosition="right"
                       titlePosition="top"
-                      titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.2) 70%,rgba(0,0,0,0) 100%)"
+                      titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
                       cols={tile.featured ? 2 : 1}
                       rows={tile.featured ? 1 : 1}
                     >

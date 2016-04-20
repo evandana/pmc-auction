@@ -35,7 +35,8 @@ import {
     AuctionsPage,
     ConfirmWinnersPage,
     HomePage,
-    LoginPage
+    LoginPage,
+    DonatePage
     } from './components/index';
 // Actions
 import { LoginActions } from './actions/LoginActions'
@@ -54,6 +55,7 @@ const routerHistory = syncHistoryWithStore(hashHistory, store)
 
 // listen for authorization event to load app
 let unsubscribe = store.subscribe(authCheckHandler);
+let logoutUnsubscribe;
 
 store.dispatch(LoginActions.authCheckRequest());
 
@@ -67,9 +69,20 @@ function authCheckHandler() {
     } else if (state.login.user) {
         unsubscribe()
         loadAppView()
+        // post login logout handler
+        logoutUnsubscribe = store.subscribe(logoutHandler);
+        
     } else {
         console.log("auth logic failed in app.js")
         unsubscribe()
+    }
+}
+
+function logoutHandler() {
+    if (store.getState().login.forceLoginView) {
+        logoutUnsubscribe()
+        ReactDOM.unmountComponentAtNode(document.getElementById('app-page'))
+        loadLoginView()
     }
 }
 
@@ -88,6 +101,7 @@ function loadAppView () {
                         <Route path="/auctions" component={AuctionsPage}/>
                         <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
                         <Route path="/auctions/add" component={AddAuctionPage} />
+                        <Route path="/donate" component={DonatePage} />
                     </Route>
                 </Router>
                 {

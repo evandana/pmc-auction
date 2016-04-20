@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { Router, RouteHandler, Link, hashHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { AppBar, Tabs, Tab, LeftNav, MenuItem, IconButton } from 'material-ui'
-import { NavigationClose, NavigationMenu }from 'material-ui/lib/svg-icons';
+import { NavigationClose, NavigationMenu }from 'material-ui/lib/svg-icons'
+import firebase from '../../../utils/firebaseAdapter'
 
 import './_header.scss'
 
@@ -19,6 +20,11 @@ class Header extends Component {
                     label: "Auctions",
                     id: "auctions",
                     route: "/auctions"
+                },
+                {
+                    label: "Donate",
+                    id: "donate",
+                    route: "/donate"
                 },
                 {
                     label: "Confirm Winners",
@@ -146,6 +152,13 @@ class Header extends Component {
                                         />
                             }, this)
                         }
+                        <Tab
+                            onActive={firebase.logoutUser}
+                            style={styles.tab.label}
+                            route="/"
+                            label="Logout"
+                            value="/"
+                        />
                     </Tabs>
                 </AppBar>
                 <LeftNav
@@ -165,6 +178,11 @@ class Header extends Component {
                                     </MenuItem>
                         }, this)
                     }
+                    <MenuItem
+                        onTouchTap={firebase.logoutUser}
+                        
+                    >Logout
+                    </MenuItem>
                 </LeftNav>
             </header>
         )

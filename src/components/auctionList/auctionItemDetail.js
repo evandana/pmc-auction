@@ -23,11 +23,12 @@ class AuctionItemDetail extends Component {
 	render() {
 		const { placeBid, toggleAuctionDetail } = this.props
 
-		let urlStr = getImageForEnv('pancakeBunny.png');
+		let data = this.props.data;
+
+		let urlStr = getImageForEnv( data.image + '.png');
 
 		// console.log('item detail props', this.props, this.props.data.id)
 
-		let data = this.props.data;
 
 					// <h3>{data.title}</h3>
 					// <p>{data.description}</p>
