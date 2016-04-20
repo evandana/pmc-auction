@@ -63,7 +63,9 @@ function authCheckHandler() {
 
     const state = store.getState()
 
-    if (state.login.forceLoginView) {
+    if(state.login.applicationClosed) {
+        loadLockdownView()
+    } else if (state.login.forceLoginView) {
         unsubscribe()
         loadLoginView()
     } else if (state.login.user) {
@@ -79,7 +81,10 @@ function authCheckHandler() {
 }
 
 function logoutHandler() {
-    if (store.getState().login.forceLoginView) {
+    
+    let state = store.getState()
+    
+    if (state.login.forceLoginView) {
         logoutUnsubscribe()
         ReactDOM.unmountComponentAtNode(document.getElementById('app-page'))
         loadLoginView()
@@ -130,5 +135,9 @@ function loadLoginView () {
     )
 }
 
-
-
+function loadLockdownView () {
+    render(
+        <div>APPLICATION CLOSED AT THIS TIME</div>,
+        document.getElementById('app-page')
+    )
+}

@@ -14,6 +14,11 @@ function login(state = { user : {} }, action ) {
             return Object.assign({}, state, {
                 forceLoginView: true
             });
+        case LOGIN_CONSTANTS.LOCKDOWN_MODE:
+            console.log("LOCKDOWN MODE")
+            return Object.assign({}, state, {
+                applicationClosed: true
+            });
         default:
             return state;
     }
