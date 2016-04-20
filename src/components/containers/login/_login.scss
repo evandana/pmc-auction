@@ -1,6 +1,15 @@
+body {
+    background-color:rgba( 200, 236, 255, .5 );
+}
+
 .login-page {
     margin-left: auto;
     margin-right: auto;
+    max-width: 38em;
+}
 
-
+.login-button {
+    padding: 5px;
+    margin: 3em auto;
+    display:block;
 }
