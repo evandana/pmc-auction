@@ -34,9 +34,10 @@ import {
     AppPage,
     AuctionsPage,
     ConfirmWinnersPage,
+    DonatePage,
     HomePage,
     LoginPage,
-    DonatePage
+    SponsorsPage
     } from './components/index';
 // Actions
 import { LoginActions } from './actions/LoginActions'
@@ -73,7 +74,7 @@ function authCheckHandler() {
         loadAppView()
         // post login logout handler
         logoutUnsubscribe = store.subscribe(logoutHandler);
-        
+
     } else {
         console.log("auth logic failed in app.js")
         unsubscribe()
@@ -81,9 +82,9 @@ function authCheckHandler() {
 }
 
 function logoutHandler() {
-    
+
     let state = store.getState()
-    
+
     if (state.login.forceLoginView) {
         logoutUnsubscribe()
         ReactDOM.unmountComponentAtNode(document.getElementById('app-page'))
@@ -107,6 +108,7 @@ function loadAppView () {
                         <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
                         <Route path="/auctions/add" component={AddAuctionPage} />
                         <Route path="/donate" component={DonatePage} />
+                        <Route path="/sponsors" component={SponsorsPage} />
                     </Route>
                 </Router>
                 {

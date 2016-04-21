@@ -25,7 +25,7 @@ class AuctionItemDetail extends Component {
 
 		let data = this.props.data;
 
-		let urlStr = getImageForEnv( data.image + '.png');
+		let urlStr = getImageForEnv( 'auction-big/' + data.image + '.png');
 
 		// console.log('item detail props', this.props, this.props.data.id)
 
