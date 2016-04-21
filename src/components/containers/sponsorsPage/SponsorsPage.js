@@ -50,6 +50,7 @@ const SponsorsPage = ( {prop} ) => {
                             }}
                             primaryText={sponsor.name}
                             secondaryText={sponsor.subtext}
+                            secondaryTextLines={2}
                             key={sponsor.name}
                             leftIcon={<ActionGrade color={pinkA200} />}
                             rightAvatar={<Avatar src={sponsor.image} backgroundColor={transparent} />}
