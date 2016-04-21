@@ -27,6 +27,11 @@ class Header extends Component {
                     route: "/donate"
                 },
                 {
+                    label: "Sponsors",
+                    id: "sponsors",
+                    route: "/sponsors"
+                },
+                {
                     label: "Confirm Winners",
                     id: "confirmWinners",
                     route: "/auctions/confirmWinners"

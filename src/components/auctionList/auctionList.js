@@ -31,7 +31,7 @@ let AuctionList = React.createClass({
 
 
           if (obj.show && obj.image) {
-            const urlStr = getImageForEnv( obj.image + '.png' );
+            const urlStr = getImageForEnv( 'auction-list/' + obj.image + '.png' );
 
             auctionItems.push( Object.assign( {}, obj, {
 
