@@ -49,7 +49,7 @@ class Auctions extends Component {
             const filteredAuctions = this.props.auctions.filter( auction => auction.show )
 
             return (
-                
+
                 <div>
                     <AuctionList
                         auctions={filteredAuctions}

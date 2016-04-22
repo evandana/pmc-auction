@@ -3,6 +3,7 @@ import {
     LOAD_AUCTION,
     PLACE_BID,
     TOGGLE_AUCTION_DETAIL,
+    CLEAR_AUCTION_DETAIL,
     CREATE_AUCTION_SUCCESS
 } from '../actions/AuctionActions'
 
@@ -27,6 +28,7 @@ function auctions(state = defaultAuctionState, action) {
         case PLACE_BID:
             console.log("Place Bid")
             return state;
+        case CLEAR_AUCTION_DETAIL:
         case TOGGLE_AUCTION_DETAIL:
 
             // console.log('TOGGLE_AUCTION_DETAIL')

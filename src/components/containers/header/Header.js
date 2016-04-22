@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { AppBar, Tabs, Tab, LeftNav, MenuItem, IconButton } from 'material-ui'
 import { NavigationClose, NavigationMenu }from 'material-ui/lib/svg-icons'
 import firebase from '../../../utils/firebaseAdapter'
+import { clearAuctionDetail } from '../../../actions/AuctionActions'
 
 import './_header.scss'
 
@@ -76,10 +77,15 @@ class Header extends Component {
         hashHistory.push(tab.route);
     }
 
+    clearAuctionDetail(event) {
+        // TODO: Dave to hook up?
+        // const { dispatch } = this.props
+        // dispatch(clearAuctionDetail())
+    }
+
     // Returns set of tabs based on User Credentials
     getTabsBasedOnUser (){
 
-        console.log('get tabs')
 
         let tabs = this.props.tabs;
         let allowedTabs = []
@@ -93,7 +99,7 @@ class Header extends Component {
                 case "addAuction":
                     let showAddAuction = this.props.user.permissionLevel === "ADMIN" || this.props.user.permissionLevel === "DONOR";
 
-                    console.log('addAuction', showAddAuction, this.props.user.permissionLevel)
+                    // console.log('addAuction', showAddAuction, this.props.user.permissionLevel)
 
 
                     if (!showAddAuction) {
@@ -157,6 +163,7 @@ class Header extends Component {
                                             label={tab.label}
                                             value={tab.route}
                                             key={tab.id}
+                                            onClick={this.clearAuctionDetail}
                                         />
                             }, this)
                         }
