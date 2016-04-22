@@ -10,6 +10,7 @@ export const CREATE_AUCTION_SUCCESS = 'CREATE_AUCTION_SUCCESS'
 export const FETCH_AUCTIONS = 'FETCH_AUCTIONS'
 export const LOAD_AUCTION = 'LOAD_AUCTION'
 export const PLACE_BID = 'PLACE_BID'
+export const CLEAR_AUCTION_DETAIL = 'CLEAR_AUCTION_DETAIL'
 export const TOGGLE_AUCTION_DETAIL = 'TOGGLE_AUCTION_DETAIL'
 
 export function auctionPushErrorHandler (error) {
@@ -68,5 +69,11 @@ export function toggleAuctionDetail(auctionId) {
     return {
         type: TOGGLE_AUCTION_DETAIL,
         auctionId
+    }
+}
+
+export function clearAuctionDetail() {
+    return {
+        type: CLEAR_AUCTION_DETAIL
     }
 }
