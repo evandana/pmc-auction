@@ -42,7 +42,7 @@ let AuctionList = React.createClass({
 
         });
 
-        console.log('auctionItems', auctionItems)
+        // console.log('auctionItems', auctionItems)
 
         const styles = {
           root: {
@@ -60,8 +60,7 @@ let AuctionList = React.createClass({
         }
 
         const cols = window.innerWidth < 600 ? 2 : 3;
-                  // cellHeight={200}
-
+        // cellHeight={200}
 
         // TODO: put this back in
         // actionIcon={<IconButton><PlusOne color="white"/></IconButton>}
