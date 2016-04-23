@@ -1,6 +1,7 @@
 import {
     FETCH_AUCTIONS,
     LOAD_AUCTION,
+    UPDATE_AUCTION,
     PLACE_BID,
     TOGGLE_AUCTION_DETAIL,
     CLEAR_AUCTION_DETAIL,
@@ -15,9 +16,22 @@ const defaultAuctionState = {
 function auctions(state = defaultAuctionState, action) {
     switch (action.type) {
         case CREATE_AUCTION_SUCCESS:
-            console.log('create success');
+            // console.log('create success');
             // TODO: clear form
             return state;
+        case UPDATE_AUCTION:
+            // console.log('auction reducers', state, action.auction);
+
+            return Object.assign({}, state, {
+                auctionCollection: state.auctionCollection.map( auction => {
+                    // if updated auction, then replace with new
+                    if (auction.id === action.auction.id) {
+                        return action.auction;
+                    } else {
+                        return auction;
+                    }
+                })
+            });
         case LOAD_AUCTION:
             return Object.assign({}, state, {
                 auctionCollection: [

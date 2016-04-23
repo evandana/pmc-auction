@@ -64,6 +64,14 @@ let Adapter = function Adapter () {
             });
         },
 
+        updateAuctions (callback) {
+            auctionsRef.on("child_changed", (snapshot) => {
+                let auction = snapshot.val();
+                auction.id = snapshot.key();
+                callback(auction);
+            });
+        },
+
         placeBid (bidObject, successCallback, failCallback) {
             console.log('firebase adapter', bidObject);
             // console.log('auctionsRef', auctionsRef);

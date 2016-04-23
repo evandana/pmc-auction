@@ -32,8 +32,13 @@ class AuctionItemDetail extends Component {
 	render() {
 		const { placeBid, toggleAuctionDetail } = this.props
 
-		let data = this.props.data,
-			user = this.props.user;
+
+		let user = this.props.user,
+			data = this.props.auctions.find(
+					auction => { return auction.id === this.props.data.id; }
+				);
+
+		//debugger;
 
 		let urlStr = getImageForEnv( 'auction-big/' + data.image + '.png');
 
@@ -66,7 +71,7 @@ class AuctionItemDetail extends Component {
 		// <p>{data.description}</p>
 
 		// console.log('auctionItemDetails', this.props)
-
+		console.log('data', data);
 		console.log('data.bids', data.bids);
 
 		return (
@@ -124,7 +129,8 @@ function mapStateToProps (state) {
 	console.log('state', state)
     return {
         config: state.login.config,
-        user: state.login.user
+        user: state.login.user,
+        auctions: state.auctions.auctionCollection
       }
 }
 

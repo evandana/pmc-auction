@@ -41,7 +41,7 @@ import {
     } from './components/index';
 // Actions
 import { LoginActions } from './actions/LoginActions'
-import { fetchAuctions } from './actions/AuctionActions'
+import { fetchAuctions, updateAuctions } from './actions/AuctionActions'
 // Store
 import configureStore from './stores/configureStore'
 // History
@@ -125,6 +125,7 @@ function loadAppView () {
 
     // Fetch Once to Rule Them ALL
     store.dispatch(fetchAuctions())
+    store.dispatch(updateAuctions())
     store.dispatch(LoginActions.getConfig())
     store.dispatch(LoginActions.updateConfig())
 }
