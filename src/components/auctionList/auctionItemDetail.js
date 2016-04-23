@@ -2,6 +2,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
+import { placeBid } from '../../actions/AuctionActions'
+
 // Material UI
 import Card from 'material-ui/lib/card/card';
 import CardActions from 'material-ui/lib/card/card-actions';
@@ -30,7 +32,13 @@ class AuctionItemDetail extends Component {
 	render() {
 		const { placeBid, toggleAuctionDetail } = this.props
 
-		let data = this.props.data;
+
+		let user = this.props.user,
+			data = this.props.auctions.find(
+					auction => { return auction.id === this.props.data.id; }
+				);
+
+		//debugger;
 
 		let urlStr = getImageForEnv( 'auction-big/' + data.image + '.png');
 
@@ -62,6 +70,10 @@ class AuctionItemDetail extends Component {
 		// <h3>{data.title}</h3>
 		// <p>{data.description}</p>
 
+		// console.log('auctionItemDetails', this.props)
+		console.log('data', data);
+		console.log('data.bids', data.bids);
+
 		return (
 			<div className="auction-item-detail">
 				<Card style={style.detailsPage} >
@@ -84,7 +96,14 @@ class AuctionItemDetail extends Component {
 						?
 							<CardActions>
 								<FlatButton label="-" />
-								<FlatButton label={ 'bid $' + (parseInt(data.openingBid, 10) + 5) } />
+								<FlatButton
+									label={ 'bid $' + (parseInt(data.openingBid, 10) + 5) }
+									onClick={ e => placeBid({
+										bidderObj: user,
+										bidAmount: data.openingBid,
+										auctionId: data.id
+									}, e) }
+								/>
 								<FlatButton label="+" />
 							</CardActions>
 						:
@@ -107,8 +126,11 @@ class AuctionItemDetail extends Component {
 }
 
 function mapStateToProps (state) {
+	console.log('state', state)
     return {
-        config: state.login.config
+        config: state.login.config,
+        user: state.login.user,
+        auctions: state.auctions.auctionCollection
       }
 }
 
