@@ -57,12 +57,23 @@ export function loadAuctionObj(auction) {
     }
 }
 
-export function placeBid(auctionId, bidAmount) {
-    return {
-        type: PLACE_BID,
-        auctionId,
-        bidAmount
+export function placeBid(bidDetails) {
+    return dispatch => {
+        firebase.placeBid(
+            bidDetails,
+            () => {console.log('bid success')},
+            () => {console.log('bid fail')}
+        )
     }
+}
+
+export function placeBidObj (bidDetails) {
+    return assign({}, bidDetails, {
+        type: PLACE_BID,
+        auctionId: bidDetails.auctionId,
+        bidAmount: bidDetails.bidAmount,
+        bidderObj: bidDetails.bidderObj
+    });
 }
 
 export function toggleAuctionDetail(auctionId) {

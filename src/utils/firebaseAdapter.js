@@ -64,6 +64,12 @@ let Adapter = function Adapter () {
             });
         },
 
+        placeBid (bidObject, successCallback, failCallback) {
+            console.log('firebase adapter', bidObject);
+            // console.log('auctionsRef', auctionsRef);
+            auctionsRef.child(bidObject.auctionId).child('bids').push(bidObject);
+        },
+
         loginGoogle (successCallback, failCallback) {
             return ref.authWithOAuthRedirect("google", function(error, authData) {
                 if (error) {

@@ -26,7 +26,7 @@ function auctions(state = defaultAuctionState, action) {
                 ]
             });
         case PLACE_BID:
-            console.log("Place Bid")
+            console.log('place bid reducer', action);
             return state;
         case CLEAR_AUCTION_DETAIL:
         case TOGGLE_AUCTION_DETAIL:
