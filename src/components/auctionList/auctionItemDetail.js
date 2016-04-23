@@ -23,6 +23,10 @@ import './_auctionItemDetail.scss';
 
 class AuctionItemDetail extends Component {
 
+    constructor(props) {
+        super(props)
+  	}
+
 	render() {
 		const { placeBid, toggleAuctionDetail } = this.props
 
@@ -49,14 +53,17 @@ class AuctionItemDetail extends Component {
 			},
 			subtitle: {
 				fontSize: 14
+			},
+			biddingNotAvailable: {
+				color: '#999'
 			}
 		}
 
+		// <h3>{data.title}</h3>
+		// <p>{data.description}</p>
 
-					// <h3>{data.title}</h3>
-					// <p>{data.description}</p>
 		return (
-			<div>
+			<div className="auction-item-detail">
 				<Card style={style.detailsPage} >
 				    <div style={style.actionsContainer}>
 					    <FloatingActionButton
@@ -72,11 +79,17 @@ class AuctionItemDetail extends Component {
 						title={data.title}
 						subtitle={'with ' + data.donorName}
 					/>
-					{ false ? <CardActions>
-						<FlatButton label="-" />
-						<FlatButton label={ 'bid $' + (parseInt(data.openingBid, 10) + 5) } />
-						<FlatButton label="+" />
-					</CardActions> : ''}
+					{
+						this.props.config.BIDDING_OPEN
+						?
+							<CardActions>
+								<FlatButton label="-" />
+								<FlatButton label={ 'bid $' + (parseInt(data.openingBid, 10) + 5) } />
+								<FlatButton label="+" />
+							</CardActions>
+						:
+							<CardText style={style.biddingNotAvailable}>Bidding closed at this time</CardText>
+					}
 					<CardText>
 						<div className="detail-field"><label>Description</label><span>{data.description}</span></div>
 						<div className="detail-field"><label>Please use by</label><span>{data.expiration}</span></div>
@@ -93,4 +106,11 @@ class AuctionItemDetail extends Component {
 
 }
 
-export default AuctionItemDetail;
+function mapStateToProps (state) {
+    return {
+        config: state.login.config
+      }
+}
+
+export default connect(mapStateToProps)(AuctionItemDetail);
+

@@ -125,6 +125,8 @@ function loadAppView () {
 
     // Fetch Once to Rule Them ALL
     store.dispatch(fetchAuctions())
+    store.dispatch(LoginActions.getConfig())
+    store.dispatch(LoginActions.updateConfig())
 }
 
 function loadLoginView () {

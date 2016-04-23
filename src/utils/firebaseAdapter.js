@@ -9,9 +9,6 @@ let Adapter = function Adapter () {
 
     return {
 
-        addAuction (auctionObj, callback) {
-            auctionsRef.push(auctionObj, callback);
-        },
 
         addNewUser (uid, userObj) {
 
@@ -40,11 +37,23 @@ let Adapter = function Adapter () {
                 usersRef.once('value', (snapshot) => { resolve(snapshot.val()) });
             });
         },
-        
+
         getConfig () {
             return new Promise(function(resolve, reject) {
                 configRef.once('value', (snapshot) => { resolve(snapshot.val()) });
             });
+        },
+
+        updateConfig (callback) {
+            configRef.on('child_changed', (childSnapshot, prevChildKey) => {
+                let updatedConfigProp = {};
+                updatedConfigProp[childSnapshot.key()] = childSnapshot.val();
+                callback(updatedConfigProp)
+            });
+        },
+
+        addAuction (auctionObj, callback) {
+            auctionsRef.push(auctionObj, callback);
         },
 
         loadAuctions (callback) {

@@ -35,11 +35,15 @@ class Auctions extends Component {
         if ( this.props.expandedAuctionIdList.length > 0 ) {
             let detailObjKey = this.props.expandedAuctionIdList[0];
             let detailObj = this.props.auctions.find(item => { return detailObjKey === item.id; });
+
+            // console.log('this.props.config', this.props.config)
+
             // console.log('detailObj', detailObj);
             return (
                 <AuctionItemDetail
                     key={detailObj.id}
                     data={detailObj}
+                    config={this.props.config}
                     placeBid={this.placeBid}
                     toggleAuctionDetail={this.toggleAuctionDetail}
                 />
