@@ -17,7 +17,7 @@ class AuctionsPage extends Component {
             <div>
                 <Auctions
                     auctions={this.props.auctions}
-                    expandedAuctionIdList={this.props.expandedAuctionIdList}
+                    expandedAuction={this.props.expandedAuction}
                     config={this.props.config}
                 />
             </div>
@@ -28,7 +28,7 @@ class AuctionsPage extends Component {
 function mapStateToProps (state) {
     return {
         auctions: state.auctions.auctionCollection,
-        expandedAuctionIdList: state.auctions.expandedAuctionIdList,
+        expandedAuction: state.auctions.expandedAuction,
         config: state.login.config
       }
 }

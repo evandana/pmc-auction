@@ -5,17 +5,10 @@ import {
 function login(state = { user : {} }, action ) {
     switch (action.type) {
         case LOGIN_CONSTANTS.GET_CONFIG_SUCCESS:
-            // console.log('get config success', state, action.data)
             return Object.assign({}, state, {
                 config: action.data
             });
         case LOGIN_CONSTANTS.UPDATE_CONFIG_SUCCESS:
-            // console.log('update config success',
-            //     state,
-            //     action.data,
-            //     Object.assign({}, state, {
-            //     config: Object.assign({}, state.config, action.data)
-            // }))
             return Object.assign({}, state, {
                 config: Object.assign({}, state.config, action.data)
             });

@@ -3,22 +3,24 @@ import {
     LOAD_AUCTION,
     UPDATE_AUCTION,
     PLACE_BID,
-    TOGGLE_AUCTION_DETAIL,
-    CLEAR_AUCTION_DETAIL,
+    HIDE_AUCTION_DETAIL,
+    SHOW_AUCTION_DETAIL,
     CREATE_AUCTION_SUCCESS
 } from '../actions/AuctionActions'
 
 const defaultAuctionState = {
     auctionCollection : [],
-    expandedAuctionIdList : []
+    expandedAuction : {}
 }
 
 function auctions(state = defaultAuctionState, action) {
     switch (action.type) {
+
         case CREATE_AUCTION_SUCCESS:
             // console.log('create success');
             // TODO: clear form
             return state;
+
         case UPDATE_AUCTION:
             // console.log('auction reducers', state, action.auction);
 
@@ -32,39 +34,36 @@ function auctions(state = defaultAuctionState, action) {
                     }
                 })
             });
+
         case LOAD_AUCTION:
+
             return Object.assign({}, state, {
                 auctionCollection: [
                     ...state.auctionCollection,
                     action.auction
                 ]
             });
+
         case PLACE_BID:
+
             console.log('place bid reducer', action);
             return state;
-        case CLEAR_AUCTION_DETAIL:
-        case TOGGLE_AUCTION_DETAIL:
 
-            // console.log('TOGGLE_AUCTION_DETAIL')
-            if ( state.expandedAuctionIdList.includes(action.auctionId) ) {
+        case HIDE_AUCTION_DETAIL:
 
-                state.expandedAuctionIdList.splice(
-                    state.expandedAuctionIdList.findIndex( element => element === action.auctionId ), 1
-                )
+            return Object.assign({}, state, {
+                expandedAuction: {}
+            });
 
-                return Object.assign({}, state, {
-                    expandedAuctionIdList: [...state.expandedAuctionIdList]
-                });
+        case SHOW_AUCTION_DETAIL:
 
-            } else {
+            const expandedAuction = state.auctionCollection.find( auction => {
+                return auction.id === action.auctionId;
+            });
 
-                return Object.assign({}, state, {
-                    expandedAuctionIdList: [
-                        ...state.expandedAuctionIdList,
-                        action.auctionId
-                    ]
-                });
-            }
+            return Object.assign({}, state, {
+                expandedAuction: expandedAuction
+            });
 
         default:
             return state

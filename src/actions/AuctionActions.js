@@ -11,8 +11,8 @@ export const FETCH_AUCTIONS = 'FETCH_AUCTIONS'
 export const LOAD_AUCTION = 'LOAD_AUCTION'
 export const UPDATE_AUCTION = 'UPDATE_AUCTION'
 export const PLACE_BID = 'PLACE_BID'
-export const CLEAR_AUCTION_DETAIL = 'CLEAR_AUCTION_DETAIL'
-export const TOGGLE_AUCTION_DETAIL = 'TOGGLE_AUCTION_DETAIL'
+export const SHOW_AUCTION_DETAIL = 'SHOW_AUCTION_DETAIL'
+export const HIDE_AUCTION_DETAIL = 'HIDE_AUCTION_DETAIL'
 
 export function auctionPushErrorHandler (error) {
     if (error) {
@@ -92,10 +92,18 @@ export function placeBidObj (bidDetails) {
 }
 
 export function toggleAuctionDetail(auctionId) {
-    return {
-        type: TOGGLE_AUCTION_DETAIL,
-        auctionId
+    if (auctionId) {
+        return {
+            type: SHOW_AUCTION_DETAIL,
+            auctionId
+        }
+    } else {
+        return {
+            type: HIDE_AUCTION_DETAIL
+        }
     }
+
+
 }
 
 export function clearAuctionDetail() {
