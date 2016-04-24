@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 // Material-UI
@@ -20,7 +20,12 @@ import AuctionItemDetail from './auctionItemDetail';
 import './_auctionList.scss'
 
 
-let AuctionList = React.createClass({
+class AuctionList extends Component {
+
+    constructor(props) {
+      super(props)
+    }
+
 
     render() {
 
@@ -35,7 +40,8 @@ let AuctionList = React.createClass({
 
             auctionItems.push( Object.assign( {}, obj, {
                 key: urlStr + '?q=' + index,
-                img: urlStr
+                img: urlStr,
+                title: this.props.config && this.props.config.BIDDING_OPEN ? obj.title + ' ($' + (obj.highestBid || obj.openingBid) + ')' : obj.title
             } ) );
           }
 
@@ -94,6 +100,13 @@ let AuctionList = React.createClass({
 
     }
 
-});
+}
 
-export default AuctionList;
+function mapStateToProps (state) {
+  console.log('state', state.login)
+    return {
+        config: state.login.config
+    }
+}
+
+export default connect(mapStateToProps)(AuctionList);
