@@ -65,6 +65,15 @@ class AuctionItemDetail extends Component {
 		let data = this.props.data,
 			user = this.props.user;
 
+		// ensure props and state top bids are accurate
+		this.setState({
+			bidDisplayAmount: this.state.bidDisplayAmount > this.props.highestBid + this.props.incrementAmount
+				?
+					this.state.bidDisplayAmount
+				:
+					this.props.highestBid + this.props.incrementAmount
+			})
+
 		// modal actions
 		const actions = [
 		  <FlatButton

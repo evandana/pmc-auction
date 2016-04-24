@@ -103,7 +103,7 @@ class AuctionList extends Component {
 }
 
 function mapStateToProps (state) {
-  console.log('state', state.login)
+  // console.log('state', state.login)
     return {
         config: state.login.config
     }
