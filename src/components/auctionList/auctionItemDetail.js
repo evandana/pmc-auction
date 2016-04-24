@@ -32,8 +32,7 @@ class AuctionItemDetail extends Component {
 		super(props)
 		this.state = Object.assign(false, {}, {
 			confirmModalOpen: props.open,
-			bidDisplayAmount: props.bidDisplayAmount,
-			highestBid: props.highestBid
+			bidDisplayAmount: props.bidDisplayAmount
 		});
 	}
 
@@ -110,6 +109,23 @@ class AuctionItemDetail extends Component {
 			},
 			biddingNotAvailable: {
 				color: '#999'
+			},
+			bidContainer: {
+				textAlign: 'center'
+			},
+			bidLess: {
+				minWidth: 50,
+				marginRight: 0,
+				marginLeft: 0
+			},
+			bidMore: {
+				minWidth: 50,
+				marginRight: 0,
+				marginLeft: 0
+			},
+			bidSubmit: {
+				marginRight: 0,
+				marginLeft: 0
 			}
 		}
 
@@ -121,7 +137,7 @@ class AuctionItemDetail extends Component {
 							backgroundColor={cyan200}
 							mini={true}
 							style={style.closeButton}
-							onClick={ e => toggleAuctionDetail(data.id, e) }
+							onClick={ e => toggleAuctionDetail('', e) }
 						  >
 						  <ContentClear />
 						</FloatingActionButton>
@@ -133,22 +149,28 @@ class AuctionItemDetail extends Component {
 					{
 						this.props.config.BIDDING_OPEN
 						?
-							<div>
+							<div style={style.bidContainer}>
 								<CardActions>
 									<FlatButton
+										style={style.bidLess}
 										label="-"
 										onTouchTap={() => this.decreaseBidAmount()}
 										disabled={this.state.bidDisplayAmount === this.props.bidAmountMin ? true : false}
 										hoverColor='white'
 										/>
 									<RaisedButton
+										style={style.bidSubmit}
 										label={ 'bid $' + this.state.bidDisplayAmount }
 										labelPosition="before"
 										primary={true}
 										icon={<AddShoppingCart />}
 										onTouchTap={this.handleOpen}
 									/>
-									<FlatButton label="+" onTouchTap={() => this.increaseBidAmount()}/>
+									<FlatButton
+										style={style.bidMore}
+										label="+"
+										onTouchTap={() => this.increaseBidAmount()}
+									/>
 								</CardActions>
 								<Dialog
 									title={'Confirm Bid for $' + this.state.bidDisplayAmount}
@@ -161,9 +183,23 @@ class AuctionItemDetail extends Component {
 								</Dialog>
 							</div>
 						:
-							<CardText style={style.biddingNotAvailable}>Bidding closed at this time</CardText>
+							''
 					}
 					<CardText>
+						<div className="detail-field">
+							<label>Top Bid</label>
+							{
+								this.props.config.BIDDING_OPEN
+								?
+									<span>
+										{'$' + this.props.highestBid.bidAmount + ' by ' + this.props.highestBid.bidderObj.persona}
+									</span>
+								:
+									<span style={style.biddingNotAvailable}>
+										[bidding closed]
+									</span>
+							}
+						</div>
 						<div className="detail-field"><label>Description</label><span>{data.description}</span></div>
 						<div className="detail-field"><label>Please use by</label><span>{data.expiration}</span></div>
 					</CardText>
@@ -180,7 +216,6 @@ class AuctionItemDetail extends Component {
 }
 
 function mapStateToProps (state) {
-	console.log('state', state)
 
 	const data = state.auctions.auctionCollection.find(
 			auction => { return auction.id === state.auctions.expandedAuction.id; }

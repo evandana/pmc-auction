@@ -41,7 +41,7 @@ import {
     } from './components/index';
 // Actions
 import { LoginActions } from './actions/LoginActions'
-import { fetchAuctions, updateAuctions } from './actions/AuctionActions'
+import { toggleAuctionDetail, fetchAuctions, updateAuctions } from './actions/AuctionActions'
 // Store
 import configureStore from './stores/configureStore'
 // History
@@ -94,9 +94,12 @@ function logoutHandler() {
 
 function loadAppView () {
 
-    // console.log('load app view');
-    // store.dispatch(LoginActions.authCheck());
-    // hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
+    // on Auctions Page click, always go to list view
+    hashHistory.listen(location => {
+        if (location.pathname === '/auctions') {
+            store.dispatch(toggleAuctionDetail(false));
+        }
+    })
 
     render(
         <Provider store={store}>

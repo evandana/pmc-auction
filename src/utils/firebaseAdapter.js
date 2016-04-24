@@ -73,9 +73,11 @@ let Adapter = function Adapter () {
         },
 
         placeBid (bidObject, successCallback, failCallback) {
-            console.log('firebase adapter', bidObject);
-            // console.log('auctionsRef', auctionsRef);
+            // console.log('firebase adapter', bidObject);
+            // add bid
             auctionsRef.child(bidObject.auctionId).child('bids').push(bidObject);
+            // update highest bid for auction item
+            auctionsRef.child(bidObject.auctionId).update({highestBid: bidObject.bidAmount});
         },
 
         loginGoogle (successCallback, failCallback) {

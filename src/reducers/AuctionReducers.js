@@ -44,10 +44,10 @@ function auctions(state = defaultAuctionState, action) {
                 ]
             });
 
-        case PLACE_BID:
+        // case PLACE_BID:
 
-            console.log('place bid reducer', action);
-            return state;
+        //     console.log('place bid reducer', action);
+        //     return state;
 
         case HIDE_AUCTION_DETAIL:
 
