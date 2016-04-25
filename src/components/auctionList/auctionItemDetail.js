@@ -50,14 +50,14 @@ class AuctionItemDetail extends Component {
 	}
 
 	increaseBidAmount() {
-		const bidDisplayAmount = this.state.bidDisplayAmount + this.props.increment;
+		const bidDisplayAmount = parseInt(this.state.bidDisplayAmount, 10) + this.props.increment;
 		this.setState({bidDisplayAmount: bidDisplayAmount});
 		// console.log('bidDisplayAmount', bidDisplayAmount);
 	}
 	decreaseBidAmount() {
-		const bidDisplayAmount = this.state.bidDisplayAmount - this.props.increment >= this.props.bidAmountMin
+		const bidDisplayAmount = parseInt(this.state.bidDisplayAmount, 10) - this.props.increment >= parseInt(this.props.bidAmountMin, 10)
 			?
-				this.state.bidDisplayAmount - this.props.increment
+				parseInt(this.state.bidDisplayAmount, 10) - this.props.increment
 			:
 				this.props.bidAmountMin;
 		this.setState({bidDisplayAmount: bidDisplayAmount});
@@ -127,7 +127,7 @@ class AuctionItemDetail extends Component {
 			onTouchTap={() => this.handleClose()}
 		  />,
 		  <FlatButton
-		  	style={this.state.validBidAmount ? '' : style.hidden}
+		  	style={this.state.validBidAmount ? {} : style.hidden}
 			label="Submit"
 			primary={true}
 			keyboardFocused={true}
@@ -168,7 +168,10 @@ class AuctionItemDetail extends Component {
 										style={style.bidLess}
 										label="-"
 										onTouchTap={() => this.decreaseBidAmount()}
-										disabled={this.state.bidDisplayAmount === this.props.bidAmountMin ? true : false}
+										disabled={
+											parseInt(this.state.bidDisplayAmount, 10) <= (parseInt(this.props.bidAmountMin, 10))
+											? true : false
+										}
 										hoverColor='white'
 										/>
 									<RaisedButton
@@ -218,7 +221,12 @@ class AuctionItemDetail extends Component {
 								this.props.config.BIDDING_OPEN
 								?
 									<span>
-										{'$' + this.props.highestBid.bidAmount + ' by ' + this.props.highestBid.bidderObj.persona}
+										{this.props.highestBid && this.props.highestBid.bidderObj
+											?
+												'$' + this.props.highestBid.bidAmount + ' by ' + this.props.highestBid.bidderObj.persona
+											:
+												'$' + data.openingBid
+										}
 									</span>
 								:
 									<span style={style.biddingNotAvailable}>
@@ -247,16 +255,23 @@ function mapStateToProps (state) {
 			auction => { return auction.id === state.auctions.expandedAuction.id; }
 		);
 
-	let highestBid = {bidAmount: 0};
+	let highestBid = {bidAmount: parseInt(data.openingBid, 10)};
 	for (let bid in data.bids) {
 		if (parseInt(data.bids[bid].bidAmount, 10) > highestBid.bidAmount) {
 			highestBid = data.bids[bid];
 		}
 	}
 
-	const increment = parseInt(data.incrementAmount, 10)
+	const increment = parseInt(data.incrementAmount || 5, 10)
 
-	// console.log('state: highest bid', highestBid)
+	data.openingBid = data.openingBid || 10;
+
+	let bidAmountMin = parseInt(highestBid.bidAmount, 10) + increment;
+
+	// if opening bid
+	if (bidAmountMin === parseInt(data.openingBid, 10) + increment) {
+		bidAmountMin = parseInt(data.openingBid, 10);
+	}
 
 	return {
 		// app-level, static
@@ -265,7 +280,7 @@ function mapStateToProps (state) {
 		// item-level, static
 		data: data,
 		increment: increment,
-		bidAmountMin: parseInt(highestBid.bidAmount, 10) + increment,
+		bidAmountMin: bidAmountMin,
 		// item-level, dynamic values
 		open: false,
 		bidDisplayAmount: data.bids ? parseInt(highestBid.bidAmount || data.openingBid, 10) + increment : data.openingBid,
