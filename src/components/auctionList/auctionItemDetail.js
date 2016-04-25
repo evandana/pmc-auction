@@ -33,22 +33,20 @@ class AuctionItemDetail extends Component {
 		this.state = Object.assign(false, {}, {
 			confirmModalOpen: props.open,
 			bidDisplayAmount: props.bidDisplayAmount,
-			bidMessage: ''
+			validBidAmount: true
 		});
 	}
 
 	handleOpen() {
-		if (this.state.bidDisplayAmount > this.props.highestbid.bidAmount + this.props.increment ) {
-			this.setState({confirmModalOpen: true});
-			console.log('open')
+		if (this.state.bidDisplayAmount >= parseInt(this.props.highestBid.bidAmount, 10) + this.props.increment ) {
+			this.setState({validBidAmount: true, confirmModalOpen: true});
 		} else {
-			console.log('message')
-			this.setState({bidMessage: 'Please bid more than $' + this.state.bidDisplayAmount > this.props.highestbid})
+			this.setState({validBidAmount: false, confirmModalOpen: true});
 		}
 	}
 
 	handleClose() {
-		this.setState({confirmModalOpen: false, bidMessage: ''});
+		this.setState({confirmModalOpen: false});
 	}
 
 	increaseBidAmount() {
@@ -183,7 +181,13 @@ class AuctionItemDetail extends Component {
 									/>
 								</CardActions>
 								<Dialog
-									title={'Confirm Bid for $' + this.state.bidDisplayAmount}
+									title={this.state.validBidAmount
+										?
+											'Confirm Bid for $' + this.state.bidDisplayAmount
+										:
+											'This is a hot item! Highest bid is now $' + this.props.highestBid.bidAmount +
+												'. Please bid higher than $' + (parseInt(this.props.highestBid.bidAmount, 10) + this.props.increment)
+									}
 									actions={actions}
 									modal={false}
 									open={this.state.confirmModalOpen}
@@ -197,9 +201,9 @@ class AuctionItemDetail extends Component {
 					}
 					<CardText>
 						{
-							this.state.bidMessage
+							this.state.modalMessage
 							?
-								<div className="detail-field detail-message"><label>MESSAGE</label><span>{this.state.bidMessage}</span></div>
+								<div className="detail-field detail-message"><label>MESSAGE</label><span>{this.state.modalMessage}</span></div>
 							:
 								''
 						}
@@ -247,7 +251,7 @@ function mapStateToProps (state) {
 
 	const increment = parseInt(data.incrementAmount, 10)
 
-	// console.log('mapStateToProps item details')
+	// console.log('state: highest bid', highestBid)
 
 	return {
 		// app-level, static
