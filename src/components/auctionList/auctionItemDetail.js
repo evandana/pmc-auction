@@ -26,6 +26,10 @@ import { getImageForEnv } from '../../images/index'
 import './_auctionItemDetail.scss';
 // Application Components
 
+
+const DEFAULT_OPENING_BID = 10;
+const DEFAULT_INCREMENT_AMOUNT = 10;
+
 class AuctionItemDetail extends Component {
 
 	constructor(props) {
@@ -255,16 +259,16 @@ function mapStateToProps (state) {
 			auction => { return auction.id === state.auctions.expandedAuction.id; }
 		);
 
-	let highestBid = {bidAmount: parseInt(data.openingBid, 10)};
+	let highestBid = {bidAmount: parseInt(data.openingBid || DEFAULT_OPENING_BID, 10)};
 	for (let bid in data.bids) {
 		if (parseInt(data.bids[bid].bidAmount, 10) > highestBid.bidAmount) {
 			highestBid = data.bids[bid];
 		}
 	}
 
-	const increment = parseInt(data.incrementAmount || 5, 10)
+	const increment = parseInt(data.incrementAmount || DEFAULT_INCREMENT_AMOUNT, 10)
 
-	data.openingBid = data.openingBid || 10;
+	data.openingBid = data.openingBid || DEFAULT_OPENING_BID;
 
 	let bidAmountMin = parseInt(highestBid.bidAmount, 10) + increment;
 
