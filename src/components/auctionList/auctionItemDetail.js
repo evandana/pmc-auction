@@ -73,31 +73,13 @@ class AuctionItemDetail extends Component {
 		let data = this.props.data,
 			user = this.props.user;
 
-		// modal actions
-		const actions = [
-		  <FlatButton
-			label="Cancel"
-			secondary={true}
-			onTouchTap={() => this.handleClose()}
-		  />,
-		  <FlatButton
-			label="Submit"
-			primary={true}
-			keyboardFocused={true}
-			onTouchTap={ e => {
-				this.handleClose();
-				placeBid({
-					bidderObj: user,
-					bidAmount: this.state.bidDisplayAmount,
-					auctionId: data.id
-				}, e)
-			}}
-		  />,
-		];
 
 		let urlStr = getImageForEnv( 'auction-big/' + data.image + '.png');
 
 		let style = {
+			hidden: {
+				display:'none'
+			},
 			detailsPage: {
 				position: 'relative'
 			},
@@ -136,6 +118,29 @@ class AuctionItemDetail extends Component {
 				marginLeft: 0
 			}
 		}
+
+		// modal actions
+		const actions = [
+		  <FlatButton
+			label="Cancel"
+			secondary={true}
+			onTouchTap={() => this.handleClose()}
+		  />,
+		  <FlatButton
+		  	style={this.state.validBidAmount ? '' : style.hidden}
+			label="Submit"
+			primary={true}
+			keyboardFocused={true}
+			onTouchTap={ e => {
+				this.handleClose();
+				placeBid({
+					bidderObj: user,
+					bidAmount: this.state.bidDisplayAmount,
+					auctionId: data.id
+				}, e)
+			}}
+		  />,
+		];
 
 		return (
 			<div className="auction-item-detail">
