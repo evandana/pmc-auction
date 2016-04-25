@@ -31,7 +31,7 @@ class Auctions extends Component {
 
     render() {
 
-        if ( this.props.expandedAuction.id ) {
+        if ( this.props.expandedAuction && this.props.expandedAuction.id ) {
             let detailObjKey = this.props.expandedAuction.id;
             let detailObj = this.props.auctions.find(item => { return detailObjKey === item.id; });
 
