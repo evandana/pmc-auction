@@ -13,6 +13,7 @@ class AuctionsPage extends Component {
 
     render () {
 
+        // console.log('render auction page')
         return (
             <div>
                 <Auctions
@@ -26,6 +27,7 @@ class AuctionsPage extends Component {
 }
 
 function mapStateToProps (state) {
+    // console.log('mapStateToProps auction page')
     return {
         auctions: state.auctions.auctionCollection,
         expandedAuction: state.auctions.expandedAuction,
@@ -34,3 +36,4 @@ function mapStateToProps (state) {
 }
 
 export default connect(mapStateToProps)(AuctionsPage);
+// export default AuctionsPage;

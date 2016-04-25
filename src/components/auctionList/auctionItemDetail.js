@@ -32,16 +32,23 @@ class AuctionItemDetail extends Component {
 		super(props)
 		this.state = Object.assign(false, {}, {
 			confirmModalOpen: props.open,
-			bidDisplayAmount: props.bidDisplayAmount
+			bidDisplayAmount: props.bidDisplayAmount,
+			bidMessage: ''
 		});
 	}
 
-	handleOpen = () => {
-		this.setState({confirmModalOpen: true});
+	handleOpen() {
+		if (this.state.bidDisplayAmount > this.props.highestbid.bidAmount + this.props.increment ) {
+			this.setState({confirmModalOpen: true});
+			console.log('open')
+		} else {
+			console.log('message')
+			this.setState({bidMessage: 'Please bid more than $' + this.state.bidDisplayAmount > this.props.highestbid})
+		}
 	}
 
-	handleClose = () => {
-		this.setState({confirmModalOpen: false});
+	handleClose() {
+		this.setState({confirmModalOpen: false, bidMessage: ''});
 	}
 
 	increaseBidAmount() {
@@ -60,26 +67,20 @@ class AuctionItemDetail extends Component {
 	}
 
 	render() {
+
+		// console.log('render in item detail')
+
 		const { placeBid, toggleAuctionDetail } = this.props
 
 		let data = this.props.data,
 			user = this.props.user;
-
-		// ensure props and state top bids are accurate
-		this.setState({
-			bidDisplayAmount: this.state.bidDisplayAmount > this.props.highestBid + this.props.incrementAmount
-				?
-					this.state.bidDisplayAmount
-				:
-					this.props.highestBid + this.props.incrementAmount
-			})
 
 		// modal actions
 		const actions = [
 		  <FlatButton
 			label="Cancel"
 			secondary={true}
-			onTouchTap={this.handleClose}
+			onTouchTap={() => this.handleClose()}
 		  />,
 		  <FlatButton
 			label="Submit"
@@ -173,7 +174,7 @@ class AuctionItemDetail extends Component {
 										labelPosition="before"
 										primary={true}
 										icon={<AddShoppingCart />}
-										onTouchTap={this.handleOpen}
+										onTouchTap={() => this.handleOpen()}
 									/>
 									<FlatButton
 										style={style.bidMore}
@@ -186,7 +187,7 @@ class AuctionItemDetail extends Component {
 									actions={actions}
 									modal={false}
 									open={this.state.confirmModalOpen}
-									onRequestClose={this.handleClose}
+									onRequestClose={() => this.handleClose() }
 									>
 									{data.title} with {data.donorName}
 								</Dialog>
@@ -195,6 +196,13 @@ class AuctionItemDetail extends Component {
 							''
 					}
 					<CardText>
+						{
+							this.state.bidMessage
+							?
+								<div className="detail-field detail-message"><label>MESSAGE</label><span>{this.state.bidMessage}</span></div>
+							:
+								''
+						}
 						<div className="detail-field">
 							<label>Top Bid</label>
 							{
@@ -239,6 +247,8 @@ function mapStateToProps (state) {
 
 	const increment = parseInt(data.incrementAmount, 10)
 
+	// console.log('mapStateToProps item details')
+
 	return {
 		// app-level, static
 		config: state.login.config,
@@ -249,10 +259,9 @@ function mapStateToProps (state) {
 		bidAmountMin: parseInt(highestBid.bidAmount, 10) + increment,
 		// item-level, dynamic values
 		open: false,
-		bidDisplayAmount: data.bids ? parseInt(highestBid.bidAmount, 10) + increment : data.openingBid,
+		bidDisplayAmount: data.bids ? parseInt(highestBid.bidAmount || data.openingBid, 10) + increment : data.openingBid,
 		highestBid: highestBid
 	};
 }
 
 export default connect(mapStateToProps)(AuctionItemDetail);
-
