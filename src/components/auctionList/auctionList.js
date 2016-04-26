@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 // Material-UI
@@ -20,7 +20,12 @@ import AuctionItemDetail from './auctionItemDetail';
 import './_auctionList.scss'
 
 
-let AuctionList = React.createClass({
+class AuctionList extends Component {
+
+    constructor(props) {
+      super(props)
+    }
+
 
     render() {
 
@@ -34,15 +39,15 @@ let AuctionList = React.createClass({
             const urlStr = getImageForEnv( 'auction-list/' + obj.image + '.png' );
 
             auctionItems.push( Object.assign( {}, obj, {
-
                 key: urlStr + '?q=' + index,
-                img: urlStr
+                img: urlStr,
+                title: this.props.config && this.props.config.BIDDING_OPEN ? obj.title + ' ($' + (obj.highestBid || obj.openingBid) + ')' : obj.title
             } ) );
           }
 
         });
 
-        console.log('auctionItems', auctionItems)
+        // console.log('auctionItems', auctionItems)
 
         const styles = {
           root: {
@@ -60,8 +65,7 @@ let AuctionList = React.createClass({
         }
 
         const cols = window.innerWidth < 600 ? 2 : 3;
-                  // cellHeight={200}
-
+        // cellHeight={200}
 
         // TODO: put this back in
         // actionIcon={<IconButton><PlusOne color="white"/></IconButton>}
@@ -76,7 +80,7 @@ let AuctionList = React.createClass({
                   {auctionItems.map(tile => (
                     <GridTile
                       placeBid={this.props.placeBid}
-                      onClick={ e => this.props.toggleAuctionDetail(tile.id, e) }
+                      onTouchTap={ e => this.props.toggleAuctionDetail(tile.id, e) }
                       key={tile.key}
                       title={tile.title}
                       subtitle={<span>with <b>{tile.donorName}</b></span>}
@@ -96,6 +100,13 @@ let AuctionList = React.createClass({
 
     }
 
-});
+}
 
-export default AuctionList;
+function mapStateToProps (state) {
+  // console.log('state', state.login)
+    return {
+        config: state.login.config
+    }
+}
+
+export default connect(mapStateToProps)(AuctionList);

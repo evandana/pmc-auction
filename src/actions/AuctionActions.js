@@ -9,9 +9,10 @@ export const CREATE_AUCTION_ERROR = 'CREATE_AUCTION_ERROR'
 export const CREATE_AUCTION_SUCCESS = 'CREATE_AUCTION_SUCCESS'
 export const FETCH_AUCTIONS = 'FETCH_AUCTIONS'
 export const LOAD_AUCTION = 'LOAD_AUCTION'
+export const UPDATE_AUCTION = 'UPDATE_AUCTION'
 export const PLACE_BID = 'PLACE_BID'
-export const CLEAR_AUCTION_DETAIL = 'CLEAR_AUCTION_DETAIL'
-export const TOGGLE_AUCTION_DETAIL = 'TOGGLE_AUCTION_DETAIL'
+export const SHOW_AUCTION_DETAIL = 'SHOW_AUCTION_DETAIL'
+export const HIDE_AUCTION_DETAIL = 'HIDE_AUCTION_DETAIL'
 
 export function auctionPushErrorHandler (error) {
     if (error) {
@@ -44,6 +45,20 @@ export function createAuction (fields, user) {
 
 }
 
+export function updateAuctions() {
+    return dispatch => {
+        firebase.updateAuctions( auction => dispatch(updateAuctionObj(auction)) )
+    }
+}
+
+export function updateAuctionObj(auction) {
+    // console.log('update auction action', auction)
+    return {
+        type: UPDATE_AUCTION,
+        auction
+    }
+}
+
 export function fetchAuctions() {
     return dispatch => {
         firebase.loadAuctions( auction => dispatch(loadAuctionObj(auction)) )
@@ -57,19 +72,38 @@ export function loadAuctionObj(auction) {
     }
 }
 
-export function placeBid(auctionId, bidAmount) {
-    return {
-        type: PLACE_BID,
-        auctionId,
-        bidAmount
+export function placeBid(bidDetails) {
+    return dispatch => {
+        firebase.placeBid(
+            bidDetails,
+            () => {console.log('bid success')},
+            () => {console.log('bid fail')}
+        )
     }
 }
 
+export function placeBidObj (bidDetails) {
+    return assign({}, bidDetails, {
+        type: PLACE_BID,
+        auctionId: bidDetails.auctionId,
+        bidAmount: bidDetails.bidAmount,
+        bidderObj: bidDetails.bidderObj
+    });
+}
+
 export function toggleAuctionDetail(auctionId) {
-    return {
-        type: TOGGLE_AUCTION_DETAIL,
-        auctionId
+    if (auctionId) {
+        return {
+            type: SHOW_AUCTION_DETAIL,
+            auctionId
+        }
+    } else {
+        return {
+            type: HIDE_AUCTION_DETAIL
+        }
     }
+
+
 }
 
 export function clearAuctionDetail() {

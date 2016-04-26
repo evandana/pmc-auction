@@ -1,56 +1,69 @@
 import {
     FETCH_AUCTIONS,
     LOAD_AUCTION,
+    UPDATE_AUCTION,
     PLACE_BID,
-    TOGGLE_AUCTION_DETAIL,
-    CLEAR_AUCTION_DETAIL,
+    HIDE_AUCTION_DETAIL,
+    SHOW_AUCTION_DETAIL,
     CREATE_AUCTION_SUCCESS
 } from '../actions/AuctionActions'
 
 const defaultAuctionState = {
     auctionCollection : [],
-    expandedAuctionIdList : []
+    expandedAuction : {}
 }
 
 function auctions(state = defaultAuctionState, action) {
     switch (action.type) {
+
         case CREATE_AUCTION_SUCCESS:
-            console.log('create success');
+            // console.log('create success');
             // TODO: clear form
             return state;
+
+        case UPDATE_AUCTION:
+            // console.log('auction reducers', state, action.auction);
+
+            return Object.assign({}, state, {
+                auctionCollection: state.auctionCollection.map( auction => {
+                    // if updated auction, then replace with new
+                    if (auction.id === action.auction.id) {
+                        return action.auction;
+                    } else {
+                        return auction;
+                    }
+                })
+            });
+
         case LOAD_AUCTION:
+
             return Object.assign({}, state, {
                 auctionCollection: [
                     ...state.auctionCollection,
                     action.auction
                 ]
             });
-        case PLACE_BID:
-            console.log("Place Bid")
-            return state;
-        case CLEAR_AUCTION_DETAIL:
-        case TOGGLE_AUCTION_DETAIL:
 
-            // console.log('TOGGLE_AUCTION_DETAIL')
-            if ( state.expandedAuctionIdList.includes(action.auctionId) ) {
+        // case PLACE_BID:
 
-                state.expandedAuctionIdList.splice(
-                    state.expandedAuctionIdList.findIndex( element => element === action.auctionId ), 1
-                )
+        //     console.log('place bid reducer', action);
+        //     return state;
 
-                return Object.assign({}, state, {
-                    expandedAuctionIdList: [...state.expandedAuctionIdList]
-                });
+        case HIDE_AUCTION_DETAIL:
 
-            } else {
+            return Object.assign({}, state, {
+                expandedAuction: {}
+            });
 
-                return Object.assign({}, state, {
-                    expandedAuctionIdList: [
-                        ...state.expandedAuctionIdList,
-                        action.auctionId
-                    ]
-                });
-            }
+        case SHOW_AUCTION_DETAIL:
+
+            const expandedAuction = state.auctionCollection.find( auction => {
+                return auction.id === action.auctionId;
+            });
+
+            return Object.assign({}, state, {
+                expandedAuction: expandedAuction
+            });
 
         default:
             return state
