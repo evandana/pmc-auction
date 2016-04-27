@@ -1,8 +1,49 @@
-import React from 'react'
+// REACT/REDUX
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+
+import { confirmWinners, confirmBidToggle } from '../actions/AuctionActions'
+
+// CONTAINER COMPONENTS
 import ConfirmWinners from './containers/confirmWinners/ConfirmWinners'
 
-const ConfirmWinnersPage = () => (
-  <ConfirmWinners />
-)
+class ConfirmWinnersPage extends Component {
 
-export default ConfirmWinnersPage
+    confirmWinnersSubmit () {
+        const { dispatch } = this.props;
+        dispatch(confirmWinners());
+    }
+
+    constructor(props) {
+        super(props)
+    }
+
+    render () {
+
+        return (
+            <div>
+                <ConfirmWinners
+                    auctions={this.props.auctions}
+                    bidTotal={this.props.bidTotal}
+                    confirmWinnersSubmit={this.confirmWinnersSubmit.bind(this)}
+                    toggleBidConfirm={this.toggleBid.bind(this)}
+                />
+            </div>
+        )
+    }
+    
+    toggleBid (auctionId, bidId) {
+        const {dispatch} = this.props;
+        dispatch(confirmBidToggle(auctionId, bidId))
+    }
+
+}
+
+export default connect(mapStateToProps)(ConfirmWinnersPage);
+
+function mapStateToProps (state) {
+    return {
+        auctions: state.auctions.ownedAuctionCollection,
+        bidTotal: state.auctions.bidTotal
+    }
+}

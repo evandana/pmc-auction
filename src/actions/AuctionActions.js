@@ -4,15 +4,17 @@ import firebase from '../utils/firebaseAdapter'
 import assign from 'object-assign';
 
 export const ADD_AUCTION = 'ADD_AUCTION'
+export const CONFIRM_WINNERS = 'CONFIRM_WINNERS'
+export const CONFIRM_BID_TOGGLE = 'CONFIRM_BID_TOGGLE'
 export const CREATE_AUCTION = 'CREATE_AUCTION'
 export const CREATE_AUCTION_ERROR = 'CREATE_AUCTION_ERROR'
 export const CREATE_AUCTION_SUCCESS = 'CREATE_AUCTION_SUCCESS'
 export const FETCH_AUCTIONS = 'FETCH_AUCTIONS'
+export const HIDE_AUCTION_DETAIL = 'HIDE_AUCTION_DETAIL'
 export const LOAD_AUCTION = 'LOAD_AUCTION'
-export const UPDATE_AUCTION = 'UPDATE_AUCTION'
 export const PLACE_BID = 'PLACE_BID'
 export const SHOW_AUCTION_DETAIL = 'SHOW_AUCTION_DETAIL'
-export const HIDE_AUCTION_DETAIL = 'HIDE_AUCTION_DETAIL'
+export const UPDATE_AUCTION = 'UPDATE_AUCTION'
 
 export function auctionPushErrorHandler (error) {
     if (error) {
@@ -22,6 +24,37 @@ export function auctionPushErrorHandler (error) {
         // console.log('AUCTION CREATED SUCCESSFULLY')
         return { type: CREATE_AUCTION_SUCCESS }
     }
+}
+
+export function confirmBidToggle (auctionId, bidId) {
+    console.log("Confirm Bid Toggle", auctionId, bidId)
+    // let selected = this.props.selectedBids;
+    // 
+    // if ( selected.includes(bidId) ) {
+    //     console.log('pulling bid off ', bidId);
+    //     selected.splice(
+    //         selected.indexOf(bidId), 1
+    //     );
+    // } else {
+    //     console.log('pushing bid on ', bidId);
+    //     selected.push(bidId);
+    // }
+    // 
+    // this.props.auctions.find( auction => auction.id === auctionId )
+    //     .total = 200;
+    //     
+    // console.log(this.props.auctions)
+    
+    return {
+        type: CONFIRM_BID_TOGGLE,
+        bidId,
+        auctionId
+    };
+}
+
+export function confirmWinners () {
+    console.log("Confirm Winners Actions!")
+    return { type: CONFIRM_WINNERS };
 }
 
 export function createAuction (fields, user) {

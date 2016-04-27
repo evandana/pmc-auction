@@ -8,8 +8,8 @@ import login from './login'
 import auctions from './AuctionReducers'
 
 const rootReducer = combineReducers({
-  auctions,
   login,
+  auctions,
   form: formReducer,
   routing: routerReducer
 })
