@@ -33,7 +33,7 @@ class AuctionList extends Component {
         const cols = window.innerWidth < 600 ? 2 : 3;
         const featuredPatternMap = {
           // 1 is first item
-          small: [1, 8, 13, 20, 25, 32, 37],
+          small: [1, 6, 13, 18, 25, 30, 37],
           medium: [1, 7, 11, 17, 21, 27, 31, 37]
         }
         const featuredPattern = cols.innerWidth < 600 ? featuredPatternMap.small : featuredPatternMap.medium;
