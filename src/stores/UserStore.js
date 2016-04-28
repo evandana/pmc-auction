@@ -81,6 +81,7 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
                 let user = {
                     uid: userData.uid,
                     name: userData.google.displayName,
+                    email: userData.google.email,
                     permissionLevel: 'GUEST'
                 };
 

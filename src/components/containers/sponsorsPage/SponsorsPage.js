@@ -26,6 +26,12 @@ const SponsorsPage = ( {prop} ) => {
             link: 'http://www.landrys.com/',
             subtext: 'The right number of bikes is N+1',
             image: getImageForEnv('sponsor-landrys.png')
+        },
+        {
+            name: 'OTTO Pizza',
+            link: 'http://www.ottoportland.com/',
+            subtext: 'Gourmet toppings',
+            image: getImageForEnv('ottos.png')
         }
     ]
 

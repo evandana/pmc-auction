@@ -165,6 +165,7 @@ function storeNewUser (userData, users){
         if (userData.auth && userData.auth.provider === 'google') {
             let user = {
                 uid: userData.uid,
+                email: userData.google.email,
                 name: userData.google.displayName,
                 permissionLevel: 'GUEST',
                 persona: generateUserPersona(users)
