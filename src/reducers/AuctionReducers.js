@@ -62,26 +62,63 @@ function auctions(state = defaultAuctionState, action) {
 
         case UPDATE_AUCTION:
             // console.log('auction reducers', state, action.auction);
-            return Object.assign({}, state, {
-                auctionCollection: state.auctionCollection.map( auction => {
+
+            if (action.auction.donorId === state.userId) {
+//                let auctionWithBids = processLoadedAuctionBids(action.auction);
+                
+                let mappedCollection = state.auctionCollection.map( auction => {
                     // if updated auction, then replace with new
                     if (auction.id === action.auction.id) {
                         return action.auction;
                     } else {
                         return auction;
                     }
-                })
-            });
+                });
+                
+                let ownedCollection = state.ownedAuctionCollection.map( auction => {
+                    // if updated auction, then replace with new
+                    if (auction.id === action.auction.id) {
+                        return processLoadedAuctionBids(action.auction);
+                    } else {
+                        return auction;
+                    }
+                });
+                
+                return Object.assign({}, state, {
+                    auctionCollection: mappedCollection,
+                    ownedAuctionCollection : ownedCollection
+                });
+            } else {
+                return Object.assign({}, state, {
+                    auctionCollection: state.auctionCollection.map( auction => {
+                        // if updated auction, then replace with new
+                        if (auction.id === action.auction.id) {
+                            return action.auction;
+                        } else {
+                            return auction;
+                        }
+                    })
+                });
+            }
+
+
 
         case LOAD_AUCTION:
 
             let ownList = state.ownedAuctionCollection.slice()
 
             if (action.auction.donorId === state.userId) {
-                action.auction = processLoadedAuctionBids(action.auction);
+                let auctionWithBids = processLoadedAuctionBids(action.auction);
+                
+                let newStateTotal = 0;
+                
+                Object.keys(action.auction.winningBids).forEach( bidId => {
+                    newStateTotal += action.auction.bids[bidId].bidAmount;
+                });
+                
                 ownList = [
                     ...ownList,
-                    action.auction
+                    auctionWithBids
                 ]
                 
                 return Object.assign({}, state, {
@@ -89,6 +126,7 @@ function auctions(state = defaultAuctionState, action) {
                         ...state.auctionCollection,
                         action.auction
                     ],
+                    bidTotal: newStateTotal,
                     ownedAuctionCollection : ownList
                             
                 });

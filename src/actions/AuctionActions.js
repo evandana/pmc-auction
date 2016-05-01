@@ -41,7 +41,7 @@ export function confirmWinners () {
         let updateObj = buildConfirmUpdateObj(auctions);
         firebase.updateWinningBids(updateObj)
             .then( (msg) => {
-                console.log("Something happened here", msg)
+                console.log(msg);
                 dispatch({ type: CONFIRM_WINNERS })
             })
     }
@@ -126,7 +126,6 @@ export function toggleAuctionDetail(auctionId) {
         }
     }
 
-
 }
 
 export function clearAuctionDetail() {
@@ -138,7 +137,7 @@ export function clearAuctionDetail() {
 function buildConfirmUpdateObj(auctions) {
     let updateObj = {};
     auctions.forEach( auction => {
-        let objStr = `${auction.id}/winningBids`;        
+        let objStr = `${auction.id}/winningBids`;
         updateObj[objStr] = combineWinningBids(auction);
     })
     return updateObj;
@@ -152,23 +151,21 @@ function combineWinningBids(auction) {
     if (!auction.winningBids) {
         winningBids.forEach( bidId => {
             delete auction.bids[bidId].checked;
+            delete auction.bids[bidId].winner;
             winningBidsObj[bidId] = auction.bids[bidId]
         })
     } else {
     
         let newWinningBids = winningBids.filter( bidId => !winningBids[bidId] );
-        console.log("new bids: ", newWinningBids);
         winningBidsObj = assign(winningBidsObj, auction.winningBids);
-        console.log("cur winning bids obj: ", winningBidsObj)
             
         newWinningBids.forEach( bidId => {
             delete auction.bids[bidId].checked;
+            delete auction.bids[bidId].winner;
             winningBidsObj[bidId] = auction.bids[bidId]
         })
-        
-        console.log("modified winning bids obj: ", winningBidsObj)
+
     }
 
-    console.log("Winning BIDS ", winningBidsObj);
     return winningBidsObj;
 }

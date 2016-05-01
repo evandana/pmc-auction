@@ -73,7 +73,6 @@ let Adapter = function Adapter () {
         },
         
         updateWinningBids(updateObj) {
-            console.log("FInAL CALL", JSON.stringify(updateObj))
             return new Promise( (resolve, reject) => {
                 auctionsRef.update(updateObj, error => {
                     if (error) {

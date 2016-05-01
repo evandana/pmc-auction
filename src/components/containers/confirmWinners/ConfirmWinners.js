@@ -20,8 +20,6 @@ const ConfirmWinners = ({
     toggleBidConfirm,
     bidTotal}) => {
 
-    console.log('ConfirmWinner Render ', auctions )
-        
     let auctionList = auctions.map( (auction, index) =>
         <div className="confirm-winner-list-item-l" key={index}>
             <div className='confirm-winners-item title clearfix'>
