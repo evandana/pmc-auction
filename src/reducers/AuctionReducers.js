@@ -1,5 +1,6 @@
 import {
     CONFIRM_BID_TOGGLE,
+    CONFIRM_WINNERS,
     FETCH_AUCTIONS,
     LOAD_AUCTION,
     UPDATE_AUCTION,
@@ -43,8 +44,6 @@ function auctions(state = defaultAuctionState, action) {
                 auction.bidTotal -= parseInt(bidObj.bidAmount, 10)
                 state.bidTotal -= parseInt(bidObj.bidAmount, 10)
             }
-            
-            
 
             return Object.assign({}, state, {
                 ownedAuctionCollection: [
@@ -52,8 +51,10 @@ function auctions(state = defaultAuctionState, action) {
                 ]
             });
             
+        case CONFIRM_WINNERS:
+            console.log(state.ownedAuctionCollection)
             return state;
-
+            
         case CREATE_AUCTION_SUCCESS:
             // console.log('create success');
             // TODO: clear form
@@ -61,7 +62,6 @@ function auctions(state = defaultAuctionState, action) {
 
         case UPDATE_AUCTION:
             // console.log('auction reducers', state, action.auction);
-
             return Object.assign({}, state, {
                 auctionCollection: state.auctionCollection.map( auction => {
                     // if updated auction, then replace with new
@@ -78,27 +78,28 @@ function auctions(state = defaultAuctionState, action) {
             let ownList = state.ownedAuctionCollection.slice()
 
             if (action.auction.donorId === state.userId) {
-                
-                // process bids
-                action.auction.bidTotal = 0
-
+                action.auction = processLoadedAuctionBids(action.auction);
                 ownList = [
                     ...ownList,
                     action.auction
                 ]
                 
+                return Object.assign({}, state, {
+                    auctionCollection: [
+                        ...state.auctionCollection,
+                        action.auction
+                    ],
+                    ownedAuctionCollection : ownList
+                            
+                });
+            } else {
+                return Object.assign({}, state, {
+                    auctionCollection: [
+                        ...state.auctionCollection,
+                        action.auction
+                    ]
+                });
             }
-
-
-
-            return Object.assign({}, state, {
-                auctionCollection: [
-                    ...state.auctionCollection,
-                    action.auction
-                ],
-                ownedAuctionCollection : ownList
-                        
-            });
 
         // case PLACE_BID:
 
@@ -132,3 +133,13 @@ function auctions(state = defaultAuctionState, action) {
 }
 
 export default auctions
+
+function processLoadedAuctionBids(auction) {
+    auction.bidTotal = 0;
+    Object.keys(auction.winningBids).forEach( bidId => {
+        auction.bidTotal += auction.bids[bidId].bidAmount;
+        auction.bids[bidId].checked = true;
+        auction.bids[bidId].winner = true;
+    })
+    return auction;
+}

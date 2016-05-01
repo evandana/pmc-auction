@@ -18,6 +18,11 @@ export default class DialogExampleModal extends React.Component {
   handleClose = () => {
     this.setState({open: false});
   };
+  
+  handleSubmit = () => {
+    this.setState({open: false});
+    this.props.confirmWinnersSubmit()
+  }
 
   render() {
     const actions = [
@@ -27,12 +32,24 @@ export default class DialogExampleModal extends React.Component {
         onTouchTap={this.handleClose}
       />,
       <FlatButton
-        label="Submit"
+        label="Confirm"
         primary={true}
-        disabled={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={this.handleSubmit}
       />,
     ];
+        
+    var awesomeBidListOfGreatness = [];
+    var a = awesomeBidListOfGreatness;
+    this.props.auctions.forEach( (auction, index) => {
+        a.push(<div key={index}>{auction.title}</div>)
+        Object.keys(auction.bids).forEach( (bid, bidIndex) => {
+            if (auction.bids[bid].checked) {
+                a.push(<div key={bidIndex}>${auction.bids[bid].bidAmount} {auction.bids[bid].bidderObj.name}</div>)
+            }
+        })
+    })
+    
+    
 
     return (
       <div>
@@ -42,12 +59,16 @@ export default class DialogExampleModal extends React.Component {
             onTouchTap={this.handleOpen}
         />
         <Dialog
-          title="Dialog With Actions"
+          title="Confirm Auction Winners"
           actions={actions}
           modal={true}
           open={this.state.open}
         >
-          Only actions can close this dialog.
+            <p>Are you sure you want to confirm the following auction winners?  Once confirmed you will
+            not be able to change the confirmation.</p>
+            
+            {awesomeBidListOfGreatness}
+            
         </Dialog>
       </div>
     );

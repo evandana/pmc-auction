@@ -19,6 +19,8 @@ const ConfirmWinners = ({
     confirmWinnersSubmit,
     toggleBidConfirm,
     bidTotal}) => {
+
+    console.log('ConfirmWinner Render ', auctions )
         
     let auctionList = auctions.map( (auction, index) =>
         <div className="confirm-winner-list-item-l" key={index}>
@@ -33,6 +35,7 @@ const ConfirmWinners = ({
                     <div><ListItem primaryText={auction.bids[bid].bidderObj.name} leftCheckbox={
                         <Checkbox
                             checked={auction.bids[bid].checked}
+                            disabled={auction.bids[bid].winner}
                             onCheck={ evt => {
                                 toggleBidConfirm(auction.id, bid)
                             }}
@@ -54,7 +57,10 @@ const ConfirmWinners = ({
                         {auctionList}
                     </div>
                     <div className="confirm-winners-submit-btn">
-                        <ConfirmDialog />
+                        <ConfirmDialog
+                            auctions={auctions}
+                            confirmWinnersSubmit={confirmWinnersSubmit}
+                        />
                     </div>
                 </List>
             </div>
