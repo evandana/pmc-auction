@@ -78,7 +78,6 @@ class Header extends Component {
     }
 
     clearAuctionDetail(event) {
-        console.log("clearing auc details")
         const { dispatch } = this.props
         dispatch(clearAuctionDetail())
     }

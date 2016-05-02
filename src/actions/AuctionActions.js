@@ -4,6 +4,7 @@ import firebase from '../utils/firebaseAdapter'
 import assign from 'object-assign';
 
 export const ADD_AUCTION = 'ADD_AUCTION'
+export const CLEAR_AUCTION_DETAIL = 'CLEAR_AUCTION_DETAIL'
 export const CONFIRM_WINNERS = 'CONFIRM_WINNERS'
 export const CONFIRM_BID_TOGGLE = 'CONFIRM_BID_TOGGLE'
 export const CREATE_AUCTION = 'CREATE_AUCTION'
@@ -39,8 +40,7 @@ export function confirmWinners () {
         let auctions = getState().auctions.ownedAuctionCollection;
         let updateObj = buildConfirmUpdateObj(auctions);
         firebase.updateWinningBids(updateObj)
-            .then( (msg) => {
-                console.log(msg);
+            .then( () => {
                 dispatch({ type: CONFIRM_WINNERS })
             })
     }
@@ -145,7 +145,7 @@ function buildConfirmUpdateObj(auctions) {
 function combineWinningBids(auction) {
     
     let winningBidsObj = auction.winningBids || {};
-    let winningBids = Object.keys(auction.bids).filter( bid => auction.bids[bid].checked );
+    let winningBids = Object.keys(auction.bids).filter( bidId => auction.bids[bidId].checked );
     
     if (!auction.winningBids) {
         winningBids.forEach( bidId => {

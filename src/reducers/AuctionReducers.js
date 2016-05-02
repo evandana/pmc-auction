@@ -55,7 +55,6 @@ function auctions(state = defaultAuctionState, action) {
             });
             
         case CONFIRM_WINNERS:
-            console.log("Winners confirmed successfully");
             return state;
             
         case CREATE_AUCTION_SUCCESS:
