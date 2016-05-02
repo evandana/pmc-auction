@@ -27,8 +27,8 @@ const ConfirmWinners = ({
                 <div><ListItem primaryText={auction.title} /></div>
                 <div><ListItem primaryText={'Auction Total:  $' + auction.bidTotal} /></div>
             </div>
-            {Object.keys(auction.bids).map( (bid, auction_index) =>
-            <div key={index + '' + auction_index}>
+            {Object.keys(auction.bids).map( (bid, bid_index) =>
+            <div key={'b'+bid_index}>
                 <div className='confirm-winners-item clearfix'>
                     <div><ListItem primaryText={'$' + auction.bids[bid].bidAmount} /></div>
                     <div><ListItem primaryText={auction.bids[bid].bidderObj.name} leftCheckbox={

@@ -44,7 +44,7 @@ export default class DialogExampleModal extends React.Component {
         a.push(<div key={index}>{auction.title}</div>)
         Object.keys(auction.bids).forEach( (bid, bidIndex) => {
             if (auction.bids[bid].checked && !auction.bids[bid].winner) {
-                a.push(<div key={bidIndex}>${auction.bids[bid].bidAmount} {auction.bids[bid].bidderObj.name}</div>)
+                a.push(<div key={bidIndex+''+index}>${auction.bids[bid].bidAmount} {auction.bids[bid].bidderObj.name}</div>)
             }
         })
     })
