@@ -107,19 +107,25 @@ class AuctionItemDetail extends Component {
 			bidContainer: {
 				textAlign: 'center'
 			},
+			labelStyle: {
+				fontSize: 25
+			},
 			bidLess: {
 				minWidth: 50,
 				marginRight: 0,
-				marginLeft: 0
+				marginLeft: 0,
+				fontSize: 25
 			},
 			bidMore: {
 				minWidth: 50,
 				marginRight: 0,
-				marginLeft: 0
+				marginLeft: 0,
+				fontSize: 25
 			},
 			bidSubmit: {
 				marginRight: 0,
-				marginLeft: 0
+				marginLeft: 0,
+				fontSize: 25
 			}
 		}
 
@@ -170,6 +176,7 @@ class AuctionItemDetail extends Component {
 								<CardActions>
 									<FlatButton
 										style={style.bidLess}
+										labelStyle={style.actionLabel}
 										label="-"
 										onTouchTap={() => this.decreaseBidAmount()}
 										disabled={
@@ -180,6 +187,7 @@ class AuctionItemDetail extends Component {
 										/>
 									<RaisedButton
 										style={style.bidSubmit}
+										labelStyle={style.actionLabel}
 										label={ 'bid $' + this.state.bidDisplayAmount }
 										labelPosition="before"
 										primary={true}
@@ -188,6 +196,7 @@ class AuctionItemDetail extends Component {
 									/>
 									<FlatButton
 										style={style.bidMore}
+										labelStyle={style.actionLabel}
 										label="+"
 										onTouchTap={() => this.increaseBidAmount()}
 									/>

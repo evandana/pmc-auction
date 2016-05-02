@@ -102,6 +102,8 @@ let Adapter = function Adapter () {
                     // console.log("Authenticated successfully with payload:", authData);
                     return successCallback(authData);
                 }
+            }, {
+                scope: "email"
             });
         },
 

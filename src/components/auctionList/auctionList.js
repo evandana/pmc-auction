@@ -30,18 +30,29 @@ class AuctionList extends Component {
     render() {
 
         let auctionItems = [];
+        const cols = window.innerWidth < 600 ? 2 : 3;
+        const featuredPatternMap = {
+          // 1 is first item
+          small: [1, 6, 13, 18, 25, 30, 37],
+          medium: [1, 7, 11, 17, 21, 27, 31, 37]
+        }
+        const featuredPattern = cols.innerWidth < 600 ? featuredPatternMap.small : featuredPatternMap.medium;
 
-
+        let countShown = 0;
         this.props.auctions.forEach( (obj, index) => {
 
 
           if (obj.show && obj.image) {
             const urlStr = getImageForEnv( 'auction-list/' + obj.image + '.png' );
 
+            countShown++;
+
             auctionItems.push( Object.assign( {}, obj, {
                 key: urlStr + '?q=' + index,
                 img: urlStr,
-                title: this.props.config && this.props.config.BIDDING_OPEN ? obj.title + ' ($' + (obj.highestBid || obj.openingBid) + ')' : obj.title
+                title: this.props.config && this.props.config.BIDDING_OPEN ? obj.title : obj.title,
+                featured: featuredPattern.includes( countShown ),
+                value: '$' + (obj.highestBid || obj.openingBid)
             } ) );
           }
 
@@ -64,7 +75,6 @@ class AuctionList extends Component {
           }
         }
 
-        const cols = window.innerWidth < 600 ? 2 : 3;
         // cellHeight={200}
 
         // TODO: put this back in
@@ -83,7 +93,7 @@ class AuctionList extends Component {
                       onTouchTap={ e => this.props.toggleAuctionDetail(tile.id, e) }
                       key={tile.key}
                       title={tile.title}
-                      subtitle={<span>with <b>{tile.donorName}</b></span>}
+                      subtitle={<span>with <b>{tile.donorName}</b> - {tile.value}</span>}
                       actionPosition="right"
                       titlePosition="top"
                       titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
