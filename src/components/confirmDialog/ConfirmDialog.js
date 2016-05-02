@@ -49,14 +49,13 @@ export default class DialogExampleModal extends React.Component {
         })
     })
     
-    
-
     return (
       <div>
         <RaisedButton
             label="Confirm"
             primary={true}
             onTouchTap={this.handleOpen}
+            disabled={this.props.submitDisable}
         />
         <Dialog
           title="Confirm Auction Winners"

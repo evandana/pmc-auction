@@ -27,7 +27,6 @@ export function auctionPushErrorHandler (error) {
 }
 
 export function confirmBidToggle (auctionId, bidId) {
-    console.log("Confirm Bid Toggle", auctionId, bidId)
     return {
         type: CONFIRM_BID_TOGGLE,
         bidId,

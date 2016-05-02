@@ -25,6 +25,7 @@ class ConfirmWinnersPage extends Component {
                 <ConfirmWinners
                     auctions={this.props.auctions}
                     bidTotal={this.props.bidTotal}
+                    submitDisable={this.props.submitDisable}
                     confirmWinnersSubmit={this.confirmWinnersSubmit.bind(this)}
                     toggleBidConfirm={this.toggleBid.bind(this)}
                 />
@@ -44,6 +45,7 @@ export default connect(mapStateToProps)(ConfirmWinnersPage);
 function mapStateToProps (state) {
     return {
         auctions: state.auctions.ownedAuctionCollection,
-        bidTotal: state.auctions.bidTotal
+        bidTotal: state.auctions.bidTotal,
+        submitDisable: state.auctions.confirmWinnersSubmitDisable
     }
 }

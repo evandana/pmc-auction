@@ -17,11 +17,13 @@ import {
 const defaultAuctionState = {
     auctionCollection : [],
     confirmedBids : [],
+    confirmWinnersSubmitDisable: true,
     expandedAuction : {},
     ownedAuctionCollection: [],
     bidTotal: 0,
     selectedBids : [],
     userId : null
+    
 }
 
 let _userId = null
@@ -48,11 +50,12 @@ function auctions(state = defaultAuctionState, action) {
             return Object.assign({}, state, {
                 ownedAuctionCollection: [
                     ...state.ownedAuctionCollection
-                ]
+                ],
+                confirmWinnersSubmitDisable: !hasCheckedNonWinners(state.ownedAuctionCollection)
             });
             
         case CONFIRM_WINNERS:
-            console.log(state.ownedAuctionCollection)
+            console.log("Winners confirmed successfully");
             return state;
             
         case CREATE_AUCTION_SUCCESS:
@@ -105,16 +108,14 @@ function auctions(state = defaultAuctionState, action) {
 
         case LOAD_AUCTION:
 
-            let ownList = state.ownedAuctionCollection.slice()
-
             if (action.auction.donorId === state.userId) {
                 let auctionWithBids = processLoadedAuctionBids(action.auction);
+                let ownList = state.ownedAuctionCollection.slice()
+                //let newStateTotal = 0;
                 
-                let newStateTotal = 0;
-                
-                Object.keys(action.auction.winningBids).forEach( bidId => {
-                    newStateTotal += action.auction.bids[bidId].bidAmount;
-                });
+                // Object.keys(action.auction.winningBids).forEach( bidId => {
+                //     newStateTotal += action.auction.bids[bidId].bidAmount;
+                // });
                 
                 ownList = [
                     ...ownList,
@@ -126,7 +127,7 @@ function auctions(state = defaultAuctionState, action) {
                         ...state.auctionCollection,
                         action.auction
                     ],
-                    bidTotal: newStateTotal,
+                    // bidTotal: newStateTotal,
                     ownedAuctionCollection : ownList
                             
                 });
@@ -172,12 +173,104 @@ function auctions(state = defaultAuctionState, action) {
 
 export default auctions
 
+function hasCheckedNonWinners(auctions) {
+    let hasCheckedNonWinners = false;
+    auctions.forEach( (auction, index) => {
+        Object.keys(auction.bids).forEach( (bidId, index) => {
+            if (auction.bids[bidId].checked && !auction.bids[bidId].winner) {
+                hasCheckedNonWinners = true;
+            }
+        });
+    });
+    return hasCheckedNonWinners;
+}
+
+function filterUniqueBidders(bids) {
+    
+    let uniqueBids = [],
+        uniqueBidsObj = {};
+    
+    Object.keys(bids).forEach( (bidId, index) => {
+        
+        let curBid = bids[bidId];
+
+        if (!uniqueBids.length) {
+            // console.log("empty list auto add");
+            uniqueBids.push(bidId);
+        } else {
+            let matchBidderIndex = uniqueBids.findIndex( 
+                ubidId => bids[ubidId].bidderObj.uid === curBid.bidderObj.uid
+            );
+            if (matchBidderIndex !== -1) {
+                // console.log("There is a matching Bidder Bid at", bids[uniqueBids[matchBidderIndex]].bidAmount);
+                if (curBid.bidAmount > bids[uniqueBids[matchBidderIndex]].bidAmount) {
+                    // console.log("But the matching bid is less, so replace with current bid", curBid.bidAmount);
+                    uniqueBids[matchBidderIndex] = bidId;
+                } else {
+                    // console.log("And matching bid is more, so ignore current bid ", curBid.bidAmount)
+                }
+            } else {
+                
+                if (uniqueBids.length < 5) {
+                    // console.log("This bidder is unique and less than 5 unique bids so auto add");
+                    uniqueBids.push(bidId);
+                } else {
+                    // console.log("This bidder is unique but unique bids maxxed at ", uniqueBids.length);
+                    let lowestBid;
+                    
+                    uniqueBids.forEach( ubidId => {
+                        if (!lowestBid) {
+                            lowestBid = ubidId;
+                        } else {
+                            if( bids[ubidId].bidAmount < bids[lowestBid].bidAmount ) {
+                                lowestBid = ubidId;
+                            }
+                        }
+                    });
+                    
+                    if (bids[bidId].bidAmount > bids[lowestBid].bidAmount) {
+                        // console.log("but this bid is higher than lowest bid of "+bids[lowestBid].bidAmount+", so remove lowest and add this one")
+                        uniqueBids[uniqueBids.indexOf(lowestBid)] = bidId;
+                    } else {
+                        // console.log("lowest bid of "+bids[lowestBid].bidAmount+" is higher than this, ignore.")
+                    }
+                }
+            }
+        }
+    });
+            
+    uniqueBids.sort( (a,b) => {
+        if (bids[a].bidAmount < bids[b].bidAmount) {
+            return 1;
+        }
+        if (bids[a].bidAmount > bids[b].bidAmount) {
+            return -1;
+        }
+        return 0;
+    });
+    
+    uniqueBids.forEach( bidId => {
+        uniqueBidsObj[bidId] = bids[bidId];
+    });
+    
+    return uniqueBidsObj;
+}
+
 function processLoadedAuctionBids(auction) {
     auction.bidTotal = 0;
-    Object.keys(auction.winningBids).forEach( bidId => {
-        auction.bidTotal += auction.bids[bidId].bidAmount;
-        auction.bids[bidId].checked = true;
-        auction.bids[bidId].winner = true;
-    })
+    auction.bids = filterUniqueBidders(auction.bids);
+    // if (auction.bids) {
+    //     let firstItem = auction.bids[Object.keys(auction.bids)[0]];
+    //     firstItem.checked = true;
+    //     auction.bidTotal += firstItem.bidAmount;
+    // } 
+    if (auction.winningBids) {
+        Object.keys(auction.winningBids).forEach( bidId => {
+            auction.bidTotal += auction.bids[bidId].bidAmount;
+            auction.bids[bidId].checked = true;
+            auction.bids[bidId].winner = true;
+        })
+    }
+
     return auction;
 }

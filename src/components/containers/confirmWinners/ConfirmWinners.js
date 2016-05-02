@@ -17,6 +17,7 @@ import './ConfirmWinners.scss';
 const ConfirmWinners = ({
     auctions,
     confirmWinnersSubmit,
+    submitDisable,
     toggleBidConfirm,
     bidTotal}) => {
 
@@ -47,7 +48,7 @@ const ConfirmWinners = ({
 
     return (
         <div className='confirm-winners-l'>
-            <h3>Total Earned: ${bidTotal}</h3>
+            <h3>Confirm Auction Winners</h3>
             <div>
                 <List>
                     
@@ -58,6 +59,7 @@ const ConfirmWinners = ({
                         <ConfirmDialog
                             auctions={auctions}
                             confirmWinnersSubmit={confirmWinnersSubmit}
+                            submitDisable={submitDisable}
                         />
                     </div>
                 </List>
