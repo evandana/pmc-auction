@@ -71,6 +71,18 @@ let Adapter = function Adapter () {
                 callback(auction);
             });
         },
+        
+        updateWinningBids(updateObj) {
+            return new Promise( (resolve, reject) => {
+                auctionsRef.update(updateObj, error => {
+                    if (error) {
+                        reject("Data could not be saved." + error);
+                    } else {
+                        resolve("Data saved successfully.");
+                    }
+                });
+            })
+        },
 
         placeBid (bidObject, successCallback, failCallback) {
             // console.log('firebase adapter', bidObject);

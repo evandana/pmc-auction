@@ -4,15 +4,18 @@ import firebase from '../utils/firebaseAdapter'
 import assign from 'object-assign';
 
 export const ADD_AUCTION = 'ADD_AUCTION'
+export const CLEAR_AUCTION_DETAIL = 'CLEAR_AUCTION_DETAIL'
+export const CONFIRM_WINNERS = 'CONFIRM_WINNERS'
+export const CONFIRM_BID_TOGGLE = 'CONFIRM_BID_TOGGLE'
 export const CREATE_AUCTION = 'CREATE_AUCTION'
 export const CREATE_AUCTION_ERROR = 'CREATE_AUCTION_ERROR'
 export const CREATE_AUCTION_SUCCESS = 'CREATE_AUCTION_SUCCESS'
 export const FETCH_AUCTIONS = 'FETCH_AUCTIONS'
+export const HIDE_AUCTION_DETAIL = 'HIDE_AUCTION_DETAIL'
 export const LOAD_AUCTION = 'LOAD_AUCTION'
-export const UPDATE_AUCTION = 'UPDATE_AUCTION'
 export const PLACE_BID = 'PLACE_BID'
 export const SHOW_AUCTION_DETAIL = 'SHOW_AUCTION_DETAIL'
-export const HIDE_AUCTION_DETAIL = 'HIDE_AUCTION_DETAIL'
+export const UPDATE_AUCTION = 'UPDATE_AUCTION'
 
 export function auctionPushErrorHandler (error) {
     if (error) {
@@ -21,6 +24,25 @@ export function auctionPushErrorHandler (error) {
     } else {
         // console.log('AUCTION CREATED SUCCESSFULLY')
         return { type: CREATE_AUCTION_SUCCESS }
+    }
+}
+
+export function confirmBidToggle (auctionId, bidId) {
+    return {
+        type: CONFIRM_BID_TOGGLE,
+        bidId,
+        auctionId
+    };
+}
+
+export function confirmWinners () {
+    return (dispatch, getState) => {
+        let auctions = getState().auctions.ownedAuctionCollection;
+        let updateObj = buildConfirmUpdateObj(auctions);
+        firebase.updateWinningBids(updateObj)
+            .then( () => {
+                dispatch({ type: CONFIRM_WINNERS })
+            })
     }
 }
 
@@ -103,11 +125,46 @@ export function toggleAuctionDetail(auctionId) {
         }
     }
 
-
 }
 
 export function clearAuctionDetail() {
     return {
         type: CLEAR_AUCTION_DETAIL
     }
+}
+
+function buildConfirmUpdateObj(auctions) {
+    let updateObj = {};
+    auctions.forEach( auction => {
+        let objStr = `${auction.id}/winningBids`;
+        updateObj[objStr] = combineWinningBids(auction);
+    })
+    return updateObj;
+}
+
+function combineWinningBids(auction) {
+    
+    let winningBidsObj = auction.winningBids || {};
+    let winningBids = Object.keys(auction.bids).filter( bidId => auction.bids[bidId].checked );
+    
+    if (!auction.winningBids) {
+        winningBids.forEach( bidId => {
+            delete auction.bids[bidId].checked;
+            delete auction.bids[bidId].winner;
+            winningBidsObj[bidId] = auction.bids[bidId]
+        })
+    } else {
+    
+        let newWinningBids = winningBids.filter( bidId => !winningBids[bidId] );
+        winningBidsObj = assign(winningBidsObj, auction.winningBids);
+            
+        newWinningBids.forEach( bidId => {
+            delete auction.bids[bidId].checked;
+            delete auction.bids[bidId].winner;
+            winningBidsObj[bidId] = auction.bids[bidId]
+        })
+
+    }
+
+    return winningBidsObj;
 }
