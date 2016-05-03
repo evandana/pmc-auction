@@ -33,7 +33,7 @@ class Header extends Component {
                     route: "/sponsors"
                 },
                 {
-                    label: "Confirm Winners",
+                    label: "Winners",
                     id: "confirmWinners",
                     route: "/auctions/confirmWinners"
                 },
@@ -91,15 +91,14 @@ class Header extends Component {
         tabs.map( function(tab, index){
             switch(tab.id){
                 case "confirmWinners":
-                    // add check for user permissions to confirm winner
-                    // console.log('confirm winners', tabs);
-                    // tabs.splice(index,1);
+                    if (this.props.config && this.props.config.CONFIRM_WINNERS) {
+                        allowedTabs.push(tab);
+                    }
                     break;
                 case "addAuction":
                     let showAddAuction = this.props.user.permissionLevel === "ADMIN" || this.props.user.permissionLevel === "DONOR";
 
                     // console.log('addAuction', showAddAuction, this.props.user.permissionLevel)
-
 
                     if (!showAddAuction) {
                         // tabs.splice(index,1);
@@ -209,7 +208,8 @@ class Header extends Component {
 
 function mapStateToProps (state) {
     return {
-        user: state.login.user
+        user: state.login.user,
+        config: state.login.config
       }
 }
 
