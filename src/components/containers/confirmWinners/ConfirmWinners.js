@@ -49,6 +49,7 @@ const ConfirmWinners = ({
     return (
         <div className='confirm-winners-l'>
             <h3>Confirm Auction Winners</h3>
+            <h4>Combined Auctions Total: ${bidTotal}</h4>
             <div>
                 <List>
                     

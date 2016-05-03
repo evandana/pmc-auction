@@ -16,6 +16,7 @@ import {
 
 const defaultAuctionState = {
     auctionCollection : [],
+    config : {},
     confirmedBids : [],
     confirmWinnersSubmitDisable: true,
     expandedAuction : {},
@@ -51,7 +52,8 @@ function auctions(state = defaultAuctionState, action) {
                 ownedAuctionCollection: [
                     ...state.ownedAuctionCollection
                 ],
-                confirmWinnersSubmitDisable: !hasCheckedNonWinners(state.ownedAuctionCollection)
+                confirmWinnersSubmitDisable: !hasCheckedNonWinners(state.ownedAuctionCollection),
+                bidTotal: state.bidTotal
             });
             
         case CONFIRM_WINNERS:
@@ -61,7 +63,12 @@ function auctions(state = defaultAuctionState, action) {
             // console.log('create success');
             // TODO: clear form
             return state;
-
+            
+        case LOGIN_CONSTANTS.GET_CONFIG_SUCCESS:
+            return Object.assign({}, state, {
+                config : action.data
+            });
+            
         case UPDATE_AUCTION:
             // console.log('auction reducers', state, action.auction);
 
@@ -126,7 +133,7 @@ function auctions(state = defaultAuctionState, action) {
                         ...state.auctionCollection,
                         action.auction
                     ],
-                    // bidTotal: newStateTotal,
+                    bidTotal: state.bidTotal += auctionWithBids.bidTotal,
                     ownedAuctionCollection : ownList
                             
                 });
