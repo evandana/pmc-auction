@@ -1,0 +1,36 @@
+.confirm-winners-l {
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.confirm-winner-list-item-l {
+    border-bottom: thin black solid;
+}
+
+.confirm-winners-item {
+    
+    &.title {
+        border-bottom: thin black solid;
+    }
+    
+    border-bottom: thin #CCCCCC solid;
+    
+    & > div {
+
+        float: left;
+        
+        &:first-child {
+            min-width: 75px;
+            text-align: right;
+        }
+        
+        &:last-child {
+            max-width: calc(100% - 35px);
+        }
+    }
+}
+
+.confirm-winners-submit-btn {
+    width: 100px;
+    margin: 25px auto 5px auto;
+}

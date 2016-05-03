@@ -78,9 +78,8 @@ class Header extends Component {
     }
 
     clearAuctionDetail(event) {
-        // TODO: Dave to hook up?
-        // const { dispatch } = this.props
-        // dispatch(clearAuctionDetail())
+        const { dispatch } = this.props
+        dispatch(clearAuctionDetail())
     }
 
     // Returns set of tabs based on User Credentials
@@ -163,7 +162,7 @@ class Header extends Component {
                                             label={tab.label}
                                             value={tab.route}
                                             key={tab.id}
-                                            onClick={this.clearAuctionDetail}
+                                            onClick={this.clearAuctionDetail.bind(this)}
                                         />
                             }, this)
                         }
