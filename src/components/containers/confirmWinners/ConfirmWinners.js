@@ -79,7 +79,7 @@ const ConfirmWinners = ({
                     <TableHeader>
                       <TableRow>
                         <TableHeaderColumn colSpan="2">
-                          {auction.title + ' - Auction Total:  $' + auction.bidTotal}
+                          {auction.title}
                         </TableHeaderColumn>
                       </TableRow>
                       <TableRow>
@@ -103,59 +103,10 @@ const ConfirmWinners = ({
 
     });
 
-
-    let auctionList = auctions.map( (auction, index) => {
-
-        if (auction.winningBids) {
-            return (
-                <div className="confirm-winner-list-item-l" key={index}>
-                    <div className='confirm-winners-item title clearfix'>
-                        <div><ListItem primaryText={auction.title} /></div>
-                        <div><ListItem primaryText={'Confirmed Total:  $' + auction.bidTotal} /></div>
-                    </div>
-                    {Object.keys(auction.winningBids).map( (bid, bid_index) =>
-                    <div key={'b'+bid_index}>
-                        <div className='confirm-winners-item clearfix'>
-                            <div><ListItem primaryText={'$' + auction.winningBids[bid].bidAmount} /></div>
-                            <div><ListItem primaryText={auction.winningBids[bid].bidderObj.email} /></div>
-                        </div>
-                    </div>
-                    )}
-                </div>
-            );
-        } else {
-            return (
-                <div className="confirm-winner-list-item-l" key={index}>
-                    <div className='confirm-winners-item title clearfix'>
-                        <div><ListItem primaryText={auction.title} /></div>
-                        <div><ListItem primaryText={'Auction Total:  $' + auction.bidTotal} /></div>
-                    </div>
-                    {Object.keys(auction.bids).map( (bid, bid_index) =>
-                    <div key={'b'+bid_index}>
-                        <div className='confirm-winners-item clearfix'>
-                            <div><ListItem primaryText={'$' + auction.bids[bid].bidAmount} /></div>
-                            <div><ListItem primaryText={auction.bids[bid].bidderObj.name} leftCheckbox={
-                                <Checkbox
-                                    checked={auction.bids[bid].checked}
-                                    disabled={auction.bids[bid].winner}
-                                    onCheck={ evt => {
-                                        toggleBidConfirm(auction.id, bid)
-                                    }}
-                                />
-                            } /></div>
-                        </div>
-                    </div>
-                    )}
-                </div>
-            );
-        }
-
-    });
-
+            // <h4>Combined Auctions Total (not working): ${bidTotal}</h4>
     return (
         <div className='confirm-winners-l'>
             <h3>Confirm Auction Winners</h3>
-            <h4>Combined Auctions Total (not working): ${bidTotal}</h4>
             <div>
 
                 {tableList}
@@ -178,3 +129,52 @@ const ConfirmWinners = ({
 }
 
 export default ConfirmWinners
+
+
+    // let auctionList = auctions.map( (auction, index) => {
+
+    //     if (auction.winningBids) {
+    //         return (
+    //             <div className="confirm-winner-list-item-l" key={index}>
+    //                 <div className='confirm-winners-item title clearfix'>
+    //                     <div><ListItem primaryText={auction.title} /></div>
+    //                     <div><ListItem primaryText={'Confirmed Total:  $' + auction.bidTotal} /></div>
+    //                 </div>
+    //                 {Object.keys(auction.winningBids).map( (bid, bid_index) =>
+    //                 <div key={'b'+bid_index}>
+    //                     <div className='confirm-winners-item clearfix'>
+    //                         <div><ListItem primaryText={'$' + auction.winningBids[bid].bidAmount} /></div>
+    //                         <div><ListItem primaryText={auction.winningBids[bid].bidderObj.email} /></div>
+    //                     </div>
+    //                 </div>
+    //                 )}
+    //             </div>
+    //         );
+    //     } else {
+    //         return (
+    //             <div className="confirm-winner-list-item-l" key={index}>
+    //                 <div className='confirm-winners-item title clearfix'>
+    //                     <div><ListItem primaryText={auction.title} /></div>
+    //                     <div><ListItem primaryText={'Auction Total:  $' + auction.bidTotal} /></div>
+    //                 </div>
+    //                 {Object.keys(auction.bids).map( (bid, bid_index) =>
+    //                 <div key={'b'+bid_index}>
+    //                     <div className='confirm-winners-item clearfix'>
+    //                         <div><ListItem primaryText={'$' + auction.bids[bid].bidAmount} /></div>
+    //                         <div><ListItem primaryText={auction.bids[bid].bidderObj.name} leftCheckbox={
+    //                             <Checkbox
+    //                                 checked={auction.bids[bid].checked}
+    //                                 disabled={auction.bids[bid].winner}
+    //                                 onCheck={ evt => {
+    //                                     toggleBidConfirm(auction.id, bid)
+    //                                 }}
+    //                             />
+    //                         } /></div>
+    //                     </div>
+    //                 </div>
+    //                 )}
+    //             </div>
+    //         );
+    //     }
+
+    // });
