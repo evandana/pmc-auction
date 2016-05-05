@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { Component } from 'react'
 
 import ConfirmDialog from 'components/confirmDialog/ConfirmDialog'
 
@@ -22,110 +22,125 @@ import Dialog from 'material-ui/lib/dialog';
 import './ConfirmWinners.scss';
 // Application Components
 
-const ConfirmWinners = ({
-    auctions,
-    confirmWinnersSubmit,
-    submitDisable,
-    toggleBidConfirm,
-    bidTotal}) => {
+class ConfirmWinners extends Component {
 
+    constructor(props) {
+        super(props);
 
-    let tableList = auctions.map( (auction, index) => {
+        this.state = Object.assign(false, {
 
-        console.log('winningBids', auction.winningBids, auction);
+        });
 
-        if (auction.winningBids) {
-            return (
-                <Table
-                    key={'auctionWinner-' + index}
-                    selectable={true}
-                >
-                        <TableHeader
-                            adjustForCheckbox={false}
-                        >
-                          <TableRow>
-                            <TableHeaderColumn colSpan="2">
-                              {auction.title + ' - Confirm Total:  $' + auction.bidTotal}
-                            </TableHeaderColumn>
-                          </TableRow>
-                          <TableRow>
-                            <TableHeaderColumn>Bid Amount</TableHeaderColumn>
-                            <TableHeaderColumn>Bidder Name</TableHeaderColumn>
-                            <TableHeaderColumn>Bidder Email</TableHeaderColumn>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody
-                        >
-                            {Object.keys(auction.winningBids).map( (bidId, bid_index) =>
-                            <TableRow key={'b'+bid_index}>
-                                <TableRowColumn>{'$' + auction.winningBids[bidId].bidAmount}</TableRowColumn>
-                                <TableRowColumn>{auction.winningBids[bidId].bidderObj.name}</TableRowColumn>
-                                <TableRowColumn>{auction.winningBids[bidId].bidderObj.email}</TableRowColumn>
-                            </TableRow>
-                            )}
-                        </TableBody>
-                </Table>
-            );
-        } else {
-            return (
-                <Table
-                    key={'auctionConfirmation-' + index}
-                    selectable={true}
-                    multiSelectable={true}
-                    onRowSelection={(bid) => {
-                        toggleBidConfirm(auction.id, bid)
-                    }}
-                >
-                    <TableHeader>
-                      <TableRow>
-                        <TableHeaderColumn colSpan="2">
-                          {auction.title}
-                        </TableHeaderColumn>
-                      </TableRow>
-                      <TableRow>
-                        <TableHeaderColumn>Bid Amount</TableHeaderColumn>
-                        <TableHeaderColumn>Bidder</TableHeaderColumn>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody
-                        deselectOnClickaway={false}
+    }
+
+    handleToggle (event, toggled) {
+        console.log('handleToggle', event, toggled)
+        // this.setState({
+        //     [event.target.name]: toggled,
+        // });
+    }
+
+    handleChange (event) {
+        this.setState({height: event.target.value});
+    }
+
+    render () {
+
+        let tableList = this.props.auctions.map( (auction, index) => {
+
+            console.log('winningBids', auction.winningBids, auction);
+
+            if (auction.winningBids) {
+                return (
+                    <Table
+                        key={'auctionWinner-' + index}
+                        selectable={true}
                     >
-                        {Object.keys(auction.bids).map( (bid, bid_index) =>
-                        <TableRow key={'b'+bid_index}>
-                            <TableRowColumn>{'$' + auction.bids[bid].bidAmount}</TableRowColumn>
-                            <TableRowColumn>{auction.bids[bid].bidderObj.name}</TableRowColumn>
-                        </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            );
-        }
-
-    });
-
-            // <h4>Combined Auctions Total (not working): ${bidTotal}</h4>
-    return (
-        <div className='confirm-winners-l'>
-            <h3>Confirm Auction Winners</h3>
-            <div>
-
-                {tableList}
-
-                <List>
-
-                    <div className="confirm-winners-list">
-
+                            <TableHeader
+                                adjustForCheckbox={false}
+                            >
+                              <TableRow>
+                                <TableHeaderColumn colSpan="2">
+                                  {auction.title + ' - Confirm Total:  $' + auction.bidTotal}
+                                </TableHeaderColumn>
+                              </TableRow>
+                              <TableRow>
+                                <TableHeaderColumn>Bid Amount</TableHeaderColumn>
+                                <TableHeaderColumn>Bidder Name</TableHeaderColumn>
+                                <TableHeaderColumn>Bidder Email</TableHeaderColumn>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody
+                            >
+                                {Object.keys(auction.winningBids).map( (bidId, bid_index) =>
+                                <TableRow key={'b'+bid_index}>
+                                    <TableRowColumn>{'$' + auction.winningBids[bidId].bidAmount}</TableRowColumn>
+                                    <TableRowColumn>{auction.winningBids[bidId].bidderObj.name}</TableRowColumn>
+                                    <TableRowColumn>{auction.winningBids[bidId].bidderObj.email}</TableRowColumn>
+                                </TableRow>
+                                )}
+                            </TableBody>
+                    </Table>
+                );
+            } else {
+                return (
+                    <div
+                        className="confirm-block"
+                        key={'auctionConfirmation-' + index}
+                    >
+                        <Table
+                            selectable={true}
+                            multiSelectable={true}
+                            onRowSelection={(selectedBidIndices) => {
+                                this.handleToggle(selectedBidIndices, auction);
+                            }}
+                        >
+                            <TableHeader>
+                              <TableRow>
+                                <TableHeaderColumn>
+                                    {auction.title}
+                                </TableHeaderColumn>
+                                <TableHeaderColumn>
+                                      <ConfirmDialog
+                                        primary={true}
+                                        label="Confirm"
+                                        confirmWinnersSubmit={this.props.confirmWinnersSubmit}
+                                    />
+                                </TableHeaderColumn>
+                              </TableRow>
+                              <TableRow>
+                                <TableHeaderColumn>Bid Amount</TableHeaderColumn>
+                                <TableHeaderColumn>Bidder</TableHeaderColumn>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody
+                                deselectOnClickaway={false}
+                            >
+                                {Object.keys(auction.bids).map( (bid, bid_index) =>
+                                <TableRow key={'b'+bid_index}>
+                                    <TableRowColumn>{'$' + auction.bids[bid].bidAmount}</TableRowColumn>
+                                    <TableRowColumn>{auction.bids[bid].bidderObj.name}</TableRowColumn>
+                                </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
                     </div>
-                    <div className="confirm-winners-submit-btn">
-                        <ConfirmDialog
-                            auctions={auctions}
-                            confirmWinnersSubmit={confirmWinnersSubmit}
-                        />
-                    </div>
-                </List>
+                );
+            }
+
+        });
+
+                // <h4>Combined Auctions Total (not working): ${bidTotal}</h4>
+        return (
+            <div className='confirm-winners-l'>
+                <h3>Confirm Auction Winners</h3>
+                <div>
+                    {tableList}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
+
 }
 
 export default ConfirmWinners
