@@ -270,7 +270,7 @@ function mapStateToProps (state) {
 
 	let highestBid = {bidAmount: parseInt(data.openingBid || DEFAULT_OPENING_BID, 10)};
 	for (let bid in data.bids) {
-		if (parseInt(data.bids[bid].bidAmount, 10) > highestBid.bidAmount) {
+		if (data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) > highestBid.bidAmount) {
 			highestBid = data.bids[bid];
 		}
 	}

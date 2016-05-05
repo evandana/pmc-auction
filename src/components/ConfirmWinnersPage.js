@@ -19,9 +19,9 @@ class ConfirmWinnersPage extends Component {
     }
 
     render () {
-        
+
         let content;
-        
+
         if( this.props.config.CONFIRM_WINNERS ) {
             content = (<ConfirmWinners
                 auctions={this.props.auctions}
@@ -45,7 +45,7 @@ class ConfirmWinnersPage extends Component {
             </div>
         )
     }
-    
+
     toggleBid (auctionId, bidId) {
         const {dispatch} = this.props;
         dispatch(confirmBidToggle(auctionId, bidId))

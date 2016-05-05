@@ -36,7 +36,7 @@ function auctions(state = defaultAuctionState, action) {
         case CONFIRM_BID_TOGGLE:
 
             let auction = state.ownedAuctionCollection.find( auction => auction.id === action.auctionId)
-            let bidObj = auction.bids[action.bidId]
+            let bidObj = auction.bids[action.bidId];
 
             if (!bidObj.checked) {
                 bidObj.checked = true
@@ -72,18 +72,18 @@ function auctions(state = defaultAuctionState, action) {
         case UPDATE_AUCTION:
             // console.log('auction reducers', state, action.auction);
 
+            let mappedCollection = state.auctionCollection.map( auction => {
+                // if updated auction, then replace with new
+                if (auction.id === action.auction.id) {
+                    return action.auction;
+                } else {
+                    return auction;
+                }
+            });
+
             if (action.auction.donorId === state.userId) {
-//                let auctionWithBids = processLoadedAuctionBids(action.auction);
 
-                let mappedCollection = state.auctionCollection.map( auction => {
-                    // if updated auction, then replace with new
-                    if (auction.id === action.auction.id) {
-                        return action.auction;
-                    } else {
-                        return auction;
-                    }
-                });
-
+                // this code should only be triggered when on the Winners route
                 let ownedCollection = state.ownedAuctionCollection.map( auction => {
                     // if updated auction, then replace with new
                     if (auction.id === action.auction.id) {
@@ -99,14 +99,7 @@ function auctions(state = defaultAuctionState, action) {
                 });
             } else {
                 return Object.assign({}, state, {
-                    auctionCollection: state.auctionCollection.map( auction => {
-                        // if updated auction, then replace with new
-                        if (auction.id === action.auction.id) {
-                            return action.auction;
-                        } else {
-                            return auction;
-                        }
-                    })
+                    auctionCollection: mappedCollection
                 });
             }
 
@@ -269,16 +262,11 @@ function filterUniqueBidders(bids) {
 function processLoadedAuctionBids(auction) {
     auction.bidTotal = 0;
     auction.bids = filterUniqueBidders(auction.bids);
-    // if (auction.bids) {
-    //     let firstItem = auction.bids[Object.keys(auction.bids)[0]];
-    //     firstItem.checked = true;
-    //     auction.bidTotal += firstItem.bidAmount;
-    // }
-    if (auction.winningBids) {
+    if (auction.bids && auction.winningBids) {
         Object.keys(auction.winningBids).forEach( bidId => {
-            auction.bidTotal += auction.bids[bidId].bidAmount;
-            auction.bids[bidId].checked = true;
-            auction.bids[bidId].winner = true;
+            auction.bidTotal += auction.winningBids[bidId].bidAmount;
+            auction.winningBids[bidId].checked = true;
+            auction.winningBids[bidId].winner = true;
         })
     }
 
