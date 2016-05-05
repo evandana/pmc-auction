@@ -83,9 +83,10 @@ function auctions(state = defaultAuctionState, action) {
 
             if (action.auction.donorId === state.userId) {
 
-                // this code should only be triggered when on the Winners route
+                // TODO: this code should only be triggered when on the Winners route
                 let ownedCollection = state.ownedAuctionCollection.map( auction => {
                     // if updated auction, then replace with new
+                    // TODO: only call this if winners is not defined
                     if (auction.id === action.auction.id) {
                         return processLoadedAuctionBids(action.auction);
                     } else {
@@ -262,11 +263,11 @@ function filterUniqueBidders(bids) {
 function processLoadedAuctionBids(auction) {
     auction.bidTotal = 0;
     auction.bids = filterUniqueBidders(auction.bids);
-    if (auction.bids && auction.winningBids) {
-        Object.keys(auction.winningBids).forEach( bidId => {
-            auction.bidTotal += auction.winningBids[bidId].bidAmount;
-            auction.winningBids[bidId].checked = true;
-            auction.winningBids[bidId].winner = true;
+    if (auction.bids && auction.bids) {
+        Object.keys(auction.bids).forEach( bidId => {
+            auction.bidTotal += auction.bids[bidId].bidAmount;
+            auction.bids[bidId].checked = true;
+            auction.bids[bidId].winner = true;
         })
     }
 

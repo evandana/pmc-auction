@@ -143,25 +143,25 @@ function buildConfirmUpdateObj(auctions) {
 }
 
 function combineWinningBids(auction) {
-    
+
     let winningBidsObj = auction.winningBids || {};
-    let winningBids = Object.keys(auction.bids).filter( bidId => auction.bids[bidId].checked );
-    
+    let winningBids = Object.keys(auction.bids).filter( bidId => auction.winningBids[bidId].checked );
+
     if (!auction.winningBids) {
         winningBids.forEach( bidId => {
-            delete auction.bids[bidId].checked;
-            delete auction.bids[bidId].winner;
-            winningBidsObj[bidId] = auction.bids[bidId]
+            delete auction.winningBids[bidId].checked;
+            delete auction.winningBids[bidId].winner;
+            winningBidsObj[bidId] = auction.winningBids[bidId]
         })
     } else {
-    
+
         let newWinningBids = winningBids.filter( bidId => !winningBids[bidId] );
         winningBidsObj = assign(winningBidsObj, auction.winningBids);
-            
+
         newWinningBids.forEach( bidId => {
-            delete auction.bids[bidId].checked;
-            delete auction.bids[bidId].winner;
-            winningBidsObj[bidId] = auction.bids[bidId]
+            delete auction.winningBids[bidId].checked;
+            delete auction.winningBids[bidId].winner;
+            winningBidsObj[bidId] = auction.winningBids[bidId]
         })
 
     }

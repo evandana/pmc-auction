@@ -20,18 +20,18 @@ class ConfirmWinnersPage extends Component {
 
     render () {
 
-        let content;
+        let confirmWinnersContent;
 
         if( this.props.config.CONFIRM_WINNERS ) {
-            content = (<ConfirmWinners
-                auctions={this.props.auctions}
+            confirmWinnersContent = (<ConfirmWinners
+                auctions={this.props.ownedAuctions}
                 bidTotal={this.props.bidTotal}
                 submitDisable={this.props.submitDisable}
                 confirmWinnersSubmit={this.confirmWinnersSubmit.bind(this)}
                 toggleBidConfirm={this.toggleBid.bind(this)}
             />);
         } else {
-            content = (
+            confirmWinnersContent = (
                 <div>
                     <h4>This feature is not currently available</h4>
                     <p>Please come back later to select the winning bidders</p>
@@ -41,7 +41,7 @@ class ConfirmWinnersPage extends Component {
 
         return (
             <div>
-                {content}
+                {confirmWinnersContent}
             </div>
         )
     }
@@ -56,8 +56,12 @@ class ConfirmWinnersPage extends Component {
 export default connect(mapStateToProps)(ConfirmWinnersPage);
 
 function mapStateToProps (state) {
+
+    console.log('something', state)
+
     return {
-        auctions: state.auctions.ownedAuctionCollection,
+        ownedAuctions: state.auctions.ownedAuctionCollection,
+        auctionCollection: state.auctions.auctionCollection,
         bidTotal: state.auctions.bidTotal,
         submitDisable: state.auctions.confirmWinnersSubmitDisable,
         config: state.auctions.config
