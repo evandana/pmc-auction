@@ -94,7 +94,7 @@ class AuctionList extends Component {
                       onTouchTap={ e => this.props.toggleAuctionDetail(tile.id, e) }
                       key={tile.key}
                       title={tile.title}
-                      subtitle={<span>with <b>{tile.donorName}</b> - {tile.value}</span>}
+                      subtitle={this.props.config.BIDDING_OPEN ? <span>with <b>{tile.donorName}</b> - {tile.value}</span> : <span>with <b>{tile.donorName}</b></span>}
                       actionPosition="right"
                       titlePosition="top"
                       titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
@@ -116,7 +116,7 @@ class AuctionList extends Component {
 function mapStateToProps (state) {
   // console.log('state', state.login)
     return {
-        config: state.login.config
+        config: state.auctions.config
     }
 }
 

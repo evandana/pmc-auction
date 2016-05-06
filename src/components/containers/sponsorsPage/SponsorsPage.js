@@ -32,7 +32,20 @@ const SponsorsPage = ( {prop} ) => {
             link: 'http://www.ottoportland.com/',
             subtext: 'Gourmet toppings',
             image: getImageForEnv('ottos.png')
+        },
+        {
+            name: 'Sky Zone',
+            link: 'http://www.skyzone.com/',
+            subtext: 'Trampoline Park',
+            image: getImageForEnv('skyzone-logo.png')
+        },
+        {
+            name: 'Harpoon Brewery',
+            link: 'http://www.harpoonbrewery.com/',
+            subtext: 'Love Beer. Love Life.',
+            image: getImageForEnv('harpoon.jpg')
         }
+
     ]
 
     function goToSponsor(link) {
