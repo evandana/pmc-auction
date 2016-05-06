@@ -71,10 +71,13 @@ let Adapter = function Adapter () {
                 callback(auction);
             });
         },
-        
-        updateWinningBids(updateObj) {
+
+        updateWinningBid(auction, winningBids, successCallback) {
+
             return new Promise( (resolve, reject) => {
-                auctionsRef.update(updateObj, error => {
+                auctionsRef.child(auction.id).update({
+                    winningBids: winningBids
+                }, error => {
                     if (error) {
                         reject("Data could not be saved." + error);
                     } else {
@@ -83,6 +86,18 @@ let Adapter = function Adapter () {
                 });
             })
         },
+
+        // updateWinningBids(updateObj) {
+        //     return new Promise( (resolve, reject) => {
+        //         auctionsRef.update(updateObj, error => {
+        //             if (error) {
+        //                 reject("Data could not be saved." + error);
+        //             } else {
+        //                 resolve("Data saved successfully.");
+        //             }
+        //         });
+        //     })
+        // },
 
         placeBid (bidObject, successCallback, failCallback) {
             // console.log('firebase adapter', bidObject);

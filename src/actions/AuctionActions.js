@@ -35,15 +35,10 @@ export function confirmBidToggle (auctionId, bidId) {
     };
 }
 
-export function confirmWinners () {
-    return (dispatch, getState) => {
-        let auctions = getState().auctions.ownedAuctionCollection;
-        let updateObj = buildConfirmUpdateObj(auctions);
-        firebase.updateWinningBids(updateObj)
-            .then( () => {
-                dispatch({ type: CONFIRM_WINNERS })
-            })
-    }
+export function confirmAuctionWinners (auction, winningBidsCollection) {
+    // TODO: do I need a dispatch here? it works without it
+    //, () => { dispatch({ type: CONFIRM_WINNERS }) }
+    return firebase.updateWinningBid(auction, winningBidsCollection)
 }
 
 export function createAuction (fields, user) {
@@ -133,38 +128,38 @@ export function clearAuctionDetail() {
     }
 }
 
-function buildConfirmUpdateObj(auctions) {
-    let updateObj = {};
-    auctions.forEach( auction => {
-        let objStr = `${auction.id}/winningBids`;
-        updateObj[objStr] = combineWinningBids(auction);
-    })
-    return updateObj;
-}
+// function buildConfirmUpdateObj(auctions) {
+//     let updateObj = {};
+//     auctions.forEach( auction => {
+//         let objStr = `${auction.id}/winningBids`;
+//         updateObj[objStr] = combineWinningBids(auction);
+//     })
+//     return updateObj;
+// }
 
-function combineWinningBids(auction) {
-    
-    let winningBidsObj = auction.winningBids || {};
-    let winningBids = Object.keys(auction.bids).filter( bidId => auction.bids[bidId].checked );
-    
-    if (!auction.winningBids) {
-        winningBids.forEach( bidId => {
-            delete auction.bids[bidId].checked;
-            delete auction.bids[bidId].winner;
-            winningBidsObj[bidId] = auction.bids[bidId]
-        })
-    } else {
-    
-        let newWinningBids = winningBids.filter( bidId => !winningBids[bidId] );
-        winningBidsObj = assign(winningBidsObj, auction.winningBids);
-            
-        newWinningBids.forEach( bidId => {
-            delete auction.bids[bidId].checked;
-            delete auction.bids[bidId].winner;
-            winningBidsObj[bidId] = auction.bids[bidId]
-        })
+// function combineWinningBids(auction) {
 
-    }
+//     let winningBidsObj = auction.winningBids || {};
+//     let winningBids = Object.keys(auction.bids).filter( bidId => auction.winningBids[bidId].checked );
 
-    return winningBidsObj;
-}
+//     if (!auction.winningBids) {
+//         winningBids.forEach( bidId => {
+//             delete auction.winningBids[bidId].checked;
+//             delete auction.winningBids[bidId].winner;
+//             winningBidsObj[bidId] = auction.winningBids[bidId]
+//         })
+//     } else {
+
+//         let newWinningBids = winningBids.filter( bidId => !winningBids[bidId] );
+//         winningBidsObj = assign(winningBidsObj, auction.winningBids);
+
+//         newWinningBids.forEach( bidId => {
+//             delete auction.winningBids[bidId].checked;
+//             delete auction.winningBids[bidId].winner;
+//             winningBidsObj[bidId] = auction.winningBids[bidId]
+//         })
+
+//     }
+
+//     return winningBidsObj;
+// }

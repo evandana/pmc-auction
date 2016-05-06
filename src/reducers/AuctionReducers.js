@@ -20,10 +20,12 @@ const defaultAuctionState = {
     confirmedBids : [],
     confirmWinnersSubmitDisable: true,
     expandedAuction : {},
-    ownedAuctionCollection: [],
     bidTotal: 0,
     selectedBids : [],
-    userId : null
+    userId : null,
+    pendingConfirmationAuctionCollection: [],
+    confirmedAuctionCollection: [],
+    participantAuctionCollection: []
 
 }
 
@@ -32,30 +34,6 @@ let _userId = null
 function auctions(state = defaultAuctionState, action) {
 
     switch (action.type) {
-
-        case CONFIRM_BID_TOGGLE:
-
-            let auction = state.ownedAuctionCollection.find( auction => auction.id === action.auctionId)
-            let bidObj = auction.bids[action.bidId]
-
-            if (!bidObj.checked) {
-                bidObj.checked = true
-                auction.bidTotal += parseInt(bidObj.bidAmount, 10)
-                state.bidTotal += parseInt(bidObj.bidAmount, 10)
-            } else {
-                bidObj.checked = false
-                auction.bidTotal -= parseInt(bidObj.bidAmount, 10)
-                state.bidTotal -= parseInt(bidObj.bidAmount, 10)
-            }
-
-            return Object.assign({}, state, {
-                ownedAuctionCollection: [
-                    ...state.ownedAuctionCollection
-                ],
-                confirmWinnersSubmitDisable: !hasCheckedNonWinners(state.ownedAuctionCollection),
-                bidTotal: state.bidTotal
-            });
-
         case CONFIRM_WINNERS:
             return state;
 
@@ -72,61 +50,61 @@ function auctions(state = defaultAuctionState, action) {
         case UPDATE_AUCTION:
             // console.log('auction reducers', state, action.auction);
 
-            if (action.auction.donorId === state.userId) {
-//                let auctionWithBids = processLoadedAuctionBids(action.auction);
 
-                let mappedCollection = state.auctionCollection.map( auction => {
-                    // if updated auction, then replace with new
-                    if (auction.id === action.auction.id) {
-                        return action.auction;
-                    } else {
-                        return auction;
-                    }
-                });
+            // TODO: all of this should be refactored to only process the NEW action, not reprocess all auctions
 
-                let ownedCollection = state.ownedAuctionCollection.map( auction => {
-                    // if updated auction, then replace with new
-                    if (auction.id === action.auction.id) {
-                        return processLoadedAuctionBids(action.auction);
-                    } else {
-                        return auction;
-                    }
-                });
 
-                return Object.assign({}, state, {
-                    auctionCollection: mappedCollection,
-                    ownedAuctionCollection : ownedCollection
-                });
-            } else {
-                return Object.assign({}, state, {
-                    auctionCollection: state.auctionCollection.map( auction => {
-                        // if updated auction, then replace with new
-                        if (auction.id === action.auction.id) {
-                            return action.auction;
+            let pendingConfirmationAuctionCollection = [];
+            let confirmedAuctionCollection = [];
+            let mappedCollection = state.auctionCollection.map( auction => {
+                // if updated auction, then replace with new
+                if (auction.id === action.auction.id) {
+                    if (action.auction.donorId === state.userId) {
+                        if (action.auction.winningBids && action.auction.winningBids.length) {
+                            confirmedAuctionCollection.push( processLoadedAuctionBids( action.auction ) );
                         } else {
-                            return auction;
+                            pendingConfirmationAuctionCollection.push( processLoadedAuctionBids( action.auction ) );
                         }
-                    })
-                });
-            }
+                    }
+                    return action.auction;
+                } else {
+                    if (auction.donorId === state.userId) {
+                        if (auction.winningBids && auction.winningBids.length) {
+                            confirmedAuctionCollection.push( auction );
+                        } else {
+                            pendingConfirmationAuctionCollection.push( auction );
+                        }
+                    }
+                    return auction;
+                }
+            });
 
-
+            return Object.assign({}, state, {
+                auctionCollection: mappedCollection,
+                pendingConfirmationAuctionCollection: pendingConfirmationAuctionCollection,
+                confirmedAuctionCollection: confirmedAuctionCollection
+            });
 
         case LOAD_AUCTION:
 
+            // console.log('load auction')
+
             if (action.auction.donorId === state.userId) {
                 let auctionWithBids = processLoadedAuctionBids(action.auction);
-                let ownList = state.ownedAuctionCollection.slice()
-                //let newStateTotal = 0;
+                let pendingConfirmationAuctionCollection = state.pendingConfirmationAuctionCollection
+                let confirmedAuctionCollection = state.confirmedAuctionCollection
 
-                // Object.keys(action.auction.winningBids).forEach( bidId => {
-                //     newStateTotal += action.auction.bids[bidId].bidAmount;
-                // });
-
-                ownList = [
-                    ...ownList,
-                    auctionWithBids
-                ]
+                if (action.auction.winningBids && action.auction.winningBids.length) {
+                    confirmedAuctionCollection = [
+                        ...confirmedAuctionCollection,
+                        auctionWithBids
+                    ]
+                } else {
+                    pendingConfirmationAuctionCollection = [
+                        ...pendingConfirmationAuctionCollection,
+                        auctionWithBids
+                    ]
+                }
 
                 return Object.assign({}, state, {
                     auctionCollection: [
@@ -134,7 +112,8 @@ function auctions(state = defaultAuctionState, action) {
                         action.auction
                     ],
                     bidTotal: state.bidTotal += auctionWithBids.bidTotal,
-                    ownedAuctionCollection : ownList
+                    pendingConfirmationAuctionCollection : pendingConfirmationAuctionCollection,
+                    confirmedAuctionCollection: confirmedAuctionCollection
 
                 });
             } else {
@@ -145,11 +124,6 @@ function auctions(state = defaultAuctionState, action) {
                     ]
                 });
             }
-
-        // case PLACE_BID:
-
-        //     console.log('place bid reducer', action);
-        //     return state;
 
         case HIDE_AUCTION_DETAIL:
 
@@ -269,13 +243,8 @@ function filterUniqueBidders(bids) {
 function processLoadedAuctionBids(auction) {
     auction.bidTotal = 0;
     auction.bids = filterUniqueBidders(auction.bids);
-    // if (auction.bids) {
-    //     let firstItem = auction.bids[Object.keys(auction.bids)[0]];
-    //     firstItem.checked = true;
-    //     auction.bidTotal += firstItem.bidAmount;
-    // }
-    if (auction.winningBids) {
-        Object.keys(auction.winningBids).forEach( bidId => {
+    if (auction.bids && auction.bids) {
+        Object.keys(auction.bids).forEach( bidId => {
             auction.bidTotal += auction.bids[bidId].bidAmount;
             auction.bids[bidId].checked = true;
             auction.bids[bidId].winner = true;
