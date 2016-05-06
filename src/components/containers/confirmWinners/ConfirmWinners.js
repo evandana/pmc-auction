@@ -1,7 +1,7 @@
 // Libraries
 import React, { Component } from 'react'
 
-import ConfirmWinner from 'components/containers/confirmWinners/ConfirmWinner'
+import ConfirmWinner from './ConfirmWinner'
 
 // MATERIAL UI!!!
 import List from 'material-ui/lib/lists/list';
