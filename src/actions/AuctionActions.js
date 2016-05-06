@@ -37,28 +37,9 @@ export function confirmBidToggle (auctionId, bidId) {
 
 export function confirmAuctionWinners (auction, winningBidsCollection) {
     // TODO: do I need a dispatch here? it works without it
-    return firebase.updateWinningBid(auction, winningBidsCollection, () => { dispatch({ type: CONFIRM_WINNERS }) } )
+    //, () => { dispatch({ type: CONFIRM_WINNERS }) }
+    return firebase.updateWinningBid(auction, winningBidsCollection)
 }
-
-// export function confirmAuctionWinnersDispatch () {
-//     return dispatch => {
-//         firebase.updateWinningBid(auction, winningBidsCollection)
-//             .then( () => {
-//                 dispatch({ type: CONFIRM_WINNERS });
-//             })
-//     }
-// }
-
-// export function confirmWinners () {
-//     return (dispatch, getState) => {
-//         let auctions = getState().auctions.ownedAuctionCollection;
-//         let updateObj = buildConfirmUpdateObj(auctions);
-//         firebase.updateWinningBids(updateObj)
-//             .then( () => {
-//                 dispatch({ type: CONFIRM_WINNERS })
-//             })
-//     }
-// }
 
 export function createAuction (fields, user) {
 

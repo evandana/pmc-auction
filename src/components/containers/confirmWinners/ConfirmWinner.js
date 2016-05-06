@@ -28,7 +28,7 @@ class ConfirmWinner extends Component {
 
     handleToggle (selectedBidIndices) {
         this.selections = selectedBidIndices;
-        console.log('this.selections', this.selections)
+        // console.log('this.selections', this.selections)
     }
 
     getSelections() {
@@ -47,6 +47,8 @@ class ConfirmWinner extends Component {
                 colSpan: 2
             }
         }
+
+        // console.log('auction.bids', auction.bids)
 
         return (
             <div
@@ -70,7 +72,6 @@ class ConfirmWinner extends Component {
                                 label="Confirm"
                                 auction={auction}
                                 getSelections={() => { return this.getSelections() }}
-                                confirmWinnersSubmit={this.props.confirmWinnersSubmit}
                             />
                         </TableHeaderColumn>
                       </TableRow>
