@@ -1,7 +1,7 @@
 // Libraries
 import React, { Component } from 'react'
 
-import ConfirmDialog from 'components/confirmDialog/ConfirmDialog'
+import ConfirmDialog from '../../confirmDialog/ConfirmDialog'
 
 // MATERIAL UI!!!
 import Table from 'material-ui/lib/table/table';
@@ -24,6 +24,10 @@ class ConfirmWinner extends Component {
         super(props);
 
         this.selections = []
+
+        this.state = {
+            selections: []
+        }
     }
 
     handleToggle (selectedBidIndices) {
@@ -45,6 +49,10 @@ class ConfirmWinner extends Component {
         const style = {
             doubleColumn: {
                 colSpan: 2
+            },
+            title: {
+                fontSize: 16,
+                color: 'black'
             }
         }
 
@@ -63,7 +71,7 @@ class ConfirmWinner extends Component {
                 >
                     <TableHeader>
                       <TableRow>
-                        <TableHeaderColumn>
+                        <TableHeaderColumn style={style.title}>
                             {auction.title}
                         </TableHeaderColumn>
                         <TableHeaderColumn>
