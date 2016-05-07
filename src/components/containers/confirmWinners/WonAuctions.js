@@ -71,12 +71,16 @@ class WonAuctions extends Component {
 
         });
 
-                // <h3>Confirmed Auctions</h3>
-        return (
-            <div>
-                {wonList}
-            </div>
-        )
+        if (wonList.length && wonList[0] !== '' ) {
+            return (
+                <div>
+                    <h4>Auctions you won</h4>
+                    {wonList}
+                </div>
+            )
+        } else {
+            return <div></div>
+        }
     }
 
 }
