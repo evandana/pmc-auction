@@ -139,7 +139,7 @@ class Header extends Component {
         let currentPath = window.location.hash.match(new RegExp("\#(.*)\\?"))[1];
         let tabs = this.getTabsBasedOnUser();
 
-        let greeting = "Welcome, " + this.props.user.name + (this.props.user.persona ? ' a.k.a. "' + this.props.user.persona + '"' : '');
+        let greeting = "Welcome, " + this.props.user.name;
 
 
         return (
