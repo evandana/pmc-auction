@@ -81,6 +81,8 @@ class AuctionList extends Component {
         // TODO: put this back in
         // actionIcon={<IconButton><PlusOne color="white"/></IconButton>}
 
+        console.log('config', this.props.config)
+
         return (
               <div style={styles.root}>
                 <GridList
@@ -116,7 +118,7 @@ class AuctionList extends Component {
 function mapStateToProps (state) {
   // console.log('state', state.login)
     return {
-        config: state.auctions.config
+        config: state.login.config
     }
 }
 
