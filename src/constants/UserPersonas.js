@@ -12,7 +12,7 @@ export const userDescriptives = [
     'Buff',
     'Brawny',
     'Brilliant',
-    'Blissful'
+    'Blissful',
     'Charming',
     'Clever',
     'Cool',
@@ -21,7 +21,7 @@ export const userDescriptives = [
     'Chill',
     'Creative',
     'Compassionate',
-    'Competent'
+    'Competent',
     'Dapper',
     'Daring',
     'Deft',
@@ -79,7 +79,7 @@ export const userDescriptives = [
     'Musical',
     'Mysterious',
     'Modest',
-    'Magnificent'.
+    'Magnificent',
     'Majestic',
     'Nifty',
     'Nimble',
@@ -153,7 +153,7 @@ export const userSpiritAnimals = [
     'Caribou',
     'Cobra',
     'Crab',
-    'Crane'
+    'Crane',
     'Dolphin',
     'Duck',
     'Eagle',

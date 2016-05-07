@@ -124,21 +124,21 @@ function generateUserPersona(users) {
         validAnimals = userSpiritAnimals.slice(),
         newPersona
 
-    Object.keys(users).forEach( user => {
+    // Object.keys(users).forEach( user => {
 
-        if (users[user].persona) {
+    //     if (users[user].persona) {
 
-            validDescriptives.splice(
-                validDescriptives.indexOf(users[user].persona.split(' ')[0]), 1
-            )
+    //         validDescriptives.splice(
+    //             validDescriptives.indexOf(users[user].persona.split(' ')[0]), 1
+    //         )
 
 
-            validAnimals.splice(
-                validAnimals.indexOf(users[user].persona.split(' ')[1]), 1
-            )
+    //         validAnimals.splice(
+    //             validAnimals.indexOf(users[user].persona.split(' ')[1]), 1
+    //         )
 
-        }
-    })
+    //     }
+    // })
 
     newPersona = validDescriptives[Math.floor(Math.random() * (validDescriptives.length))] +
         ' ' +
