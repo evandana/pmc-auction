@@ -277,9 +277,10 @@ function mapStateToProps (state) {
 	for (let bid in data.bids) {
 		if (
 			( data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) > highestBid.bidAmount )
-			||
-			( data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) === data.openingBid )
+			// ||
+			// ( data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) === data.openingBid )
 			) {
+			console.log('here')
 			highestBid = data.bids[bid];
 		}
 	}
@@ -303,6 +304,8 @@ function mapStateToProps (state) {
 	// }
 
 	// console.log('min bid', bidAmountMin)
+
+	console.log('highestBid', highestBid)
 
 	return {
 		// app-level, static
