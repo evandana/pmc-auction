@@ -91,7 +91,7 @@ class Header extends Component {
         tabs.map( function(tab, index){
             switch(tab.id){
                 case "confirmWinners":
-                    if (this.props.config && this.props.config.CONFIRM_WINNERS) {
+                    if ( ( this.props.config && this.props.config.CONFIRM_WINNERS ) || this.props.user.permissionLevel === "ADMIN" )  {
                         allowedTabs.push(tab);
                     }
                     break;

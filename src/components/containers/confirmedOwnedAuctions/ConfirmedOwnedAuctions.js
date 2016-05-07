@@ -66,12 +66,16 @@ class ConfirmedOwnedAuctions extends Component {
 
         });
 
-                // <h3>Confirmed Auctions</h3>
-        return (
-            <div >
-                {confirmLists}
-            </div>
-        )
+        if (confirmLists.length && confirmLists[0] !== '') {
+            return (
+                <div >
+                    <h4>Auctions You Confirmed</h4>
+                    {confirmLists}
+                </div>
+            )
+        } else {
+            return <div></div>
+        }
     }
 
 }

@@ -28,7 +28,7 @@ import './_auctionItemDetail.scss';
 
 
 const DEFAULT_OPENING_BID = 10;
-const DEFAULT_INCREMENT_AMOUNT = 10;
+const DEFAULT_INCREMENT_AMOUNT = 5;
 
 class AuctionItemDetail extends Component {
 
@@ -42,7 +42,11 @@ class AuctionItemDetail extends Component {
 	}
 
 	handleOpen() {
-		if (this.state.bidDisplayAmount >= parseInt(this.props.highestBid.bidAmount, 10) + this.props.increment ) {
+		if (
+			( this.props.highestBid.bidAmount === this.props.bidAmountMin && ( !this.props.data.bids || Object.keys(this.props.data.bids).length === 0 ) )
+			||
+			( this.state.bidDisplayAmount >= parseInt(this.props.highestBid.bidAmount, 10) + this.props.increment )
+			) {
 			this.setState({validBidAmount: true, confirmModalOpen: true});
 		} else {
 			this.setState({validBidAmount: false, confirmModalOpen: true});
@@ -234,7 +238,8 @@ class AuctionItemDetail extends Component {
 								this.props.config.BIDDING_OPEN
 								?
 									<span>
-										{this.props.highestBid && this.props.highestBid.bidderObj
+										{
+											this.props.highestBid && this.props.highestBid.bidderObj
 											?
 												'$' + this.props.highestBid.bidAmount + ' by ' + this.props.highestBid.bidderObj.persona
 											:
@@ -270,21 +275,34 @@ function mapStateToProps (state) {
 
 	let highestBid = {bidAmount: parseInt(data.openingBid || DEFAULT_OPENING_BID, 10)};
 	for (let bid in data.bids) {
-		if (data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) > highestBid.bidAmount) {
+		if (
+			( data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) > highestBid.bidAmount )
+			||
+			( data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) === data.openingBid )
+			) {
 			highestBid = data.bids[bid];
 		}
 	}
+
+	console.log('highestBid', highestBid);
 
 	const increment = parseInt(data.incrementAmount || DEFAULT_INCREMENT_AMOUNT, 10)
 
 	data.openingBid = data.openingBid || DEFAULT_OPENING_BID;
 
-	let bidAmountMin = parseInt(highestBid.bidAmount, 10) + increment;
+	let bidAmountMin = data.openingBid === parseInt(highestBid.bidAmount, 10) && ( !data.bids || Object.keys(data.bids).length === 0 )
+		?
+			parseInt(highestBid.bidAmount, 10)
+		:
+			parseInt(highestBid.bidAmount, 10) + increment
+		;
 
-	// if opening bid
-	if (bidAmountMin === parseInt(data.openingBid, 10) + increment) {
-		bidAmountMin = parseInt(data.openingBid, 10);
-	}
+	// // if opening bid
+	// if (bidAmountMin === parseInt(data.openingBid, 10) + increment) {
+	// 	bidAmountMin = parseInt(data.openingBid, 10);
+	// }
+
+	console.log('min bid', bidAmountMin)
 
 	return {
 		// app-level, static

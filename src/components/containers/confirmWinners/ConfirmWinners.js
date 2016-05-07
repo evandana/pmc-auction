@@ -42,22 +42,22 @@ class ConfirmWinners extends Component {
                     </ConfirmWinner>
                 );
             } else {
-                return ''
+                return <div></div>
             }
 
         });
 
         if (this.props.auctions.length) {
-                    // <h3>Say "Yes!"</h3>
             return (
                 <div className='confirm-winners-l'>
+                    <h4>Auctions you own</h4>
                     <div>
                         {tableList}
                     </div>
                 </div>
             )
         } else {
-            return ''
+            return <div></div>
         }
     }
 
