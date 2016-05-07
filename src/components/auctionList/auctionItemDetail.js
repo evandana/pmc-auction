@@ -284,7 +284,7 @@ function mapStateToProps (state) {
 		}
 	}
 
-	console.log('highestBid', highestBid);
+	// console.log('highestBid', highestBid);
 
 	const increment = parseInt(data.incrementAmount || DEFAULT_INCREMENT_AMOUNT, 10)
 
@@ -302,7 +302,7 @@ function mapStateToProps (state) {
 	// 	bidAmountMin = parseInt(data.openingBid, 10);
 	// }
 
-	console.log('min bid', bidAmountMin)
+	// console.log('min bid', bidAmountMin)
 
 	return {
 		// app-level, static
