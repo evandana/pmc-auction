@@ -10,11 +10,11 @@ let _curUser,
     UserStore;
 
 UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
-    
+
     authCheck (callback) {
         UserStore.rwAdapter.authCheck(callback);
     },
-    
+
     authenticate () {
         UserStore.rwAdapter.auth();
     },
@@ -36,17 +36,16 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
 
         return true;
     }),
-    
+
     getUser () {
         return _curUser;
     },
-    
+
     getAllUsers () {
         return UserStore.rwAdapter.getAllUsers();
     },
-    
-    getUidFromAuth (authData) {
 
+    getUidFromAuth (authData) {
         // Google Auth
         if (authData.auth && authData.auth.provider === 'google') {
             return authData.auth.uid;
@@ -54,9 +53,8 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
             console.log('getUIdFromAuth could not find auth type');
             return null;
         }
-
     },
-    
+
     setUser (authData) {
         return new Promise( (resolve, reject) => {
             UserStore.getAllUsers()
@@ -75,7 +73,7 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
                 });
         });
     },
-    
+
     storeNewUser (userData) {
         return new Promise( (resolve, reject) => {
             // Google users
@@ -83,20 +81,21 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
                 let user = {
                     uid: userData.uid,
                     name: userData.google.displayName,
+                    email: userData.google.email,
                     permissionLevel: 'GUEST'
                 };
-                
+
                 UserStore.rwAdapter.addNewUser(userData.uid, user)
                     .then( (newUser) => {
                         resolve(newUser);
                     });
-                
+
             } else {
                 console.log('UserStore.storeNewUser error, authentication type unknown.');
             }
         });
     }
-    
+
 });
 
 export default UserStore;

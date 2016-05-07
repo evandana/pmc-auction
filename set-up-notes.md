@@ -32,11 +32,13 @@ Start Web Server
 Start Web Server at system boot
 `sudo chkconfig httpd on`
 
+Update web server
+
 Public IP
-52.90.140.202
+52.90.26.128
 
 Connect to instance with: 
-TODO: ` ssh -i ..../newkeypair.pem ec2-user@52.90.140.202`
+TODO: ` ssh -i ..../newkeypair.pem ec2-user@52.90.26.128`
 
 TODO: make key accessible on necessary computers
 
@@ -79,6 +81,8 @@ Followed steps at http://stackoverflow.com/questions/12370921/ec2-cant-ssh-into-
 Set up deploy key in github repo
 
 Initiated repo in `doc root`
+`/etc/httpd/conf/httpd.conf`
+restart apache `service httpd restart`
 
 testing
 
@@ -107,3 +111,89 @@ Change the directory permissions of /var/www and its subdirectories to add group
 Recursively change the file permissions of /var/www and its subdirectories to add group write permissions.
 
 [ec2-user ~]$ find /var/www -type f -exec sudo chmod 0664 {} +
+
+
+=========
+Clone new repo
+`https://github.com/evandana/pmc-auction`
+
+Get into repo
+`cd pmc-auction`
+
+Switch branch
+`git checkout dev`
+
+NPM install
+`npm install`
+
+Run
+`npm run watch`
+
+`git pull`
+
+-------------
+
+Before running your app, you can do this in console,
+`export NODE_ENV=production`
+
+Or if you are in windows you could try this:
+`SET NODE_ENV=production`
+
+or you can run your app like this:
+`NODE_ENV=production node app.js`
+
+You can also set it in your js file:
+`process.env.NODE_ENV = 'production';`
+
+++++++++++++++++++++++
+# make EC2 run indefinitely
+npm install supervisor -g
+http://josephralph.co.uk/supervisor-monitoring-and-running-commands/
+<!-- pmc-auction/server/pmc-auction-supervisor.conf
+
+[program:pmc-auction-supervisor]
+directory=/var/www/html/pmc-auction
+command=npm run prod
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/pmc-auction.err.log -->
+`supervisor server` //what's run by npm start
+
+adjusted timeout on ec2?
+http://stackoverflow.com/questions/7210011/amazon-ec2-ssh-timeout-due-inactivity
+
+#pm2 for no hangup
+https://www.npmjs.com/package/pm2
+
+++++++++++++++++++++++
+
+##EC2
+git fetch
+git pull
+git checkout master
+npm install
+npm run build
+pm2 start server // pm2 stop all
+
+// even after all that, something with firebase login didn't work on aws
+
++++++++++++++++++++++++
+
+#HEROKU
+git fetch
+git pull
+git checkout master
+npm install
+npm run build
+git push heroku master
+heroku ps:scale web=1
+heroku open
+// on error: heroku logs
+
++++++++++++++++++++++++
+
+#FIREBASE
+[https://www.firebase.com/docs/hosting/guide/deploying.html]
+
+npm run build
+firebase deploy

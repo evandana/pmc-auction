@@ -1,6 +1,6 @@
-import keyMirror from 'keyMirror';
+// import keyMirror from 'keyMirror';
 
-export default keyMirror({
-    LOGIN_GOOGLE: null,
-    LOGOUT_USER: null,
-});
+// export default keyMirror({
+//     LOGIN_GOOGLE: null,
+//     LOGOUT_USER: null,
+// });

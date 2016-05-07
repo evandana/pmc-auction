@@ -1,17 +1,15 @@
 import Firebase from 'firebase';
 
 let Adapter = function Adapter () {
-    
+
     let ref = new Firebase("https://pmc-auction.firebaseio.com"),
         auctionsRef = ref.child("auctions"),
-        usersRef = ref.child("users");
-    
+        usersRef = ref.child("users"),
+        configRef = ref.child("CONFIG");
+
     return {
 
-        addAuction (auctionObj) {
-            auctionsRef.push(auctionObj);
-        },
-        
+
         addNewUser (uid, userObj) {
 
             return new Promise( (resolve, reject) => {
@@ -33,36 +31,90 @@ let Adapter = function Adapter () {
         authCheck (callback) {
             ref.onAuth(callback);
         },
-        
+
         getAllUsers () {
             return new Promise(function(resolve, reject) {
                 usersRef.once('value', (snapshot) => { resolve(snapshot.val()) });
             });
         },
 
+        getConfig () {
+            return new Promise(function(resolve, reject) {
+                configRef.once('value', (snapshot) => { resolve(snapshot.val()) });
+            });
+        },
+
+        updateConfig (callback) {
+            configRef.on('child_changed', (childSnapshot, prevChildKey) => {
+                let updatedConfigProp = {};
+                updatedConfigProp[childSnapshot.key()] = childSnapshot.val();
+                callback(updatedConfigProp)
+            });
+        },
+
+        addAuction (auctionObj, callback) {
+            auctionsRef.push(auctionObj, callback);
+        },
+
         loadAuctions (callback) {
             auctionsRef.on("child_added", (snapshot) => {
                 let auction = snapshot.val();
                 auction.id = snapshot.key();
-                callback(auction); 
+                callback(auction);
             });
         },
 
-        loginGoogle () {
-            ref.authWithOAuthRedirect("google", function(error, authData) {
-                if (error) {
-                    console.log("Login Failed!", error);
-                } else {
-                    console.log("Authenticated successfully with payload:", authData);
-                }
+        updateAuctions (callback) {
+            auctionsRef.on("child_changed", (snapshot) => {
+                let auction = snapshot.val();
+                auction.id = snapshot.key();
+                callback(auction);
             });
         },
-        
+
+        updateWinningBid(auction, winningBids, auctionOwner) {
+            return new Promise( (resolve, reject) => {
+                auctionsRef.child(auction.id).update({
+                    winningBids: winningBids,
+                    auctionOwner: auctionOwner
+                }, error => {
+                    if (error) {
+                        reject("Data could not be saved." + error);
+                    } else {
+                        resolve("Data saved successfully.");
+                    }
+                });
+            })
+        },
+
+        placeBid (bidObject, successCallback, failCallback) {
+            // console.log('firebase adapter', bidObject);
+            // add bid
+            auctionsRef.child(bidObject.auctionId).child('bids').push(bidObject);
+            // update highest bid for auction item
+            auctionsRef.child(bidObject.auctionId).update({highestBid: bidObject.bidAmount});
+        },
+
+        loginGoogle (successCallback, failCallback) {
+            return ref.authWithOAuthRedirect("google", function(error, authData) {
+                if (error) {
+                    // console.log("Login Failed!", error);
+                    return failCallback(error);
+                } else {
+                    // We'll never get here, as the page will redirect on success.
+                    // console.log("Authenticated successfully with payload:", authData);
+                    return successCallback(authData);
+                }
+            }, {
+                scope: "email"
+            });
+        },
+
         logoutUser () {
             ref.unauth();
-            document.location.reload(true);
+            // document.location.reload(true);
         }
-        
+
     }
 };
 export default new Adapter();
