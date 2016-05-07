@@ -100,6 +100,10 @@ const SponsorsPage = ( {prop} ) => {
             <p>Generous sponsors make this possible. We're proud to support these community-focused businesses.</p>
                 <List>
                 { sponsors.map( sponsor => {
+                    const style = {
+                        fill: sponsor.color
+                    }
+
                     return (
                         <ListItem
                             onTouchTap={ evt => {
@@ -109,7 +113,7 @@ const SponsorsPage = ( {prop} ) => {
                             secondaryText={sponsor.subtext}
                             secondaryTextLines={2}
                             key={sponsor.name}
-                            leftIcon={<ActionGrade color={pinkA200} />}
+                            leftIcon={<ActionGrade style={style} />}
                             rightAvatar={<Avatar src={sponsor.image} backgroundColor={transparent} />}
                         />
                     )
