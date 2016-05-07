@@ -30,9 +30,45 @@ class ConfirmWinner extends Component {
         }
     }
 
-    handleToggle (selectedBidIndices) {
+    getSelectedItemsTotal(selectedBidIndices) {
+        console.log('bids', this.props.auction.bids);
+
+        let bidIndexCollection = Object.keys( this.props.auction.bids );
+        let totalSelected = 0;
+
+        let bidValues = selectedBidIndices.map( bidIndex => {
+            return this.props.auction.bids[ bidIndexCollection[ bidIndex ] ].bidAmount
+        });
+
+        if ( bidValues.length > 0 ) {
+            totalSelected = bidValues.reduce( (prevVal, currVal) => {
+                return prevVal + currVal;
+            });
+        }
+
+        return totalSelected;
+    }
+
+    clearTotalSelectedInDom(auctionId) {
+        let el = document.querySelector('.title-amount-' + auctionId);
+        if (el) {
+            el.innerHTML = '';
+        }
+    }
+
+    setTotalSelectedInDom(selectedBidIndices, auctionId) {
+
+        let selectedItemsTotal = this.getSelectedItemsTotal(selectedBidIndices);
+
+        let el = document.querySelector('.title-amount-' + auctionId);
+        el.innerHTML = '- $' + selectedItemsTotal + ' raised';
+    }
+
+    handleToggle (selectedBidIndices, auctionId) {
+
+        this.setTotalSelectedInDom(selectedBidIndices, auctionId)
+
         this.selections = selectedBidIndices;
-        // console.log('this.selections', this.selections)
     }
 
     getSelections() {
@@ -56,7 +92,7 @@ class ConfirmWinner extends Component {
             }
         }
 
-        // console.log('auction.bids', auction.bids)
+        this.clearTotalSelectedInDom(auction.id);
 
         return (
             <div
@@ -66,13 +102,16 @@ class ConfirmWinner extends Component {
                     selectable={true}
                     multiSelectable={true}
                     onRowSelection={(selectedBidIndices) => {
-                        this.handleToggle(selectedBidIndices);
+                        this.handleToggle(selectedBidIndices, auction.id);
                     }}
                 >
                     <TableHeader>
                       <TableRow>
                         <TableHeaderColumn style={style.title}>
-                            {auction.title}
+                            <h3>
+                                {auction.title}
+                                <span className={'confirm-winners__combined-amount title-amount-' + auction.id}></span>
+                            </h3>
                         </TableHeaderColumn>
                         <TableHeaderColumn>
                               <ConfirmDialog
