@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { Router, RouteHandler, Link, hashHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { AppBar, Tabs, Tab, LeftNav, MenuItem, IconButton } from 'material-ui'
-import { NavigationClose, NavigationMenu }from 'material-ui/lib/svg-icons';
+import { NavigationClose, NavigationMenu }from 'material-ui/lib/svg-icons'
+import firebase from '../../../utils/firebaseAdapter'
+import { clearAuctionDetail } from '../../../actions/AuctionActions'
 
 import './_header.scss'
 
@@ -21,7 +23,17 @@ class Header extends Component {
                     route: "/auctions"
                 },
                 {
-                    label: "Confirm Winners",
+                    label: "Donate",
+                    id: "donate",
+                    route: "/donate"
+                },
+                {
+                    label: "Sponsors",
+                    id: "sponsors",
+                    route: "/sponsors"
+                },
+                {
+                    label: "Winners",
                     id: "confirmWinners",
                     route: "/auctions/confirmWinners"
                 },
@@ -29,12 +41,12 @@ class Header extends Component {
                     label: "Add Auction",
                     id: "addAuction",
                     route: "/auctions/add"
-                },
-                {
-                    label: "Login",
-                    id: "login",
-                    route: "/login"
-                },
+                }//,
+                // {
+                //     label: "Login",
+                //     id: "login",
+                //     route: "/login"
+                // },
             ],
 
         defaultTitle: "PMC Auction"
@@ -42,7 +54,7 @@ class Header extends Component {
 
     constructor(props) {
         super(props)
-        console.log(this.props);
+        // console.log(this.props);
         this.state = {
             openNav : false,
             loggedIn : (this.props.user.google) ? true : false,
@@ -52,9 +64,9 @@ class Header extends Component {
     // Handling Clicking on Tab Item on Tabs
     handleTabChange (tab) {
         //${tab.props.route}
-        hashHistory.push(tab.props.route); 
+        hashHistory.push(tab.props.route);
         this.setState({currentPage: tab.props.label});
-    }  
+    }
 
     // Handling Toggle Nav
     handleToggleNav = () => this.setState({openNav: !this.state.openNav});
@@ -65,28 +77,50 @@ class Header extends Component {
         hashHistory.push(tab.route);
     }
 
+    clearAuctionDetail(event) {
+        const { dispatch } = this.props
+        dispatch(clearAuctionDetail())
+    }
+
     // Returns set of tabs based on User Credentials
     getTabsBasedOnUser (){
-        var tabs = this.props.tabs;
+
+
+        let tabs = this.props.tabs;
+        let allowedTabs = []
         tabs.map( function(tab, index){
             switch(tab.id){
                 case "confirmWinners":
-                    // add check for user permissions to confirm winner
-                    tabs.splice(index,1);
+                    if ( ( this.props.config && this.props.config.CONFIRM_WINNERS ) || this.props.user.permissionLevel === "ADMIN" )  {
+                        allowedTabs.push(tab);
+                    }
+                    break;
+                case "addAuction":
+                    let showAddAuction = this.props.user.permissionLevel === "ADMIN" || this.props.user.permissionLevel === "DONOR";
+
+                    // console.log('addAuction', showAddAuction, this.props.user.permissionLevel)
+
+                    if (!showAddAuction) {
+                        // tabs.splice(index,1);
+                    } else {
+                        allowedTabs.push(tab);
+                    }
                     break;
                 case "login":
                     if( this.state.loggedIn ){
-                        tabs.splice(index,1);
+                        // tabs.splice(index,1);
                     }
                     break;
+                default:
+                    allowedTabs.push(tab);
             }
         }, this)
 
-        return tabs;
+        return allowedTabs;
     }
 
     render () {
-        // styles to override material-ui 
+        // styles to override material-ui
         var styles = {
             header_title: {
                 fontSize: "130%"
@@ -102,31 +136,42 @@ class Header extends Component {
         };
 
         // Reference
-        var currentPath = window.location.hash.match(new RegExp("\#(.*)\\?"))[1];
-        var tabs = this.getTabsBasedOnUser();
+        let currentPath = window.location.hash.match(new RegExp("\#(.*)\\?"))[1];
+        let tabs = this.getTabsBasedOnUser();
+
+        let greeting = "Welcome, " + this.props.user.name;
+
 
         return (
             <header>
-                <AppBar 
+                <AppBar
                     className="header"
                     style={styles.header}
-                    title={(this.state.loggedIn) ? "Welcome, " + this.props.user.google.displayName : this.props.defaultTitle}
+                    title={ greeting }
                     titleStyle={styles.header_title}
                     onLeftIconButtonTouchTap={this.handleToggleNav}
                 >
                     <Tabs className="header__tabs" value={currentPath}>
-                        { 
+                        {
                             tabs.map( function(tab) {
-                                return <Tab 
-                                            onActive={::this.handleTabChange} 
-                                            style={styles.tab.label} 
-                                            route={tab.route} 
+                                return <Tab
+                                            onActive={::this.handleTabChange}
+                                            style={styles.tab.label}
+                                            route={tab.route}
                                             label={tab.label}
                                             value={tab.route}
                                             key={tab.id}
+                                            onClick={this.clearAuctionDetail.bind(this)}
                                         />
                             }, this)
                         }
+                        <Tab
+                            onActive={firebase.logoutUser}
+                            style={styles.tab.label}
+                            route="/"
+                            label="Logout"
+                            value="/"
+                        />
                     </Tabs>
                 </AppBar>
                 <LeftNav
@@ -136,16 +181,21 @@ class Header extends Component {
                   open={this.state.openNav}
                   onRequestChange={openNav => this.setState({openNav})}
                 >
-                    { 
+                    {
                         tabs.map( function(tab) {
-                            return <MenuItem 
-                                        onTouchTap={::this.handleNavItemTap.bind(this, tab)} 
+                            return <MenuItem
+                                        onTouchTap={::this.handleNavItemTap.bind(this, tab)}
                                         route={tab.route}
                                         key={tab.id}
                                     >{tab.label}
                                     </MenuItem>
                         }, this)
                     }
+                    <MenuItem
+                        onTouchTap={firebase.logoutUser}
+
+                    >Logout
+                    </MenuItem>
                 </LeftNav>
             </header>
         )
@@ -158,7 +208,8 @@ class Header extends Component {
 
 function mapStateToProps (state) {
     return {
-        user: state.login.user
+        user: state.login.user,
+        config: state.login.config
       }
 }
 

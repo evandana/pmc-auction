@@ -22,9 +22,9 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 // set in webpack
-console.log('__PRODUCTION__', __PRODUCTION__)
-console.log('__DEV__', __DEV__)
-console.log('JSON.stringify(process.env.NODE_ENV)', JSON.stringify(process.env.NODE_ENV))
+// console.log('__PRODUCTION__', __PRODUCTION__)
+// console.log('__DEV__', __DEV__)
+console.log('Environment:', JSON.stringify(process.env.NODE_ENV))
 
 // Styles
 import './app.scss';
@@ -34,12 +34,14 @@ import {
     AppPage,
     AuctionsPage,
     ConfirmWinnersPage,
+    DonatePage,
     HomePage,
-    LoginPage
+    LoginPage,
+    SponsorsPage
     } from './components/index';
 // Actions
 import { LoginActions } from './actions/LoginActions'
-import { fetchAuctions } from './actions/AuctionActions'
+import { toggleAuctionDetail, fetchAuctions, updateAuctions } from './actions/AuctionActions'
 // Store
 import configureStore from './stores/configureStore'
 // History
@@ -49,33 +51,55 @@ import DevTools from './components/containers/devTools/DevTools'
 // firebase read/write adapter
 import firebase from './utils/firebaseAdapter'
 
-
 const store = configureStore()
 const routerHistory = syncHistoryWithStore(hashHistory, store)
 
-const authCheck = new Promise( (resolve) => {
-    firebase.authCheck(
-        user => { resolve(user) },
-        err => { console.log('error connecting', err) }
-    )
-})
+// listen for authorization event to load app
+let unsubscribe = store.subscribe(authCheckHandler);
+let logoutUnsubscribe;
 
-// force auth
-// requestCheckAuth();
+store.dispatch(LoginActions.authCheckRequest());
 
-authCheck.then( user => {
-    console.log('auth is good', user)
-    user ? loadAppView() : loadLoginView()
-}, err => {
-    console.log('error on auth check')
-});
+function authCheckHandler() {
+
+    const state = store.getState()
+
+    if(state.login.applicationClosed) {
+        loadLockdownView()
+    } else if (state.login.forceLoginView) {
+        unsubscribe()
+        loadLoginView()
+    } else if (state.login.user) {
+        unsubscribe()
+        loadAppView()
+        // post login logout handler
+        logoutUnsubscribe = store.subscribe(logoutHandler);
+
+    } else {
+        console.log("auth logic failed in app.js")
+        unsubscribe()
+    }
+}
+
+function logoutHandler() {
+
+    let state = store.getState()
+
+    if (state.login.forceLoginView) {
+        logoutUnsubscribe()
+        ReactDOM.unmountComponentAtNode(document.getElementById('app-page'))
+        loadLoginView()
+    }
+}
 
 function loadAppView () {
 
-
-    console.log('load app view');
-    // store.dispatch(LoginActions.authCheck());
-    // hashHistory.listen(location => LoginActions.requestRouteChange(location, store))
+    // on Auctions Page click, always go to list view
+    hashHistory.listen(location => {
+        if (location.pathname === '/auctions') {
+            store.dispatch(toggleAuctionDetail(false));
+        }
+    })
 
     render(
         <Provider store={store}>
@@ -86,6 +110,8 @@ function loadAppView () {
                         <Route path="/auctions" component={AuctionsPage}/>
                         <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
                         <Route path="/auctions/add" component={AddAuctionPage} />
+                        <Route path="/donate" component={DonatePage} />
+                        <Route path="/sponsors" component={SponsorsPage} />
                     </Route>
                 </Router>
                 {
@@ -102,11 +128,14 @@ function loadAppView () {
 
     // Fetch Once to Rule Them ALL
     store.dispatch(fetchAuctions())
+    store.dispatch(updateAuctions())
+    store.dispatch(LoginActions.getConfig())
+    store.dispatch(LoginActions.updateConfig())
 }
 
 function loadLoginView () {
 
-    console.log('load login view')
+    // console.log('load login view')
 
     render(
         <LoginPage />,
@@ -114,5 +143,9 @@ function loadLoginView () {
     )
 }
 
-
-
+function loadLockdownView () {
+    render(
+        <div>APPLICATION CLOSED AT THIS TIME</div>,
+        document.getElementById('app-page')
+    )
+}

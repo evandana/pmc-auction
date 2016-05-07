@@ -46,7 +46,6 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
     },
 
     getUidFromAuth (authData) {
-
         // Google Auth
         if (authData.auth && authData.auth.provider === 'google') {
             return authData.auth.uid;
@@ -54,7 +53,6 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
             console.log('getUIdFromAuth could not find auth type');
             return null;
         }
-
     },
 
     setUser (authData) {
@@ -83,6 +81,7 @@ UserStore = assign({}, EventEmitter.prototype, {rwAdapter: rw}, {
                 let user = {
                     uid: userData.uid,
                     name: userData.google.displayName,
+                    email: userData.google.email,
                     permissionLevel: 'GUEST'
                 };
 

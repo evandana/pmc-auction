@@ -2,39 +2,106 @@ import { hashHistory } from 'react-router'
 // firebase read/write adapter
 import firebase from '../utils/firebaseAdapter'
 
+import { userDescriptives, userSpiritAnimals } from '../constants/UserPersonas'
+
 export const LOGIN_CONSTANTS = {
-    AUTH_CHECK_ERROR: 'AUTH_CHECK_ERROR',
-    AUTH_CHECK_SUCCESS: 'AUTH_CHECK_SUCCESS',
-    LOGIN_GOOGLE: 'LOGIN_GOOGLE',
-    LOGIN_GOOGLE_ERROR: 'LOGIN_GOOGLE_ERROR',
-    LOGIN_GOOGLE_SUCCESS: 'LOGIN_GOOGLE_SUCCESS',
-    LOGOUT_USER: 'LOGOUT_USER',
-    REQUEST_AUTH: 'REQUEST_AUTH',
-    REQUEST_LOGIN_GOOGLE: 'REQUEST_LOGIN_GOOGLE',
-    REQUEST_ROUTE_CHANGE: 'REQUEST_ROUTE_CHANGE'
+    AUTH_CHECK_REQUEST: 'AUTH_CHECK_REQUEST',
+    AUTH_CHECK_RESPONSE: 'AUTH_CHECK_RESPONSE',
+    AUTH_SUCCESS: 'AUTH_SUCCESS',
+    AUTH_FAIL: 'AUTH_FAIL',
+    LOCKDOWN_MODE: 'LOCKDOWN_MODE',
+    SET_USER: 'SET_USER',
+    GET_CONFIG_SUCCESS: 'GET_CONFIG_SUCCESS',
+    UPDATE_CONFIG_SUCCESS: 'UPDATE_CONFIG_SUCCESS'
 }
 
 export const LoginActions = {
 
-    authCheck(user) {
+    authCheckRequest() {
         return dispatch => {
-            firebase.authCheck( user => dispatch(this.authCheckSuccessObj(user)) )
+            firebase.authCheck( user => dispatch(this.authCheckResponse(user)) )
         }
     },
-    authCheckSuccessObj(user) {
+
+    authCheckResponse(user) {
+        // console.log('auth response called ', user)
+        if (user) {
+            return dispatch => { dispatch(this.findAndSetUser(user)) }
+        } else {
+            return { type: LOGIN_CONSTANTS.AUTH_FAIL }
+        }
+    },
+
+    getConfig() {
+        return dispatch => {
+            firebase.getConfig().then( data => {
+                return dispatch(this.getConfigObj(data));
+            });
+        }
+    },
+
+    getConfigObj(data) {
         return {
-            type: LOGIN_CONSTANTS.AUTH_CHECK_SUCCESS,
-            user
+            type: LOGIN_CONSTANTS.GET_CONFIG_SUCCESS,
+            data
         }
     },
 
-    requestRouteChange(route, store) {
+    updateConfig() {
+        return dispatch => {
+            firebase.updateConfig( config => dispatch(this.updateConfigObj(config)) )
+        }
+    },
 
-        let user = store.getState().login;
-        // console.log('requestRouteChange', route, user, !!user);
+    updateConfigObj(data) {
+        return {
+            type: LOGIN_CONSTANTS.UPDATE_CONFIG_SUCCESS,
+            data
+        };
+    },
 
-        if (route.pathname !== '/login' && !user) {
-            hashHistory.push('/login');
+    findAndSetUser (authData) {
+        // console.log('setting up findUser');
+
+        return dispatch => {
+
+            const dataCalls = [
+                firebase.getConfig(),
+                firebase.getAllUsers()
+            ]
+
+            Promise.all(dataCalls)
+                .then( data => {
+
+                    let [config, users] = data
+
+                    let uid = getUidFromAuth(authData);
+
+                    // new users and lockdown mode
+                    if (config.LOCKDOWN_MODE === true && (!users || !users[uid])) {
+
+                        dispatch({ type: LOGIN_CONSTANTS.LOCKDOWN_MODE })
+
+                    // new users and not lockdown mode
+                    } else if(!users || !users[uid]) {
+
+                        storeNewUser(authData, users)
+                            .then((newUser) => {
+                                dispatch(LoginActions.setUser(newUser))
+                            })
+                    // user exists in database
+                    } else {
+                        dispatch(LoginActions.setUser(users[uid]))
+                    }
+                })
+        }
+
+    },
+
+    setUser(user) {
+        return {
+            type: LOGIN_CONSTANTS.AUTH_SUCCESS,
+            user
         }
     },
 
@@ -51,40 +118,66 @@ export const LoginActions = {
     }
 }
 
-// -------------------------------------------------------
+function generateUserPersona(users) {
 
-// // firebase read/write adapter
-// import firebase from 'utils/firebaseAdapter'
+    let validDescriptives = userDescriptives.slice(),
+        validAnimals = userSpiritAnimals.slice(),
+        newPersona
 
-// export const FETCH_AUCTIONS = 'FETCH_AUCTIONS'
-// export const LOAD_AUCTION = 'LOAD_AUCTION'
-// export const PLACE_BID = 'PLACE_BID'
-// export const TOGGLE_AUCTION_DETAIL = 'TOGGLE_AUCTION_DETAIL'
+    // Object.keys(users).forEach( user => {
 
-// export function fetchAuctions() {
-//     return dispatch => {
-//         firebase.loadAuctions( auction => dispatch(loadAuctionObj(auction)) )
-//     }
-// }
+    //     if (users[user].persona) {
 
-// export function loadAuctionObj(auction) {
-//     return {
-//         type: LOAD_AUCTION,
-//         auction
-//     }
-// }
+    //         validDescriptives.splice(
+    //             validDescriptives.indexOf(users[user].persona.split(' ')[0]), 1
+    //         )
 
-// export function placeBid(auctionId, bidAmount) {
-//     return {
-//         type: PLACE_BID,
-//         auctionId,
-//         bidAmount
-//     }
-// }
 
-// export function toggleAuctionDetail(auctionId) {
-//     return {
-//         type: TOGGLE_AUCTION_DETAIL,
-//         auctionId
-//     }
-// }
+    //         validAnimals.splice(
+    //             validAnimals.indexOf(users[user].persona.split(' ')[1]), 1
+    //         )
+
+    //     }
+    // })
+
+    newPersona = validDescriptives[Math.floor(Math.random() * (validDescriptives.length))] +
+        ' ' +
+        validAnimals[Math.floor(Math.random() * (validAnimals.length))]
+
+    return  newPersona
+}
+
+function getUidFromAuth (authData) {
+
+    // Google Auth
+    if (authData.auth && authData.auth.provider === 'google') {
+        return authData.auth.uid
+    } else {
+        // console.log('getUIdFromAuth could not find auth type')
+        return null
+    }
+
+}
+
+function storeNewUser (userData, users){
+    return new Promise((resolve, reject) => {
+        // Google users
+        if (userData.auth && userData.auth.provider === 'google') {
+            let user = {
+                uid: userData.uid,
+                email: userData.google.email,
+                name: userData.google.displayName,
+                permissionLevel: 'GUEST',
+                persona: generateUserPersona(users)
+            }
+
+            firebase.addNewUser(userData.uid, user)
+                .then( (newUser) => {
+                    resolve(newUser);
+                })
+
+        } else {
+            console.log('UserStore.storeNewUser error, authentication type unknown.');
+        }
+    });
+}

@@ -6,11 +6,7 @@ const Footer = () => {
 
     return (
         <footer>
-            Requirements:
-            <ul>
-                <li>Gmail login</li>
-                <li>Chrome or modern mobile browser</li>
-            </ul>
+            100% of every dollar goes to cancer research at the Dana Farber Cancer Institute.
         </footer>
     )
 }

@@ -4,27 +4,29 @@ import {
 
 function login(state = { user : {} }, action ) {
     switch (action.type) {
-        case LOGIN_CONSTANTS.REQUEST_ROUTE_CHANGE:
-            // console.log('REQUESTED ROUTE CHANGE state', state);
-            return state;
-            break;
-        case LOGIN_CONSTANTS.AUTH_CHECK_SUCCESS:
-            // console.log('AUTH_CHECK_SUCCESS', this, state, action)
+        case LOGIN_CONSTANTS.GET_CONFIG_SUCCESS:
+            return Object.assign({}, state, {
+                config: action.data
+            });
+        case LOGIN_CONSTANTS.UPDATE_CONFIG_SUCCESS:
+            return Object.assign({}, state, {
+                config: Object.assign({}, state.config, action.data)
+            });
+        case LOGIN_CONSTANTS.AUTH_SUCCESS:
+            console.log("authorization was successful!!")
             return Object.assign({}, state, {
                 user: action.user
             });
-            break;
-        case LOGIN_CONSTANTS.AUTH_CHECK_ERROR:
+        case LOGIN_CONSTANTS.AUTH_FAIL:
+            console.log("authorization failed!")
             return Object.assign({}, state, {
-                user: 'logged in'
+                forceLoginView: true
             });
-            break;
-        case LOGIN_CONSTANTS.LOGIN_GOOGLE_SUCCESS:
-            // console.log('LOGIN_GOOGLE_SUCCESS-------------------------------------', state);
+        case LOGIN_CONSTANTS.LOCKDOWN_MODE:
+            console.log("LOCKDOWN MODE")
             return Object.assign({}, state, {
-                user: 'logged in'
+                applicationClosed: true
             });
-            break;
         default:
             return state;
     }
