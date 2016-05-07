@@ -20,7 +20,7 @@ class ConfirmWinnersPage extends Component {
 
         let confirmWinnersContent;
 
-        if( this.props.config.CONFIRM_WINNERS ) {
+        if( this.props.config && this.props.config.CONFIRM_WINNERS ) {
             return (
                 <div>
                     <h2>We're all winners</h2>
@@ -44,7 +44,7 @@ class ConfirmWinnersPage extends Component {
         } else {
             return (
                 <div>
-                    <h4>Even thouh we're all winners, this feature is not currently available</h4>
+                    <h4>Even though we're all winners, this feature is not currently available</h4>
                     <p>Please come back later to select the winning bidders</p>
                 </div>
             );
@@ -60,7 +60,7 @@ function mapStateToProps (state) {
 
     return {
         bidTotal: state.auctions.bidTotal,
-        config: state.auctions.config,
+        config: state.login.config,
         confirmedAuctionCollection: state.auctions.confirmedAuctionCollection,
         pendingConfirmationAuctionCollection: state.auctions.pendingConfirmationAuctionCollection,
         submitDisable: state.auctions.confirmWinnersSubmitDisable,
