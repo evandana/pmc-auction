@@ -36,7 +36,7 @@ export default class ConfirmDialog extends React.Component {
   };
 
   handleSubmit () {
-    confirmAuctionWinners( this.props.auction, this.state.winningBidsCollection )
+    confirmAuctionWinners( this.props.auction, this.state.winningBidsCollection, this.props.auctionOwner )
 
     this.setState({open: false});
   }

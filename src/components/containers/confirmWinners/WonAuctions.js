@@ -9,20 +9,20 @@ import ListItem from 'material-ui/lib/lists/list-item';
 import Divider from 'material-ui/lib/divider';
 import CommunicationCall from 'material-ui/lib/svg-icons/communication/call';
 import CommunicationChatBubble from 'material-ui/lib/svg-icons/communication/chat-bubble';
-import { cyan200 } from 'material-ui/lib/styles/colors';
+import { amber400 } from 'material-ui/lib/styles/colors';
 import CommunicationEmail from 'material-ui/lib/svg-icons/communication/email';
 
 // Styles
 // import './ConfirmWinners.scss';
 // Application Components
 
-class ConfirmedOwnedAuctions extends Component {
+class WonAuctions extends Component {
 
     constructor(props) {
         super(props);
     }
 
-    emailBidder(emailAddress) {
+    emailOwner(emailAddress) {
         var win = window.open('mailto:'+emailAddress+'?Subject=Happiness%20Exchange%20Winners!', '_top');
     }
 
@@ -30,50 +30,55 @@ class ConfirmedOwnedAuctions extends Component {
 
         const style = {
             icon: {
-                fill: cyan200
+                fill: amber400
             }
         }
 
-        let confirmLists = this.props.auctions.map( (auction) => {
+        let wonList = this.props.auctions.map( (auction) => {
 
-            let auctionList = auction.winningBids.map( winningBid => {
+            let auctionOwner = auction.auctionOwner || {};
+
+            let winningBid = auction.winningBids.find( winningBid => {
+                return winningBid.bidderObj.uid === auctionOwner.uid;
+            });
+
+            if (winningBid) {
                 let bidder = winningBid.bidderObj;
                 return (
+                    <List key={auction.id}>
                       <ListItem
                         key={bidder.email + bidder.uid}
                         leftIcon={<CommunicationEmail style={style.icon} />}
                         onTouchTap={() => {
-                            this.emailBidder( bidder.email )
+                            this.emailOwner( auctionOwner.email )
                         }}
                         primaryText={
-                            bidder.name +
-                            ' will join you for ' +
-                            auction.title
+                            'You won ' +
+                            auction.title +
+                            ' with ' +
+                            auctionOwner.name +
+                            ' for $' + winningBid.bidAmount
                         }
                         secondaryText={
-                            'Contact them at ' + bidder.email +
-                            ' ($' + winningBid.bidAmount + ')'
+                            'Contact them at ' + auctionOwner.email
                         }
                       />
+                    </List>
                 );
-            })
-
-            return (
-                <List key={auction.id}>
-                    {auctionList}
-                </List>
-            )
+            } else {
+                return '';
+            }
 
         });
 
                 // <h3>Confirmed Auctions</h3>
         return (
-            <div >
-                {confirmLists}
+            <div>
+                {wonList}
             </div>
         )
     }
 
 }
 
-export default ConfirmedOwnedAuctions
+export default WonAuctions
