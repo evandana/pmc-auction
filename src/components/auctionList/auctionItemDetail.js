@@ -28,7 +28,7 @@ import './_auctionItemDetail.scss';
 
 
 const DEFAULT_OPENING_BID = 10;
-const DEFAULT_INCREMENT_AMOUNT = 10;
+const DEFAULT_INCREMENT_AMOUNT = 5;
 
 class AuctionItemDetail extends Component {
 

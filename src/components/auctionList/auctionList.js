@@ -81,7 +81,7 @@ class AuctionList extends Component {
         // TODO: put this back in
         // actionIcon={<IconButton><PlusOne color="white"/></IconButton>}
 
-        console.log('config', this.props.config)
+        // console.log('config', this.props.config)
 
         return (
               <div style={styles.root}>
@@ -96,7 +96,7 @@ class AuctionList extends Component {
                       onTouchTap={ e => this.props.toggleAuctionDetail(tile.id, e) }
                       key={tile.key}
                       title={tile.title}
-                      subtitle={this.props.config.BIDDING_OPEN ? <span>with <b>{tile.donorName}</b> - {tile.value}</span> : <span>with <b>{tile.donorName}</b></span>}
+                      subtitle={this.props.config && this.props.config.BIDDING_OPEN ? <span>with <b>{tile.donorName}</b> - {tile.value}</span> : <span>with <b>{tile.donorName}</b></span>}
                       actionPosition="right"
                       titlePosition="top"
                       titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
