@@ -79,6 +79,7 @@ class ConfirmWinner extends Component {
                                 primary={true}
                                 label="Confirm"
                                 auction={auction}
+                                auctionOwner={this.props.auctionOwner}
                                 getSelections={() => { return this.getSelections() }}
                             />
                         </TableHeaderColumn>

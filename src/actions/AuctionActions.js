@@ -35,10 +35,10 @@ export function confirmBidToggle (auctionId, bidId) {
     };
 }
 
-export function confirmAuctionWinners (auction, winningBidsCollection) {
+export function confirmAuctionWinners (auction, winningBidsCollection, auctionOwner) {
     // TODO: do I need a dispatch here? it works without it
     //, () => { dispatch({ type: CONFIRM_WINNERS }) }
-    return firebase.updateWinningBid(auction, winningBidsCollection)
+    return firebase.updateWinningBid(auction, winningBidsCollection, auctionOwner)
 }
 
 export function createAuction (fields, user) {
@@ -127,39 +127,3 @@ export function clearAuctionDetail() {
         type: CLEAR_AUCTION_DETAIL
     }
 }
-
-// function buildConfirmUpdateObj(auctions) {
-//     let updateObj = {};
-//     auctions.forEach( auction => {
-//         let objStr = `${auction.id}/winningBids`;
-//         updateObj[objStr] = combineWinningBids(auction);
-//     })
-//     return updateObj;
-// }
-
-// function combineWinningBids(auction) {
-
-//     let winningBidsObj = auction.winningBids || {};
-//     let winningBids = Object.keys(auction.bids).filter( bidId => auction.winningBids[bidId].checked );
-
-//     if (!auction.winningBids) {
-//         winningBids.forEach( bidId => {
-//             delete auction.winningBids[bidId].checked;
-//             delete auction.winningBids[bidId].winner;
-//             winningBidsObj[bidId] = auction.winningBids[bidId]
-//         })
-//     } else {
-
-//         let newWinningBids = winningBids.filter( bidId => !winningBids[bidId] );
-//         winningBidsObj = assign(winningBidsObj, auction.winningBids);
-
-//         newWinningBids.forEach( bidId => {
-//             delete auction.winningBids[bidId].checked;
-//             delete auction.winningBids[bidId].winner;
-//             winningBidsObj[bidId] = auction.winningBids[bidId]
-//         })
-
-//     }
-
-//     return winningBidsObj;
-// }

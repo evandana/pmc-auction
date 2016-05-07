@@ -7,6 +7,7 @@ import { confirmWinners, confirmBidToggle } from '../actions/AuctionActions'
 // CONTAINER COMPONENTS
 import ConfirmWinners from './containers/confirmWinners/ConfirmWinners'
 import ConfirmedOwnedAuctions from './containers/confirmedOwnedAuctions/ConfirmedOwnedAuctions'
+import WonAuctions from './containers/confirmWinners/WonAuctions'
 
 class ConfirmWinnersPage extends Component {
 
@@ -23,13 +24,20 @@ class ConfirmWinnersPage extends Component {
             return (
                 <div>
                     <h2>We're all winners</h2>
+
                     <ConfirmWinners
                         auctions={this.props.pendingConfirmationAuctionCollection}
                         bidTotal={this.props.bidTotal}
                         submitDisable={this.props.submitDisable}
+                        auctionOwner={this.props.user}
                     />
+
                     <ConfirmedOwnedAuctions
                         auctions={this.props.confirmedAuctionCollection}
+                        />
+                    <hr/>
+                    <WonAuctions
+                        auctions={this.props.wonAuctionCollection}
                         />
                 </div>
             )
@@ -51,10 +59,12 @@ function mapStateToProps (state) {
     // console.log('something', state)
 
     return {
-        pendingConfirmationAuctionCollection: state.auctions.pendingConfirmationAuctionCollection,
-        confirmedAuctionCollection: state.auctions.confirmedAuctionCollection,
         bidTotal: state.auctions.bidTotal,
+        config: state.auctions.config,
+        confirmedAuctionCollection: state.auctions.confirmedAuctionCollection,
+        pendingConfirmationAuctionCollection: state.auctions.pendingConfirmationAuctionCollection,
         submitDisable: state.auctions.confirmWinnersSubmitDisable,
-        config: state.auctions.config
+        user: state.login.user,
+        wonAuctionCollection: state.auctions.wonAuctionCollection
     }
 }

@@ -25,8 +25,7 @@ const defaultAuctionState = {
     userId : null,
     pendingConfirmationAuctionCollection: [],
     confirmedAuctionCollection: [],
-    participantAuctionCollection: []
-
+    wonAuctionCollection: []
 }
 
 let _userId = null
@@ -50,15 +49,15 @@ function auctions(state = defaultAuctionState, action) {
         case UPDATE_AUCTION:
             // console.log('auction reducers', state, action.auction);
 
-
             // TODO: all of this should be refactored to only process the NEW action, not reprocess all auctions
-
-
-            let pendingConfirmationAuctionCollection = [];
+            let wonAuctionCollection = [];
             let confirmedAuctionCollection = [];
+            let pendingConfirmationAuctionCollection = [];
             let mappedCollection = state.auctionCollection.map( auction => {
                 // if updated auction, then replace with new
                 if (auction.id === action.auction.id) {
+
+                    // sort into owned confirmed and owned to be confirmed
                     if (action.auction.donorId === state.userId) {
                         if (action.auction.winningBids && action.auction.winningBids.length) {
                             confirmedAuctionCollection.push( processLoadedAuctionBids( action.auction ) );
@@ -66,8 +65,19 @@ function auctions(state = defaultAuctionState, action) {
                             pendingConfirmationAuctionCollection.push( processLoadedAuctionBids( action.auction ) );
                         }
                     }
+
+                    // address won auctions
+                    if (action.auction.winningBids) {
+                        action.auction.winningBid = action.auction.winningBids.find( winningBid => {
+                            return winningBid.bidderObj.uid === state.userId;
+                        });
+                        wonAuctionCollection.push(action.auction);
+                    }
+
                     return action.auction;
                 } else {
+
+                    // sort into owned confirmed and owned to be confirmed
                     if (auction.donorId === state.userId) {
                         if (auction.winningBids && auction.winningBids.length) {
                             confirmedAuctionCollection.push( auction );
@@ -75,24 +85,34 @@ function auctions(state = defaultAuctionState, action) {
                             pendingConfirmationAuctionCollection.push( auction );
                         }
                     }
+
+                    // address won auctions
+                    if (auction.winningBids) {
+                        auction.winningBid = auction.winningBids.find( winningBid => {
+                            return winningBid.bidderObj.uid === state.userId;
+                        });
+                        wonAuctionCollection.push(auction);
+                    }
+
                     return auction;
                 }
             });
 
             return Object.assign({}, state, {
                 auctionCollection: mappedCollection,
+                confirmedAuctionCollection: confirmedAuctionCollection,
                 pendingConfirmationAuctionCollection: pendingConfirmationAuctionCollection,
-                confirmedAuctionCollection: confirmedAuctionCollection
+                wonAuctionCollection: wonAuctionCollection
             });
 
         case LOAD_AUCTION:
-
             // console.log('load auction')
 
             if (action.auction.donorId === state.userId) {
                 let auctionWithBids = processLoadedAuctionBids(action.auction);
-                let pendingConfirmationAuctionCollection = state.pendingConfirmationAuctionCollection
-                let confirmedAuctionCollection = state.confirmedAuctionCollection
+                let pendingConfirmationAuctionCollection = state.pendingConfirmationAuctionCollection;
+                let confirmedAuctionCollection = state.confirmedAuctionCollection;
+                let wonAuctionCollection = state.wonAuctionCollection;
 
                 if (action.auction.winningBids && action.auction.winningBids.length) {
                     confirmedAuctionCollection = [
@@ -106,22 +126,47 @@ function auctions(state = defaultAuctionState, action) {
                     ]
                 }
 
+                // address won auctions
+                if (action.auction.winningBids) {
+                    action.auction.winningBid = action.auction.winningBids.find( winningBid => {
+                        return winningBid.bidderObj.uid === state.userId;
+                    });
+                    if (action.auction.winningBid) {
+                        wonAuctionCollection.push(action.auction);
+                    }
+                }
+
                 return Object.assign({}, state, {
                     auctionCollection: [
                         ...state.auctionCollection,
                         action.auction
                     ],
                     bidTotal: state.bidTotal += auctionWithBids.bidTotal,
+                    confirmedAuctionCollection: confirmedAuctionCollection,
                     pendingConfirmationAuctionCollection : pendingConfirmationAuctionCollection,
-                    confirmedAuctionCollection: confirmedAuctionCollection
+                    wonAuctionCollection: wonAuctionCollection
 
                 });
             } else {
+
+                let wonAuctionCollection = state.wonAuctionCollection;
+
+                // address won auctions
+                if (action.auction.winningBids) {
+                    action.auction.winningBid = action.auction.winningBids.find( winningBid => {
+                        return winningBid.bidderObj.uid === state.userId;
+                    });
+                    if (action.auction.winningBid) {
+                        wonAuctionCollection.push(action.auction);
+                    }
+                }
+
                 return Object.assign({}, state, {
                     auctionCollection: [
                         ...state.auctionCollection,
                         action.auction
-                    ]
+                    ],
+                    wonAuctionCollection: wonAuctionCollection
                 });
             }
 

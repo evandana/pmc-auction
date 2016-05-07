@@ -36,6 +36,7 @@ class ConfirmWinners extends Component {
                 return (
                     <ConfirmWinner
                         auction={auction}
+                        auctionOwner={this.props.auctionOwner}
                         key={'auctionWinner-' + auction.id}
                     >
                     </ConfirmWinner>

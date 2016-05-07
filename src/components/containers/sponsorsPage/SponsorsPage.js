@@ -36,7 +36,7 @@ const SponsorsPage = ( {prop} ) => {
         {
             name: 'Sky Zone',
             link: 'http://www.skyzone.com/',
-            subtext: 'Trampoline Park',
+            subtext: 'Bounce with me now...',
             image: getImageForEnv('skyzone-logo.png')
         },
         {
