@@ -34,13 +34,16 @@ class WonAuctions extends Component {
             }
         }
 
+        // console.log(this.props.auctions)
+
         let wonList = this.props.auctions.map( (auction) => {
 
             let auctionOwner = auction.auctionOwner || {};
 
-            let winningBid = auction.winningBids.find( winningBid => {
-                return winningBid.bidderObj.uid === auctionOwner.uid;
-            });
+            let winningBid = auction.winningBid
+            // auction.winningBids.find( winningBid => {
+            //     return winningBid.bidderObj.uid === auctionOwner.uid;
+            // });
 
             if (winningBid) {
                 let bidder = winningBid.bidderObj;
