@@ -102,6 +102,10 @@ class Header extends Component {
         tabs.map( function(tab, index){
             switch(tab.id){
                 case "results":
+                    if ( this.props.user && this.props.user.permissionLevel === "ADMIN" ) {
+                        allowedTabs.push(tab);
+                    }
+                    break;
                 case "donors":
                     if ( this.props.user && this.props.user.permissionLevel === "ADMIN" ) {
                         allowedTabs.push(tab);

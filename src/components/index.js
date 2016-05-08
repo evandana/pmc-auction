@@ -6,5 +6,5 @@ export DonatePage from './containers/donatePage/DonatePage';
 export HomePage from './containers/homePage/HomePage';
 export LoginPage from './LoginPage';
 export ResultsPage from './containers/resultsPage/ResultsPage';
-export ResultsPage from './containers/donorsPage/DonorsPage';
+export DonorsPage from './containers/donorsPage/DonorsPage';
 export SponsorsPage from './containers/sponsorsPage/SponsorsPage';

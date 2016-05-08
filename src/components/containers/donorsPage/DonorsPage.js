@@ -176,7 +176,7 @@ class DonorsPage extends Component {
 
 function mapStateToProps (state) {
 
-    console.log('state.users.users', state.users.users)
+    // console.log('state.users.users', state.users.users)
 
     return {
         user: state.login.user,
