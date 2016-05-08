@@ -46,6 +46,11 @@ class Header extends Component {
                     label: "Results",
                     id: "results",
                     route: "/results"
+                },
+                {
+                    label: "Donors",
+                    id: "donors",
+                    route: "/donors"
                 }
                 //,
                 // {
@@ -97,6 +102,7 @@ class Header extends Component {
         tabs.map( function(tab, index){
             switch(tab.id){
                 case "results":
+                case "donors":
                     if ( this.props.user && this.props.user.permissionLevel === "ADMIN" ) {
                         allowedTabs.push(tab);
                     }

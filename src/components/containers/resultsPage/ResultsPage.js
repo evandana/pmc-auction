@@ -10,7 +10,6 @@ class ResultsPage extends Component {
         super(props)
       }
 
-
     getAuctionTotalRaised(winningBids) {
 
         if (winningBids) {
@@ -38,8 +37,6 @@ class ResultsPage extends Component {
             return this.getAuctionTotalRaised(auction.winningBids);
             // return auction.title;
         })
-
-        console.log('winningAmounts', winningAmounts)
 
         let amt = 0;
         if (winningAmounts && winningAmounts.length > 0 && winningAmounts[0] !== '') {

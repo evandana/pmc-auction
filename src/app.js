@@ -38,10 +38,12 @@ import {
     HomePage,
     LoginPage,
     ResultsPage,
+    DonorsPage,
     SponsorsPage
     } from './components/index';
 // Actions
 import { LoginActions } from './actions/LoginActions'
+import { fetchUsers } from './actions/UserActions'
 import { toggleAuctionDetail, fetchAuctions, updateAuctions } from './actions/AuctionActions'
 // Store
 import configureStore from './stores/configureStore'
@@ -113,6 +115,7 @@ function loadAppView () {
                         <Route path="/auctions/add" component={AddAuctionPage} />
                         <Route path="/donate" component={DonatePage} />
                         <Route path="/results" component={ResultsPage} />
+                        <Route path="/donors" component={DonorsPage} />
                         <Route path="/sponsors" component={SponsorsPage} />
                     </Route>
                 </Router>
@@ -129,6 +132,7 @@ function loadAppView () {
     )
 
     // Fetch Once to Rule Them ALL
+    store.dispatch(fetchUsers())
     store.dispatch(fetchAuctions())
     store.dispatch(updateAuctions())
     store.dispatch(LoginActions.getConfig())
