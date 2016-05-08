@@ -95,7 +95,7 @@ class DonorsPage extends Component {
             })
 
             wonAuctions.winningBids = wonAuctions.winningBids.sort( (a, b) => {
-                return (b ? b.bidAmount : 0) - (a ? a.bidAmount : 0)
+                return (a ? a.rank : 0) - (b ? b.rank : 0)
             });
 
             // console.log('wonAuctions', wonAuctions)
@@ -147,6 +147,8 @@ class DonorsPage extends Component {
                             <tr key={user.uid}>
                                 <td>
                                     {user.name}
+                                    <br/>
+                                    <a href="mailto:${user.email}">{user.email}</a>
                                 </td>
                                 <td>
                                     ${user.wonAuctions ? user.wonAuctions.totalPledged : '-'}
