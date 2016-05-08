@@ -94,10 +94,16 @@ class DonorsPage extends Component {
                 }
             })
 
+            wonAuctions.winningBids = wonAuctions.winningBids.sort( (a, b) => {
+                return (b ? b.bidAmount : 0) - (a ? a.bidAmount : 0)
+            });
+
             // console.log('wonAuctions', wonAuctions)
             user.wonAuctions = wonAuctions;
 
             return user
+        }).sort( (a, b) => {
+            return (b.wonAuctions ? b.wonAuctions.totalPledged : 0) - (a.wonAuctions ? a.wonAuctions.totalPledged : 0)
         });
 
         // console.log('users', users)
