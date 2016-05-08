@@ -5,4 +5,5 @@ export ConfirmWinnersPage from './ConfirmWinnersPage';
 export DonatePage from './containers/donatePage/DonatePage';
 export HomePage from './containers/homePage/HomePage';
 export LoginPage from './LoginPage';
+export ResultsPage from './containers/resultsPage/ResultsPage';
 export SponsorsPage from './containers/sponsorsPage/SponsorsPage';
