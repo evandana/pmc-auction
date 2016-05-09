@@ -79,7 +79,7 @@ class DonorsPage extends Component {
             }
             auctions.forEach( auction => {
                 // console.log('auction', auction.title)
-                let winningBid = auction.winningBids.find( winningBid => {
+                let winningBid = (auction.winningBids || []).find( winningBid => {
                     // console.log('winningBid', winningBid.bidderObj.uid, user.uid)
                     return winningBid.bidderObj.uid === userKey;
                 })
@@ -136,7 +136,7 @@ class DonorsPage extends Component {
                         <td>
                             Happiness Exchange
                         </td>
-                        <td>
+                        <td colSpan="2">
                             ${this.getTotal()}
                         </td>
                     </tr>
