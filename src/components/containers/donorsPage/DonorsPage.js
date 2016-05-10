@@ -12,6 +12,8 @@ import CommunicationChatBubble from 'material-ui/lib/svg-icons/communication/cha
 import { cyan200 } from 'material-ui/lib/styles/colors';
 import CommunicationEmail from 'material-ui/lib/svg-icons/communication/email';
 
+import { updateUserPaidAmt } from '../../../actions/UserActions';
+
 import './_donors.scss'
 
 class DonorsPage extends Component {
@@ -110,7 +112,11 @@ class DonorsPage extends Component {
         return users
     }
 
-
+    updateUserPaidAmt (userId, amt) {
+        // TODO: use websockets/redux chain for updating
+        // need to refresh to see update
+        this.props.dispatch(updateUserPaidAmt(userId, parseInt(amt, 10)))
+    }
 
     render () {
 
@@ -151,7 +157,30 @@ class DonorsPage extends Component {
                                     <a href="mailto:${user.email}">{user.email}</a>
                                 </td>
                                 <td>
-                                    ${user.wonAuctions ? user.wonAuctions.totalPledged : '-'}
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>pledged</td>
+                                                <td>${user.wonAuctions ? user.wonAuctions.totalPledged : '-'}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>paid</td>
+                                                <td>
+                                                    $<input
+                                                        type="number"
+                                                        defaultValue={user.paidAmt}
+                                                        onBlur={(evt) => {
+                                                            this.updateUserPaidAmt(user.uid, evt.target.value)
+                                                        }}
+                                                    />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>balance</td>
+                                                <td>${user.wonAuctions ? user.wonAuctions.totalPledged - (parseInt(user.paidAmt, 10) || 0) : '-'}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </td>
                                 <td>
                                     {!user.wonAuctions ? '' : user.wonAuctions.winningBids.map( winningBid => {

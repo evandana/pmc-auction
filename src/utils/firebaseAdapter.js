@@ -38,6 +38,13 @@ let Adapter = function Adapter () {
             });
         },
 
+        updateUserPaidAmt (userId, amt) {
+            return usersRef.child(userId).update({paidAmt: amt}).then( () => {
+                // TODO: need to use snapshot instead
+                return usersRef.child(userId);
+            })
+        },
+
         getConfig () {
             return new Promise(function(resolve, reject) {
                 configRef.once('value', (snapshot) => { resolve(snapshot.val()) });

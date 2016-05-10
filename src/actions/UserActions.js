@@ -5,6 +5,7 @@ import assign from 'object-assign';
 
 export const REQUEST_USERS = 'REQUEST_USERS'
 export const LOAD_USERS = 'LOAD_USER'
+export const UPDATE_USER = 'UPDATE_USER'
 
 
 export function fetchUsers() {
@@ -17,5 +18,19 @@ export function loadUsersObj(users) {
     return {
         type: LOAD_USERS,
         users
+    }
+}
+
+export function updateUserPaidAmt(userId, amt) {
+    return dispatch => {
+        firebase.updateUserPaidAmt(userId, amt).then().then( user => dispatch(updateUserObj(user)))
+    }
+}
+
+export function updateUserObj(user) {
+    console.log('action', user)
+    return {
+        type: UPDATE_USER,
+        user
     }
 }
