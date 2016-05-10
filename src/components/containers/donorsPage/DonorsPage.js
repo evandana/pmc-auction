@@ -123,6 +123,22 @@ class DonorsPage extends Component {
         const style = {
             bidTable: {
                 width: '100%'
+            },
+            owes: {
+                text: {
+                    color: 'red'
+                },
+                td: {
+                    background: '#fee'
+                }
+            },
+            paid: {
+                text: {
+                    color: 'green'
+                },
+                td: {
+                    background: '#efe'
+                }
             }
         }
 
@@ -150,13 +166,20 @@ class DonorsPage extends Component {
 
                     {users.map(user => {
                         return (
-                            <tr key={user.uid}>
+                            <tr key={user.uid} >
                                 <td>
                                     {user.name}
                                     <br/>
                                     <a href="mailto:${user.email}">{user.email}</a>
                                 </td>
-                                <td>
+                                <td
+                                    style={
+                                        user.wonAuctions && user.wonAuctions.totalPledged - (parseInt(user.paidAmt, 10) || 0) > 0
+                                        ?
+                                            style.owes.td
+                                        :
+                                            style.paid.td
+                                    }>
                                     <table>
                                         <tbody>
                                             <tr>
@@ -164,7 +187,16 @@ class DonorsPage extends Component {
                                                 <td>${user.wonAuctions ? user.wonAuctions.totalPledged : '-'}</td>
                                             </tr>
                                             <tr>
-                                                <td>paid</td>
+                                                <td style={
+                                                        user.wonAuctions && user.wonAuctions.totalPledged - (parseInt(user.paidAmt, 10) || 0) > 0
+                                                        ?
+                                                            style.owes.text
+                                                        :
+                                                            style.paid.text
+                                                    }
+                                                    >
+                                                    paid
+                                                </td>
                                                 <td>
                                                     $<input
                                                         type="number"
