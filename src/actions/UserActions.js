@@ -21,6 +21,12 @@ export function loadUsersObj(users) {
     }
 }
 
+export function updateUserNotes(userId, notes) {
+    return dispatch => {
+        firebase.updateUserNotes(userId, notes).then().then( user => dispatch(updateUserObj(user)))
+    }
+}
+
 export function updateUserPaidAmt(userId, amt) {
     return dispatch => {
         firebase.updateUserPaidAmt(userId, amt).then().then( user => dispatch(updateUserObj(user)))
@@ -28,7 +34,7 @@ export function updateUserPaidAmt(userId, amt) {
 }
 
 export function updateUserObj(user) {
-    console.log('action', user)
+    // console.log('action', user)
     return {
         type: UPDATE_USER,
         user

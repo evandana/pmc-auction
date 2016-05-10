@@ -45,6 +45,13 @@ let Adapter = function Adapter () {
             })
         },
 
+        updateUserNotes (userId, notes) {
+            return usersRef.child(userId).update({notes: notes}).then( () => {
+                // TODO: need to use snapshot instead
+                return usersRef.child(userId);
+            })
+        },
+
         getConfig () {
             return new Promise(function(resolve, reject) {
                 configRef.once('value', (snapshot) => { resolve(snapshot.val()) });

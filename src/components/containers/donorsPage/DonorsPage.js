@@ -12,7 +12,7 @@ import CommunicationChatBubble from 'material-ui/lib/svg-icons/communication/cha
 import { cyan200 } from 'material-ui/lib/styles/colors';
 import CommunicationEmail from 'material-ui/lib/svg-icons/communication/email';
 
-import { updateUserPaidAmt } from '../../../actions/UserActions';
+import { updateUserPaidAmt, updateUserNotes } from '../../../actions/UserActions';
 
 import './_donors.scss'
 
@@ -112,6 +112,12 @@ class DonorsPage extends Component {
         return users
     }
 
+    updateUserNotes (userId, notes) {
+        // TODO: use websockets/redux chain for updating
+        // need to refresh to see update
+        this.props.dispatch(updateUserNotes(userId, notes))
+    }
+
     updateUserPaidAmt (userId, amt) {
         // TODO: use websockets/redux chain for updating
         // need to refresh to see update
@@ -171,6 +177,13 @@ class DonorsPage extends Component {
                                     {user.name}
                                     <br/>
                                     <a href="mailto:${user.email}">{user.email}</a>
+                                    <br/>
+                                    notes:<textarea
+                                        defaultValue={user.notes}
+                                        onBlur={(evt) => {
+                                            this.updateUserNotes(user.uid, evt.target.value)
+                                        }}
+                                    />
                                 </td>
                                 <td
                                     style={
