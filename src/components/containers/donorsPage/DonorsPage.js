@@ -12,6 +12,8 @@ import CommunicationChatBubble from 'material-ui/lib/svg-icons/communication/cha
 import { cyan200 } from 'material-ui/lib/styles/colors';
 import CommunicationEmail from 'material-ui/lib/svg-icons/communication/email';
 
+import { updateUserPaidAmt, updateUserNotes } from '../../../actions/UserActions';
+
 import './_donors.scss'
 
 class DonorsPage extends Component {
@@ -110,13 +112,39 @@ class DonorsPage extends Component {
         return users
     }
 
+    updateUserNotes (userId, notes) {
+        // TODO: use websockets/redux chain for updating
+        // need to refresh to see update
+        this.props.dispatch(updateUserNotes(userId, notes))
+    }
 
+    updateUserPaidAmt (userId, amt) {
+        // TODO: use websockets/redux chain for updating
+        // need to refresh to see update
+        this.props.dispatch(updateUserPaidAmt(userId, parseInt(amt, 10)))
+    }
 
     render () {
 
         const style = {
             bidTable: {
                 width: '100%'
+            },
+            owes: {
+                text: {
+                    color: 'red'
+                },
+                td: {
+                    background: '#fee'
+                }
+            },
+            paid: {
+                text: {
+                    color: 'green'
+                },
+                td: {
+                    background: '#efe'
+                }
             }
         }
 
@@ -144,14 +172,60 @@ class DonorsPage extends Component {
 
                     {users.map(user => {
                         return (
-                            <tr key={user.uid}>
+                            <tr key={user.uid} >
                                 <td>
                                     {user.name}
                                     <br/>
                                     <a href="mailto:${user.email}">{user.email}</a>
+                                    <br/>
+                                    notes:<textarea
+                                        defaultValue={user.notes}
+                                        onBlur={(evt) => {
+                                            this.updateUserNotes(user.uid, evt.target.value)
+                                        }}
+                                    />
                                 </td>
-                                <td>
-                                    ${user.wonAuctions ? user.wonAuctions.totalPledged : '-'}
+                                <td
+                                    style={
+                                        user.wonAuctions && user.wonAuctions.totalPledged - (parseInt(user.paidAmt, 10) || 0) > 0
+                                        ?
+                                            style.owes.td
+                                        :
+                                            style.paid.td
+                                    }>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>pledged</td>
+                                                <td>${user.wonAuctions ? user.wonAuctions.totalPledged : '-'}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style={
+                                                        user.wonAuctions && user.wonAuctions.totalPledged - (parseInt(user.paidAmt, 10) || 0) > 0
+                                                        ?
+                                                            style.owes.text
+                                                        :
+                                                            style.paid.text
+                                                    }
+                                                    >
+                                                    paid
+                                                </td>
+                                                <td>
+                                                    $<input
+                                                        type="number"
+                                                        defaultValue={user.paidAmt}
+                                                        onBlur={(evt) => {
+                                                            this.updateUserPaidAmt(user.uid, evt.target.value)
+                                                        }}
+                                                    />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>balance</td>
+                                                <td>${user.wonAuctions ? user.wonAuctions.totalPledged - (parseInt(user.paidAmt, 10) || 0) : '-'}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </td>
                                 <td>
                                     {!user.wonAuctions ? '' : user.wonAuctions.winningBids.map( winningBid => {

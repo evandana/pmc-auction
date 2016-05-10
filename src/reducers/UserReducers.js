@@ -1,5 +1,6 @@
 import {
-    LOAD_USERS
+    LOAD_USERS,
+    UPDATE_USER
 } from '../actions/UserActions'
 
 const defaultAuctionState = {
@@ -14,6 +15,21 @@ function users(state = defaultAuctionState, action) {
 
             return Object.assign(false, {}, {
                 users: action.users
+            });
+
+        case LOAD_USERS:
+
+            let users = state.users.map( user => {
+                if (user.uid === action.user.uid) {
+                    return action.user;
+                } else {
+                    return user;
+                }
+            })
+            debugger;
+
+            return Object.assign(false, {}, {
+                users: users
             });
 
         default:
