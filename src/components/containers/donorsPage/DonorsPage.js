@@ -83,7 +83,7 @@ class DonorsPage extends Component {
                 // console.log('auction', auction.title)
                 let winningBid = (auction.winningBids || []).find( winningBid => {
                     // console.log('winningBid', winningBid.bidderObj.uid, user.uid)
-                    return winningBid.bidderObj.uid === userKey;
+                    return winningBid ? winningBid.bidderObj.uid === userKey : false;
                 })
                 if (winningBid) {
                     // console.log('winningBid', winningBid);
