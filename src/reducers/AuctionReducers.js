@@ -154,7 +154,7 @@ function auctions(state = defaultAuctionState, action) {
                 // address won auctions
                 if (action.auction.winningBids) {
                     action.auction.winningBid = action.auction.winningBids.find( winningBid => {
-                        return winningBid.bidderObj.uid === state.userId;
+                        return winningBid ? winningBid.bidderObj.uid === state.userId : false;
                     });
                     if (action.auction.winningBid) {
                         wonAuctionCollection.push(action.auction);
