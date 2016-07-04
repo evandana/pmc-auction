@@ -3,14 +3,15 @@ import React, { Component } from 'react'
 
 
 // MATERIAL UI!!!
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
-
-import Divider from 'material-ui/lib/divider';
-import CommunicationCall from 'material-ui/lib/svg-icons/communication/call';
-import CommunicationChatBubble from 'material-ui/lib/svg-icons/communication/chat-bubble';
-import { amber400 } from 'material-ui/lib/styles/colors';
-import CommunicationEmail from 'material-ui/lib/svg-icons/communication/email';
+import { 
+    amber400,
+    CommunicationCall,
+    CommunicationChatBubble,
+    CommunicationEmail,
+    Divider,
+    List, 
+    ListItem
+    } from 'material-ui';
 
 // Styles
 // import './ConfirmWinners.scss';

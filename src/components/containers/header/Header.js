@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { Router, RouteHandler, Link, hashHistory } from 'react-router'
 import { connect } from 'react-redux'
-import { AppBar, Tabs, Tab, LeftNav, MenuItem, IconButton } from 'material-ui'
-import { NavigationClose, NavigationMenu }from 'material-ui/lib/svg-icons'
+import { 
+    AppBar, Tabs, Tab, LeftNav, MenuItem, IconButton,
+    NavigationClose, NavigationMenu
+    } from 'material-ui'
+import {  }from 'material-ui'
 import firebase from '../../../utils/firebaseAdapter'
 import { clearAuctionDetail } from '../../../actions/AuctionActions'
 

@@ -5,20 +5,23 @@ import { connect } from 'react-redux'
 import { placeBid } from '../../actions/AuctionActions'
 
 // Material UI
-import Avatar from 'material-ui/lib/avatar';
-import AddShoppingCart from 'material-ui/lib/svg-icons/action/add-shopping-cart';
-import Card from 'material-ui/lib/card/card';
-import CardActions from 'material-ui/lib/card/card-actions';
-import CardHeader from 'material-ui/lib/card/card-header';
-import CardMedia from 'material-ui/lib/card/card-media';
-import CardText from 'material-ui/lib/card/card-text';
-import CardTitle from 'material-ui/lib/card/card-title';
-import Colors, { cyan200 } from 'material-ui/lib/styles/colors';
-import ContentClear from 'material-ui/lib/svg-icons/content/clear';
-import Dialog from 'material-ui/lib/dialog';
-import FlatButton from 'material-ui/lib/flat-button';
-import RaisedButton from 'material-ui/lib/raised-button';
-import FloatingActionButton from 'material-ui/lib/floating-action-button';
+import { 
+	AddShoppingCart,
+	Avatar, 
+	Card,
+	CardActions,
+	CardHeader,
+	CardMedia,
+	CardText,
+	CardTitle,
+	Colors,
+	ContentClear,
+	Dialog,
+	FlatButton,
+	FloatingActionButton,
+	RaisedButton
+	} from 'material-ui';
+
 
 import { getImageForEnv } from '../../images/index'
 

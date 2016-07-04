@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react'
 import {reduxForm} from 'redux-form'
 
-import TextField from 'material-ui/lib/text-field';
+import { TextField } from 'material-ui';
 
 import './_auctionForm.scss'
 

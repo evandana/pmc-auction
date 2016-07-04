@@ -1,7 +1,5 @@
 import React from 'react';
-import Dialog from 'material-ui/lib/dialog';
-import FlatButton from 'material-ui/lib/flat-button';
-import RaisedButton from 'material-ui/lib/raised-button';
+import { Dialog, FlatButton, RaisedButton } from 'material-ui';
 
 import { confirmAuctionWinners } from '../../actions/AuctionActions';
 

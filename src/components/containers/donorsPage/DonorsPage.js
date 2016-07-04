@@ -3,14 +3,17 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 // MATERIAL UI!!!
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
+import {
+    CommunicationCall,
+    CommunicationChatBubble,
+    CommunicationEmail,
+    cyan200,
+    Divider,
+    List,
+    ListItem
+    } from 'material-ui';
 
-import Divider from 'material-ui/lib/divider';
-import CommunicationCall from 'material-ui/lib/svg-icons/communication/call';
-import CommunicationChatBubble from 'material-ui/lib/svg-icons/communication/chat-bubble';
-import { cyan200 } from 'material-ui/lib/styles/colors';
-import CommunicationEmail from 'material-ui/lib/svg-icons/communication/email';
+
 
 import { updateUserPaidAmt, updateUserNotes } from '../../../actions/UserActions';
 

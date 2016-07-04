@@ -1,12 +1,15 @@
 import React from 'react'
 
 import MobileTearSheet from '../mobileTearSheet/mobile-tear-sheet';
-import List from 'material-ui/lib/lists/list';
-import ListItem from 'material-ui/lib/lists/list-item';
-import ActionGrade from 'material-ui/lib/svg-icons/action/grade';
-import Divider from 'material-ui/lib/divider';
-import Avatar from 'material-ui/lib/avatar';
-import Colors, { pinkA200, amber500, yellow600, yellow400, transparent } from 'material-ui/lib/styles/colors';
+
+import {
+    ActionGrade,
+    Avatar,
+    Colors, pinkA200, amber500, yellow600, yellow400, transparent,
+    Divider,
+    List,
+    ListItem
+    } from 'material-ui';
 
 import { getImageForEnv } from '../../../images/index'
 

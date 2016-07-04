@@ -3,11 +3,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 // Material-UI
-import GridList from 'material-ui/lib/grid-list/grid-list';
-import GridTile from 'material-ui/lib/grid-list/grid-tile';
-import StarBorder from 'material-ui/lib/svg-icons/toggle/star-border';
-import PlusOne from 'material-ui/lib/svg-icons/social/plus-one';
-import IconButton from 'material-ui/lib/icon-button';
+import { 
+  GridList,  
+  GridTile,
+  IconButton,
+  PlusOne,
+  StarBorder
+  } from 'material-ui';
 
 import { getImageForEnv } from '../../images/index'
 
