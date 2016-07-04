@@ -31,7 +31,7 @@ class ConfirmWinner extends Component {
     }
 
     getSelectedItemsTotal(selectedBidIndices) {
-        console.log('bids', this.props.auction.bids);
+        // console.log('bids', this.props.auction.bids);
 
         let bidIndexCollection = Object.keys( this.props.auction.bids );
         let totalSelected = 0;

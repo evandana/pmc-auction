@@ -277,14 +277,15 @@ function mapStateToProps (state) {
 	for (let bid in data.bids) {
 		if (
 			( data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) > highestBid.bidAmount )
-			||
-			( data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) === data.openingBid )
+			// ||
+			// ( data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) === data.openingBid )
 			) {
+			console.log('here')
 			highestBid = data.bids[bid];
 		}
 	}
 
-	console.log('highestBid', highestBid);
+	// console.log('highestBid', highestBid);
 
 	const increment = parseInt(data.incrementAmount || DEFAULT_INCREMENT_AMOUNT, 10)
 
@@ -302,7 +303,9 @@ function mapStateToProps (state) {
 	// 	bidAmountMin = parseInt(data.openingBid, 10);
 	// }
 
-	console.log('min bid', bidAmountMin)
+	// console.log('min bid', bidAmountMin)
+
+	console.log('highestBid', highestBid)
 
 	return {
 		// app-level, static

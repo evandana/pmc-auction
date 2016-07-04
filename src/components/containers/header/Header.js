@@ -41,7 +41,18 @@ class Header extends Component {
                     label: "Add Auction",
                     id: "addAuction",
                     route: "/auctions/add"
-                }//,
+                },
+                {
+                    label: "Results",
+                    id: "results",
+                    route: "/results"
+                },
+                {
+                    label: "Donors",
+                    id: "donors",
+                    route: "/donors"
+                }
+                //,
                 // {
                 //     label: "Login",
                 //     id: "login",
@@ -90,6 +101,16 @@ class Header extends Component {
         let allowedTabs = []
         tabs.map( function(tab, index){
             switch(tab.id){
+                case "results":
+                    if ( this.props.user && this.props.user.permissionLevel === "ADMIN" ) {
+                        allowedTabs.push(tab);
+                    }
+                    break;
+                case "donors":
+                    if ( this.props.user && this.props.user.permissionLevel === "ADMIN" ) {
+                        allowedTabs.push(tab);
+                    }
+                    break;
                 case "confirmWinners":
                     if ( ( this.props.config && this.props.config.CONFIRM_WINNERS ) || this.props.user.permissionLevel === "ADMIN" )  {
                         allowedTabs.push(tab);

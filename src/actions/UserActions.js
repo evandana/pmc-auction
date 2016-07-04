@@ -1,23 +1,42 @@
-// import AppDispatcher from 'AppDispatcher';
+// firebase read/write adapter
+import firebase from '../utils/firebaseAdapter'
 
-// const LOGIN_GOOGLE = 'LOGIN_GOOGLE';
-// const LOGOUT_USER = 'LOGOUT_USER';
+import assign from 'object-assign';
 
-// const UserActions = {
+export const REQUEST_USERS = 'REQUEST_USERS'
+export const LOAD_USERS = 'LOAD_USER'
+export const UPDATE_USER = 'UPDATE_USER'
 
-//     loginGoogle(user) {
-//         return {
-//             type: LOGIN_GOOGLE,
-//             user
-//         }
-//     },
 
-//     logoutUser(user) {
-//         return {
-//             type: LOGOUT_USER,
-//             user
-//         }
-//     }
-// }
+export function fetchUsers() {
+    return dispatch => {
+        firebase.getAllUsers().then( users => dispatch(loadUsersObj(users)) )
+    }
+}
 
-// export default UserActions
+export function loadUsersObj(users) {
+    return {
+        type: LOAD_USERS,
+        users
+    }
+}
+
+export function updateUserNotes(userId, notes) {
+    return dispatch => {
+        firebase.updateUserNotes(userId, notes).then().then( user => dispatch(updateUserObj(user)))
+    }
+}
+
+export function updateUserPaidAmt(userId, amt) {
+    return dispatch => {
+        firebase.updateUserPaidAmt(userId, amt).then().then( user => dispatch(updateUserObj(user)))
+    }
+}
+
+export function updateUserObj(user) {
+    // console.log('action', user)
+    return {
+        type: UPDATE_USER,
+        user
+    }
+}
