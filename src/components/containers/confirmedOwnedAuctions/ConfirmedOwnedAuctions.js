@@ -8,10 +8,12 @@ import {
     CommunicationChatBubble,
     CommunicationEmail,
     cyan200,
-    Divider,
-    List,
-    ListItem
+    Divider
     } from 'material-ui';
+
+import {
+    List, ListItem
+} from 'material-ui/List';
 
 
 // Styles
@@ -67,6 +69,10 @@ class ConfirmedOwnedAuctions extends Component {
             )
 
         });
+
+
+        console.log('ConfirmedOwnedAuctions needs to have List and ListItem defined')
+
 
         if (confirmLists.length && confirmLists[0] !== '') {
             return (

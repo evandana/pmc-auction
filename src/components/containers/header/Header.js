@@ -2,10 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { Router, RouteHandler, Link, hashHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { 
-    AppBar, Tabs, Tab, LeftNav, MenuItem, IconButton,
+    AppBar, Tabs, Tab, Drawer, MenuItem, IconButton,
     NavigationClose, NavigationMenu
     } from 'material-ui'
-import {  }from 'material-ui'
 import firebase from '../../../utils/firebaseAdapter'
 import { clearAuctionDetail } from '../../../actions/AuctionActions'
 
@@ -198,7 +197,7 @@ class Header extends Component {
                         />
                     </Tabs>
                 </AppBar>
-                <LeftNav
+                <Drawer
                   docked={false}
                   width={200}
                   className="header__leftNav"
@@ -208,7 +207,7 @@ class Header extends Component {
                     {
                         tabs.map( function(tab) {
                             return <MenuItem
-                                        onTouchTap={::this.handleNavItemTap.bind(this, tab)}
+                                        onTouchTap={this.handleNavItemTap.bind(this, tab)}
                                         route={tab.route}
                                         key={tab.id}
                                     >{tab.label}
@@ -220,7 +219,7 @@ class Header extends Component {
 
                     >Logout
                     </MenuItem>
-                </LeftNav>
+                </Drawer>
             </header>
         )
     }
