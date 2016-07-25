@@ -6,21 +6,26 @@ import { placeBid } from '../../actions/AuctionActions'
 
 // Material UI
 import { 
-	AddShoppingCart,
 	Avatar, 
+	colors,
 	Card,
 	CardActions,
 	CardHeader,
 	CardMedia,
 	CardText,
 	CardTitle,
-	Colors,
-	ContentClear,
 	Dialog,
 	FlatButton,
 	FloatingActionButton,
-	RaisedButton
+	RaisedButton,
 	} from 'material-ui';
+
+import { cyan200 } from 'material-ui/styles/colors';
+
+import { 
+	ActionAddShoppingCart,
+	ContentClear 
+	} from 'material-ui/svg-icons'
 
 
 import { getImageForEnv } from '../../images/index'
@@ -198,7 +203,7 @@ class AuctionItemDetail extends Component {
 										label={ 'bid $' + this.state.bidDisplayAmount }
 										labelPosition="before"
 										primary={true}
-										icon={<AddShoppingCart />}
+										icon={<ActionAddShoppingCart />}
 										onTouchTap={() => this.handleOpen()}
 									/>
 									<FlatButton

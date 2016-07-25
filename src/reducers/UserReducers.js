@@ -26,7 +26,6 @@ function users(state = defaultAuctionState, action) {
                     return user;
                 }
             })
-            debugger;
 
             return Object.assign(false, {}, {
                 users: users
