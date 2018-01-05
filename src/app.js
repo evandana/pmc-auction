@@ -27,7 +27,7 @@ injectTapEventPlugin();
 console.log('Environment:', JSON.stringify(process.env.NODE_ENV))
 
 // Styles
-import './app.scss';
+import 'app.scss';
 // React Components
 import {
     AddAuctionPage,
