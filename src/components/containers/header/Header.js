@@ -176,7 +176,7 @@ class Header extends Component {
                         {
                             tabs.map( function(tab) {
                                 return <Tab
-                                            onActive={::this.handleTabChange}
+                                            onActive={this.handleTabChange}
                                             style={styles.tab.label}
                                             route={tab.route}
                                             label={tab.label}
@@ -205,7 +205,7 @@ class Header extends Component {
                     {
                         tabs.map( function(tab) {
                             return <MenuItem
-                                        onTouchTap={::this.handleNavItemTap.bind(this, tab)}
+                                        onTouchTap={this.handleNavItemTap.bind(this, tab)}
                                         route={tab.route}
                                         key={tab.id}
                                     >{tab.label}

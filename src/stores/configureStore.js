@@ -14,6 +14,9 @@ import hashHistory from '../history'
 
 const historyMiddleware = routerMiddleware(hashHistory);
 
+
+const __DEV__ = !!(process.env.NODE_ENV === 'dev');
+
 const finalCreateStore = __DEV__ ?
     compose(
       applyMiddleware(thunk),
