@@ -4,9 +4,9 @@ const webpack = require('webpack'),
     HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const sassLoaders = [
-  'style',
-  'css',
-  'sass'
+  'style-loader',
+  'css-loader',
+  'sass-loader'
 ];
 
 const babelSettings = {
@@ -41,13 +41,12 @@ module.exports = {
     },
     output: {
         path: path.join(__dirname, 'build'),
-        publicPath: '',
+        publicPath: 'public',
         filename: '[name].js'
     },
-    resolve: {
-        root: srcPath,
-        extensions: ['', '.js'],
-        modulesDirectories: ['node_modules', 'src']
+    resolveLoader: {
+        extensions: ['.js'],
+        modules: [path.join(__dirname, 'node_modules'), 'src']
     },
     module: {
 
@@ -58,24 +57,24 @@ module.exports = {
             {
                 test: /\.js?$/,
                 exclude: /node_modules/,
-                loaders: ['babel?'+JSON.stringify(babelSettings)],
+                loaders: ['babel-loader?'+JSON.stringify(babelSettings)],
             },
             // Sass
             {
                test: /\.scss$/,
                loaders: sassLoaders
             },
-           // Images
-           {
-               test: /\.(png|jpg)$/,
-               loader: 'url-loader?limit=8192!', // inline base64 URLs for <=8k images, direct URLs for the rest
-               include: './images'
-           }
+        //    // Images
+        //    {
+        //        test: /\.(png|jpg)$/,
+        //        loader: 'url-loader?limit=8192!', // inline base64 URLs for <=8k images, direct URLs for the rest
+        //        include: 'images'
+        //    }
         ]
     },
-    sassLoader: {
-        inludePaths: [path.resolve(__dirname, 'src/styles-config/')]
-    },
+    // sassLoader: {
+    //     inludePaths: [path.resolve(__dirname, 'src/styles-config/')]
+    // },
     plugins: [
         new HtmlWebpackPlugin({
             inject: true,
