@@ -1,6 +1,6 @@
-let React = require('react');
-
 import { getImageForEnv } from '../../../images/index'
+
+let React = require('react');
 
 let MobileTearSheet = React.createClass({
 
