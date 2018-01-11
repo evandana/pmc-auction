@@ -1,2 +1,2 @@
-import { hashHistory } from 'react-router';
-export default hashHistory
+import { HashRouter } from 'react-router-dom';
+export default HashRouter

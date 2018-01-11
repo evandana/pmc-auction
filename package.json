@@ -12,14 +12,16 @@
     "react-redux": "^5.0.5",
     "react-redux-firebase": "^1.5.1",
     "react-router-dom": "^4.1.1",
-    "react-router-redux": "^5.0.0-alpha.6",
+    "react-router-redux": "^4.0.8",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.1",
     "redux-firestore": "^0.2.5",
-    "redux-saga": "^0.15.4"
+    "redux-form": "^7.2.0",
+    "redux-logger": "^3.0.6",
+    "redux-saga": "^0.15.4",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "object-assign": "^4.1.1",
     "react-router": "^4.2.0",
     "react-scripts": "1.0.7",
     "redux-devtools": "^3.4.0",

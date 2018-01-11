@@ -5,9 +5,9 @@ import Header from '../header/Header'
 import Footer from '../footer/Footer'
 
 // Material-ui
-import {deepOrange500} from 'material-ui/lib/styles/colors';
-import getMuiTheme from 'material-ui/lib/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/lib/MuiThemeProvider';
+import {deepOrange500} from 'material-ui/styles/colors';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { MuiThemeProvider } from 'material-ui/styles/MuiThemeProvider';
 
 import './_appPage.scss'
 

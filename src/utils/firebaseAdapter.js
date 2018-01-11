@@ -1,11 +1,11 @@
-import Firebase from 'firebase';
+import firebaseApp from './firebaseInit';
 
 let Adapter = function Adapter () {
 
-    let ref = new Firebase("https://pmc-auction.firebaseio.com"),
-        auctionsRef = ref.child("auctions"),
-        usersRef = ref.child("users"),
-        configRef = ref.child("CONFIG");
+    let ref = firebaseApp.database(),
+        auctionsRef = ref.ref("auctions"),
+        usersRef = ref.ref("users"),
+        configRef = ref.ref("CONFIG");
 
     return {
 

@@ -1,8 +1,8 @@
 
 
-import { Router, Route, IndexRoute, UPDATE_LOCATION } from 'react-router'
+import { Router, Route, UPDATE_LOCATION } from 'react-router'
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux/dist/ReactRouterRedux'
 import { reduxFirestore, firestoreReducer } from 'redux-firestore'
 import firebase from 'firebase'
 import 'firebase/firestore'
@@ -35,12 +35,14 @@ import { toggleAuctionDetail, fetchAuctions, updateAuctions } from './actions/Au
 // Store
 import configureStore from './stores/configureStore'
 // History
-import hashHistory from './history'
+import HashRouter from './history'
 // DevTools
 import DevTools from './components/containers/devTools/DevTools'
 
 import LogMonitor from 'redux-devtools-log-monitor'
 import DockMonitor from 'redux-devtools-dock-monitor'
+
+import firebaseApp from './utils/firebaseInit'
 
 // Material UI
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -57,17 +59,7 @@ const __DEV__ = !!(process.env.NODE_ENV === 'dev');
 console.log('Environment:', JSON.stringify(process.env.NODE_ENV))
 
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA3JKgI5y36_yDZUcL2JTFWaKKziF6ikgg",
-  authDomain: "pmc-2018.firebaseapp.com",
-  databaseURL: "https://pmc-2018.firebaseio.com",
-  projectId: "pmc-2018",
-  storageBucket: "pmc-2018.appspot.com",
-  messagingSenderId: "606291690097",
-}
  
-// Initialize firebase instance
-const firebaseApp = firebase.initializeApp(firebaseConfig)
 // Initialize Cloud Firestore through Firebase
 firebase.firestore();
  
@@ -78,15 +70,16 @@ const createStoreWithFirebase = compose(
  
 // Add Firebase to reducers
 const rootReducer = combineReducers({
-  firestore: firestoreReducer
-})
+  firestore: firestoreReducer,
+  routerReducer
+});
  
 // Create store with reducers and initial state
 const initialState = {}
-const store = createStoreWithFirebase(rootReducer, initialState)
+const store = createStoreWithFirebase(rootReducer, initialState);
  
 
-const routerHistory = syncHistoryWithStore(hashHistory, store)
+const routerHistory = syncHistoryWithStore(HashRouter, store);
 
 // listen for authorization event to load app
 let unsubscribe = store.subscribe(authCheckHandler);
@@ -121,7 +114,7 @@ function authCheckHandler() {
 function loadAppView () {
 
     // on Auctions Page click, always go to list view
-    hashHistory.listen(location => {
+    HashRouter.listen(location => {
         if (location.pathname === '/auctions') {
             store.dispatch(toggleAuctionDetail(false));
         }
@@ -130,9 +123,9 @@ function loadAppView () {
     render(
         <Provider store={store}>
             <div>
-                <Router history={hashHistory}>
+                <Router history={HashRouter}>
                     <Route path="/" component={AppPage}>
-                        <IndexRoute component={HomePage}/>
+                        <Route exact path="/" component={HomePage}/>
                         <Route path="/auctions" component={AuctionsPage}/>
                         <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
                         <Route path="/auctions/add" component={AddAuctionPage} />

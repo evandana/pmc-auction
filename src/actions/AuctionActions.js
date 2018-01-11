@@ -1,8 +1,6 @@
 // firebase read/write adapter
 import firebase from '../utils/firebaseAdapter'
 
-import assign from 'object-assign';
-
 export const ADD_AUCTION = 'ADD_AUCTION'
 export const CLEAR_AUCTION_DETAIL = 'CLEAR_AUCTION_DETAIL'
 export const CONFIRM_WINNERS = 'CONFIRM_WINNERS'
@@ -43,7 +41,7 @@ export function confirmAuctionWinners (auction, winningBidsCollection, auctionOw
 
 export function createAuction (fields, user) {
 
-    let auction = assign({}, fields, {
+    let auction = Object.assign({}, fields, {
         donorId: user.uid,
         donorName: user.name,
         highestBid: null,
@@ -100,7 +98,7 @@ export function placeBid(bidDetails) {
 }
 
 export function placeBidObj (bidDetails) {
-    return assign({}, bidDetails, {
+    return Object.assign({}, bidDetails, {
         type: PLACE_BID,
         auctionId: bidDetails.auctionId,
         bidAmount: bidDetails.bidAmount,
