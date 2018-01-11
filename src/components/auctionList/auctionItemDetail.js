@@ -5,20 +5,20 @@ import { connect } from 'react-redux'
 import { placeBid } from '../../actions/AuctionActions'
 
 // Material UI
-import Avatar from 'material-ui/lib/avatar';
-import AddShoppingCart from 'material-ui/lib/svg-icons/action/add-shopping-cart';
-import Card from 'material-ui/lib/card/card';
-import CardActions from 'material-ui/lib/card/card-actions';
-import CardHeader from 'material-ui/lib/card/card-header';
-import CardMedia from 'material-ui/lib/card/card-media';
-import CardText from 'material-ui/lib/card/card-text';
-import CardTitle from 'material-ui/lib/card/card-title';
-import Colors, { cyan200 } from 'material-ui/lib/styles/colors';
-import ContentClear from 'material-ui/lib/svg-icons/content/clear';
-import Dialog from 'material-ui/lib/dialog';
-import FlatButton from 'material-ui/lib/flat-button';
-import RaisedButton from 'material-ui/lib/raised-button';
-import FloatingActionButton from 'material-ui/lib/floating-action-button';
+import Avatar from 'material-ui/Avatar';
+import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
+import Card from 'material-ui/Card/Card';
+import CardActions from 'material-ui/Card/CardActions';
+import CardHeader from 'material-ui/Card/CardHeader';
+import CardMedia from 'material-ui/Card/CardMedia';
+import CardText from 'material-ui/Card/CardText';
+import CardTitle from 'material-ui/Card/CardTitle';
+import Colors, { cyan200 } from 'material-ui/styles/colors';
+import ContentClear from 'material-ui/svg-icons/content/clear';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 import { getImageForEnv } from '../../images/index'
 

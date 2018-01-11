@@ -1,8 +1,6 @@
 // firebase read/write adapter
 import firebase from '../utils/firebaseAdapter'
 
-import assign from 'object-assign';
-
 export const REQUEST_USERS = 'REQUEST_USERS'
 export const LOAD_USERS = 'LOAD_USER'
 export const UPDATE_USER = 'UPDATE_USER'

@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import { Router, RouteHandler, Link, hashHistory } from 'react-router'
+import { Router, RouteHandler, Link } from 'react-router'
+import HashRouter from '../../../history'
 import { connect } from 'react-redux'
-import { AppBar, Tabs, Tab, LeftNav, MenuItem, IconButton } from 'material-ui'
-import { NavigationClose, NavigationMenu }from 'material-ui/lib/svg-icons'
+import { AppBar, Tabs, Tab, Drawer, MenuItem, IconButton } from 'material-ui'
+import { NavigationClose, NavigationMenu }from 'material-ui/svg-icons'
 import firebase from '../../../utils/firebaseAdapter'
 import { clearAuctionDetail } from '../../../actions/AuctionActions'
 
@@ -75,7 +76,7 @@ class Header extends Component {
     // Handling Clicking on Tab Item on Tabs
     handleTabChange (tab) {
         //${tab.props.route}
-        hashHistory.push(tab.props.route);
+        HashRouter.push(tab.props.route);
         this.setState({currentPage: tab.props.label});
     }
 
@@ -85,7 +86,7 @@ class Header extends Component {
     // Handling Click on Left Nav Menu Item
     handleNavItemTap (tab) {
         this.setState({openNav: false, currentPage: tab.label});
-        hashHistory.push(tab.route);
+        HashRouter.push(tab.route);
     }
 
     clearAuctionDetail(event) {
@@ -195,7 +196,7 @@ class Header extends Component {
                         />
                     </Tabs>
                 </AppBar>
-                <LeftNav
+                <Drawer
                   docked={false}
                   width={200}
                   className="header__leftNav"
@@ -217,7 +218,7 @@ class Header extends Component {
 
                     >Logout
                     </MenuItem>
-                </LeftNav>
+                </Drawer>
             </header>
         )
     }
@@ -238,4 +239,4 @@ export default connect(mapStateToProps)(Header);
 
 
 
-// <button onClick={() => hashHistory.push('/auctions')}>Go to /foo</button>
+// <button onClick={() => HashRouter.push('/auctions')}>Go to /foo</button>

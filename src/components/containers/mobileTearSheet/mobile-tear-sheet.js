@@ -54,4 +54,4 @@ let MobileTearSheet = React.createClass({
 
 });
 
-module.exports = MobileTearSheet;
+export default MobileTearSheet;
