@@ -3,6 +3,7 @@ import { select, takeEvery } from 'redux-saga/effects';
 import {
     FETCH_AUCTION,
     FETCH_AUCTIONS,
+    PLACE_BID,
     UPDATE_AUCTION,
 } from '../constants';
 
@@ -10,12 +11,16 @@ import { refreshAuctions, refreshAuction } from '../actions';
 
 
 function* fetchAuctions() {
-
-    console.log('fetchAuctions SAGA')
-
     window._FIREBASE_DB_.ref('/auctions')
     .on('value', (snapshot) => {
-        const auctions = snapshot.val();
+        let auctions = snapshot.val();
+
+        auctions = !auctions ? [] : Object.keys(auctions).map(key => {
+            let auction = auctions[key];
+            auction.id = key;
+
+            return auction;
+        });
 
         window._UI_STORE_.dispatch(refreshAuctions(auctions));
     });
@@ -28,6 +33,46 @@ function* fetchAuction({uid}) {
             const auction = snapshot.val();
             
             window._UI_STORE_.dispatch(refreshAuction(uid, auction));
+        });
+    
+    yield;
+}
+
+/**
+ * bidDetails = {
+ *   auctionId,
+ *   bidAmount,
+ *   bidderObj,
+ * }
+*/
+function* placeBid(bidDetails) {
+
+    window._FIREBASE_DB_.ref('/auctions/' + bidDetails.auctionId)
+        .on('value', (snapshot) => {
+            const auction = snapshot.val();
+
+            const incrementAmount = auction.incrementAmount || 5;
+            const highestBid = auction.highestBid > 0 ? auction.highestBid : auction.openingBid;
+
+            // if valid bid
+            if (bidDetails.bidAmount >= highestBid + incrementAmount) {
+
+                auction.highestBid = bidDetails.bidAmount;
+
+                // will trigger an update to that auction
+
+                debugger;
+
+                // update bid array
+                window._FIREBASE_DB_.ref('auctions/' + auction.uid).child('bids')
+                    .push(bidDetails);
+                
+                // update highestBid
+                window._FIREBASE_DB_.ref('auctions/' + auction.uid)
+                    .update(auction); 
+            } 
+            // else: invalid bid => do nothing
+
         });
     
     yield;
@@ -59,6 +104,7 @@ export default function* () {
         takeEvery(FETCH_AUCTION, fetchAuction),
         takeEvery(FETCH_AUCTIONS, fetchAuctions),
         takeEvery(UPDATE_AUCTION, updateAuction),
+        takeEvery(PLACE_BID, placeBid),
     ];
 }
 

@@ -12,4 +12,4 @@ const mapStateToProps = (state) => {
   
 export default connect(
     mapStateToProps
-)(AuctionsView);;
+)(AuctionsView);

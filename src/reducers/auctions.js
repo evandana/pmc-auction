@@ -39,6 +39,7 @@ function auctions(state = defaultAuctionState, action) {
     // deconstruct params
     const { 
         auctionCollection, 
+        auctionId,
     } = action;
 
     switch (action.type) {
@@ -202,11 +203,11 @@ function auctions(state = defaultAuctionState, action) {
         case SHOW_AUCTION_DETAIL:
 
             const expandedAuction = state.auctionCollection.find(auction => {
-                return auction.id === action.auctionId;
+                return auction.id === auctionId;
             });
 
             return Object.assign({}, state, {
-                expandedAuction: expandedAuction
+                expandedAuction
             });
 
         default:
