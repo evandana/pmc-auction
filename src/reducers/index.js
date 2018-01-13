@@ -1,5 +1,7 @@
-import modal from './modal.js';
-import user from './user.js';
+import modal from './modal';
+import user from './user';
+import auctions from './auctions';
+import config from './config';
 
 function isLoggedIn(state = false, action) {
     return state;
@@ -9,6 +11,8 @@ const reducers = {
     isLoggedIn,
     modal,
     user,
+    auctions,
+    config,
 };
 
 export default reducers;

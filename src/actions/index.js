@@ -11,31 +11,24 @@ import {
     // MODALS
     OPEN_MODAL,
 
+    // CONFIG
+    FETCH_CONFIG,
+    REFRESH_CONFIG,
+
     // PRODUCTS,
     GET_PRODUCTS,
     UPDATE_PRODUCTS,
-    PLACE_ORDER,
-    PLACE_ORDER_RESPONSE,
-    CLEAR_ORDER_RESPONSES,
-    CLEAR_PRODUCT_QUANTITIES,
 
-    // ORDER META DATA
-    UPDATE_MANAGER,
-    UPDATE_BRANCH_NAME,
-    
-    // ORDERS,
-    GET_ORDERS,
-    UPDATE_ORDERS,
-    TOGGLE_ORDER_DETAILS,
-    REQUEST_UPDATE_ORDER,
-    REQUEST_SORT_ORDER_TABLE,
-    REQUEST_FILTER_ORDER_TABLE,
-
-    // ROW EXPANSION
-    TOGGLE_EXPAND_ALL_ROWS,
-
-    // PRICE UPDATES
-    UPDATE_QUANTITY,
+    // AUCTIONS
+    FETCH_AUCTION,
+    FETCH_AUCTIONS,
+    GET_AUCTIONS,
+    HIDE_AUCTION_DETAIL,
+    LOAD_AUCTION,
+    PLACE_BID,
+    REFRESH_AUCTIONS,
+    REFRESH_AUCTION,
+    SHOW_AUCTION_DETAIL,
 
 } from '../constants';
 
@@ -44,15 +37,16 @@ export function loginGoogleRequest() {
     return { type: LOGIN_GOOGLE_REQUEST };
 }
 
+/** USER **/
 export function setCurrentUser(user) {
     const { email='', displayName='', permissions={}, uid=null } = user;
     return {
+        type: SET_CURRENT_USER,
         email,
         displayName,
         permissions,
         uid,
         authInitiated: true,
-        type: SET_CURRENT_USER,
     };
 }
 
@@ -62,19 +56,18 @@ export function logoutUserRequest() {
     };
 }
 
-/** USER **/
 export function getUser(uid, userData=null) {
     return {
+        type: GET_USER,
         uid,
         userData,
-        type: GET_USER,
     };
 }
 
 export function updateUser(userData) {
     return {
+        type: UPDATE_USER,
         userData,
-        type: UPDATE_USER
     };
 }
 
@@ -84,125 +77,77 @@ export function openLoginModal() {
     };
 }
 
-
-/** PRODUCTS */
-export function getProducts(products) {
+/** CONFIG */
+export function fetchConfig() {
     return {
-        type: GET_PRODUCTS,
-        products
-    };
+        type: FETCH_CONFIG
+    }
 }
-export function updateProducts(products) {
+export function refreshConfig(config){
     return {
-        type: UPDATE_PRODUCTS,
-        products
-    };
-}
-
-export function placeOrder(products, orderMeta) {
-    return {
-        type: PLACE_ORDER,
-        products,
-        orderMeta,
-    };
-}
-
-export function placeOrderResponse(response) {
-    // let {status, code, response} = response;
-    return {
-        type: PLACE_ORDER_RESPONSE,
-        response,
+        type: REFRESH_CONFIG,
+        config,
     }
 }
 
-export function clearOrderResponses(response) {
-    return {
-        type: CLEAR_ORDER_RESPONSES,
-    }
-}
 
-export function clearProductQuantities() {
+/** AUCTIONS */
+export function fetchAuctions() {
     return {
-        type: CLEAR_PRODUCT_QUANTITIES,
+        type: FETCH_AUCTIONS
     }
 }
 
 
 
-/** ORDER META DATA **/
-export function updateManager(inputValue) {
+export function getAuctions() {
     return {
-        type: UPDATE_MANAGER,
-        inputValue
+        type: GET_AUCTIONS,
     };
 }
 
-export function updateBranchName(inputValue) {
+export function refreshAuctions(auctionCollection) {
+    console.log('REFRESH_AUCTIONS', REFRESH_AUCTIONS, auctionCollection)
     return {
-        type: UPDATE_BRANCH_NAME,
-        inputValue
-    };
-} 
-
-/** ORDERS */
-export function getOrders(orders) {
-    return {
-        type: GET_ORDERS,
-        orders
-    };
-}
-
-export function updateOrders(orders) {
-    return {
-        type: UPDATE_ORDERS,
-        orders
-    };
-}
-
-export function toggleOrderDetails(row) {
-    return {
-        type: TOGGLE_ORDER_DETAILS,
-        row,
+        type: REFRESH_AUCTIONS,
+        auctionCollection,
     }
 }
 
-export function requestUpdateOrder(key, order) {
+export function refreshAuction(uid, auction) {
     return {
-        type: REQUEST_UPDATE_ORDER,
-        order,
-        key,
+        type: REFRESH_AUCTION,
+        uid,
+        auction,
     }
 }
 
-export function requestSortOrderTable(col) {
+
+export function loadAuctionObj(auction) {
     return {
-        type: REQUEST_SORT_ORDER_TABLE,
-        col,
-    };
+        type: LOAD_AUCTION,
+        auction
+    }
 }
 
-export function requestFilterOrderTable(col, vals) {
-    return {
-        type: REQUEST_FILTER_ORDER_TABLE,
-        col,
-        vals,
-    };
+export function toggleAuctionDetail(auctionId) {
+    if (auctionId) {
+        return {
+            type: SHOW_AUCTION_DETAIL,
+            auctionId
+        }
+    } else {
+        return {
+            type: HIDE_AUCTION_DETAIL
+        }
+    }
 }
 
-
-/** ROW EXPANSION **/
-export function toggleExpandAllRows() {
-    return {
-        type: TOGGLE_EXPAND_ALL_ROWS
-    };
-} 
-
-/** PRICE UPDATES **/
-export function updateQuantity(productId, optionKey, quantity) {
-    return {
-        type: UPDATE_QUANTITY,
-        productId, 
-        optionKey, 
-        quantity,
-    };
-} 
+export function placeBid (bidDetails) {
+    return Object.assign({}, bidDetails, {
+        type: PLACE_BID,
+        auctionId: bidDetails.auctionId,
+        bidAmount: bidDetails.bidAmount,
+        bidderObj: bidDetails.bidderObj
+    });
+}

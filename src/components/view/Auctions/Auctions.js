@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import AuctionList from './AuctionList/AuctionList';
 import AuctionItemDetail from './AuctionList/AuctionItemDetail';
 
-import { placeBid, toggleAuctionDetail } from 'actions/AuctionActions'
+import { placeBid, toggleAuctionDetail } from 'actions'
 
 class Auctions extends Component {
 
@@ -29,9 +29,19 @@ class Auctions extends Component {
 
     render() {
 
-        if ( this.props.expandedAuction && this.props.expandedAuction.id ) {
-            let detailObjKey = this.props.expandedAuction.id;
-            let detailObj = this.props.auctions.find(item => { return detailObjKey === item.id; });
+        const {
+            auctionCollection,
+            expandedAuction,
+            config,
+        } = this.props;
+
+        const auctionCollectionArr = !!auctionCollection ? Object.keys(auctionCollection).map(key => auctionCollection[key]) : [];
+
+        // debugger;
+
+        if ( expandedAuction && expandedAuction.id ) {
+            let detailObjKey = expandedAuction.id;
+            let detailObj = auctionCollection.find(item => { return detailObjKey === item.id; });
 
             // console.log('this.props.config', this.props.config)
 
@@ -40,18 +50,20 @@ class Auctions extends Component {
                 <AuctionItemDetail
                     key={detailObj.id}
                     data={detailObj}
-                    config={this.props.config}
+                    config={config}
                     placeBid={this.placeBid}
                     toggleAuctionDetail={this.toggleAuctionDetail}
                 />
             )
         } else {
 
-            const filteredAuctions = !!this.props.auctions && this.props.auctions.length ? this.props.auctions.filter( auction => auction.show ) : [];
+            const filteredAuctions = !!auctionCollectionArr && auctionCollectionArr.length ? auctionCollectionArr.filter( auction => auction.show ) : [];
 
             return (
 
                 <div>
+                    <pre>Auction Collection.length: {auctionCollectionArr ? auctionCollectionArr.length : 'undefined'}</pre>
+                    <pre>Auction Collection: {auctionCollectionArr ? JSON.stringify(auctionCollectionArr) : 'undefined'}</pre>
                     <AuctionList
                         auctions={filteredAuctions}
                         expandedAuction={this.props.expandedAuction}

@@ -3,7 +3,7 @@ import { select, takeEvery } from 'redux-saga/effects';
 import {
     GET_USER,
     UPDATE_USER,
-} from 'constants.js';
+} from '../constants';
 
 import { setCurrentUser, updateUser as updateUserAction } from 'actions';
 
@@ -13,6 +13,8 @@ function* getUser({uid, userData}) {
         .on('value', (snapshot) => {
             const user = snapshot.val();
             
+            
+
             if (!user) {
                 window._UI_STORE_.dispatch(updateUserAction({...userData, permissions: {basic: true}}));
             } else {

@@ -4,7 +4,9 @@ import AuctionsView from 'components/view/Auctions';
 const mapStateToProps = (state) => {
     return {
         userPermissions: state.user.permissions,
-        // config: state.login.config,
+        auctionCollection: state.auctions.auctionCollection,
+        expandedAuction: state.auctions.expandedAuction,
+        config: state.config,
     }
 };
   

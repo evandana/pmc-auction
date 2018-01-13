@@ -1,38 +1,56 @@
 import {
+    AUTH_CHECK_REQUEST,
+    AUTH_CHECK_RESPONSE,
+    AUTH_FAIL,
+    AUTH_SUCCESS,
     CONFIRM_BID_TOGGLE,
     CONFIRM_WINNERS,
-    FETCH_AUCTIONS,
-    LOAD_AUCTION,
-    UPDATE_AUCTION,
-    PLACE_BID,
+    CREATE_AUCTION_SUCCESS,
+    GET_CONFIG_SUCCESS,
     HIDE_AUCTION_DETAIL,
+    LOAD_AUCTION,
+    LOCKDOWN_MODE,
+    PLACE_BID,
+    SET_USER,
     SHOW_AUCTION_DETAIL,
-    CREATE_AUCTION_SUCCESS
-} from '../actions/AuctionActions'
-
-import {
-    LOGIN_CONSTANTS
-} from '../actions/LoginActions'
+    UPDATE_AUCTION,
+    UPDATE_AUCTIONS,
+    UPDATE_CONFIG_SUCCESS,
+    REFRESH_AUCTION,
+    REFRESH_AUCTIONS,
+} from '../constants'
 
 const defaultAuctionState = {
-    auctionCollection : [],
-    config : {},
-    confirmedBids : [],
+    auctionCollection: [],
+    config: {},
+    confirmedBids: [],
     confirmWinnersSubmitDisable: true,
-    expandedAuction : {},
+    expandedAuction: {},
     bidTotal: 0,
-    selectedBids : [],
-    userId : null,
+    selectedBids: [],
+    userId: null,
     pendingConfirmationAuctionCollection: [],
     confirmedAuctionCollection: [],
     wonAuctionCollection: []
-}
-
-let _userId = null
+};
 
 function auctions(state = defaultAuctionState, action) {
 
+    // deconstruct params
+    const { 
+        auctionCollection, 
+    } = action;
+
     switch (action.type) {
+
+        case REFRESH_AUCTIONS: 
+            
+            console.log('REDUCERS - auctions', auctionCollection)
+
+            return Object.assign({}, state, {
+                auctionCollection
+            });
+
         case CONFIRM_WINNERS:
             return state;
 
@@ -41,9 +59,9 @@ function auctions(state = defaultAuctionState, action) {
             // TODO: clear form
             return state;
 
-        case LOGIN_CONSTANTS.GET_CONFIG_SUCCESS:
+        case GET_CONFIG_SUCCESS:
             return Object.assign({}, state, {
-                config : action.data
+                config: action.data
             });
 
         case UPDATE_AUCTION:
@@ -53,22 +71,22 @@ function auctions(state = defaultAuctionState, action) {
             let wonAuctionCollection = [];
             let confirmedAuctionCollection = [];
             let pendingConfirmationAuctionCollection = [];
-            let mappedCollection = state.auctionCollection.map( auction => {
+            let mappedCollection = state.auctionCollection.map(auction => {
                 // if updated auction, then replace with new
                 if (auction.id === action.auction.id) {
 
                     // sort into owned confirmed and owned to be confirmed
                     if (action.auction.donorId === state.userId) {
                         if (action.auction.winningBids && action.auction.winningBids.length) {
-                            confirmedAuctionCollection.push( processLoadedAuctionBids( action.auction ) );
+                            confirmedAuctionCollection.push(processLoadedAuctionBids(action.auction));
                         } else {
-                            pendingConfirmationAuctionCollection.push( processLoadedAuctionBids( action.auction ) );
+                            pendingConfirmationAuctionCollection.push(processLoadedAuctionBids(action.auction));
                         }
                     }
 
                     // address won auctions
                     if (action.auction.winningBids) {
-                        action.auction.winningBid = action.auction.winningBids.find( winningBid => {
+                        action.auction.winningBid = action.auction.winningBids.find(winningBid => {
                             return winningBid.bidderObj.uid === state.userId;
                         });
                         wonAuctionCollection.push(action.auction);
@@ -80,15 +98,15 @@ function auctions(state = defaultAuctionState, action) {
                     // sort into owned confirmed and owned to be confirmed
                     if (auction.donorId === state.userId) {
                         if (auction.winningBids && auction.winningBids.length) {
-                            confirmedAuctionCollection.push( auction );
+                            confirmedAuctionCollection.push(auction);
                         } else {
-                            pendingConfirmationAuctionCollection.push( auction );
+                            pendingConfirmationAuctionCollection.push(auction);
                         }
                     }
 
                     // address won auctions
                     if (auction.winningBids) {
-                        auction.winningBid = auction.winningBids.find( winningBid => {
+                        auction.winningBid = auction.winningBids.find(winningBid => {
                             return winningBid.bidderObj.uid === state.userId;
                         });
                         wonAuctionCollection.push(auction);
@@ -128,7 +146,7 @@ function auctions(state = defaultAuctionState, action) {
 
                 // address won auctions
                 if (action.auction.winningBids) {
-                    action.auction.winningBid = action.auction.winningBids.find( winningBid => {
+                    action.auction.winningBid = action.auction.winningBids.find(winningBid => {
                         return winningBid.bidderObj.uid === state.userId;
                     });
                     if (action.auction.winningBid) {
@@ -143,7 +161,7 @@ function auctions(state = defaultAuctionState, action) {
                     ],
                     bidTotal: state.bidTotal += auctionWithBids.bidTotal,
                     confirmedAuctionCollection: confirmedAuctionCollection,
-                    pendingConfirmationAuctionCollection : pendingConfirmationAuctionCollection,
+                    pendingConfirmationAuctionCollection: pendingConfirmationAuctionCollection,
                     wonAuctionCollection: wonAuctionCollection
 
                 });
@@ -153,7 +171,7 @@ function auctions(state = defaultAuctionState, action) {
 
                 // address won auctions
                 if (action.auction.winningBids) {
-                    action.auction.winningBid = action.auction.winningBids.find( winningBid => {
+                    action.auction.winningBid = action.auction.winningBids.find(winningBid => {
                         return winningBid ? winningBid.bidderObj.uid === state.userId : false;
                     });
                     if (action.auction.winningBid) {
@@ -176,14 +194,14 @@ function auctions(state = defaultAuctionState, action) {
                 expandedAuction: {}
             });
 
-        case LOGIN_CONSTANTS.AUTH_SUCCESS:
+        case AUTH_SUCCESS:
             return Object.assign({}, state, {
                 userId: action.user.uid
             });
 
         case SHOW_AUCTION_DETAIL:
 
-            const expandedAuction = state.auctionCollection.find( auction => {
+            const expandedAuction = state.auctionCollection.find(auction => {
                 return auction.id === action.auctionId;
             });
 
@@ -196,12 +214,12 @@ function auctions(state = defaultAuctionState, action) {
     }
 }
 
-export default auctions
+export default auctions;
 
 function hasCheckedNonWinners(auctions) {
     let hasCheckedNonWinners = false;
-    auctions.forEach( (auction, index) => {
-        Object.keys(auction.bids).forEach( (bidId, index) => {
+    auctions.forEach((auction, index) => {
+        Object.keys(auction.bids).forEach((bidId, index) => {
             if (auction.bids[bidId].checked && !auction.bids[bidId].winner) {
                 hasCheckedNonWinners = true;
             }
@@ -218,7 +236,7 @@ function filterUniqueBidders(bids) {
     if (bids && Object.keys(bids).length) {
 
 
-        Object.keys(bids).forEach( (bidId, index) => {
+        Object.keys(bids).forEach((bidId, index) => {
 
             let curBid = bids[bidId];
 
@@ -246,11 +264,11 @@ function filterUniqueBidders(bids) {
                         // console.log("This bidder is unique but unique bids maxxed at ", uniqueBids.length);
                         let lowestBid;
 
-                        uniqueBids.forEach( ubidId => {
+                        uniqueBids.forEach(ubidId => {
                             if (!lowestBid) {
                                 lowestBid = ubidId;
                             } else {
-                                if( bids[ubidId].bidAmount < bids[lowestBid].bidAmount ) {
+                                if (bids[ubidId].bidAmount < bids[lowestBid].bidAmount) {
                                     lowestBid = ubidId;
                                 }
                             }
@@ -268,7 +286,7 @@ function filterUniqueBidders(bids) {
         });
     }
 
-    uniqueBids.sort( (a,b) => {
+    uniqueBids.sort((a, b) => {
         if (bids[a].bidAmount < bids[b].bidAmount) {
             return 1;
         }
@@ -278,7 +296,7 @@ function filterUniqueBidders(bids) {
         return 0;
     });
 
-    uniqueBids.forEach( bidId => {
+    uniqueBids.forEach(bidId => {
         uniqueBidsObj[bidId] = bids[bidId];
     });
 
@@ -289,7 +307,7 @@ function processLoadedAuctionBids(auction) {
     auction.bidTotal = 0;
     auction.bids = filterUniqueBidders(auction.bids);
     if (auction.bids && auction.bids) {
-        Object.keys(auction.bids).forEach( bidId => {
+        Object.keys(auction.bids).forEach(bidId => {
             auction.bidTotal += auction.bids[bidId].bidAmount;
             auction.bids[bidId].checked = true;
             auction.bids[bidId].winner = true;

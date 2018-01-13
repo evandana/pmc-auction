@@ -3,7 +3,7 @@ import { takeEvery } from 'redux-saga/effects';
 import {
     LOGIN_GOOGLE_REQUEST,
     LOGOUT_USER_REQUEST,
-} from '../constants.js';
+} from '../constants';
 
 function* loginGoogleRequest() {
     window._FIREBASE_.auth().signInWithPopup(window._FIREBASE_PROVIDER_)

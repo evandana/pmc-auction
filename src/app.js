@@ -23,7 +23,7 @@ import Auctions from 'components/controller/Auctions';
 import Status from 'components/controller/Status';
 import Navigation from 'components/controller/Navigation';
 import AppModal from 'components/controller/Modal';
-import { getUser, getProducts, setCurrentUser } from './actions';
+import { getUser, getProducts, setCurrentUser, fetchAuctions, fetchConfig } from './actions';
 
 import './app.scss';
 
@@ -49,6 +49,9 @@ class App extends Component {
                     };
 
                     window._UI_STORE_.dispatch(getUser(user.uid, userData));
+                    
+                    window._UI_STORE_.dispatch(fetchAuctions());
+                    window._UI_STORE_.dispatch(fetchConfig());
 
                     // TODO: only load this on the products route
                     // window._UI_STORE_.dispatch(getProducts());

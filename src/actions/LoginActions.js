@@ -4,16 +4,17 @@ import firebase from '../utils/firebaseAdapter'
 
 import { userDescriptives, userSpiritAnimals } from '../constants/UserPersonas'
 
-export const LOGIN_CONSTANTS = {
-    AUTH_CHECK_REQUEST: 'AUTH_CHECK_REQUEST',
-    AUTH_CHECK_RESPONSE: 'AUTH_CHECK_RESPONSE',
-    AUTH_SUCCESS: 'AUTH_SUCCESS',
-    AUTH_FAIL: 'AUTH_FAIL',
-    LOCKDOWN_MODE: 'LOCKDOWN_MODE',
-    SET_USER: 'SET_USER',
-    GET_CONFIG_SUCCESS: 'GET_CONFIG_SUCCESS',
-    UPDATE_CONFIG_SUCCESS: 'UPDATE_CONFIG_SUCCESS'
-}
+import {
+    AUTH_CHECK_REQUEST,
+    AUTH_CHECK_RESPONSE,
+    AUTH_SUCCESS,
+    AUTH_FAIL,
+    LOCKDOWN_MODE,
+    SET_USER,
+    GET_CONFIG_SUCCESS,
+    UPDATE_CONFIG_SUCCESS,
+} from 'constants'
+
 
 export const LoginActions = {
 
