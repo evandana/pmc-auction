@@ -5,16 +5,16 @@ import ReactDOM from 'react-dom';
 /** REDUX **/
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import reducers from './reducers';
-import sagas from './sagas';
+import reducers from 'reducers';
+import sagas from 'sagas';
 
 /** Routing **/
 import createHistory from 'history/createBrowserHistory';
 import { routerReducer, routerMiddleware, } from 'react-router-redux';
 
 /** App Configuration **/
-import registerServiceWorker from './registerServiceWorker';
-import App from './App';
+import registerServiceWorker from 'registerServiceWorker';
+import App from 'App';
 
 /** Redux Setup **/
 const history = createHistory();

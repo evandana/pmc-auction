@@ -1,19 +1,20 @@
 // firebase read/write adapter
-import firebase from '../utils/firebaseAdapter'
 
-export const ADD_AUCTION = 'ADD_AUCTION'
-export const CLEAR_AUCTION_DETAIL = 'CLEAR_AUCTION_DETAIL'
-export const CONFIRM_WINNERS = 'CONFIRM_WINNERS'
-export const CONFIRM_BID_TOGGLE = 'CONFIRM_BID_TOGGLE'
-export const CREATE_AUCTION = 'CREATE_AUCTION'
-export const CREATE_AUCTION_ERROR = 'CREATE_AUCTION_ERROR'
-export const CREATE_AUCTION_SUCCESS = 'CREATE_AUCTION_SUCCESS'
-export const FETCH_AUCTIONS = 'FETCH_AUCTIONS'
-export const HIDE_AUCTION_DETAIL = 'HIDE_AUCTION_DETAIL'
-export const LOAD_AUCTION = 'LOAD_AUCTION'
-export const PLACE_BID = 'PLACE_BID'
-export const SHOW_AUCTION_DETAIL = 'SHOW_AUCTION_DETAIL'
-export const UPDATE_AUCTION = 'UPDATE_AUCTION'
+import {
+    ADD_AUCTION,
+    CLEAR_AUCTION_DETAIL,
+    CONFIRM_WINNERS,
+    CONFIRM_BID_TOGGLE,
+    CREATE_AUCTION,
+    CREATE_AUCTION_ERROR,
+    CREATE_AUCTION_SUCCESS,
+    HIDE_AUCTION_DETAIL,
+    LOAD_AUCTION,
+    PLACE_BID,
+    SHOW_AUCTION_DETAIL,
+    UPDATE_AUCTION,
+} from '../constants';
+
 
 export function auctionPushErrorHandler (error) {
     if (error) {
@@ -33,67 +34,10 @@ export function confirmBidToggle (auctionId, bidId) {
     };
 }
 
-export function confirmAuctionWinners (auction, winningBidsCollection, auctionOwner) {
-    // TODO: do I need a dispatch here? it works without it
-    //, () => { dispatch({ type: CONFIRM_WINNERS }) }
-    return firebase.updateWinningBid(auction, winningBidsCollection, auctionOwner)
-}
-
-export function createAuction (fields, user) {
-
-    let auction = Object.assign({}, fields, {
-        donorId: user.uid,
-        donorName: user.name,
-        highestBid: null,
-        expiration: fields.expiration || "12/31/2016",
-        openDate: "01/30/2016",
-        closeDate: "12/31/2016"
-    });
-
-    // console.log("CREATING AUCTION", auction)
-
-    return dispatch => {
-        firebase.addAuction(auction,
-            error => dispatch(auctionPushErrorHandler(error))
-        )
-    }
-
-}
-
-export function updateAuctions() {
-    return dispatch => {
-        firebase.updateAuctions( auction => dispatch(updateAuctionObj(auction)) )
-    }
-}
-
-export function updateAuctionObj(auction) {
-    // console.log('update auction action', auction)
-    return {
-        type: UPDATE_AUCTION,
-        auction
-    }
-}
-
-export function fetchAuctions() {
-    return dispatch => {
-        firebase.loadAuctions( auction => dispatch(loadAuctionObj(auction)) )
-    }
-}
-
 export function loadAuctionObj(auction) {
     return {
         type: LOAD_AUCTION,
         auction
-    }
-}
-
-export function placeBid(bidDetails) {
-    return dispatch => {
-        firebase.placeBid(
-            bidDetails,
-            () => {console.log('bid success')},
-            () => {console.log('bid fail')}
-        )
     }
 }
 

@@ -70,48 +70,48 @@ let Adapter = function Adapter () {
             });
         },
 
-        addAuction (auctionObj, callback) {
-            auctionsRef.push(auctionObj, callback);
-        },
+        // addAuction (auctionObj, callback) {
+        //     auctionsRef.push(auctionObj, callback);
+        // },
 
-        loadAuctions (callback) {
-            auctionsRef.on("child_added", (snapshot) => {
-                let auction = snapshot.val();
-                auction.id = snapshot.key();
-                callback(auction);
-            });
-        },
+        // loadAuctions (callback) {
+        //     auctionsRef.on("child_added", (snapshot) => {
+        //         let auction = snapshot.val();
+        //         auction.id = snapshot.key();
+        //         callback(auction);
+        //     });
+        // },
 
-        updateAuctions (callback) {
-            auctionsRef.on("child_changed", (snapshot) => {
-                let auction = snapshot.val();
-                auction.id = snapshot.key();
-                callback(auction);
-            });
-        },
+        // updateAuctions (callback) {
+        //     auctionsRef.on("child_changed", (snapshot) => {
+        //         let auction = snapshot.val();
+        //         auction.id = snapshot.key();
+        //         callback(auction);
+        //     });
+        // },
 
-        updateWinningBid(auction, winningBids, auctionOwner) {
-            return new Promise( (resolve, reject) => {
-                auctionsRef.child(auction.id).update({
-                    winningBids: winningBids,
-                    auctionOwner: auctionOwner
-                }, error => {
-                    if (error) {
-                        reject("Data could not be saved." + error);
-                    } else {
-                        resolve("Data saved successfully.");
-                    }
-                });
-            })
-        },
+        // updateWinningBid(auction, winningBids, auctionOwner) {
+        //     return new Promise( (resolve, reject) => {
+        //         auctionsRef.child(auction.id).update({
+        //             winningBids: winningBids,
+        //             auctionOwner: auctionOwner
+        //         }, error => {
+        //             if (error) {
+        //                 reject("Data could not be saved." + error);
+        //             } else {
+        //                 resolve("Data saved successfully.");
+        //             }
+        //         });
+        //     })
+        // },
 
-        placeBid (bidObject, successCallback, failCallback) {
-            // console.log('firebase adapter', bidObject);
-            // add bid
-            auctionsRef.child(bidObject.auctionId).child('bids').push(bidObject);
-            // update highest bid for auction item
-            auctionsRef.child(bidObject.auctionId).update({highestBid: bidObject.bidAmount});
-        },
+        // placeBid (bidObject, successCallback, failCallback) {
+        //     // console.log('firebase adapter', bidObject);
+        //     // add bid
+        //     auctionsRef.child(bidObject.auctionId).child('bids').push(bidObject);
+        //     // update highest bid for auction item
+        //     auctionsRef.child(bidObject.auctionId).update({highestBid: bidObject.bidAmount});
+        // },
 
         loginGoogle (successCallback, failCallback) {
             return ref.authWithOAuthRedirect("google", function(error, authData) {
