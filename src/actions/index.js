@@ -146,8 +146,6 @@ export function toggleAuctionDetail(auctionId) {
 export function placeBid (bidDetails) {
     return Object.assign({}, bidDetails, {
         type: PLACE_BID,
-        auctionId: bidDetails.auctionId,
-        bidAmount: bidDetails.bidAmount,
-        bidderObj: bidDetails.bidderObj
+        bidDetails
     });
 }

@@ -8,7 +8,7 @@ import { refreshConfig } from 'actions';
 
 
 function* fetchConfig({uid, userData}) {
-    window._FIREBASE_DB_.ref('/config')
+    window._FIREBASE_DB_.ref('/CONFIG')
         .on('value', (snapshot) => {
             const config = snapshot.val();
             

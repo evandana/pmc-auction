@@ -35,10 +35,6 @@ class Auctions extends Component {
             config,
         } = this.props;
 
-        const auctionCollectionArr = !!auctionCollection ? Object.keys(auctionCollection).map(key => auctionCollection[key]) : [];
-
-        // debugger;
-
         if ( expandedAuction && expandedAuction.id ) {
             let detailObjKey = expandedAuction.id;
             let detailObj = auctionCollection.find(item => { return detailObjKey === item.id; });
@@ -52,12 +48,13 @@ class Auctions extends Component {
                     data={detailObj}
                     config={config}
                     placeBid={this.placeBid}
+                    open={false}
                     toggleAuctionDetail={this.toggleAuctionDetail}
                 />
             )
         } else {
 
-            const filteredAuctions = !!auctionCollectionArr && auctionCollectionArr.length ? auctionCollectionArr.filter( auction => auction.show ) : [];
+            const filteredAuctions = !!auctionCollection && auctionCollection.length ? auctionCollection.filter( auction => auction.show ) : [];
 
             return (
 
@@ -67,6 +64,7 @@ class Auctions extends Component {
                         expandedAuction={this.props.expandedAuction}
                         placeBid={this.placeBid}
                         toggleAuctionDetail={this.toggleAuctionDetail}
+                        config={config}
                     />
                 </div>
             )

@@ -47,11 +47,12 @@ class App extends Component {
                         permissions: user.permissions,
                         email: user.email,
                     };
-
+                    
                     window._UI_STORE_.dispatch(getUser(user.uid, userData));
                     
-                    window._UI_STORE_.dispatch(fetchAuctions());
                     window._UI_STORE_.dispatch(fetchConfig());
+                    
+                    window._UI_STORE_.dispatch(fetchAuctions());
 
                     // TODO: only load this on the products route
                     // window._UI_STORE_.dispatch(getProducts());

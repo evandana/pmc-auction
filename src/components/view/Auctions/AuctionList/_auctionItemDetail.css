@@ -1,0 +1,26 @@
+.auction-item-detail .detail-field {
+    display:table-row;
+    padding:1em 10px;
+    margin-top:1em;
+}
+
+.auction-item-detail .detail-field label {
+    padding-top:.5em;
+    padding-bottom:.5em;
+    font-weight: light;
+    padding-right:.5em;
+    display:table-cell;
+    width: 7em;
+    text-align:right;
+    color:#999;
+}
+
+.auction-item-detail .detail-field span {
+    padding-top:.5em;
+    padding-bottom:.5em;
+    display: table-cell;
+}
+
+.auction-item-detail .detail-message {
+    background: #fbb;
+}

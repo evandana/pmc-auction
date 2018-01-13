@@ -2,8 +2,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { placeBid } from 'actions/AuctionActions'
-
 // Material UI
 import Avatar from 'material-ui/Avatar';
 import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
@@ -22,8 +20,10 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 import { getImageForEnv } from 'static/images/index'
 
+import { placeBid } from 'actions'
+
 // Styles
-import './_auctionItemDetail.scss';
+import './_auctionItemDetail.css';
 // Application Components
 
 
@@ -76,10 +76,20 @@ class AuctionItemDetail extends Component {
 
 		// console.log('render in item detail')
 
-		const { placeBid, toggleAuctionDetail } = this.props
+		const { 
+			config, 
+			data,
+			highestBid,
+			placeBid, 
+			toggleAuctionDetail, 
+			user,
+		} = this.props
 
-		let data = this.props.data,
-			user = this.props.user;
+		debugger;
+
+		let { 
+			
+		  }  = this.props;
 
 
 		let urlStr = getImageForEnv( 'auction-big/' + data.image + '.png');
@@ -174,7 +184,7 @@ class AuctionItemDetail extends Component {
 						subtitle={'with ' + data.donorName}
 					/>
 					{
-						this.props.config.BIDDING_OPEN
+						config.BIDDING_OPEN
 						?
 							<div style={style.bidContainer}>
 								<CardActions>
@@ -235,13 +245,13 @@ class AuctionItemDetail extends Component {
 						<div className="detail-field">
 							<label>Top Bid</label>
 							{
-								this.props.config.BIDDING_OPEN
+								config.BIDDING_OPEN
 								?
 									<span>
 										{
-											this.props.highestBid && this.props.highestBid.bidderObj
+											highestBid && highestBid.bidderObj
 											?
-												'$' + this.props.highestBid.bidAmount + ' by ' + this.props.highestBid.bidderObj.persona
+												'$' + highestBid.bidAmount + ' by ' + highestBid.bidderObj.persona
 											:
 												'$' + data.openingBid
 										}
@@ -307,10 +317,12 @@ function mapStateToProps (state) {
 
 	console.log('highestBid', highestBid)
 
+	debugger;
+
 	return {
 		// app-level, static
-		config: state.login.config,
-		user: state.login.user,
+		config: state.config,
+		user: state.user,
 		// item-level, static
 		data: data,
 		increment: increment,
@@ -322,4 +334,8 @@ function mapStateToProps (state) {
 	};
 }
 
-export default AuctionItemDetail;
+
+
+export default connect(
+    mapStateToProps
+)(AuctionItemDetail);
