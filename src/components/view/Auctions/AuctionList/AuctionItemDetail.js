@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { placeBid } from '../../actions/AuctionActions'
+import { placeBid } from 'actions/AuctionActions'
 
 // Material UI
 import Avatar from 'material-ui/Avatar';
@@ -20,7 +20,7 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 
-import { getImageForEnv } from '../../images/index'
+import { getImageForEnv } from 'static/images/index'
 
 // Styles
 import './_auctionItemDetail.scss';
@@ -322,4 +322,4 @@ function mapStateToProps (state) {
 	};
 }
 
-export default connect(mapStateToProps)(AuctionItemDetail);
+export default AuctionItemDetail;

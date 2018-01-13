@@ -25,7 +25,7 @@ class Auctions extends Component {
 
     toggleAuctionDetail(auctionId, event) {
         const { dispatch } = this.props
-        // Doing trigger when target is button - button is used for placing bids
+        // Don't trigger when target is button - button is used for placing bids
         dispatch(toggleAuctionDetail(auctionId))
     }
 
