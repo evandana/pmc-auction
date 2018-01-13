@@ -1,0 +1,57 @@
+/** USER ACTIONS **/
+export const GET_USER = 'GET_USER';
+export const UPDATE_USER = 'UPDATE_USER';
+
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER';
+export const LOGOUT_USER_REQUEST = 'LOGOUT_USER_REQUEST';
+
+/** AUTHENTICATION **/
+export const LOGIN_GOOGLE_REQUEST = 'LOGIN_GOOGLE_REQUEST';
+
+/** MODAL ACTIONS **/
+export const OPEN_MODAL = 'OPEN_MODAL';
+export const CLOSE_MODAL = 'CLOSE_MODAL';
+
+/** PRODUCTS */
+export const GET_PRODUCTS = 'GET_PRODUCTS';
+export const UPDATE_PRODUCTS = 'UPDATE_PRODUCTS';
+export const PLACE_ORDER = 'PLACE_ORDER';
+export const CLEAR_PRODUCT_QUANTITIES = 'CLEAR_PRODUCT_QUANTITIES';
+
+/** ORDERS */
+export const GET_ORDERS = 'GET_ORDERS';
+export const UPDATE_ORDERS = 'UPDATE_ORDERS';
+export const TOGGLE_ORDER_DETAILS = 'TOGGLE_ORDER_DETAILS';
+export const REQUEST_UPDATE_ORDER = 'REQUEST_UPDATE_ORDER';
+export const REQUEST_SORT_ORDER_TABLE = 'REQUEST_SORT_ORDER_TABLE';
+export const REQUEST_FILTER_ORDER_TABLE = 'REQUEST_FILTER_ORDER_TABLE';
+
+/** ORDER META DATA */
+export const GET_ORDER_META_DATA = 'GET_ORDER_META_DATA';
+export const UPDATE_MANAGER = 'UPDATE_MANAGER';
+export const UPDATE_BRANCH_NAME = 'UPDATE_BRANCH_NAME';
+
+/* ASYNC */
+export const RESPONSE_CODE_SUCCESS = 200;
+export const RESPONSE_CODE_FAIL = 400;
+export const PLACE_ORDER_RESPONSE = 'PLACE_ORDER_RESPONSE';
+export const CLEAR_ORDER_RESPONSES = 'CLEAR_ORDER_RESPONSES';
+
+
+/** ROW EXPANSION **/
+export const TOGGLE_EXPAND_ALL_ROWS = 'TOGGLE_EXPAND_ALL_ROWS';
+
+/** PRICE UPDATES **/
+export const UPDATE_QUANTITY = 'UPDATE_QUANTITY';
+
+/** ORDER STATES **/
+export const LABEL_PLACED = 'Placed';
+export const LABEL_CONFIRMED = 'Confirmed';
+export const LABEL_OUT_FOR_DELIVERY = 'Out for Delivery';
+export const LABEL_FULFILLED = 'Fulfilled';
+
+/** COLUMN NAMES **/
+export const COL_DATE = 'timestamp';
+export const COL_CUSTOMER = 'customer';
+export const COL_STATUS = 'state';

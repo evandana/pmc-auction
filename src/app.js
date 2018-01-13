@@ -1,157 +1,84 @@
-// Libraries
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Promise from 'bluebird';
-
-// Components
-import { Router, Route, IndexRoute, UPDATE_LOCATION } from 'react-router'
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-import { Provider } from 'react-redux'
-import { render } from 'react-dom'
-import { createDevTools } from 'redux-devtools'
-import LogMonitor from 'redux-devtools-log-monitor'
-import DockMonitor from 'redux-devtools-dock-monitor'
-
-// Material UI
+/** REACT **/
+import React, { Component } from 'react';
+/** MATERIAL UI **/
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-// Needed for onTouchTap
-// Can go away when react 1.0 release
-// Check this repo:
-// https://github.com/zilverline/react-tap-event-plugin
-injectTapEventPlugin();
+/** ROUTER **/
+import { Route } from 'react-router-dom';
+import { Switch } from 'react-router';
+import { ConnectedRouter } from 'react-router-redux';
+/** REDUX **/
+import { Provider } from 'react-redux';
+/** FIREBASE **/
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/database';
+/** APP **/
+import config from 'config';
+import AuthorizedRoute from 'components/controller/AuthorizedRoute';
+import Home from 'components/controller/Home';
+import Auctions from 'components/controller/Auctions';
+import Status from 'components/controller/Status';
+import Navigation from 'components/controller/Navigation';
+import AppModal from 'components/controller/Modal';
+import { getUser, getProducts, setCurrentUser } from './actions';
 
-// set in webpack
-// console.log('__PRODUCTION__', __PRODUCTION__)
-// console.log('__DEV__', __DEV__)
-console.log('Environment:', JSON.stringify(process.env.NODE_ENV))
+import './app.scss';
 
-// Styles
-import 'app.scss';
-// React Components
-import {
-    AddAuctionPage,
-    AppPage,
-    AuctionsPage,
-    ConfirmWinnersPage,
-    DonatePage,
-    HomePage,
-    LoginPage,
-    ResultsPage,
-    DonorsPage,
-    SponsorsPage
-    } from './components/index';
-// Actions
-import { LoginActions } from './actions/LoginActions'
-import { fetchUsers } from './actions/UserActions'
-import { toggleAuctionDetail, fetchAuctions, updateAuctions } from './actions/AuctionActions'
-// Store
-import configureStore from './stores/configureStore'
-// History
-import hashHistory from './history'
-// DevTools
-import DevTools from './components/containers/devTools/DevTools'
-// firebase read/write adapter
-import firebase from './utils/firebaseAdapter'
-
-const store = configureStore()
-const routerHistory = syncHistoryWithStore(hashHistory, store)
-
-// listen for authorization event to load app
-let unsubscribe = store.subscribe(authCheckHandler);
-let logoutUnsubscribe;
-
-store.dispatch(LoginActions.authCheckRequest());
-
-function authCheckHandler() {
-
-    const state = store.getState()
-
-    if(state.login.applicationClosed) {
-        loadLockdownView()
-    } else if (state.login.forceLoginView) {
-        unsubscribe()
-        loadLoginView()
-    } else if (state.login.user) {
-        unsubscribe()
-        loadAppView()
-        // post login logout handler
-        logoutUnsubscribe = store.subscribe(logoutHandler);
-
-    } else {
-        console.log("auth logic failed in app.js")
-        unsubscribe()
-    }
-}
-
-function logoutHandler() {
-
-    let state = store.getState()
-
-    if (state.login.forceLoginView) {
-        logoutUnsubscribe()
-        ReactDOM.unmountComponentAtNode(document.getElementById('app-page'))
-        loadLoginView()
-    }
-}
-
-function loadAppView () {
-
-    // on Auctions Page click, always go to list view
-    hashHistory.listen(location => {
-        if (location.pathname === '/auctions') {
-            store.dispatch(toggleAuctionDetail(false));
-        }
-    })
-
-    render(
-        <Provider store={store}>
-            <div>
-                <Router history={hashHistory}>
-                    <Route path="/" component={AppPage}>
-                        <IndexRoute component={HomePage}/>
-                        <Route path="/auctions" component={AuctionsPage}/>
-                        <Route path="/auctions/confirmWinners" component={ConfirmWinnersPage}/>
-                        <Route path="/auctions/add" component={AddAuctionPage} />
-                        <Route path="/donate" component={DonatePage} />
-                        <Route path="/results" component={ResultsPage} />
-                        <Route path="/donors" component={DonorsPage} />
-                        <Route path="/sponsors" component={SponsorsPage} />
-                    </Route>
-                </Router>
-                {
-                    (() => {
-                        if (__DEV__ && false) {
-                            return <DevTools />;
-                        }
-                    })() || ''
+class App extends Component {
+    
+    constructor(props) {
+        super(props);
+        
+        injectTapEventPlugin();
+        
+        /** Firebase Setup **/
+        window._FIREBASE_ = firebase.initializeApp(config.firebase);
+        window._FIREBASE_PROVIDER_ = new firebase.auth.GoogleAuthProvider();
+        window._FIREBASE_DB_ = firebase.database();
+        window._FIREBASE_.auth().onAuthStateChanged(
+            (user) => {
+                if(user && user.uid) {
+                    const userData = {
+                        uid: user.uid,
+                        displayName: user.displayName,
+                        permissions: user.permissions,
+                        email: user.email,
+                    };
+                    
+                    window._UI_STORE_.dispatch(getUser(user.uid, userData));
+                    
+                    // TODO: only load this on the products route
+                    // window._UI_STORE_.dispatch(getProducts());
+                } else {
+                    window._UI_STORE_.dispatch(setCurrentUser({authInitiated: true}));
                 }
-            </div>
-        </Provider>,
-        document.getElementById('app-page')
-    )
+            }
+        );
+    }
+    
 
-    // Fetch Once to Rule Them ALL
-    store.dispatch(fetchUsers())
-    store.dispatch(fetchAuctions())
-    store.dispatch(updateAuctions())
-    store.dispatch(LoginActions.getConfig())
-    store.dispatch(LoginActions.updateConfig())
+    render() {
+        const { store, history } = this.props;
+        
+        return (
+            <MuiThemeProvider>
+                <Provider store={store}>
+                    <ConnectedRouter history={history}>
+                        <div className="app">
+                            <Navigation />
+                            <Switch>
+                                <Route exact path="/" component={Home}/>
+                                <AuthorizedRoute exact path="/auctions" component={Auctions} /> 
+                                <AuthorizedRoute exact path="/status" component={Status} /> 
+                            </Switch>
+                            <AppModal />
+                        </div>
+                    </ConnectedRouter>
+                </Provider>
+            </MuiThemeProvider>
+        );
+    }
 }
 
-function loadLoginView () {
-
-    // console.log('load login view')
-
-    render(
-        <LoginPage />,
-        document.getElementById('app-page')
-    )
-}
-
-function loadLockdownView () {
-    render(
-        <div>APPLICATION CLOSED AT THIS TIME</div>,
-        document.getElementById('app-page')
-    )
-}
+export default App;

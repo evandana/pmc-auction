@@ -1,8 +1,12 @@
-import firebaseApp from './firebaseInit';
+import firebase from 'firebase';
 
 let Adapter = function Adapter () {
 
-    let ref = firebaseApp.database(),
+    let ref = {
+            ref: () => {
+                return { once: () => {}, child: () => {}, on: () => {}, updateAuth: () => {} };
+            }
+        },
         auctionsRef = ref.ref("auctions"),
         usersRef = ref.ref("users"),
         configRef = ref.ref("CONFIG");

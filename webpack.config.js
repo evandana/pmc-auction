@@ -36,7 +36,7 @@ const plugins = basePlugins
 module.exports = {
     target: 'web',
     entry: {
-        module: path.join(srcPath, 'app.js'),
+        module: path.join(srcPath, 'App.js'),
         common: ['react']
     },
     output: {

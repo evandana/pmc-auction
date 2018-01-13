@@ -18,9 +18,14 @@ export const LOGIN_CONSTANTS = {
 export const LoginActions = {
 
     authCheckRequest() {
-        return dispatch => {
-            firebase.authCheck( user => dispatch(this.authCheckResponse(user)) )
-        }
+        return {
+            type: LOGIN_CONSTANTS.AUTH_CHECK_REQUEST
+        };
+
+        // TODO: SET UP ASYNC MIDDLEWARE
+        // return dispatch => {
+        //     firebase.authCheck( user => dispatch(this.authCheckResponse(user)) )
+        // }
     },
 
     authCheckResponse(user) {

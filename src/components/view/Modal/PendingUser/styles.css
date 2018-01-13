@@ -1,0 +1,32 @@
+.pendingUser__auth-status {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.pendingUser__auth-logout {
+  margin-left: 25px;
+  cursor: pointer;
+  color: blue;
+}
+
+.pendingUser__auth-logout:hover {
+  text-decoration: underline;
+}
+
+.pendingUser__key-form {
+  padding: 50px 25px ;
+}
+
+.pendingUser___key-input {
+  flex: 1;
+}
+
+.pendingUser__input-row {
+  margin-top: 50px;
+  display: flex;
+}
+
+.pendingUser___key-btn {
+  padding: 25px;
+}
