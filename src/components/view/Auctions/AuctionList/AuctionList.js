@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 // Material-UI
-import GridList from 'material-ui/GridList';
-import GridTile from 'material-ui/GridList';
+import { GridList, GridTile } from 'material-ui/GridList';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import PlusOne from 'material-ui/svg-icons/social/plus-one';
 import IconButton from 'material-ui/IconButton';
@@ -22,9 +21,21 @@ import './_auctionList.scss'
 
 class AuctionList extends Component {
 
+  constructor(props) {
+    super(props);
+  }
+
   render() {
 
-    // const AuctionList = (props) => {
+    const {
+      // objects
+      auctions,
+      config,
+
+      // methods
+      placeBid,
+      toggleAuctionDetail,
+     } = this.props;
 
     let auctionItems = [];
     const cols = window.innerWidth < 600 ? 2 : 3;
@@ -37,7 +48,7 @@ class AuctionList extends Component {
     const featuredPattern = window.innerWidth < 600 ? featuredPatternMap.small : featuredPatternMap.medium;
 
     let countShown = 0;
-    this.props.auctions.forEach((obj, index) => {
+    auctions.forEach((obj, index) => {
 
 
       if (obj.show && obj.image) {
@@ -48,7 +59,7 @@ class AuctionList extends Component {
         auctionItems.push(Object.assign({}, obj, {
           key: urlStr + '?q=' + index,
           img: urlStr,
-          title: this.props.config && this.props.config.BIDDING_OPEN ? obj.title : obj.title,
+          title: config && config.BIDDING_OPEN ? obj.title : obj.title,
           featured: featuredPattern.includes(countShown),
           value: '$' + (obj.highestBid || obj.openingBid)
         }));
@@ -87,11 +98,10 @@ class AuctionList extends Component {
         >
           {auctionItems.map(tile => (
             <GridTile
-              placeBid={this.props.placeBid}
-              onTouchTap={e => this.props.toggleAuctionDetail(tile.id, e)}
+              onTouchTap={e => this.toggleAuctionDetail(tile.id, e)}
               key={tile.key}
               title={tile.title}
-              subtitle={this.props.config && this.props.config.BIDDING_OPEN ? <span>with <b>{tile.donorName}</b> - {tile.value}</span> : <span>with <b>{tile.donorName}</b></span>}
+              subtitle={config && config.BIDDING_OPEN ? <span>with <b>{tile.donorName}</b> - {tile.value}</span> : <span>with <b>{tile.donorName}</b></span>}
               actionPosition="right"
               titlePosition="top"
               titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"

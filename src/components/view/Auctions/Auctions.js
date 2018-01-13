@@ -62,8 +62,6 @@ class Auctions extends Component {
             return (
 
                 <div>
-                    <pre>Auction Collection.length: {auctionCollectionArr ? auctionCollectionArr.length : 'undefined'}</pre>
-                    <pre>Auction Collection: {auctionCollectionArr ? JSON.stringify(auctionCollectionArr) : 'undefined'}</pre>
                     <AuctionList
                         auctions={filteredAuctions}
                         expandedAuction={this.props.expandedAuction}
