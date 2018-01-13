@@ -1,0 +1,8 @@
+.navigation__title-link {
+    color: white;
+    text-decoration: none;
+}
+
+.navigation__title-link:hover {
+    color: #CCCCCC;
+}
