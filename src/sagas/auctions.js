@@ -51,14 +51,16 @@ var counter = 0;
 */
 function* placeBid(bidDetails) {
 
-    if (counter++ > 5) {
-        console.log('something is going wrong')
-        return;
-    }
-
+    
     window._FIREBASE_DB_.ref('/auctions/' + bidDetails.auctionUid)
-        .on('value', (snapshot) => {
-            const auction = snapshot.val();
+    .once('value', (snapshot) => {
+        
+        if (counter++ > 3) {
+            console.log('something is going wrong')
+            return;
+        }
+
+        const auction = snapshot.val();
 
             const incrementAmount = auction.incrementAmount || 5;
             const highestBid = auction.highestBid > 0 ? auction.highestBid : auction.openingBid;
@@ -106,37 +108,28 @@ function* placeBid(bidDetails) {
 }
 
 function* updateAuction({auctionData}) {
-    const currentAuction = yield select(state => state.auction);
-    let cleanAuction = {};
-
-    if(!currentAuction || !currentAuction.uid) {
-        cleanAuction = {
-            uid: auctionData.uid,
-            displayName: auctionData.displayName,
-            permissions: auctionData.permissions,
-            email: auctionData.email,
-        };
-    } else {
-        cleanAuction = {...currentAuction, ...auctionData};
-    }
-    
-    window._FIREBASE_DB_.ref('auctions/' + cleanAuction.uid)
-        .set(cleanAuction);
+    window._FIREBASE_DB_.ref('auctions/' + auctionData.uid)
+        .set(auctionData);
     
     yield;
 }
 
-export default function* () {
-    yield [
-        takeEvery(FETCH_AUCTION, fetchAuction),
-        takeEvery(FETCH_AUCTIONS, fetchAuctions),
-        takeEvery(UPDATE_AUCTION, updateAuction),
-        takeEvery(PLACE_BID, placeBid),
-    ];
+
+export function* watchFetchAuction () {
+    yield takeEvery(FETCH_AUCTION, fetchAuction);
 }
 
+export function* watchFetchAuctions () {
+    yield takeEvery(FETCH_AUCTIONS, fetchAuctions);
+}
 
+export function* watchUpdateAuction () {
+    yield takeEvery(UPDATE_AUCTION, updateAuction);
+}
 
+export function* watchPlaceBid () {
+    yield takeEvery(PLACE_BID, placeBid);
+}
 
 // export function confirmAuctionWinners (auction, winningBidsCollection, auctionOwner) {
 //     // TODO: do I need a dispatch here? it works without it

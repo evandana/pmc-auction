@@ -5,9 +5,9 @@ import PendingUserController from 'components/controller/Modal/PendingUser';
 
 const mapStateToProps = (state) => {
     let { open, activeModal, title, ModalComponent } = state.modal;
-    const { authInitiated, permissions } = state.user;
+    const { permissions } = state.user;
     
-    if (!permissions.basic && authInitiated) {
+    if (!permissions.basic) {
         open = true;
         title = 'LOGIN';
         ModalComponent = LoginController;
