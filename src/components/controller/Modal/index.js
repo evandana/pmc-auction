@@ -11,10 +11,6 @@ const mapStateToProps = (state) => {
         open = true;
         title = 'LOGIN';
         ModalComponent = LoginController;
-    } else if (!permissions.products && authInitiated) {
-        open = true;
-        title = 'PENDING CUSTOMER';
-        ModalComponent = PendingUserController;
     } else {
         open = false;
     }

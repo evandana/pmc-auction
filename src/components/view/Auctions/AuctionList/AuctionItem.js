@@ -12,7 +12,7 @@ class AuctionItem extends Component {
 
         return (
             <div className="listing-row-container pure-g" 
-                onClick={ e => toggleAuctionDetail(this.props.data.id, e) }
+                onClick={ e => toggleAuctionDetail(this.props.data.uid, e) }
             >
                 <div className="listing-row-infoCol pure-u-1-2">
                     <div className="listing-row-title">{this.props.data.title}</div>

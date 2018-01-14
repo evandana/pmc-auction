@@ -26,11 +26,11 @@ export function auctionPushErrorHandler (error) {
     }
 }
 
-export function confirmBidToggle (auctionId, bidId) {
+export function confirmBidToggle (auctionUid, bidId) {
     return {
         type: CONFIRM_BID_TOGGLE,
         bidId,
-        auctionId
+        auctionUid
     };
 }
 
@@ -44,17 +44,17 @@ export function loadAuctionObj(auction) {
 export function placeBidObj (bidDetails) {
     return Object.assign({}, bidDetails, {
         type: PLACE_BID,
-        auctionId: bidDetails.auctionId,
+        auctionUid: bidDetails.auctionUid,
         bidAmount: bidDetails.bidAmount,
         bidderObj: bidDetails.bidderObj
     });
 }
 
-export function toggleAuctionDetail(auctionId) {
-    if (auctionId) {
+export function toggleAuctionDetail(auctionUid) {
+    if (auctionUid) {
         return {
             type: SHOW_AUCTION_DETAIL,
-            auctionId
+            auctionUid
         }
     } else {
         return {

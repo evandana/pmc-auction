@@ -77,7 +77,7 @@ let Adapter = function Adapter () {
         // loadAuctions (callback) {
         //     auctionsRef.on("child_added", (snapshot) => {
         //         let auction = snapshot.val();
-        //         auction.id = snapshot.key();
+        //         auction.uid = snapshot.key();
         //         callback(auction);
         //     });
         // },
@@ -85,14 +85,14 @@ let Adapter = function Adapter () {
         // updateAuctions (callback) {
         //     auctionsRef.on("child_changed", (snapshot) => {
         //         let auction = snapshot.val();
-        //         auction.id = snapshot.key();
+        //         auction.uid = snapshot.key();
         //         callback(auction);
         //     });
         // },
 
         // updateWinningBid(auction, winningBids, auctionOwner) {
         //     return new Promise( (resolve, reject) => {
-        //         auctionsRef.child(auction.id).update({
+        //         auctionsRef.child(auction.uid).update({
         //             winningBids: winningBids,
         //             auctionOwner: auctionOwner
         //         }, error => {
@@ -108,9 +108,9 @@ let Adapter = function Adapter () {
         // placeBid (bidObject, successCallback, failCallback) {
         //     // console.log('firebase adapter', bidObject);
         //     // add bid
-        //     auctionsRef.child(bidObject.auctionId).child('bids').push(bidObject);
+        //     auctionsRef.child(bidObject.auctionUid).child('bids').push(bidObject);
         //     // update highest bid for auction item
-        //     auctionsRef.child(bidObject.auctionId).update({highestBid: bidObject.bidAmount});
+        //     auctionsRef.child(bidObject.auctionUid).update({highestBid: bidObject.bidAmount});
         // },
 
         loginGoogle (successCallback, failCallback) {

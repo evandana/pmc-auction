@@ -103,22 +103,22 @@ class Header extends Component {
         tabs.map( function(tab, index){
             switch(tab.id){
                 case "results":
-                    if ( this.props.user && this.props.user.permissionLevel === "ADMIN" ) {
+                    if ( this.props.user && this.props.user.permissions.admin ) {
                         allowedTabs.push(tab);
                     }
                     break;
                 case "donors":
-                    if ( this.props.user && this.props.user.permissionLevel === "ADMIN" ) {
+                    if ( this.props.user && this.props.user.permissions.admin ) {
                         allowedTabs.push(tab);
                     }
                     break;
                 case "confirmWinners":
-                    if ( ( this.props.config && this.props.config.CONFIRM_WINNERS ) || this.props.user.permissionLevel === "ADMIN" )  {
+                    if ( ( this.props.config && this.props.config.CONFIRM_WINNERS ) || this.props.user.permissions.admin )  {
                         allowedTabs.push(tab);
                     }
                     break;
                 case "addAuction":
-                    let showAddAuction = this.props.user.permissionLevel === "ADMIN" || this.props.user.permissionLevel === "DONOR";
+                    let showAddAuction = this.props.user.permissions.donor || this.props.user.permissions.donor;
 
                     // console.log('addAuction', showAddAuction, this.props.user.permissionLevel)
 

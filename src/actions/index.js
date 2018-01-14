@@ -130,11 +130,11 @@ export function loadAuctionObj(auction) {
     }
 }
 
-export function toggleAuctionDetail(auctionId) {
-    if (auctionId) {
+export function toggleAuctionDetail(auctionUid) {
+    if (auctionUid) {
         return {
             type: SHOW_AUCTION_DETAIL,
-            auctionId
+            auctionUid
         }
     } else {
         return {

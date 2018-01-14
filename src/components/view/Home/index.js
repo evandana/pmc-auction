@@ -18,8 +18,8 @@ const Home = (props) => {
     } else {
         defaultView = (
             <div>
-                Welcome to the Well Worth New England site.  
-                Please <span className="fake-link" onClick={openLoginModal}>Login</span> to register as a customer.
+                Welcome to the Happiness Exchange 2018 site.  
+                Please <span className="fake-link" onClick={openLoginModal}>Login</span> to view the auctions.
             </div>
         );
     }

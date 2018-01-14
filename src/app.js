@@ -22,6 +22,7 @@ import Home from 'components/controller/Home';
 import Auctions from 'components/controller/Auctions';
 import Status from 'components/controller/Status';
 import Navigation from 'components/controller/Navigation';
+import Footer from 'components/view/common/Footer';
 import AppModal from 'components/controller/Modal';
 import { getUser, getProducts, setCurrentUser, fetchAuctions, fetchConfig } from './actions';
 
@@ -39,25 +40,24 @@ class App extends Component {
         window._FIREBASE_PROVIDER_ = new firebase.auth.GoogleAuthProvider();
         window._FIREBASE_DB_ = firebase.database();
         window._FIREBASE_.auth().onAuthStateChanged(
-            (user) => {
-                if (user && user.uid) {
-                    const userData = {
-                        uid: user.uid,
-                        displayName: user.displayName,
-                        permissions: user.permissions,
-                        email: user.email,
+            (googleUser) => {
+                // user data from Google Auth
+                if (googleUser && googleUser.uid) {
+                    const googleUserData = {
+                        uid: googleUser.uid, // Google UID
+                        displayName: googleUser.displayName,
+                        email: googleUser.email,
                     };
                     
-                    window._UI_STORE_.dispatch(getUser(user.uid, userData));
-                    
                     window._UI_STORE_.dispatch(fetchConfig());
+
+                    window._UI_STORE_.dispatch(getUser(googleUser.uid, googleUserData));
                     
                     window._UI_STORE_.dispatch(fetchAuctions());
 
-                    // TODO: only load this on the products route
-                    // window._UI_STORE_.dispatch(getProducts());
                 } else {
-                    window._UI_STORE_.dispatch(setCurrentUser({ authInitiated: true }));
+                    // unnecessary for this app -- was for zellner
+                    // window._UI_STORE_.dispatch(setCurrentUser({ authInitiated: true }));
                 }
             }
         );
@@ -85,6 +85,7 @@ class App extends Component {
                                 <AuthorizedRoute exact path="/auctions" component={Auctions} />
                                 <AuthorizedRoute exact path="/status" component={Status} />
                             </Switch>
+                            <Footer />
                             <AppModal />
                         </div>
                     </ConnectedRouter>

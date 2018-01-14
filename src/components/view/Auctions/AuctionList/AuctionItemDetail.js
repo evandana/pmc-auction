@@ -83,9 +83,7 @@ class AuctionItemDetail extends Component {
 			placeBid, 
 			toggleAuctionDetail, 
 			user,
-		} = this.props
-
-		debugger;
+		} = this.props;
 
 		let { 
 			
@@ -160,7 +158,7 @@ class AuctionItemDetail extends Component {
 				placeBid({
 					bidderObj: user,
 					bidAmount: this.state.bidDisplayAmount,
-					auctionId: data.id
+					auctionUid: data.uid
 				}, e)
 			}}
 		  />,
@@ -280,7 +278,7 @@ class AuctionItemDetail extends Component {
 function mapStateToProps (state) {
 
 	const data = state.auctions.auctionCollection.find(
-			auction => { return auction.id === state.auctions.expandedAuction.id; }
+			auction => { return auction.uid === state.auctions.expandedAuction.uid; }
 		);
 
 	let highestBid = {bidAmount: parseInt(data.openingBid || DEFAULT_OPENING_BID, 10)};
@@ -314,10 +312,6 @@ function mapStateToProps (state) {
 	// }
 
 	// console.log('min bid', bidAmountMin)
-
-	console.log('highestBid', highestBid)
-
-	debugger;
 
 	return {
 		// app-level, static

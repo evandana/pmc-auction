@@ -59,7 +59,7 @@ class ConfirmedOwnedAuctions extends Component {
             })
 
             return (
-                <List key={auction.id}>
+                <List key={auction.uid}>
                     {auctionList}
                 </List>
             )
