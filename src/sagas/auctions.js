@@ -50,7 +50,6 @@ var counter = 0;
  * }
 */
 function* placeBid(bidDetails) {
-
     
     window._FIREBASE_DB_.ref('/auctions/' + bidDetails.auctionUid)
     .once('value', (snapshot) => {
@@ -115,21 +114,15 @@ function* updateAuction({auctionData}) {
 }
 
 
-export function* watchFetchAuction () {
-    yield takeEvery(FETCH_AUCTION, fetchAuction);
+export default function* () {
+    yield [
+        takeEvery(FETCH_AUCTION, fetchAuction),
+        takeEvery(FETCH_AUCTIONS, fetchAuctions),
+        takeEvery(UPDATE_AUCTION, updateAuction),
+        takeEvery(PLACE_BID, placeBid),
+    ];
 }
 
-export function* watchFetchAuctions () {
-    yield takeEvery(FETCH_AUCTIONS, fetchAuctions);
-}
-
-export function* watchUpdateAuction () {
-    yield takeEvery(UPDATE_AUCTION, updateAuction);
-}
-
-export function* watchPlaceBid () {
-    yield takeEvery(PLACE_BID, placeBid);
-}
 
 // export function confirmAuctionWinners (auction, winningBidsCollection, auctionOwner) {
 //     // TODO: do I need a dispatch here? it works without it
