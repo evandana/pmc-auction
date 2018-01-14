@@ -1,6 +1,6 @@
 import { fork } from 'redux-saga/effects';
 import authentication from './authentication';
-import user from './user';
+import {watchGetUser, watchUpdateUser} from './user';
 import auctions from './auctions';
 import config from './config';
 
@@ -10,7 +10,9 @@ import config from './config';
 function* sagas() {
     yield [
         fork(authentication),
-        fork(user),
+        // fork(user),
+        fork(watchGetUser),
+        fork(watchUpdateUser),
         fork(auctions),
         fork(config),
     ];

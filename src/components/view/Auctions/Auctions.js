@@ -16,15 +16,15 @@ class Auctions extends Component {
         this.toggleAuctionDetail = this.toggleAuctionDetail.bind(this)
     }
 
-    placeBid(auctionId, amount, event) {
+    placeBid(auctionUid, amount, event) {
         const { dispatch } = this.props
-        dispatch(placeBid(auctionId, amount))
+        dispatch(placeBid(auctionUid, amount))
     }
 
-    toggleAuctionDetail(auctionId, event) {
+    toggleAuctionDetail(auctionUid, event) {
         const { dispatch } = this.props
         // Don't trigger when target is button - button is used for placing bids
-        dispatch(toggleAuctionDetail(auctionId))
+        dispatch(toggleAuctionDetail(auctionUid))
     }
 
     render() {
@@ -35,16 +35,16 @@ class Auctions extends Component {
             config,
         } = this.props;
 
-        if ( expandedAuction && expandedAuction.id ) {
-            let detailObjKey = expandedAuction.id;
-            let detailObj = auctionCollection.find(item => { return detailObjKey === item.id; });
+        if ( expandedAuction && expandedAuction.uid ) {
+            let detailObjKey = expandedAuction.uid;
+            let detailObj = auctionCollection.find(item => { return detailObjKey === item.uid; });
 
             // console.log('this.props.config', this.props.config)
 
             // console.log('detailObj', detailObj);
             return (
                 <AuctionItemDetail
-                    key={detailObj.id}
+                    key={detailObj.uid}
                     data={detailObj}
                     config={config}
                     placeBid={this.placeBid}

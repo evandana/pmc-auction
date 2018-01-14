@@ -124,31 +124,15 @@ export const LoginActions = {
     }
 }
 
-function generateUserPersona(users) {
+function generateUserPersona() {
 
-    let validDescriptives = userDescriptives.slice(),
-        validAnimals = userSpiritAnimals.slice(),
-        newPersona
+    let adjectives = userDescriptives.slice(),
+        animals = userSpiritAnimals.slice(),
+        newPersona;
 
-    // Object.keys(users).forEach( user => {
-
-    //     if (users[user].persona) {
-
-    //         validDescriptives.splice(
-    //             validDescriptives.indexOf(users[user].persona.split(' ')[0]), 1
-    //         )
-
-
-    //         validAnimals.splice(
-    //             validAnimals.indexOf(users[user].persona.split(' ')[1]), 1
-    //         )
-
-    //     }
-    // })
-
-    newPersona = validDescriptives[Math.floor(Math.random() * (validDescriptives.length))] +
+    newPersona = adjectives[Math.floor(Math.random() * (adjectives.length))] +
         ' ' +
-        validAnimals[Math.floor(Math.random() * (validAnimals.length))]
+        animals[Math.floor(Math.random() * (animals.length))]
 
     return  newPersona
 }
@@ -173,7 +157,9 @@ function storeNewUser (userData, users){
                 uid: userData.uid,
                 email: userData.google.email,
                 name: userData.google.displayName,
-                permissionLevel: 'GUEST',
+                permissionLevel: {
+                    basic: true,
+                },
                 persona: generateUserPersona(users)
             }
 

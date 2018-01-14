@@ -24,7 +24,7 @@
 //                 addAuction(dispatch.action.auctionData);
 //                 break;
 //             case AuctionConstants.TOGGLE_AUCTION_ROW:
-//                 _auctions = toggleAuctionRow(_auctions, dispatch.action.id);
+//                 _auctions = toggleAuctionRow(_auctions, dispatch.action.uid);
 //                 AuctionStore.emitChange();
 //                 break;
 //             case AuctionConstants.SORT_BY_COL:
@@ -87,7 +87,7 @@
 
 // function mergeData(list, data) {
 //     data.forEach( function(dataItem) {
-//         let index = list.findIndex( item => item.get('id') === dataItem.id );
+//         let index = list.findIndex( item => item.get('id') === dataItem.uid );
 //         list = index !== -1 ? list.set(index, new AuctionRecord(dataItem)) :
 //             list.push(new AuctionRecord(dataItem));
 //     });

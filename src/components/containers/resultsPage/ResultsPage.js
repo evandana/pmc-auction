@@ -70,7 +70,7 @@ class ResultsPage extends Component {
 
                     {this.props.auctions.map(auction => {
                         return (
-                            <tr key={auction.id}>
+                            <tr key={auction.uid}>
                                 <td>
                                     {auction.title}
                                     <br/>
@@ -91,7 +91,7 @@ class ResultsPage extends Component {
                                             </tr>
                                             { auction.winningBids === undefined ? (<tr></tr>) : auction.winningBids.map( winningBid => {
                                                 return (
-                                            <tr key={winningBid.bidderObj.email + '-' + auction.id}>
+                                            <tr key={winningBid.bidderObj.email + '-' + auction.uid}>
                                                 <td>win: {winningBid.bidderObj === undefined ? '' : winningBid.bidderObj.name}</td>
                                                 <td>{winningBid.bidderObj === undefined ? '' : winningBid.bidderObj.email}</td>
                                                 <td>bid ${winningBid.bidAmount}</td>

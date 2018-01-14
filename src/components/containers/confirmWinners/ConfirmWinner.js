@@ -49,24 +49,24 @@ class ConfirmWinner extends Component {
         return totalSelected;
     }
 
-    clearTotalSelectedInDom(auctionId) {
-        let el = document.querySelector('.title-amount-' + auctionId);
+    clearTotalSelectedInDom(auctionUid) {
+        let el = document.querySelector('.title-amount-' + auctionUid);
         if (el) {
             el.innerHTML = '';
         }
     }
 
-    setTotalSelectedInDom(selectedBidIndices, auctionId) {
+    setTotalSelectedInDom(selectedBidIndices, auctionUid) {
 
         let selectedItemsTotal = this.getSelectedItemsTotal(selectedBidIndices);
 
-        let el = document.querySelector('.title-amount-' + auctionId);
+        let el = document.querySelector('.title-amount-' + auctionUid);
         el.innerHTML = '- $' + selectedItemsTotal + ' raised';
     }
 
-    handleToggle (selectedBidIndices, auctionId) {
+    handleToggle (selectedBidIndices, auctionUid) {
 
-        this.setTotalSelectedInDom(selectedBidIndices, auctionId)
+        this.setTotalSelectedInDom(selectedBidIndices, auctionUid)
 
         this.selections = selectedBidIndices;
     }
@@ -92,7 +92,7 @@ class ConfirmWinner extends Component {
             }
         }
 
-        this.clearTotalSelectedInDom(auction.id);
+        this.clearTotalSelectedInDom(auction.uid);
 
         return (
             <div
@@ -102,7 +102,7 @@ class ConfirmWinner extends Component {
                     selectable={true}
                     multiSelectable={true}
                     onRowSelection={(selectedBidIndices) => {
-                        this.handleToggle(selectedBidIndices, auction.id);
+                        this.handleToggle(selectedBidIndices, auction.uid);
                     }}
                 >
                     <TableHeader>
@@ -110,7 +110,7 @@ class ConfirmWinner extends Component {
                         <TableHeaderColumn style={style.title}>
                             <h3>
                                 {auction.title}
-                                <span className={'confirm-winners__combined-amount title-amount-' + auction.id}></span>
+                                <span className={'confirm-winners__combined-amount title-amount-' + auction.uid}></span>
                             </h3>
                         </TableHeaderColumn>
                         <TableHeaderColumn>

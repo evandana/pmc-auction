@@ -230,7 +230,7 @@ class DonorsPage extends Component {
                                 <td>
                                     {!user.wonAuctions ? '' : user.wonAuctions.winningBids.map( winningBid => {
                                         return (
-                                            <table key={winningBid.bidAmount + winningBid.auction.id} style={style.bidTable}>
+                                            <table key={winningBid.bidAmount + winningBid.auction.uid} style={style.bidTable}>
                                                 <tbody>
                                                     <tr>
                                                         <td>${winningBid.bidAmount}</td>

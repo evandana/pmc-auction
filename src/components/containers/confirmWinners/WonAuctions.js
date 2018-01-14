@@ -48,7 +48,7 @@ class WonAuctions extends Component {
             if (winningBid) {
                 let bidder = winningBid.bidderObj;
                 return (
-                    <List key={auction.id}>
+                    <List key={auction.uid}>
                       <ListItem
                         key={bidder.email + bidder.uid}
                         leftIcon={<CommunicationEmail style={style.icon} />}

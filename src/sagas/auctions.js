@@ -17,7 +17,7 @@ function* fetchAuctions() {
 
         auctions = !auctions ? [] : Object.keys(auctions).map(key => {
             let auction = auctions[key];
-            auction.id = key;
+            auction.uid = key;
 
             return auction;
         });
@@ -38,16 +38,25 @@ function* fetchAuction({uid}) {
     yield;
 }
 
+
+var counter = 0;
+
+
 /**
  * bidDetails = {
- *   auctionId,
+ *   auctionUid,
  *   bidAmount,
  *   bidderObj,
  * }
 */
 function* placeBid(bidDetails) {
 
-    window._FIREBASE_DB_.ref('/auctions/' + bidDetails.auctionId)
+    if (counter++ > 5) {
+        console.log('something is going wrong')
+        return;
+    }
+
+    window._FIREBASE_DB_.ref('/auctions/' + bidDetails.auctionUid)
         .on('value', (snapshot) => {
             const auction = snapshot.val();
 
@@ -57,19 +66,37 @@ function* placeBid(bidDetails) {
             // if valid bid
             if (bidDetails.bidAmount >= highestBid + incrementAmount) {
 
-                auction.highestBid = bidDetails.bidAmount;
-
+                
                 // will trigger an update to that auction
+                
+                console.log('bidDetails', bidDetails)
+                
+                auction.highestBid = bidDetails.bidAmount;
+                
+                auction.bids.push({
+                    auctionUid: bidDetails.auctionUid,
+                    bidAmount: bidDetails.bidAmount,
+                    bidderObj: {
+                        name: bidDetails.bidderObj.displayName,
+                        email: bidDetails.bidderObj.email,
+                        persona: bidDetails.bidderObj.persona || bidDetails.bidderObj.displayName,
+                        uid: bidDetails.bidderObj.uid,
+                    }
+                });
 
-                debugger;
+                // TODO: UPDATE AUCTION OBJECT
 
                 // update bid array
-                window._FIREBASE_DB_.ref('auctions/' + auction.uid).child('bids')
-                    .push(bidDetails);
+                // window._FIREBASE_DB_.ref('auctions/' + bidDetails.auctionUid).child('bids')
+                //     .push({
+                //         auctionUid: bidDetails.auctionUid,
+                //         bidAmount: bidDetails.bidAmount,
+                //         bidderObj: bidDetails.bidderObj,
+                //     });
                 
-                // update highestBid
-                window._FIREBASE_DB_.ref('auctions/' + auction.uid)
-                    .update(auction); 
+                // // update highestBid
+                window._FIREBASE_DB_.ref('auctions/' + bidDetails.auctionUid)
+                    .set(auction); 
             } 
             // else: invalid bid => do nothing
 
@@ -147,7 +174,7 @@ export default function* () {
 // loadAuctions (callback) {
 //     auctionsRef.on("child_added", (snapshot) => {
 //         let auction = snapshot.val();
-//         auction.id = snapshot.key();
+//         auction.uid = snapshot.key();
 //         callback(auction);
 //     });
 // },
@@ -155,14 +182,14 @@ export default function* () {
 // updateAuctions (callback) {
 //     auctionsRef.on("child_changed", (snapshot) => {
 //         let auction = snapshot.val();
-//         auction.id = snapshot.key();
+//         auction.uid = snapshot.key();
 //         callback(auction);
 //     });
 // },
 
 // updateWinningBid(auction, winningBids, auctionOwner) {
 //     return new Promise( (resolve, reject) => {
-//         auctionsRef.child(auction.id).update({
+//         auctionsRef.child(auction.uid).update({
 //             winningBids: winningBids,
 //             auctionOwner: auctionOwner
 //         }, error => {
@@ -178,9 +205,9 @@ export default function* () {
 // placeBid (bidObject, successCallback, failCallback) {
 //     // console.log('firebase adapter', bidObject);
 //     // add bid
-//     auctionsRef.child(bidObject.auctionId).child('bids').push(bidObject);
+//     auctionsRef.child(bidObject.auctionUid).child('bids').push(bidObject);
 //     // update highest bid for auction item
-//     auctionsRef.child(bidObject.auctionId).update({highestBid: bidObject.bidAmount});
+//     auctionsRef.child(bidObject.auctionUid).update({highestBid: bidObject.bidAmount});
 // },
 
 // export function placeBid(bidDetails) {

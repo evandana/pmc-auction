@@ -10,7 +10,6 @@ import {
     HIDE_AUCTION_DETAIL,
     LOAD_AUCTION,
     LOCKDOWN_MODE,
-    PLACE_BID,
     SET_USER,
     SHOW_AUCTION_DETAIL,
     UPDATE_AUCTION,
@@ -39,7 +38,7 @@ function auctions(state = defaultAuctionState, action) {
     // deconstruct params
     const { 
         auctionCollection, 
-        auctionId,
+        auctionUid,
     } = action;
 
     switch (action.type) {
@@ -74,7 +73,7 @@ function auctions(state = defaultAuctionState, action) {
             let pendingConfirmationAuctionCollection = [];
             let mappedCollection = state.auctionCollection.map(auction => {
                 // if updated auction, then replace with new
-                if (auction.id === action.auction.id) {
+                if (auction.uid === action.auction.uid) {
 
                     // sort into owned confirmed and owned to be confirmed
                     if (action.auction.donorId === state.userId) {
@@ -203,7 +202,7 @@ function auctions(state = defaultAuctionState, action) {
         case SHOW_AUCTION_DETAIL:
 
             const expandedAuction = state.auctionCollection.find(auction => {
-                return auction.id === auctionId;
+                return auction.uid === auctionUid;
             });
 
             return Object.assign({}, state, {
