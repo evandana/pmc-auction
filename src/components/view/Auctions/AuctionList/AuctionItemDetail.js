@@ -42,33 +42,29 @@ class AuctionItemDetail extends Component {
 	}
 
 	handleOpen() {
-		if (
-			( this.props.highestBid.bidAmount === this.props.bidAmountMin && ( !this.props.data.bids || Object.keys(this.props.data.bids).length === 0 ) )
-			||
-			( this.state.bidDisplayAmount >= parseInt(this.props.highestBid.bidAmount, 10) + this.props.increment )
-			) {
-			this.setState({validBidAmount: true, confirmModalOpen: true});
+		if (this.state.bidDisplayAmount >= this.props.bidAmountMin) {
+			this.setState({ validBidAmount: true, confirmModalOpen: true });
 		} else {
-			this.setState({validBidAmount: false, confirmModalOpen: true});
+			this.setState({ validBidAmount: false, confirmModalOpen: true });
 		}
 	}
 
 	handleClose() {
-		this.setState({confirmModalOpen: false});
+		this.setState({ confirmModalOpen: false });
 	}
 
 	increaseBidAmount() {
-		const bidDisplayAmount = parseInt(this.state.bidDisplayAmount, 10) + this.props.increment;
-		this.setState({bidDisplayAmount: bidDisplayAmount});
+		const bidDisplayAmount = this.state.bidDisplayAmount + this.props.increment;
+		this.setState({ bidDisplayAmount: bidDisplayAmount });
 		// console.log('bidDisplayAmount', bidDisplayAmount);
 	}
 	decreaseBidAmount() {
-		const bidDisplayAmount = parseInt(this.state.bidDisplayAmount, 10) - this.props.increment >= parseInt(this.props.bidAmountMin, 10)
+		const bidDisplayAmount = this.state.bidDisplayAmount - this.props.increment >= this.props.bidAmountMin
 			?
-				parseInt(this.state.bidDisplayAmount, 10) - this.props.increment
+			this.state.bidDisplayAmount - this.props.increment
 			:
-				this.props.bidAmountMin;
-		this.setState({bidDisplayAmount: bidDisplayAmount});
+			this.props.bidAmountMin;
+		this.setState({ bidDisplayAmount: bidDisplayAmount });
 		// console.log('bidDisplayAmount', bidDisplayAmount);
 	}
 
@@ -76,32 +72,32 @@ class AuctionItemDetail extends Component {
 
 		// console.log('render in item detail')
 
-		const { 
-			config, 
+		const {
+			config,
 			data,
 			highestBid,
-			placeBid, 
-			toggleAuctionDetail, 
+			placeBid,
+			toggleAuctionDetail,
 			user,
 		} = this.props;
 
-		let { 
-			
-		  }  = this.props;
+		let {
+
+		  } = this.props;
 
 
-		let urlStr = getImageForEnv( 'auction-big/' + data.image + '.png');
+		let urlStr = getImageForEnv('auction-big/' + data.image + '.png');
 
 		let style = {
 			hidden: {
-				display:'none'
+				display: 'none'
 			},
 			detailsPage: {
 				position: 'relative'
 			},
 			actionsContainer: {
 				zIndex: 100,
-				position:'fixed',
+				position: 'fixed',
 				marginTop: 25,
 				zIndex: 100,
 				width: '100%',
@@ -143,25 +139,25 @@ class AuctionItemDetail extends Component {
 
 		// modal actions
 		const actions = [
-		  <FlatButton
-			label="Cancel"
-			secondary={true}
-			onTouchTap={() => this.handleClose()}
-		  />,
-		  <FlatButton
-		  	style={this.state.validBidAmount ? {} : style.hidden}
-			label="Submit"
-			primary={true}
-			keyboardFocused={true}
-			onTouchTap={ e => {
-				this.handleClose();
-				placeBid({
-					bidderObj: user,
-					bidAmount: this.state.bidDisplayAmount,
-					auctionUid: data.uid
-				}, e)
-			}}
-		  />,
+			<FlatButton
+				label="Cancel"
+				secondary={true}
+				onTouchTap={() => this.handleClose()}
+			/>,
+			<FlatButton
+				style={this.state.validBidAmount ? {} : style.hidden}
+				label="Submit"
+				primary={true}
+				keyboardFocused={true}
+				onTouchTap={e => {
+					this.handleClose();
+					placeBid({
+						bidderObj: user,
+						bidAmount: this.state.bidDisplayAmount,
+						auctionUid: data.uid
+					}, e)
+				}}
+			/>,
 		];
 
 		return (
@@ -172,9 +168,9 @@ class AuctionItemDetail extends Component {
 							backgroundColor={cyan200}
 							mini={true}
 							style={style.closeButton}
-							onClick={ e => toggleAuctionDetail('', e) }
-						  >
-						  <ContentClear />
+							onClick={e => toggleAuctionDetail('', e)}
+						>
+							<ContentClear />
 						</FloatingActionButton>
 					</div>
 					<CardTitle
@@ -183,7 +179,7 @@ class AuctionItemDetail extends Component {
 					/>
 					{
 						config.BIDDING_OPEN
-						?
+							?
 							<div style={style.bidContainer}>
 								<CardActions>
 									<FlatButton
@@ -192,15 +188,15 @@ class AuctionItemDetail extends Component {
 										label="-"
 										onTouchTap={() => this.decreaseBidAmount()}
 										disabled={
-											parseInt(this.state.bidDisplayAmount, 10) <= (parseInt(this.props.bidAmountMin, 10))
-											? true : false
+											this.state.bidDisplayAmount <= this.props.bidAmountMin
+												? true : false
 										}
 										hoverColor='white'
-										/>
+									/>
 									<RaisedButton
 										style={style.bidSubmit}
 										labelStyle={style.actionLabel}
-										label={ 'bid $' + this.state.bidDisplayAmount }
+										label={'bid $' + this.state.bidDisplayAmount}
 										labelPosition="before"
 										primary={true}
 										icon={<AddShoppingCart />}
@@ -216,45 +212,45 @@ class AuctionItemDetail extends Component {
 								<Dialog
 									title={this.state.validBidAmount
 										?
-											'Confirm Bid for $' + this.state.bidDisplayAmount
+										'Confirm Bid for $' + this.state.bidDisplayAmount
 										:
-											'This is a hot item! Highest bid is now $' + this.props.highestBid.bidAmount +
-												'. Please bid higher than $' + (parseInt(this.props.highestBid.bidAmount, 10) + this.props.increment)
+										'This is a hot item! Highest bid is now $' + this.props.highestBid.bidAmount +
+										'. Please bid at least $' + (this.props.highestBid.bidAmount + this.props.increment)
 									}
 									actions={actions}
 									modal={false}
 									open={this.state.confirmModalOpen}
-									onRequestClose={() => this.handleClose() }
-									>
+									onRequestClose={() => this.handleClose()}
+								>
 									{data.title} with {data.donorName}
 								</Dialog>
 							</div>
-						:
+							:
 							''
 					}
 					<CardText>
 						{
 							this.state.modalMessage
-							?
+								?
 								<div className="detail-field detail-message"><label>MESSAGE</label><span>{this.state.modalMessage}</span></div>
-							:
+								:
 								''
 						}
 						<div className="detail-field">
 							<label>Top Bid</label>
 							{
 								config.BIDDING_OPEN
-								?
+									?
 									<span>
 										{
 											highestBid && highestBid.bidderObj
-											?
-												'$' + highestBid.bidAmount + ' by ' + highestBid.bidderObj.persona
-											:
+												?
+												'$' + highestBid.bidAmount + (!highestBid.bidderObj.persona ? '' : ' by ' + highestBid.bidderObj.persona)
+												:
 												'$' + data.openingBid
 										}
 									</span>
-								:
+									:
 									<span style={style.biddingNotAvailable}>
 										[bidding closed]
 									</span>
@@ -265,7 +261,7 @@ class AuctionItemDetail extends Component {
 					</CardText>
 					<CardMedia
 						overlay={<CardTitle subtitle={data.subTitle || data.title} />}
-						>
+					>
 						<img src={urlStr} />
 					</CardMedia>
 				</Card>
@@ -275,61 +271,44 @@ class AuctionItemDetail extends Component {
 
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
 
-	const data = state.auctions.auctionCollection.find(
-			auction => { return auction.uid === state.auctions.expandedAuction.uid; }
-		);
+	const auction = state.auctions.auctionCollection.find(
+		auction => { return auction.uid === state.auctions.expandedAuction.uid; }
+	);
+	
+	let highestBidObj = !auction.bids && auction.bids.length ? {} : auction.bids.sort((a, b) => {
+		return a.bidAmount < b.bidAmount;
+	})[0];
+	
+	const highestBidVal = Math.max(auction.highestBid, auction.openingBid, highestBidObj.bidAmount);
 
-	let highestBid = {bidAmount: parseInt(data.openingBid || DEFAULT_OPENING_BID, 10)};
-	for (let bid in data.bids) {
-		if (
-			( data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) > highestBid.bidAmount )
-			// ||
-			// ( data.bids[bid] && parseInt(data.bids[bid].bidAmount, 10) === data.openingBid )
-			) {
-			console.log('here')
-			highestBid = data.bids[bid];
-		}
-	}
+	highestBidObj = highestBidObj.bidAmount >= highestBidVal ? highestBidObj : {
+		bidAmount: highestBidVal,
+		bidderObj: {}
+	};
 
-	// console.log('highestBid', highestBid);
-
-	const increment = parseInt(data.incrementAmount || DEFAULT_INCREMENT_AMOUNT, 10)
-
-	data.openingBid = data.openingBid || DEFAULT_OPENING_BID;
-
-	let bidAmountMin = data.openingBid === parseInt(highestBid.bidAmount, 10) && ( !data.bids || Object.keys(data.bids).length === 0 )
-		?
-			parseInt(highestBid.bidAmount, 10)
-		:
-			parseInt(highestBid.bidAmount, 10) + increment
-		;
-
-	// // if opening bid
-	// if (bidAmountMin === parseInt(data.openingBid, 10) + increment) {
-	// 	bidAmountMin = parseInt(data.openingBid, 10);
-	// }
-
-	// console.log('min bid', bidAmountMin)
+	const increment = auction.incrementAmount || DEFAULT_INCREMENT_AMOUNT
+	const openingBid = auction.openingBid || DEFAULT_OPENING_BID;
+	const bidAmountMin = openingBid === highestBidVal ? openingBid : highestBidVal + increment;
 
 	return {
 		// app-level, static
 		config: state.config,
 		user: state.user,
 		// item-level, static
-		data: data,
+		data: auction,
 		increment: increment,
 		bidAmountMin: bidAmountMin,
 		// item-level, dynamic values
 		open: false,
-		bidDisplayAmount: data.bids ? parseInt(highestBid.bidAmount || data.openingBid, 10) + increment : data.openingBid,
-		highestBid: highestBid
+		bidDisplayAmount: bidAmountMin,
+		highestBid: highestBidObj
 	};
 }
 
 
 
 export default connect(
-    mapStateToProps
+	mapStateToProps
 )(AuctionItemDetail);

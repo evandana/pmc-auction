@@ -38,12 +38,11 @@ function* updateUser({userData}) {
     yield;
 }
 
-export function* watchGetUser () {
-    yield takeEvery(GET_USER, getUser);
-}
-
-export function* watchUpdateUser () {
-    yield takeEvery(UPDATE_USER, updateUser);
+export default function* () {
+    yield [
+        takeEvery(GET_USER, getUser),
+        takeEvery(UPDATE_USER, updateUser),
+    ];
 }
 
 
