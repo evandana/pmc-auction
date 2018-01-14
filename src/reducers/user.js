@@ -6,7 +6,6 @@ const defaultUser = {
     permissions: {},
     name: '',
     uid: '',
-    authInitiated: false,
 };
 
 function user(state = defaultUser, action) {
@@ -14,7 +13,6 @@ function user(state = defaultUser, action) {
     
     if (type === SET_CURRENT_USER) {
         return {
-            permissions: {basic: true},
             ...rest,
         };
     } else {

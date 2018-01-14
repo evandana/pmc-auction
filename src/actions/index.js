@@ -38,15 +38,10 @@ export function loginGoogleRequest() {
 }
 
 /** USER **/
-export function setCurrentUser(user) {
-    const { email='', displayName='', permissions={}, uid=null } = user;
+export function setCurrentUser(userData) {
     return {
         type: SET_CURRENT_USER,
-        email,
-        displayName,
-        permissions,
-        uid,
-        authInitiated: true,
+        ...userData
     };
 }
 

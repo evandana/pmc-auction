@@ -55,9 +55,6 @@ class App extends Component {
                     
                     window._UI_STORE_.dispatch(fetchAuctions());
 
-                } else {
-                    // unnecessary for this app -- was for zellner
-                    // window._UI_STORE_.dispatch(setCurrentUser({ authInitiated: true }));
                 }
             }
         );

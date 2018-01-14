@@ -1,7 +1,15 @@
 import { fork } from 'redux-saga/effects';
 import authentication from './authentication';
-import {watchGetUser, watchUpdateUser} from './user';
-import auctions from './auctions';
+import {
+    watchGetUser, 
+    watchUpdateUser,
+} from './user';
+import {
+    watchFetchAuction,
+    watchFetchAuctions,
+    watchUpdateAuction,
+    watchPlaceBid,
+} from './auctions';
 import config from './config';
 
 /**
@@ -9,11 +17,21 @@ import config from './config';
  */
 function* sagas() {
     yield [
+        
+        // authentication
         fork(authentication),
-        // fork(user),
+        
+        // user
         fork(watchGetUser),
         fork(watchUpdateUser),
-        fork(auctions),
+        
+        // auctions
+        fork(watchFetchAuction),
+        fork(watchFetchAuctions),
+        fork(watchUpdateAuction),
+        fork(watchPlaceBid),
+        
+        // config
         fork(config),
     ];
 }
