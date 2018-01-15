@@ -70,32 +70,27 @@ class Navigation extends React.Component {
             {
                 icon: <ChromeReaderModeIcon />,
                 label: 'About',
-                link: '',
-                reqPermissions: ['basic'],
+                link: 'about',
             },
             {
                 icon: <LocalPlayIcon />,
                 label: 'Auctions',
                 link: 'auctions',
-                reqPermissions: ['basic'],
             },
             {
                 icon: <PersonIcon />,
                 label: 'Status',
                 link: 'status',
-                reqPermissions: ['basic'],
             },
             {
                 icon: <CreditCardIcon />,
                 label: 'Donate',
                 link: 'donate',
-                reqPermissions: ['basic'],
             },
             {
                 icon: <RedeemIcon />,
                 label: 'Sponsors',
                 link: 'sponsors',
-                reqPermissions: ['basic'],
             },
         ];
 
@@ -119,23 +114,20 @@ class Navigation extends React.Component {
     buildAdminTabs () {
 
         const tabObjs = [
-            {
-                icon: <AddCircleIcon />,
-                label: 'Create Auction',
-                link: 'create-auction',
-                reqPermissions: ['basic'],
-            },
+            // {
+            //     icon: <AddCircleIcon />,
+            //     label: 'Create Auction',
+            //     link: 'create-auction',
+            // },
             {
                 icon: <PollIcon />,
                 label: 'Results',
                 link: 'results',
-                reqPermissions: ['basic'],
             },
             {
                 icon: <AssignmentInd />,
                 label: 'Donor Info',
                 link: 'donor-info',
-                reqPermissions: ['basic'],
             },
         ];
 
