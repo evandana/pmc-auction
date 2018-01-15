@@ -1,4 +1,4 @@
-import { getImageForEnv } from '../../../images/index'
+import { getImageForEnv } from 'static/images/index'
 
 let React = require('react');
 

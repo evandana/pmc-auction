@@ -18,15 +18,21 @@ import 'firebase/database';
 /** APP **/
 import config from 'config';
 import AuthorizedRoute from 'components/controller/AuthorizedRoute';
+
 import Home from 'components/controller/Home';
 import Auctions from 'components/controller/Auctions';
+import Donate from 'components/controller/Donate';
+import DonorInfo from 'components/controller/DonorInfo';
+import Results from 'components/controller/Results';
+import Sponsors from 'components/controller/Sponsors';
 import Status from 'components/controller/Status';
+
 import Navigation from 'components/controller/Navigation';
 import Footer from 'components/view/common/Footer';
 import AppModal from 'components/controller/Modal';
 import { getUser, getProducts, setCurrentUser, fetchAuctions, fetchConfig } from './actions';
 
-import './app.scss';
+import './app.css';
 
 class App extends Component {
 
@@ -79,8 +85,13 @@ class App extends Component {
                             <Navigation />
                             <Switch>
                                 <Route exact path="/" component={Home} />
+                                <Route exact path="/about" component={Home} />
                                 <AuthorizedRoute exact path="/auctions" component={Auctions} />
                                 <AuthorizedRoute exact path="/status" component={Status} />
+                                <AuthorizedRoute exact path="/donate" component={Donate} />
+                                <AuthorizedRoute exact path="/sponsors" component={Sponsors} />
+                                <AuthorizedRoute exact path="/results" component={Results} />
+                                <AuthorizedRoute exact path="/donor-info" component={DonorInfo} />
                             </Switch>
                             <Footer />
                             <AppModal />

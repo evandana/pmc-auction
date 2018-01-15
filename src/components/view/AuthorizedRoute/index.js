@@ -10,11 +10,19 @@ const AuthorizedRoute = (props) => {
     const notAuthProps = {
         from: location
     };
+    
+    const pageWrapperStyles = {
+        position: 'fixed',
+        width: '100%',
+        height: 'calc(100% - 250px)',
+    }
 
     return (
         <Route {...rest} render={props => (
-            true || userPermissions.basic || userPermissions.admin || userPermissions.seller ? (
-                    <Component {...props}/>
+            userPermissions.basic || userPermissions.admin || userPermissions.seller ? (
+                    <div className='page-wrapper' style={pageWrapperStyles}>
+                        <Component {...props}/>
+                    </div>
                 ) : (
                     <NotAuthorized {...notAuthProps} />
                 )
