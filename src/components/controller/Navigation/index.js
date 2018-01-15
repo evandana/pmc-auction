@@ -1,12 +1,14 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { logoutUserRequest, openLoginModal } from 'actions';
-import Navigation from 'components/view/Navigation';
+import NavigationView from 'components/view/Navigation';
 
 const mapStateToProps = (state) => {
 
     return {
         user: state.user,
         userPermissions: state.user.permissions,
+        config: state.config,
     };
 };
 
@@ -17,12 +19,13 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(openLoginModal());
         }
     }
-
 };
+
+const NavigationViewWithRouter = withRouter(NavigationView);
 
 const NavigationController = connect(
     mapStateToProps,
     mapDispatchToProps,
-)(Navigation);
+)(NavigationViewWithRouter);
 
 export default NavigationController;
