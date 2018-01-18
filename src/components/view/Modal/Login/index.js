@@ -12,7 +12,7 @@ const LoginModal = (props) => {
     }
     
     return (<div>
-        Customers must sign in to access the store.
+        You must sign in to access the auctions.
         
         <div className="loginModal-menu">
             <img {...googleLoginProps} alt="" />

@@ -25,6 +25,8 @@ import WhatsHotIcon from 'material-ui/svg-icons/social/whatshot';
 import StarIcon from 'material-ui/svg-icons/toggle/star';
 import AddCircleIcon from 'material-ui/svg-icons/content/add-circle';
 
+import { getImageForEnv } from 'static/images/index'
+
 import './styles.css';
 
 class Navigation extends React.Component {
@@ -149,9 +151,13 @@ class Navigation extends React.Component {
     }
 
     render () {
-        const { userPermissions, config, logout, openLoginModal } = this.props;
+        const { user, userPermissions, config, logout, openLoginModal } = this.props;
 
-        const titleLink = (<Link className="navigation__title-link" to="/">Happiness Exchange</Link>);
+        if (!userPermissions || Object.keys(userPermissions).length < 1) {
+            return <div>Nav will be enabled once you log in</div>;
+        }
+
+        const titleLink = (<Link className="navigation__title-link" to="/">Welcome, {user.persona}</Link>);
         const iconMenu = this.buildIconMenu(userPermissions, { logout, openLoginModal });
         
         const navigationTabs = this.buildNavigationTabs(userPermissions, config);
@@ -162,7 +168,17 @@ class Navigation extends React.Component {
                 
                 {<AppBar
                     title={titleLink}
-                    showMenuIconButton={true}
+                    iconElementLeft={
+                        <div style={{
+                                backgroundColor:'#fff',
+                                padding:'2px',
+                                marginTop:'-8px',
+                                marginLeft:'-8px',
+                                marginBottom:'-8px',
+                            }}>
+                            <img style={{height:'56px',width:'56px'}} src={getImageForEnv('happinessexchange.png')} />
+                        </div>
+                    }
                     iconElementRight={iconMenu}
                 >
                 </AppBar>}
