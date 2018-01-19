@@ -1,5 +1,8 @@
 import React from 'react'
 
+import { Link } from 'react-router-dom';
+import FlatButton from 'material-ui/FlatButton';
+
 const Donate = (props) => {
 
     const { ...rest } = props;
@@ -12,12 +15,13 @@ const Donate = (props) => {
                 <div className="row">
                     <div className="col-xs-12 col-sm-6" style={{paddingRight:'2em'}}>
                         <h3>Double your donation!</h3>
-                        <p>Venmo to @evandana, check to Evan Dana, or cash</p>
+                        <FlatButton primary={true} href="https://venmo.com/EvanDana" label="Venmo: @evandana" target="_blank"></FlatButton>
                         <p>Thanks to a corporate match, your donation will go twice as far</p>
+                        <p>Check or cash also accepted</p>
                     </div>
                     <div className="col-xs-12 col-sm-6" style={{paddingRight:'2em'}}>
                         <h3>Get a tax-deductible receipt from the PMC</h3>
-                        <p>Donate online at <a href="https://pmc.org/ED0074">pmc.org/ED0074</a></p>
+                        <FlatButton primary={true} target="_blank" href='http://pmc.org/ed0074' label="PMC Site: pmc.org/ed0074"></FlatButton>
                     </div>
                 </div>
 
