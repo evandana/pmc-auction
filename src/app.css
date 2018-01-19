@@ -1,14 +1,10 @@
 
 .page {
-    position: absolute;
+    position: relative;
     overflow-y: scroll;
     height: 100%;
 }
 
-/* @import './reset';
-
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,100,900);
-
-@import './app-styles'
-
- */
+.text-content {
+    padding: 2em;
+}

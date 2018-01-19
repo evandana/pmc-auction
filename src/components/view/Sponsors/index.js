@@ -12,7 +12,7 @@ import { getImageForEnv } from 'static/images/index'
 
 import './sponsors.css'
 
-const Sponsors = ( {prop} ) => {
+const Sponsors = ({ prop }) => {
 
     const sponsors = [
         {
@@ -96,31 +96,33 @@ const Sponsors = ( {prop} ) => {
 
     return (
         <div className='page'>
-            <h1>Sponsors</h1>
-            <p>Generous sponsors make this possible. We're proud to support these community-focused businesses.</p>
+            <div className='text-content'>
+                <h1>Sponsors</h1>
+                <p>Generous sponsors make this possible. We're proud to support these community-focused businesses.</p>
                 <List>
-                { sponsors.map( sponsor => {
-                    const style = {
-                        fill: sponsor.color
-                    }
+                    {sponsors.map(sponsor => {
+                        const style = {
+                            fill: sponsor.color
+                        }
 
-                    return (
-                        <ListItem
-                            onTouchTap={ evt => {
-                                goToSponsor(sponsor.link);
-                            }}
-                            primaryText={sponsor.name}
-                            secondaryText={sponsor.subtext}
-                            secondaryTextLines={2}
-                            key={sponsor.name}
-                            leftIcon={<ActionGrade style={style} />}
-                            rightAvatar={<Avatar src={sponsor.image} backgroundColor={transparent} />}
-                        />
-                    )
+                        return (
+                            <ListItem
+                                onTouchTap={evt => {
+                                    goToSponsor(sponsor.link);
+                                }}
+                                primaryText={sponsor.name}
+                                secondaryText={sponsor.subtext}
+                                secondaryTextLines={2}
+                                key={sponsor.name}
+                                leftIcon={<ActionGrade style={style} />}
+                                rightAvatar={<Avatar src={sponsor.image} backgroundColor={transparent} />}
+                            />
+                        )
                     })
-                }
+                    }
                 </List>
-          </div>
+            </div>
+        </div>
     )
 }
 

@@ -50,14 +50,14 @@ class App extends Component {
                 // user data from Google Auth
                 if (googleUser && googleUser.uid) {
                     const googleUserData = {
-                        uid: googleUser.uid, // Google UID
+                        googleUid: googleUser.uid, // Google UID
                         displayName: googleUser.displayName,
                         email: googleUser.email,
                     };
                     
                     window._UI_STORE_.dispatch(fetchConfig());
 
-                    window._UI_STORE_.dispatch(getUser(googleUser.uid, googleUserData));
+                    window._UI_STORE_.dispatch(getUser(googleUserData));
                     
                     window._UI_STORE_.dispatch(fetchAuctions());
 
@@ -84,8 +84,8 @@ class App extends Component {
                         <div className="app">
                             <Navigation />
                             <Switch>
-                                <Route exact path="/" component={Home} />
-                                <Route exact path="/about" component={Home} />
+                                <AuthorizedRoute exact path="/" component={Home} />
+                                <AuthorizedRoute exact path="/about" component={Home} />
                                 <AuthorizedRoute exact path="/auctions" component={Auctions} />
                                 <AuthorizedRoute exact path="/status" component={Status} />
                                 <AuthorizedRoute exact path="/donate" component={Donate} />

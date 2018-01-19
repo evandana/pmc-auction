@@ -51,11 +51,10 @@ export function logoutUserRequest() {
     };
 }
 
-export function getUser(uid, userData=null) {
+export function getUser(googleUserData=null) {
     return {
         type: GET_USER,
-        uid,
-        userData,
+        googleUserData,
     };
 }
 

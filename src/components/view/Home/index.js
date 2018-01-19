@@ -37,8 +37,10 @@ const Home = (props) => {
     
     return(
         <div className='page'>
-            <h1>About</h1>
-           {view}
+            <div className='text-content'>
+                <h1>About</h1>
+                {view}
+            </div>
         </div>
     );
     

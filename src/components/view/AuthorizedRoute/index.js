@@ -14,7 +14,7 @@ const AuthorizedRoute = (props) => {
     const pageWrapperStyles = {
         position: 'fixed',
         width: '100%',
-        height: 'calc(100% - 250px)',
+        height: 'calc(100% - 178px)',
     }
 
     return (
