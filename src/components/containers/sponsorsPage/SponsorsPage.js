@@ -3,10 +3,10 @@ import React from 'react'
 import MobileTearSheet from '../mobileTearSheet/mobile-tear-sheet';
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
-import ActionGrade from 'material-ui/svg-icons/action/grade';
+import ActionGrade from 'material-ui-icons/Grade';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
-import Colors, { pinkA200, amber500, yellow600, yellow400, transparent } from 'material-ui/styles/colors';
+import Colors, { pinkA200, amber500, yellow600, yellow400, transparent } from 'material-ui/colors';
 
 import { getImageForEnv } from '../../../images/index'
 

@@ -57,8 +57,7 @@ class Auctions extends Component {
             const filteredAuctions = !!auctionCollection && auctionCollection.length ? auctionCollection.filter( auction => auction.show ) : [];
 
             return (
-
-                <div>
+                <div className="page">
                     <AuctionList
                         auctions={filteredAuctions}
                         expandedAuction={this.props.expandedAuction}

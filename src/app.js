@@ -1,9 +1,8 @@
 /** REACT **/
 import React, { Component } from 'react';
 /** MATERIAL UI **/
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {deepOrange500} from 'material-ui/styles/colors';
+import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
+import orange from 'material-ui/colors/orange';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 /** ROUTER **/
 import { Route } from 'react-router-dom';
@@ -69,16 +68,16 @@ class App extends Component {
 
     render() {
 
-        const muiTheme = getMuiTheme({
+        const theme = createMuiTheme({
             palette: {
-                accent1Color: deepOrange500,
+                accent1Color: orange,
             },
         });
 
         const { store, history } = this.props;
 
         return (
-            <MuiThemeProvider muiTheme={muiTheme}>
+            <MuiThemeProvider theme={theme}>
                 <Provider store={store}>
                     <ConnectedRouter history={history}>
                         <div className="app">

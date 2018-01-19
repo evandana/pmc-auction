@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 // Material-UI
-import { GridList, GridTile } from 'material-ui/GridList';
-import StarBorder from 'material-ui/svg-icons/toggle/star-border';
-import PlusOne from 'material-ui/svg-icons/social/plus-one';
+import GridList, { GridListTile } from 'material-ui/GridList';
+import StarBorder from 'material-ui-icons/StarBorder';
+import PlusOne from 'material-ui-icons/PlusOne';
 import IconButton from 'material-ui/IconButton';
 
 import { getImageForEnv } from 'static/images/index'
@@ -93,24 +93,23 @@ class AuctionList extends Component {
       <div style={styles.root}>
         <GridList
           cols={cols}
-          padding={1}
           style={styles.gridList}
         >
           {auctionItems.map(tile => (
-            <GridTile
+            <GridListTile
               onTouchTap={e => toggleAuctionDetail(tile.uid, e)}
               key={tile.key}
               title={tile.title}
-              subtitle={config && config.BIDDING_OPEN ? <span>with <b>{tile.donorName}</b> - {tile.value}</span> : <span>with <b>{tile.donorName}</b></span>}
-              actionPosition="right"
-              titlePosition="top"
-              titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+              // subtitle={config && config.BIDDING_OPEN ? <span>with <b>{tile.donorName}</b> - {tile.value}</span> : <span>with <b>{tile.donorName}</b></span>}
+              // actionPosition="right"
+              // titlePosition="top"
+              // titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
               cols={tile.featured ? 2 : 1}
               rows={tile.featured ? 1 : 1}
               className="auction-list__tile"
             >
               <img src={tile.img} />
-            </GridTile>
+            </GridListTile>
           ))}
         </GridList>
       </div>

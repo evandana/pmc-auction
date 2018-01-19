@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import InputController from 'components/controller/Forms/InputValidated';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
 import './styles.css';
 
 class PendingUser extends Component {
@@ -68,7 +67,7 @@ class PendingUser extends Component {
             <div>
                 <div className="pendingUser__auth-status">
                     <span>Logged in as: {userName}</span>
-                    <FlatButton {...logoutButtonProps} />
+                    <Button {...logoutButtonProps} />
                 </div>
                 <div className="pendingUser__key-form">
                     <span>If you have a customer key please enter it below</span>
@@ -77,7 +76,7 @@ class PendingUser extends Component {
                             <InputController {...inputProps} />
                         </div>
                         <div className="pendingUser___key-btn">
-                            <RaisedButton {...keyButtonProps} />
+                            <Button {...keyButtonProps} />
                         </div>
                     </div>
                 </div>

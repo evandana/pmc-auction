@@ -16,11 +16,10 @@ export default class Modal extends Component {
             <div>
                 <Dialog
                     title={title}
-                    actions={actions}
-                    modal={true}
                     open={open}
                 >
                     {ModalComponent && <ModalComponent />}
+                    {actions.map(action => action)}
                 </Dialog>
             </div>
         );

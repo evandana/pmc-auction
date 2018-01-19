@@ -1,8 +1,12 @@
 
 .page {
-    position: absolute;
+    position: relative;
     overflow-y: scroll;
     height: 100%;
+}
+
+.text-content {
+    padding: 2em;
 }
 
 /* @import './reset';

@@ -2,32 +2,40 @@ import React from 'react';
 
 import { Link } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import {Tabs, Tab} from 'material-ui/Tabs';
-import FontIcon from 'material-ui/FontIcon';
+import Menu from 'material-ui/Menu';
+import Tabs, { Tab } from 'material-ui/Tabs';
 import IconButton from 'material-ui/IconButton';
-import { blueGrey600, cyan600 } from 'material-ui/styles/colors'
+import { blueGrey600, cyan600 } from 'material-ui/colors'
+import { withStyles } from 'material-ui/styles';
+import PropTypes from 'prop-types';
 
-import ExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
-import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
-import ChromeReaderModeIcon from 'material-ui/svg-icons/action/chrome-reader-mode';
-import CreditCardIcon from 'material-ui/svg-icons/action/credit-card';
-import RedeemIcon from 'material-ui/svg-icons/action/redeem';
-import TimelineIcon from 'material-ui/svg-icons/action/timeline';
-import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
-import LocalOfferIcon from 'material-ui/svg-icons/maps/local-offer';
-import MoodIcon from 'material-ui/svg-icons/social/mood';
-import PollIcon from 'material-ui/svg-icons/social/poll';
-import PeopleIcon from 'material-ui/svg-icons/social/people';
-import PersonIcon from 'material-ui/svg-icons/social/person';
-import WhatsHotIcon from 'material-ui/svg-icons/social/whatshot';
-import StarIcon from 'material-ui/svg-icons/toggle/star';
-import AddCircleIcon from 'material-ui/svg-icons/content/add-circle';
+import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import AssignmentInd from 'material-ui-icons/AssignmentInd';
+import ChromeReaderModeIcon from 'material-ui-icons/ChromeReaderMode';
+import CreditCardIcon from 'material-ui-icons/CreditCard';
+import RedeemIcon from 'material-ui-icons/Redeem';
+import TimelineIcon from 'material-ui-icons/Timeline';
+import LocalPlayIcon from 'material-ui-icons/LocalPlay';
+import LocalOfferIcon from 'material-ui-icons/LocalOffer';
+import MoodIcon from 'material-ui-icons/Mood';
+import PollIcon from 'material-ui-icons/Poll';
+import PeopleIcon from 'material-ui-icons/People';
+import PersonIcon from 'material-ui-icons/Person';
+import WhatsHotIcon from 'material-ui-icons/Whatshot';
+import StarIcon from 'material-ui-icons/Star';
+import AddCircleIcon from 'material-ui-icons/AddCircle';
 
 import { getImageForEnv } from 'static/images/index'
 
 import './styles.css';
+
+const styles = theme => ({
+    root: {
+      flexGrow: 1,
+      marginTop: theme.spacing.unit * 3,
+      backgroundColor: theme.palette.background.paper,
+    },
+  });
 
 class Navigation extends React.Component {
 
@@ -40,13 +48,13 @@ class Navigation extends React.Component {
         const { logout } = actions;
         if (permissions.basic) {
             return (
-                <IconMenu
+                <Menu
                     iconButtonElement={<IconButton><ExpandMoreIcon /></IconButton>}
                     anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
                     targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                 >
-                    <MenuItem onTouchTap={logout} primaryText="Logout" />
-                </IconMenu>
+                    <Menu onTouchTap={logout} primaryText="Logout" />
+                </Menu>
             );
         }
     };
@@ -59,7 +67,7 @@ class Navigation extends React.Component {
         return (
             <Tab
                 label={label}
-                data-route={'/'+link}
+                href={'/'+link}
                 icon={icon}
                 key={link}
             />
@@ -104,9 +112,9 @@ class Navigation extends React.Component {
 
         return (
             <Tabs
-                initialSelectedIndex={tabs.findIndex(tab => tab.props['data-route'] === currentPagePath)}
+                value={tabs.findIndex(tab => tab.props['data-route'] === currentPagePath)}
                 onChange={this.navigateToRoute}
-                tabItemContainerStyle={{backgroundColor: cyan600}}
+                // tabItemContainerStyle={{backgroundColor: cyan600}}
                 >
                 {tabs}
             </Tabs>
@@ -141,9 +149,8 @@ class Navigation extends React.Component {
 
         return (
             <Tabs
-                initialSelectedIndex={tabs.findIndex(tab => tab.props['data-route'] === currentPagePath)}
-                onChange={this.navigateToRoute}
-                tabItemContainerStyle={{backgroundColor: blueGrey600}}
+                value={tabs.findIndex(tab => tab.props['data-route'] === currentPagePath)}
+                // onChange={this.navigateToRoute}
                 >
                 {tabs}
             </Tabs>
@@ -151,7 +158,7 @@ class Navigation extends React.Component {
     }
 
     render () {
-        const { user, userPermissions, config, logout, openLoginModal } = this.props;
+        const { user, userPermissions, config, logout, openLoginModal, classes } = this.props;
 
         if (!userPermissions || Object.keys(userPermissions).length < 1) {
             return <div>Nav will be enabled once you log in</div>;
@@ -164,11 +171,12 @@ class Navigation extends React.Component {
         const adminTabs = userPermissions.admin ? this.buildAdminTabs() : '';
 
         return (
-            <div>
+            <div className={classes.root}>
                 
                 {<AppBar
+                    position='static'
                     title={titleLink}
-                    iconElementLeft={
+                    children={
                         <div style={{
                                 backgroundColor:'#fff',
                                 padding:'2px',
@@ -179,7 +187,8 @@ class Navigation extends React.Component {
                             <img style={{height:'56px',width:'56px'}} src={getImageForEnv('happinessexchange.png')} />
                         </div>
                     }
-                    iconElementRight={iconMenu}
+                    classes={{}}
+                    // iconElementRight={iconMenu}
                 >
                 </AppBar>}
 
@@ -192,4 +201,9 @@ class Navigation extends React.Component {
     }
 }
 
-export default Navigation;
+Navigation.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+// export default Navigation;
+export default withStyles(styles)(Navigation);

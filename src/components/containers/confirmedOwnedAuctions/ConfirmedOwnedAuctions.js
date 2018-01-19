@@ -7,10 +7,10 @@ import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 
 import Divider from 'material-ui/Divider';
-import CommunicationCall from 'material-ui/svg-icons/communication/call';
-import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-import { cyan200 } from 'material-ui/styles/colors';
-import CommunicationEmail from 'material-ui/svg-icons/communication/email';
+import CommunicationCall from 'material-ui-icons/Call';
+import CommunicationChatBubble from 'material-ui-icons/ChatBubble';
+import { cyan200 } from 'material-ui/colors';
+import CommunicationEmail from 'material-ui-icons/Email';
 
 // Styles
 // import './ConfirmWinners.scss';

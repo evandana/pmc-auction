@@ -4,19 +4,15 @@ import { connect } from 'react-redux'
 
 // Material UI
 import Avatar from 'material-ui/Avatar';
-import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
+import AddShoppingCart from 'material-ui-icons/AddShoppingCart';
 import Card from 'material-ui/Card/Card';
 import CardActions from 'material-ui/Card/CardActions';
 import CardHeader from 'material-ui/Card/CardHeader';
 import CardMedia from 'material-ui/Card/CardMedia';
-import CardText from 'material-ui/Card/CardText';
-import CardTitle from 'material-ui/Card/CardTitle';
-import Colors, { cyan200 } from 'material-ui/styles/colors';
-import ContentClear from 'material-ui/svg-icons/content/clear';
+import Colors, { cyan200 } from 'material-ui/colors';
+import ContentClear from 'material-ui-icons/Clear';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Button from 'material-ui/Button';
 
 import { getImageForEnv } from 'static/images/index'
 
@@ -139,12 +135,12 @@ class AuctionItemDetail extends Component {
 
 		// modal actions
 		const actions = [
-			<FlatButton
+			<Button
 				label="Cancel"
 				secondary={true}
 				onTouchTap={() => this.handleClose()}
 			/>,
-			<FlatButton
+			<Button
 				style={this.state.validBidAmount ? {} : style.hidden}
 				label="Submit"
 				primary={true}
@@ -164,16 +160,16 @@ class AuctionItemDetail extends Component {
 			<div className="auction-item-detail">
 				<Card style={style.detailsPage} >
 					<div style={style.actionsContainer}>
-						<FloatingActionButton
+						<Button
 							backgroundColor={cyan200}
 							mini={true}
 							style={style.closeButton}
 							onClick={e => toggleAuctionDetail('', e)}
 						>
 							<ContentClear />
-						</FloatingActionButton>
+						</Button>
 					</div>
-					<CardTitle
+					<CardHeader
 						title={data.title}
 						subtitle={'with ' + data.donorName}
 					/>
@@ -182,7 +178,7 @@ class AuctionItemDetail extends Component {
 							?
 							<div style={style.bidContainer}>
 								<CardActions>
-									<FlatButton
+									<Button
 										style={style.bidLess}
 										labelStyle={style.actionLabel}
 										label="-"
@@ -193,7 +189,7 @@ class AuctionItemDetail extends Component {
 										}
 										hoverColor='white'
 									/>
-									<RaisedButton
+									<Button
 										style={style.bidSubmit}
 										labelStyle={style.actionLabel}
 										label={'bid $' + this.state.bidDisplayAmount}
@@ -202,7 +198,7 @@ class AuctionItemDetail extends Component {
 										icon={<AddShoppingCart />}
 										onTouchTap={() => this.handleOpen()}
 									/>
-									<FlatButton
+									<Button
 										style={style.bidMore}
 										labelStyle={style.actionLabel}
 										label="+"
@@ -217,18 +213,17 @@ class AuctionItemDetail extends Component {
 										'This is a hot item! Highest bid is now $' + this.props.highestBid.bidAmount +
 										'. Please bid at least $' + (this.props.highestBid.bidAmount + this.props.increment)
 									}
-									actions={actions}
-									modal={false}
 									open={this.state.confirmModalOpen}
 									onRequestClose={() => this.handleClose()}
 								>
+									{actions.map(action => action)}
 									{data.title} with {data.donorName}
 								</Dialog>
 							</div>
 							:
 							''
 					}
-					<CardText>
+					<CardMedia>
 						{
 							this.state.modalMessage
 								?
@@ -258,9 +253,9 @@ class AuctionItemDetail extends Component {
 						</div>
 						<div className="detail-field"><label>Description</label><span>{data.description}</span></div>
 						<div className="detail-field"><label>Please use by</label><span>{data.expiration}</span></div>
-					</CardText>
+					</CardMedia>
 					<CardMedia
-						overlay={<CardTitle subtitle={data.subTitle || data.title} />}
+						overlay={<CardHeader subtitle={data.subTitle || data.title} />}
 					>
 						<img src={urlStr} />
 					</CardMedia>

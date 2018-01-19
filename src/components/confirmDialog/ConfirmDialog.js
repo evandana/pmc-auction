@@ -1,7 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from 'material-ui/Button';
+import Button from 'material-ui/Button';
 
 import { confirmAuctionWinners } from '../../actions/AuctionActions';
 
@@ -43,12 +43,12 @@ export default class ConfirmDialog extends React.Component {
 
   render() {
     const actions = [
-      <FlatButton
+      <Button
         label="Cancel"
         secondary={true}
         onTouchTap={this.handleClose.bind(this)}
       />,
-      <FlatButton
+      <Button
         label="Confirm"
         primary={true}
         disable={this.state.winningBidsCollection.length < 1}
@@ -75,7 +75,7 @@ export default class ConfirmDialog extends React.Component {
 
     return (
       <div>
-        <RaisedButton
+        <Button
             label="Confirm"
             style={style.confirmButton}
             primary={true}
@@ -84,8 +84,6 @@ export default class ConfirmDialog extends React.Component {
         />
         <Dialog
           title="Confirm Auction Winners"
-          actions={actions}
-          modal={true}
           open={this.state.open}
         >
           {
@@ -98,7 +96,7 @@ export default class ConfirmDialog extends React.Component {
             :
               <p>Please click 'Cancel' then choose a few winning bidders.</p>
           }
-
+          {actions.map(action => action)}
 
         </Dialog>
       </div>

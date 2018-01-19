@@ -5,7 +5,7 @@ import Header from '../header/Header'
 import Footer from '../footer/Footer'
 
 // Material-ui
-import {deepOrange500} from 'material-ui/styles/colors';
+import {deepOrange500} from 'material-ui/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { MuiThemeProvider } from 'material-ui/styles/MuiThemeProvider';
 
