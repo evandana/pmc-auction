@@ -58,7 +58,7 @@ class Auctions extends Component {
 
             return (
 
-                <div>
+                <div className="page">
                     <AuctionList
                         auctions={filteredAuctions}
                         expandedAuction={this.props.expandedAuction}
