@@ -4,9 +4,8 @@ import Home from 'components/view/Home';
 
 const mapStateToProps = (state) => {
     return {
-        products: state.products,
+        user: state.user,
         userPermissions: state.user.permissions,
-        orderMetaData: state.orderMetaData,
     };
 };
 
