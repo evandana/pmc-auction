@@ -6,7 +6,8 @@ const webpack = require('webpack'),
 const sassLoaders = [
   'style',
   'css',
-  'sass'
+  'sass',
+  'scss'
 ];
 
 const babelSettings = {
