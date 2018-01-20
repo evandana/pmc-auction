@@ -82,7 +82,7 @@ function* updateUser({ userData }) {
         ...userData,
         uid: personaUid,
     };
-    updates['publicUserInfo/' + personaUid] = {
+    updates['publicUserInfo/' + userData.googleUid] = {
         persona: userData.persona,
         googleUid: userData.googleUid,
         uid: personaUid,

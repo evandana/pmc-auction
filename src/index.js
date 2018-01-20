@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import reducers from 'reducers';
+import { reducer as form } from 'redux-form';
 import sagas from 'sagas';
 
 /** Routing **/
@@ -28,6 +29,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
     combineReducers({
         ...reducers,
+        form,
         router: routerReducer,
     }),
     composeEnhancers(applyMiddleware(...middleware)),

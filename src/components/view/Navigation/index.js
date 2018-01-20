@@ -116,11 +116,11 @@ class Navigation extends React.Component {
     buildAdminTabs () {
 
         const tabObjs = [
-            // {
-            //     icon: <AddCircleIcon />,
-            //     label: 'Create Auction',
-            //     link: 'create-auction',
-            // },
+            {
+                icon: <AddCircleIcon />,
+                label: 'Create Auction',
+                link: 'create-auction',
+            },
             {
                 icon: <PollIcon />,
                 label: 'Results',

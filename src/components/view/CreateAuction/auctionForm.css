@@ -1,0 +1,6 @@
+.auction-form label {
+    display:inline-block;
+    text-align: right;
+    padding-right: 1em;
+    width: 7em;
+}
