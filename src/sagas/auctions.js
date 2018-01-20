@@ -5,6 +5,7 @@ import {
     FETCH_AUCTIONS,
     PLACE_BID,
     UPDATE_AUCTION,
+    CREATE_AUCTION,
 } from '../constants';
 
 import { refreshAuctions, refreshAuction } from '../actions';
@@ -38,27 +39,11 @@ function* fetchAuction({uid}) {
     yield;
 }
 
-
-var counter = 0;
-
-
-/**
- * bidDetails = {
- *   auctionUid,
- *   bidAmount,
- *   bidderObj,
- * }
-*/
 function* placeBid(bidDetails) {
     
     window._FIREBASE_DB_.ref('/auctions/' + bidDetails.auctionUid)
     .once('value', (snapshot) => {
         
-        if (counter++ > 3) {
-            console.log('something is going wrong')
-            return;
-        }
-
         const auction = snapshot.val();
 
             const incrementAmount = auction.incrementAmount || 5;
@@ -84,18 +69,8 @@ function* placeBid(bidDetails) {
                         uid: bidDetails.bidderObj.uid,
                     }
                 });
-
-                // TODO: UPDATE AUCTION OBJECT
-
-                // update bid array
-                // window._FIREBASE_DB_.ref('auctions/' + bidDetails.auctionUid).child('bids')
-                //     .push({
-                //         auctionUid: bidDetails.auctionUid,
-                //         bidAmount: bidDetails.bidAmount,
-                //         bidderObj: bidDetails.bidderObj,
-                //     });
                 
-                // // update highestBid
+                // update highestBid
                 window._FIREBASE_DB_.ref('auctions/' + bidDetails.auctionUid)
                     .set(auction); 
             } 
@@ -113,6 +88,29 @@ function* updateAuction({auctionData}) {
     yield;
 }
 
+function* createAuction({auctionData}) {
+
+    const updates = {};
+    const auctionUid = ( auctionData.owner.persona + '-' + auctionData.title.substr(0,5) ).replace(' ', '').toLowerCase();
+    updates['auctions/' + auctionUid] = {
+        bids: [],
+        title: '',
+        subTitle: '',
+        location: '',
+        useBy: '',
+        openingBid: 15,
+        highestBid: 0,
+        bidIncrement: 5,
+        description: '',
+        show: false,
+        featured: false,
+        ...auctionData,
+    };
+
+    window._FIREBASE_DB_.ref()
+        .update(updates);
+}
+
 
 export default function* () {
     yield [
@@ -120,6 +118,7 @@ export default function* () {
         takeEvery(FETCH_AUCTIONS, fetchAuctions),
         takeEvery(UPDATE_AUCTION, updateAuction),
         takeEvery(PLACE_BID, placeBid),
+        takeEvery(CREATE_AUCTION, createAuction),
     ];
 }
 

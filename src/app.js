@@ -19,10 +19,11 @@ import 'firebase/database';
 import config from 'config';
 import AuthorizedRoute from 'components/controller/AuthorizedRoute';
 
-import Home from 'components/controller/Home';
 import Auctions from 'components/controller/Auctions';
+import CreateAuction from 'components/controller/CreateAuction';
 import Donate from 'components/controller/Donate';
 import DonorInfo from 'components/controller/DonorInfo';
+import Home from 'components/controller/Home';
 import Results from 'components/controller/Results';
 import Sponsors from 'components/controller/Sponsors';
 import Status from 'components/controller/Status';
@@ -92,6 +93,7 @@ class App extends Component {
                                 <AuthorizedRoute exact path="/sponsors" component={Sponsors} />
                                 <AuthorizedRoute exact path="/results" component={Results} />
                                 <AuthorizedRoute exact path="/donor-info" component={DonorInfo} />
+                                <AuthorizedRoute exact path="/create-auction" component={CreateAuction} />
                             </Switch>
                             <Footer />
                             <AppModal />

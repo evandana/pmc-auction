@@ -2,11 +2,11 @@ import {
     // AUTHENTICATION
     LOGIN_GOOGLE_REQUEST,
     LOGOUT_USER_REQUEST,
-    
+
     // USER
     GET_USER,
     UPDATE_USER,
-    SET_CURRENT_USER,    
+    SET_CURRENT_USER,
 
     // MODALS
     OPEN_MODAL,
@@ -29,6 +29,7 @@ import {
     REFRESH_AUCTIONS,
     REFRESH_AUCTION,
     SHOW_AUCTION_DETAIL,
+    CREATE_AUCTION,
 
 } from '../constants';
 
@@ -51,7 +52,7 @@ export function logoutUserRequest() {
     };
 }
 
-export function getUser(googleUserData=null) {
+export function getUser(googleUserData = null) {
     return {
         type: GET_USER,
         googleUserData,
@@ -77,7 +78,7 @@ export function fetchConfig() {
         type: FETCH_CONFIG
     }
 }
-export function refreshConfig(config){
+export function refreshConfig(config) {
     return {
         type: REFRESH_CONFIG,
         config,
@@ -137,9 +138,28 @@ export function toggleAuctionDetail(auctionUid) {
     }
 }
 
-export function placeBid (bidDetails) {
+export function placeBid(bidDetails) {
     return Object.assign({}, bidDetails, {
         type: PLACE_BID,
         bidDetails
     });
+}
+
+export function createAuction(userInputData, user) {
+
+    const auctionData = {
+        ...userInputData,
+        highestBid: 0,
+        owner: {
+            googleUid: user.googleUid,
+            persona: user.persona,
+        },
+        image: '',
+    };
+
+    return {
+        type: CREATE_AUCTION,
+        auctionData,
+    }
+
 }
