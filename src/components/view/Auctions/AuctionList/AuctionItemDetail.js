@@ -237,8 +237,8 @@ class AuctionItemDetail extends Component {
 								''
 						}
 						<div className="detail-field">
-							<label>{data.openingBid >= highestBid.bidAmount ? 'Opening Bid' : 'Top Bid'}</label>
-							{ data.openingBid >= highestBid.bidAmount ? (
+							<label>{data.highestBid === 0 ? 'Opening Bid' : 'Top Bid'}</label>
+							{ data.highestBid === 0 ? (
 									<span>
 										${data.openingBid}
 									</span>
@@ -288,16 +288,13 @@ function mapStateToProps(state) {
 		return a.bidAmount < b.bidAmount;
 	})[0];
 
-	highestBidObj = highestBidObj.bidAmount ? highestBidObj : {
-		bidAmount: 0,
-		bidderObj: {}
-	};
+	highestBidObj = highestBidObj.bidAmount ? highestBidObj : {};
 
-	const highestBidVal = Math.max(auction.highestBid, auction.openingBid, highestBidObj.bidAmount);
+	const highestBidVal = Math.max(auction.highestBid, highestBidObj.bidAmount || 0);
 
 	const increment = auction.incrementAmount || DEFAULT_INCREMENT_AMOUNT
 	const openingBid = auction.openingBid || DEFAULT_OPENING_BID;
-	const bidAmountMin = openingBid === highestBidVal ? openingBid : highestBidVal + increment;
+	const bidAmountMin = highestBidVal > 0 ? highestBidVal + increment : openingBid ;
 
 	return {
 		// app-level, static
