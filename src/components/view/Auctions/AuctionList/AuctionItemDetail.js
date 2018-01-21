@@ -175,7 +175,7 @@ class AuctionItemDetail extends Component {
 					</div>
 					<CardTitle
 						title={data.title}
-						subtitle={'with ' + data.donorName}
+						subtitle={'with ' + data.owner.persona}
 					/>
 					{
 						config.BIDDING_OPEN
@@ -222,7 +222,7 @@ class AuctionItemDetail extends Component {
 									open={this.state.confirmModalOpen}
 									onRequestClose={() => this.handleClose()}
 								>
-									{data.title} with {data.donorName}
+									{data.title} with {data.owner.persona}
 								</Dialog>
 							</div>
 							:
@@ -237,24 +237,31 @@ class AuctionItemDetail extends Component {
 								''
 						}
 						<div className="detail-field">
-							<label>Top Bid</label>
-							{
-								config.BIDDING_OPEN
-									?
+							<label>{data.openingBid >= highestBid.bidAmount ? 'Opening Bid' : 'Top Bid'}</label>
+							{ data.openingBid >= highestBid.bidAmount ? (
 									<span>
-										{
-											highestBid && highestBid.bidderObj
-												?
-												'$' + highestBid.bidAmount + (!highestBid.bidderObj.persona ? '' : ' by ' + highestBid.bidderObj.persona)
-												:
-												'$' + data.openingBid
-										}
+										${data.openingBid}
 									</span>
-									:
-									<span style={style.biddingNotAvailable}>
-										[bidding closed]
+								) : (
+									<span style={config.BIDDING_OPEN ? {} : style.biddingNotAvailable}>
+									{ 
+										config.BIDDING_OPEN
+										?
+											<span> 
+												${ highestBid && highestBid.bidderObj ?
+													highestBid.bidAmount + (!highestBid.bidderObj.persona ? '' : ' by ' + highestBid.bidderObj.persona)
+													:
+													data.openingBid
+												}
+											</span>
+										:
+											'[bidding closed]'
+									}
 									</span>
+								)
 							}
+
+
 						</div>
 						<div className="detail-field"><label>Description</label><span>{data.description}</span></div>
 						<div className="detail-field"><label>Please use by</label><span>{data.expiration}</span></div>
@@ -276,17 +283,17 @@ function mapStateToProps(state) {
 	const auction = state.auctions.auctionCollection.find(
 		auction => { return auction.uid === state.auctions.expandedAuction.uid; }
 	);
-	
-	let highestBidObj = !auction.bids && auction.bids.length ? {} : auction.bids.sort((a, b) => {
+
+	let highestBidObj = !auction.bids || auction.bids.length < 1 ? {} : auction.bids.sort((a, b) => {
 		return a.bidAmount < b.bidAmount;
 	})[0];
-	
-	const highestBidVal = Math.max(auction.highestBid, auction.openingBid, highestBidObj.bidAmount);
 
-	highestBidObj = highestBidObj.bidAmount >= highestBidVal ? highestBidObj : {
-		bidAmount: highestBidVal,
+	highestBidObj = highestBidObj.bidAmount ? highestBidObj : {
+		bidAmount: 0,
 		bidderObj: {}
 	};
+
+	const highestBidVal = Math.max(auction.highestBid, auction.openingBid, highestBidObj.bidAmount);
 
 	const increment = auction.incrementAmount || DEFAULT_INCREMENT_AMOUNT
 	const openingBid = auction.openingBid || DEFAULT_OPENING_BID;

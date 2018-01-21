@@ -49,18 +49,19 @@ function* placeBid(bidDetails) {
             const incrementAmount = auction.incrementAmount || 5;
             const highestBid = auction.highestBid > 0 ? auction.highestBid : auction.openingBid;
 
-            // if valid bid
-            if (bidDetails.bidAmount >= highestBid + incrementAmount) {
+            const validBid = !!auction.bids ? (bidDetails.bidAmount >= highestBid + incrementAmount) : bidDetails.bidAmount >= auction.openingBid;
 
-                
+            // if valid bid
+            if (validBid) {
+
                 // will trigger an update to that auction
                 
                 console.log('bidDetails', bidDetails)
                 
                 auction.highestBid = bidDetails.bidAmount;
                 
-                auction.bids.push({
-                    auctionUid: bidDetails.auctionUid,
+                const bid = {
+                    // auctionUid: bidDetails.auctionUid,
                     bidAmount: bidDetails.bidAmount,
                     bidderObj: {
                         name: bidDetails.bidderObj.displayName,
@@ -68,7 +69,13 @@ function* placeBid(bidDetails) {
                         persona: bidDetails.bidderObj.persona || bidDetails.bidderObj.displayName,
                         uid: bidDetails.bidderObj.uid,
                     }
-                });
+                };
+
+                if ( auction.bids ) {
+                    auction.bids.push(bid);
+                } else {
+                    auction.bids = [bid];
+                }
                 
                 // update highestBid
                 window._FIREBASE_DB_.ref('auctions/' + bidDetails.auctionUid)
@@ -91,7 +98,7 @@ function* updateAuction({auctionData}) {
 function* createAuction({auctionData}) {
 
     const updates = {};
-    const auctionUid = ( auctionData.owner.persona + '-' + auctionData.title.substr(0,5) ).replace(' ', '').toLowerCase();
+    const auctionUid = ( auctionData.owner.persona + '-' + auctionData.title.substr(0,5) ).replace(/ /ig, '').toLowerCase();
     updates['auctions/' + auctionUid] = {
         owner: {},
         bids: [],
