@@ -154,7 +154,23 @@ class Navigation extends React.Component {
         const { user, userPermissions, config, logout, openLoginModal } = this.props;
 
         if (!userPermissions || Object.keys(userPermissions).length < 1) {
-            return <div>Nav will be enabled once you log in</div>;
+            return (
+                <AppBar
+                    title='Happiness Exchange'
+                    iconElementLeft={
+                        <div style={{
+                                backgroundColor:'#fff',
+                                padding:'2px',
+                                marginTop:'-8px',
+                                marginLeft:'-8px',
+                                marginBottom:'-8px',
+                            }}>
+                            <img style={{height:'56px',width:'56px'}} src={getImageForEnv('happinessexchange.png')} />
+                        </div>
+                    }
+                >
+                </AppBar>
+            );
         }
 
         const titleLink = (<Link className="navigation__title-link" to="/">Welcome, {user.persona}</Link>);

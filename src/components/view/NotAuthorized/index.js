@@ -9,7 +9,6 @@ const NotAuthorizedPage = props => {
 
     return (
         <div className="page">
-            Not Authorized
             <div className="loader">
                 <div className="loader-spinner" />
             </div>
