@@ -87,6 +87,7 @@ const MaterialUiForm = props => {
       <div>
         <Field
           name="title"
+          type="text"
           component={renderTextField}
           label="Title"
         />
@@ -94,6 +95,7 @@ const MaterialUiForm = props => {
       <div>
         <Field
           name="subTitle"
+          type="text"
           component={renderTextField}
           label="Subtitle"
         />
@@ -101,6 +103,7 @@ const MaterialUiForm = props => {
       <div>
         <Field
           name="location"
+          type="text"
           component={renderTextField}
           label="Location"
         />
@@ -108,6 +111,7 @@ const MaterialUiForm = props => {
       <div>
         <Field
           name="useBy"
+          type="date"
           component={renderTextField}
           label="Use By"
         />
@@ -115,6 +119,7 @@ const MaterialUiForm = props => {
       <div>
         <Field
           name="openingBid"
+          type="number"
           component={renderTextField}
           label="Opening Bid"
         />
@@ -122,6 +127,7 @@ const MaterialUiForm = props => {
       <div>
         <Field
           name="bidIncrement"
+          type="number"
           component={renderTextField}
           label="Bid Increment"
         />
@@ -129,6 +135,7 @@ const MaterialUiForm = props => {
       <div>
         <Field
           name="description"
+          type="text"
           component={renderTextField}
           label="Description"
           multiLine={true}
