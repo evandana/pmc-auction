@@ -12,7 +12,7 @@ const LoginModal = (props) => {
     }
     
     return (<div>
-        You must sign in to access the auctions.
+        Please sign in.
         
         <div className="loginModal-menu">
             <img {...googleLoginProps} alt="" />
