@@ -93,11 +93,13 @@ function* createAuction({auctionData}) {
     const updates = {};
     const auctionUid = ( auctionData.owner.persona + '-' + auctionData.title.substr(0,5) ).replace(' ', '').toLowerCase();
     updates['auctions/' + auctionUid] = {
+        owner: {},
         bids: [],
         title: '',
         subTitle: '',
         location: '',
         useBy: '',
+        image: '',
         openingBid: 15,
         highestBid: 0,
         bidIncrement: 5,
