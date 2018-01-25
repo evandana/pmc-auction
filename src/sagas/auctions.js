@@ -110,6 +110,7 @@ function* createAuction({auctionData}) {
         openingBid: 15,
         highestBid: 0,
         bidIncrement: 5,
+        numberOffered: 1,
         description: '',
         show: false,
         featured: false,

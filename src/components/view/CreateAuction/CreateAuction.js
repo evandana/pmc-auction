@@ -29,6 +29,7 @@ class CreateAuction extends Component {
         formData.openingBid = this.numberify(formData.openingBid, 15);
         formData.highestBid = this.numberify(formData.highestBid, 0);
         formData.bidIncrement = this.numberify(formData.bidIncrement, 5);
+        formData.numberOffered = this.numberify(formData.numberOffered, 1);
         
         dispatch(createAuction(formData, user));
     }
@@ -40,17 +41,8 @@ class CreateAuction extends Component {
                     <MuiForm
                         submitForm={this.submitForm}
                     />
-                    {/* <RemoteSubmit />
-                <RemoteSubmitButton /> */}
                 </div>
             </div>
-
-
-            // <CreateAuctionForm
-            //     createAuctionForm={this.props.form}
-            //     user={this.props.user}
-            // />
-            // <h2>create auction</h2>
         )
 
     }

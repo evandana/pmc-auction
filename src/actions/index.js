@@ -153,6 +153,7 @@ export function createAuction(userInputData, user) {
         owner: {
             googleUid: user.googleUid,
             persona: user.persona,
+            displayName: user.displayName,
         },
         image: '',
     };

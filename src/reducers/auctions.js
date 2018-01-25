@@ -1,9 +1,10 @@
 import {
+    SET_CURRENT_USER,
+
     AUTH_CHECK_REQUEST,
     AUTH_CHECK_RESPONSE,
     AUTH_FAIL,
     AUTH_SUCCESS,
-    CONFIRM_BID_TOGGLE,
     CONFIRM_WINNERS,
     CREATE_AUCTION_SUCCESS,
     GET_CONFIG_SUCCESS,
@@ -21,17 +22,62 @@ import {
 
 const defaultAuctionState = {
     auctionCollection: [],
-    config: {},
-    confirmedBids: [],
-    confirmWinnersSubmitDisable: true,
-    expandedAuction: {},
+    // confirmedBids: [],
+    // confirmWinnersSubmitDisable: true,
+    // expandedAuction: {},
     bidTotal: 0,
-    selectedBids: [],
-    userId: null,
-    pendingConfirmationAuctionCollection: [],
-    confirmedAuctionCollection: [],
-    wonAuctionCollection: []
+    // selectedBids: [],
+    // pendingConfirmationAuctionCollection: [],
+    // confirmedAuctionCollection: [],
+    // wonAuctionCollection: [],
+    auctionsWithUserBids: [],
+    user: {
+        permissions: {},
+        name: '',
+        uid: '',
+    },
 };
+
+function getAuctionsWithUserBids(userPersona, auctionCollection) {
+    return auctionCollection
+        // filter in any that have at least one bid by this user
+        .filter(auction => {
+            if (!!auction.bids && auction.bids.length) {
+                return auction.bids.some(bid => {
+                    return bid.bidderObj.persona === userPersona;
+                });
+            } else {
+                return false;
+            }
+        })
+        .map(auction => {
+
+            let userHighBidValue = null;
+            let userHighBidRank = null;
+            let i = auction.bids.length;
+            let found = false;
+            // assume bids are sorted, hence manual loop from top
+            while (i-- && !found) {
+                if (auction.bids[i].bidderObj.persona === userPersona) {
+                    found = true;
+                    userHighBidValue = auction.bids[i].bidAmount;
+                    userHighBidRank = auction.bids.length - i;
+                }
+                // else keep looping
+            }
+            return {
+                bidCount: auction.bids.length,
+                countOffered: auction.numberOffered,
+                highBid: auction.highestBid,
+                owner: auction.owner.displayName,
+                title: auction.title,
+                uid: auction.uid,
+                userHighBidRank,
+                userHighBidValue,
+            }
+            
+        });
+}
 
 function auctions(state = defaultAuctionState, action) {
 
@@ -39,17 +85,37 @@ function auctions(state = defaultAuctionState, action) {
     const { 
         auctionCollection, 
         auctionUid,
+        ...rest
     } = action;
 
     switch (action.type) {
+        
+        case SET_CURRENT_USER: 
+
+            return {
+                ...state,
+                user: {...rest},
+                auctionsWithUserBids: getAuctionsWithUserBids(rest.persona, state.auctionCollection),
+            };    
 
         case REFRESH_AUCTIONS: 
             
             console.log('REDUCERS - auctions', auctionCollection)
 
-            return Object.assign({}, state, {
-                auctionCollection
-            });
+            return {
+                ...state,
+                auctionCollection,
+                bidTotal: 0,
+                auctionsWithUserBids: getAuctionsWithUserBids(state.user.persona, auctionCollection),
+
+                // confirmedBids: [],
+                // confirmWinnersSubmitDisable: true,
+                // expandedAuction: {},
+                // selectedBids: [],
+                // pendingConfirmationAuctionCollection: [],
+                // confirmedAuctionCollection: [],
+                // wonAuctionCollection: []
+            };
 
         case CONFIRM_WINNERS:
             return state;
@@ -60,9 +126,10 @@ function auctions(state = defaultAuctionState, action) {
             return state;
 
         case GET_CONFIG_SUCCESS:
-            return Object.assign({}, state, {
+            return {
+                ...state, 
                 config: action.data
-            });
+            };
 
         case UPDATE_AUCTION:
             // console.log('auction reducers', state, action.auction);
@@ -71,7 +138,17 @@ function auctions(state = defaultAuctionState, action) {
             let wonAuctionCollection = [];
             let confirmedAuctionCollection = [];
             let pendingConfirmationAuctionCollection = [];
+            let auctionsWithUserBids = [];
             let mappedCollection = state.auctionCollection.map(auction => {
+
+                if ( auction.bids.some(bid => bid.bidderObj.uid === state.auctions.user.uid) ) {
+                    auctionsWithUserBids.push({
+                        title: auction.title,
+                        highestBid: auction.highestBid,
+                        highestBidder: auction.bids[auction.bids.length - 1].bidderObj.persona,
+                    })
+                }
+
                 // if updated auction, then replace with new
                 if (auction.uid === action.auction.uid) {
 
@@ -116,12 +193,14 @@ function auctions(state = defaultAuctionState, action) {
                 }
             });
 
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 auctionCollection: mappedCollection,
-                confirmedAuctionCollection: confirmedAuctionCollection,
-                pendingConfirmationAuctionCollection: pendingConfirmationAuctionCollection,
-                wonAuctionCollection: wonAuctionCollection
-            });
+                // confirmedAuctionCollection: confirmedAuctionCollection,
+                // pendingConfirmationAuctionCollection: pendingConfirmationAuctionCollection,
+                // wonAuctionCollection: wonAuctionCollection,
+                // auctionsWithUserBids: auctionsWithUserBids,
+            };
 
         case LOAD_AUCTION:
             // console.log('load auction')
@@ -131,6 +210,7 @@ function auctions(state = defaultAuctionState, action) {
                 let pendingConfirmationAuctionCollection = state.pendingConfirmationAuctionCollection;
                 let confirmedAuctionCollection = state.confirmedAuctionCollection;
                 let wonAuctionCollection = state.wonAuctionCollection;
+                let auctionsWithUserBids = state.auctionsWithUserBids;
 
                 if (action.auction.winningBids && action.auction.winningBids.length) {
                     confirmedAuctionCollection = [
@@ -154,17 +234,18 @@ function auctions(state = defaultAuctionState, action) {
                     }
                 }
 
-                return Object.assign({}, state, {
+                return {
+                    ...state, 
                     auctionCollection: [
                         ...state.auctionCollection,
                         action.auction
                     ],
-                    bidTotal: state.bidTotal += auctionWithBids.bidTotal,
-                    confirmedAuctionCollection: confirmedAuctionCollection,
-                    pendingConfirmationAuctionCollection: pendingConfirmationAuctionCollection,
-                    wonAuctionCollection: wonAuctionCollection
-
-                });
+                    // bidTotal: state.bidTotal += auctionWithBids.bidTotal,
+                    // confirmedAuctionCollection,
+                    // pendingConfirmationAuctionCollection,
+                    // wonAuctionCollection,
+                    // auctionsWithUserBids,
+                };
             } else {
 
                 let wonAuctionCollection = state.wonAuctionCollection;
@@ -179,25 +260,28 @@ function auctions(state = defaultAuctionState, action) {
                     }
                 }
 
-                return Object.assign({}, state, {
+                return {
+                    ...state,
                     auctionCollection: [
                         ...state.auctionCollection,
                         action.auction
                     ],
-                    wonAuctionCollection: wonAuctionCollection
-                });
+                    // wonAuctionCollection,
+                };
             }
 
         case HIDE_AUCTION_DETAIL:
 
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 expandedAuction: {}
-            });
+            };
 
         case AUTH_SUCCESS:
-            return Object.assign({}, state, {
-                userId: action.user.uid
-            });
+            return {
+                ...state,
+                // userId: action.user.uid
+            };
 
         case SHOW_AUCTION_DETAIL:
 
@@ -205,9 +289,10 @@ function auctions(state = defaultAuctionState, action) {
                 return auction.uid === auctionUid;
             });
 
-            return Object.assign({}, state, {
+            return {
+                ...state, 
                 expandedAuction
-            });
+            };
 
         default:
             return state

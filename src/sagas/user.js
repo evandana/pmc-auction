@@ -30,14 +30,20 @@ function* getUser({ googleUserData }) {
                         const user = snapshot.val();
 
                         if (user && !!user.persona) {
-                            window._UI_STORE_.dispatch(setCurrentUser(user));
-
+                            
                             if (!!user.persona && !publicUser.persona) {
                                 // assume all data already set, just need persona in publicUsers
                                 window._UI_STORE_.dispatch(updateUserAction({
                                     ...user,
                                     persona: user.persona
                                 }));
+                            } else {
+                                
+                                
+                                // SET USER FOR THE REST OF THE APP
+                                window._UI_STORE_.dispatch(setCurrentUser(user));
+
+
                             }
                         } else {
                             // triggers updateUser method below

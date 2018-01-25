@@ -3,7 +3,9 @@ import StatusView from 'components/view/Status';
 
 const mapStateToProps = (state) => {
     return {
-        userPermissions: state.user.permissions,
+        userPermissions: state.auctions.user.permissions,
+        auctions: state.auctions.auctionCollection,
+        auctionsWithUserBids: state.auctions.auctionsWithUserBids,
     }
 };
 

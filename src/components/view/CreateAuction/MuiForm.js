@@ -134,6 +134,14 @@ const MaterialUiForm = props => {
       </div>
       <div>
         <Field
+          name="numberOffered"
+          type="number"
+          component={renderTextField}
+          label="Number Offered"
+        />
+      </div>
+      <div>
+        <Field
           name="description"
           type="text"
           component={renderTextField}

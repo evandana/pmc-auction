@@ -299,7 +299,7 @@ function mapStateToProps(state) {
 	return {
 		// app-level, static
 		config: state.config,
-		user: state.user,
+		user: state.auctions.user,
 		// item-level, static
 		data: auction,
 		increment: increment,

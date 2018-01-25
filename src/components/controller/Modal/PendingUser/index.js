@@ -3,7 +3,7 @@ import { logoutUserRequest, updateUser } from 'actions';
 import PendingUser from 'components/view/Modal/PendingUser';
 
 const mapStateToProps = (state) => {
-    const user = state.user;
+    const user = state.auctions.user
     
     return {
         userName: user.displayName,
