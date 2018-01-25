@@ -3,7 +3,7 @@ import CreateAuction from 'components/view/CreateAuction';
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user,
+        user: state.auctions.user,
         form: state.auctions.createAuctionForm
     }
 };

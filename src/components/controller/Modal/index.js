@@ -5,7 +5,7 @@ import PendingUserController from 'components/controller/Modal/PendingUser';
 
 const mapStateToProps = (state) => {
     let { open, activeModal, title, ModalComponent } = state.modal;
-    const { permissions } = state.user;
+    const { permissions } = state.auctions.user
     
     if (!permissions.basic) {
         open = true;

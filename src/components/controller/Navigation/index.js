@@ -6,8 +6,8 @@ import NavigationView from 'components/view/Navigation';
 const mapStateToProps = (state) => {
 
     return {
-        user: state.user,
-        userPermissions: state.user.permissions,
+        user: state.auctions.user,
+        userPermissions: state.auctions.user.permissions,
         config: state.config,
     };
 };
