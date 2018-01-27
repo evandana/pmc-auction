@@ -20,6 +20,7 @@ import {
     UPDATE_PRODUCTS,
 
     // AUCTIONS
+    OWNER_BID_CONFIRMATION,
     FETCH_AUCTION,
     FETCH_AUCTIONS,
     GET_AUCTIONS,
@@ -93,8 +94,6 @@ export function fetchAuctions() {
     }
 }
 
-
-
 export function getAuctions() {
     return {
         type: GET_AUCTIONS,
@@ -102,7 +101,6 @@ export function getAuctions() {
 }
 
 export function refreshAuctions(auctionCollection) {
-    console.log('REFRESH_AUCTIONS', REFRESH_AUCTIONS, auctionCollection)
     return {
         type: REFRESH_AUCTIONS,
         auctionCollection,
@@ -117,6 +115,14 @@ export function refreshAuction(uid, auction) {
     }
 }
 
+export function ownerBidConfirmation(willConfirm, bid, auctionUid) {
+    return {
+        type: OWNER_BID_CONFIRMATION,
+        willConfirm,
+        bid,
+        auctionUid,
+    }
+}
 
 export function loadAuctionObj(auction) {
     return {
