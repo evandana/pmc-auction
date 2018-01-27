@@ -8,13 +8,16 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
-
-import { ownerBidConfirmation } from 'actions'
+import FlatButton from 'material-ui/FlatButton';
+import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import CleckCircle from 'material-ui/svg-icons/action/check-circle';
+import MailOutlineIcon from 'material-ui/svg-icons/communication/mail-outline';
 
 class Status extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
+        this.ownerBidConfirmation = this.props.ownerBidConfirmation.bind(this);
     }
 
     render() {
@@ -37,6 +40,7 @@ class Status extends Component {
                             <h2>Owned Auctions</h2>
                             <p>Choose the winners from the top bids.</p>
                             <p>You may select multiple winners. Except for the top winner you choose, bidders will have the option to confirm or pass.</p>
+                            <p>You will see three bids more than the number you are offering, in case you wish to skip one or two.</p>
                             {this.createOwnedAuctionTable(auctionsOwned, config.BIDDING_OPEN, config.CONFIRM_WINNERS)}
                         </section>
                     )}
@@ -107,17 +111,43 @@ class Status extends Component {
 
     createOwnedAuctionTable(auctionsOwned, biddingOpen, confirmWinners) {
 
-        const getBidStatus = (bid, index, confirmWinners, auctionUid) => {
+        const getBidStatus = (bid, topBidIndex, allBidsIndex, confirmWinners, auctionUid) => {
             if (biddingOpen) {
             } else if (confirmWinners && !bid.ownerConfirmed) {
                 return <div>
-                    <RaisedButton primary={true} label={'Confirm'} onClick={() => ownerBidConfirmation(true, bid, auctionUid)}></RaisedButton>
-                    <RaisedButton label='Pass' onClick={() => ownerBidConfirmation(false, bid, auctionUid)}></RaisedButton>
+                    {topBidIndex ===0 ? (
+                        <RaisedButton primary={true} label={'Confirm'} onClick={() => this.ownerBidConfirmation({
+                            ownerConfirmed: true, 
+                            bid, 
+                            topBidIndex,
+                            allBidsIndex, 
+                            auctionUid
+                        })}></RaisedButton>
+                    ) : (
+                        <RaisedButton label={'Request'} onClick={() => this.ownerBidConfirmation({
+                            ownerConfirmed: true, 
+                            bid, 
+                            topBidIndex,
+                            allBidsIndex, 
+                            auctionUid
+                        })}></RaisedButton>
+                    )}
+                    <FlatButton icon={<CloseIcon />} onClick={() => this.ownerBidConfirmation({
+                        ownerConfirmed: false, 
+                        bid, 
+                        topBidIndex,
+                        allBidsIndex, 
+                        auctionUid
+                    })}></FlatButton>
                 </div>
             } else if (confirmWinners && !bid.bidderConfirmed) {
                 return 'Pending Bidder';
             } else if (confirmWinners && bid.ownerConfirmed && bid.bidderConfirmed) {
-                return 'Confirmed';
+                return <div>
+                    <CleckCircle style={{marginTop:'.6em', marginBottom: '-.6em'}}/>
+                    <FlatButton style={{width:'10px'}} icon={<MailOutlineIcon />} href={'mailto:'+bid.bidderObj.email}/>
+                    {bid.bidderObj.email}
+                </div>
             } else {
                 return 'Bidding closed';
             }
@@ -129,7 +159,7 @@ class Status extends Component {
                     <TableRow>
                         <TableHeaderColumn colSpan={2}>Title</TableHeaderColumn>
                         <TableHeaderColumn># Offered</TableHeaderColumn>
-                        <TableHeaderColumn colSpan={4}>Bids</TableHeaderColumn>
+                        <TableHeaderColumn colSpan={7}>Bids</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
@@ -138,16 +168,16 @@ class Status extends Component {
                             <TableRow selectable={false} key={auctionOwned.uid}>
                                 <TableRowColumn colSpan={2}>{auctionOwned.title}</TableRowColumn>
                                 <TableRowColumn>{auctionOwned.numberOffered}</TableRowColumn>
-                                <TableRowColumn colSpan={4}>{!auctionOwned.topBids || !auctionOwned.topBids.length ? 'No bids yet' : (
+                                <TableRowColumn colSpan={7}>{!auctionOwned.topBids || !auctionOwned.topBids.length ? 'No bids yet' : (
 
                                     <Table selectable={false}>
                                         <TableBody displayRowCheckbox={false}>
-                                            {auctionOwned.topBids.map((bid, index) => {
+                                            {auctionOwned.topBids.map((bid, topBidIndex) => {
                                                 return (
-                                                    <TableRow selectable={false} key={index}>
-                                                        <TableRowColumn>${bid.bidAmount}</TableRowColumn>
-                                                        <TableRowColumn colSpan={2}>{bid.bidderObj.name}</TableRowColumn>
-                                                        {biddingOpen ? '' : <TableRowColumn colSpan={3}>{getBidStatus(bid, index, confirmWinners, auctionOwned.uid)}</TableRowColumn>}
+                                                    <TableRow selectable={false} key={topBidIndex}>
+                                                        <TableRowColumn colSpan={2}>${bid.bidAmount}</TableRowColumn>
+                                                        <TableRowColumn colSpan={3}>{bid.bidderObj.name}</TableRowColumn>
+                                                        {biddingOpen ? '' : <TableRowColumn colSpan={11}>{getBidStatus(bid, topBidIndex, bid.allBidsIndex, confirmWinners, auctionOwned.uid)}</TableRowColumn>}
                                                     </TableRow>
                                                 );
                                             })}

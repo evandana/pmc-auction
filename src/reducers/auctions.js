@@ -96,14 +96,19 @@ function getAuctionsOwned(userPersona, auctionCollection) {
 
 function filterBidsByUniqueBidder (bids) {
     let uniqueBidderList = [];
-    return !bids ? [] : bids.filter(bid => {
-        if (uniqueBidderList.indexOf(bid.bidderObj.persona) === -1) {
-            uniqueBidderList.push(bid.bidderObj.persona)
-            return true;
-        } else {
-            return false;
-        }
-    })
+    return !bids ? [] : bids
+        .map((bid, allBidsIndex) => {
+            bid.allBidsIndex = allBidsIndex;
+            return bid;
+        })
+        .filter(bid => {
+            if (uniqueBidderList.indexOf(bid.bidderObj.persona) === -1) {
+                uniqueBidderList.push(bid.bidderObj.persona)
+                return true;
+            } else {
+                return false;
+            }
+        })
 }
 
 function getAuctionAggregations(state, auctionCollection) {
