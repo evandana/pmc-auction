@@ -69,7 +69,7 @@ function getAuctionsWithUserBids(userPersona, auctionCollection) {
             }
             return {
                 bidCount: uniqueBids.length,
-                countOffered: auction.numberOffered,
+                numberOffered: auction.numberOffered,
                 highBid: auction.highestBid,
                 owner: {
                     displayName: auction.owner.displayName,
@@ -89,6 +89,7 @@ function getAuctionsOwned(userPersona, auctionCollection) {
         .filter(auction => auction.owner.persona === userPersona)
         .map(auction => {
             auction.topBids = filterBidsByUniqueBidder(auction.bids)
+                .slice(0, auction.numberOffered + 2);
             return auction;
         });
 }
