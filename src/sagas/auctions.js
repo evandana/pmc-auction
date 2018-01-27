@@ -6,6 +6,7 @@ import {
     PLACE_BID,
     UPDATE_AUCTION,
     CREATE_AUCTION,
+    OWNER_BID_CONFIRMATION,
 } from '../constants';
 
 import { refreshAuctions, refreshAuction } from '../actions';
@@ -88,6 +89,25 @@ function* placeBid(bidDetails) {
     yield;
 }
 
+function* ownerBidConfirmation({ownerConfirmed, bid, topBidIndex, allBidsIndex, auctionUid}) {
+    
+    let updatedBidObj = {
+        ...bid,
+        ownerConfirmed,
+    };
+
+    if (topBidIndex === 0) {
+        updatedBidObj.bidderConfirmed = true;
+    }
+    
+    delete updatedBidObj.allBidsIndex;
+    
+    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + allBidsIndex)
+        .set(updatedBidObj);
+    
+    yield;
+}
+
 function* updateAuction({auctionData}) {
     window._FIREBASE_DB_.ref('auctions/' + auctionData.uid)
         .set(auctionData);
@@ -129,6 +149,7 @@ export default function* () {
         takeEvery(UPDATE_AUCTION, updateAuction),
         takeEvery(PLACE_BID, placeBid),
         takeEvery(CREATE_AUCTION, createAuction),
+        takeEvery(OWNER_BID_CONFIRMATION, ownerBidConfirmation),
     ];
 }
 

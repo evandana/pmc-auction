@@ -115,11 +115,13 @@ export function refreshAuction(uid, auction) {
     }
 }
 
-export function ownerBidConfirmation(willConfirm, bid, auctionUid) {
+export function ownerBidConfirmation({ownerConfirmed, bid, topBidIndex, allBidsIndex, auctionUid}) {
     return {
         type: OWNER_BID_CONFIRMATION,
-        willConfirm,
+        ownerConfirmed,
         bid,
+        topBidIndex,
+        allBidsIndex,
         auctionUid,
     }
 }
