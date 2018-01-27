@@ -10,12 +10,16 @@ function* loginGoogleRequest() {
         .catch(function(error) {
             console.log('ERROR with Google Login', error)
     });
+    console.log('You have been logged in');
+    console.log('TODO: refresh the page if first login')
     
     yield;
 }
 
 function* logoutUserRequest() {
     window._FIREBASE_.auth().signOut();
+    console.log('You have been logged out');
+    console.log('TODO: refresh the page')
     yield;
 }
 

@@ -52,24 +52,29 @@ function getAuctionsWithUserBids(userPersona, auctionCollection) {
         })
         .map(auction => {
 
+            let uniqueBids = filterBidsByUniqueBidder(auction.bids);
+
             let userHighBidValue = null;
             let userHighBidRank = null;
-            let i = auction.bids.length;
+            let i = uniqueBids.length;
             let found = false;
             // assume bids are sorted, hence manual loop from top
             while (i-- && !found) {
-                if (auction.bids[i].bidderObj.persona === userPersona) {
+                if (uniqueBids[i].bidderObj.persona === userPersona) {
                     found = true;
-                    userHighBidValue = auction.bids[i].bidAmount;
-                    userHighBidRank = auction.bids.length - i;
+                    userHighBidValue = uniqueBids[i].bidAmount;
+                    userHighBidRank = uniqueBids.length - i;
                 }
                 // else keep looping
             }
             return {
-                bidCount: auction.bids.length,
+                bidCount: uniqueBids.length,
                 countOffered: auction.numberOffered,
                 highBid: auction.highestBid,
-                owner: auction.owner.displayName,
+                owner: {
+                    displayName: auction.owner.displayName,
+                    uid: auction.owner.uid
+                },
                 title: auction.title,
                 uid: auction.uid,
                 userHighBidRank,
@@ -77,6 +82,50 @@ function getAuctionsWithUserBids(userPersona, auctionCollection) {
             }
             
         });
+}
+
+function getAuctionsOwned(userPersona, auctionCollection) {
+    return auctionCollection
+        .filter(auction => auction.owner.persona === userPersona)
+        .map(auction => {
+            auction.topBids = filterBidsByUniqueBidder(auction.bids)
+            return auction;
+        });
+}
+
+function filterBidsByUniqueBidder (bids) {
+    let uniqueBidderList = [];
+    return !bids ? [] : bids.filter(bid => {
+        if (uniqueBidderList.indexOf(bid.bidderObj.persona) === -1) {
+            uniqueBidderList.push(bid.bidderObj.persona)
+            return true;
+        } else {
+            return false;
+        }
+    })
+}
+
+function getAuctionAggregations(state, auctionCollection) {
+
+    const auctionsWithUserBids = !state.user.persona ? [] : getAuctionsWithUserBids(state.user.persona, auctionCollection);
+    const auctionsOwned = !state.user.persona ? [] : getAuctionsOwned(state.user.persona, auctionCollection);
+
+    // bidTotal: 0,
+    // auctionsWithUserBids,
+    
+    // ownedAuctions, // only if user is a donor
+    // confirmedBids: [], // only on auctions with user bids
+    // confirmWinnersSubmitDisable: true,
+    // expandedAuction: {}, 
+    // selectedBids: [], // only on auctions with user bids
+    // pendingConfirmationAuctionCollection: [], // only on auctions with user bids
+    // confirmedAuctionCollection: [], // only on auctions with user bids
+    // wonAuctionCollection: [], // only on auctions with user bids
+
+    return {
+        auctionsWithUserBids,
+        auctionsOwned,
+    }
 }
 
 function auctions(state = defaultAuctionState, action) {
@@ -95,7 +144,7 @@ function auctions(state = defaultAuctionState, action) {
             return {
                 ...state,
                 user: {...rest},
-                auctionsWithUserBids: getAuctionsWithUserBids(rest.persona, state.auctionCollection),
+                ...getAuctionAggregations({...state, user: {...rest}}, state.auctionCollection),
             };    
 
         case REFRESH_AUCTIONS: 
@@ -105,8 +154,7 @@ function auctions(state = defaultAuctionState, action) {
             return {
                 ...state,
                 auctionCollection,
-                bidTotal: 0,
-                auctionsWithUserBids: getAuctionsWithUserBids(state.user.persona, auctionCollection),
+                ...getAuctionAggregations(state, auctionCollection),
 
                 // confirmedBids: [],
                 // confirmWinnersSubmitDisable: true,
@@ -132,70 +180,70 @@ function auctions(state = defaultAuctionState, action) {
             };
 
         case UPDATE_AUCTION:
-            // console.log('auction reducers', state, action.auction);
+            console.warn('UPDATE_AUCTION reducer not yet handled', state, action.auction);
 
-            // TODO: all of this should be refactored to only process the NEW action, not reprocess all auctions
-            let wonAuctionCollection = [];
-            let confirmedAuctionCollection = [];
-            let pendingConfirmationAuctionCollection = [];
-            let auctionsWithUserBids = [];
-            let mappedCollection = state.auctionCollection.map(auction => {
+            // // TODO: all of this should be refactored to only process the NEW action, not reprocess all auctions
+            // let wonAuctionCollection = [];
+            // let confirmedAuctionCollection = [];
+            // let pendingConfirmationAuctionCollection = [];
+            // let auctionsWithUserBids = [];
+            // let mappedCollection = state.auctionCollection.map(auction => {
 
-                if ( auction.bids.some(bid => bid.bidderObj.uid === state.auctions.user.uid) ) {
-                    auctionsWithUserBids.push({
-                        title: auction.title,
-                        highestBid: auction.highestBid,
-                        highestBidder: auction.bids[auction.bids.length - 1].bidderObj.persona,
-                    })
-                }
+            //     if ( auction.bids.some(bid => bid.bidderObj.uid === state.auctions.user.uid) ) {
+            //         auctionsWithUserBids.push({
+            //             title: auction.title,
+            //             highestBid: auction.highestBid,
+            //             highestBidder: auction.bids[auction.bids.length - 1].bidderObj.persona,
+            //         })
+            //     }
 
-                // if updated auction, then replace with new
-                if (auction.uid === action.auction.uid) {
+            //     // if updated auction, then replace with new
+            //     if (auction.uid === action.auction.uid) {
 
-                    // sort into owned confirmed and owned to be confirmed
-                    if (action.auction.donorId === state.userId) {
-                        if (action.auction.winningBids && action.auction.winningBids.length) {
-                            confirmedAuctionCollection.push(processLoadedAuctionBids(action.auction));
-                        } else {
-                            pendingConfirmationAuctionCollection.push(processLoadedAuctionBids(action.auction));
-                        }
-                    }
+            //         // sort into owned confirmed and owned to be confirmed
+            //         if (action.auction.donorId === state.userId) {
+            //             if (action.auction.winningBids && action.auction.winningBids.length) {
+            //                 confirmedAuctionCollection.push(processLoadedAuctionBids(action.auction));
+            //             } else {
+            //                 pendingConfirmationAuctionCollection.push(processLoadedAuctionBids(action.auction));
+            //             }
+            //         }
 
-                    // address won auctions
-                    if (action.auction.winningBids) {
-                        action.auction.winningBid = action.auction.winningBids.find(winningBid => {
-                            return winningBid.bidderObj.uid === state.userId;
-                        });
-                        wonAuctionCollection.push(action.auction);
-                    }
+            //         // address won auctions
+            //         if (action.auction.winningBids) {
+            //             action.auction.winningBid = action.auction.winningBids.find(winningBid => {
+            //                 return winningBid.bidderObj.uid === state.userId;
+            //             });
+            //             wonAuctionCollection.push(action.auction);
+            //         }
 
-                    return action.auction;
-                } else {
+            //         return action.auction;
+            //     } else {
 
-                    // sort into owned confirmed and owned to be confirmed
-                    if (auction.donorId === state.userId) {
-                        if (auction.winningBids && auction.winningBids.length) {
-                            confirmedAuctionCollection.push(auction);
-                        } else {
-                            pendingConfirmationAuctionCollection.push(auction);
-                        }
-                    }
+            //         // sort into owned confirmed and owned to be confirmed
+            //         if (auction.donorId === state.userId) {
+            //             if (auction.winningBids && auction.winningBids.length) {
+            //                 confirmedAuctionCollection.push(auction);
+            //             } else {
+            //                 pendingConfirmationAuctionCollection.push(auction);
+            //             }
+            //         }
 
-                    // address won auctions
-                    if (auction.winningBids) {
-                        auction.winningBid = auction.winningBids.find(winningBid => {
-                            return winningBid.bidderObj.uid === state.userId;
-                        });
-                        wonAuctionCollection.push(auction);
-                    }
+            //         // address won auctions
+            //         if (auction.winningBids) {
+            //             auction.winningBid = auction.winningBids.find(winningBid => {
+            //                 return winningBid.bidderObj.uid === state.userId;
+            //             });
+            //             wonAuctionCollection.push(auction);
+            //         }
 
-                    return auction;
-                }
-            });
+            //         return auction;
+            //     }
+            // });
 
             return {
                 ...state,
-                auctionCollection: mappedCollection,
+                // auctionCollection: mappedCollection,
                 // confirmedAuctionCollection: confirmedAuctionCollection,
                 // pendingConfirmationAuctionCollection: pendingConfirmationAuctionCollection,
                 // wonAuctionCollection: wonAuctionCollection,
@@ -203,7 +251,7 @@ function auctions(state = defaultAuctionState, action) {
             };
 
         case LOAD_AUCTION:
-            // console.log('load auction')
+            console.log('LOAD_AUCTION reducer not yet handled')
 
             if (action.auction.donorId === state.userId) {
                 let auctionWithBids = processLoadedAuctionBids(action.auction);
@@ -277,13 +325,15 @@ function auctions(state = defaultAuctionState, action) {
                 expandedAuction: {}
             };
 
-        case AUTH_SUCCESS:
-            return {
-                ...state,
-                // userId: action.user.uid
-            };
+        // case AUTH_SUCCESS:
+        //     console.log('AUTH_SUCCESS')
+        //     return {
+        //         ...state,
+        //         // userId: action.user.uid
+        //     };
 
         case SHOW_AUCTION_DETAIL:
+            console.log('SHOW_AUCTION_DETAIL')
 
             const expandedAuction = state.auctionCollection.find(auction => {
                 return auction.uid === auctionUid;
