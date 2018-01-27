@@ -7,7 +7,7 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const Status = (props) => {
 
@@ -22,14 +22,14 @@ const Status = (props) => {
                     <h2>Auctions with Your Bids</h2>
                     <p>If you are the top bidder when the auction closes, you are expected to claim that item.</p>
                     <p>If an auction owner is awarding multiple winners and you have one of the highest few bids, you may be offered a chance to accept this at your highest bid for that item.</p>
-                    {createLeadingBidTable(auctionsWithUserBids, config.BIDDING_OPEN)}
+                    {createLeadingBidTable(auctionsWithUserBids, config.BIDDING_OPEN, config.CONFIRM_WINNERS)}
                 </section>
 
                 {!user.permissions.donor || !auctionsOwned ? '' : (
                     <section>
                         <h2>Owned Auctions</h2>
                         <p>If you are the top bidder when the auction closes, you are expected to claim that item.</p>
-                        {createOwnedAuctionTable(auctionsOwned, config.BIDDING_OPEN)}
+                        {createOwnedAuctionTable(auctionsOwned, config.BIDDING_OPEN, config.CONFIRM_WINNERS)}
                     </section>
                 )}
 
@@ -42,7 +42,21 @@ export default Status;
 
 
 
-function createLeadingBidTable(auctionsWithUserBids, biddingOpen) {
+function createLeadingBidTable(auctionsWithUserBids, biddingOpen, confirmWinners) {
+
+    const getStatus = (auction, biddingOpen) => {
+        if (biddingOpen) {
+            return 'Bidding Open';
+        } else if (confirmWinners && !auction.userHighBid.bidderConfirmed) {
+            return <RaisedButton label={'Confirm at $' + auction.userHighBid.bidAmount}></RaisedButton>
+        } else if (confirmWinners && !auction.userHighBid.ownerConfirmed) {
+            return 'Pending owner confirmation'
+        } else if (confirmWinners && auction.userHighBid.bidderConfirmed && auction.userHighBid.ownerConfirmed) {
+            return 'Confirmed!';
+        } else {
+            return 'Bidding closed';
+        }
+    }
 
     return (
         <Table selectable={false} >
@@ -52,7 +66,7 @@ function createLeadingBidTable(auctionsWithUserBids, biddingOpen) {
             >
                 <TableRow>
                     <TableHeaderColumn colSpan={3}>Title</TableHeaderColumn>
-                    <TableHeaderColumn colSpan={2}>Status</TableHeaderColumn>
+                    {biddingOpen ? '' : <TableHeaderColumn colSpan={2}>Status</TableHeaderColumn>}
                     <TableHeaderColumn>Owner</TableHeaderColumn>
                     <TableHeaderColumn>Highest Bid</TableHeaderColumn>
                     <TableHeaderColumn>Your Bid</TableHeaderColumn>
@@ -67,10 +81,10 @@ function createLeadingBidTable(auctionsWithUserBids, biddingOpen) {
                     return (
                         <TableRow selectable={false} key={auctionWithUserBid.uid}>
                             <TableRowColumn colSpan={3}>{auctionWithUserBid.title}</TableRowColumn>
-                            <TableRowColumn colSpan={2}>Bidding Open | Won | Not Won | <FlatButton>Accept for $100</FlatButton> | Pending Owner</TableRowColumn>
+                            {biddingOpen ? '' : <TableRowColumn colSpan={2}>{getStatus(auctionWithUserBid, biddingOpen)}</TableRowColumn>}
                             <TableRowColumn>{auctionWithUserBid.owner.displayName}</TableRowColumn>
                             <TableRowColumn>${auctionWithUserBid.highBid}</TableRowColumn>
-                            <TableRowColumn>${auctionWithUserBid.userHighBidValue}</TableRowColumn>
+                            <TableRowColumn>${auctionWithUserBid.userHighBid.bidAmount}</TableRowColumn>
                             <TableRowColumn>{auctionWithUserBid.userHighBidRank} / {auctionWithUserBid.bidCount}</TableRowColumn>
                             <TableRowColumn>{auctionWithUserBid.countOffered}</TableRowColumn>
                         </TableRow>
@@ -82,15 +96,18 @@ function createLeadingBidTable(auctionsWithUserBids, biddingOpen) {
 }
 
 
-function createOwnedAuctionTable(auctionsOwned, biddingOpen) {
+function createOwnedAuctionTable(auctionsOwned, biddingOpen, confirmWinners) {
 
-    const getBidStatus = (bid, index) => {
-        if (!bid.ownerConfirmed) {
-            return <FlatButton primary={index===0}>Confirm</FlatButton>
-        } else if (!bid.bidderConfirmed) {
+    const getBidStatus = (bid, index, confirmWinners) => {
+        if (biddingOpen) {
+        } else if (confirmWinners && !bid.ownerConfirmed) {
+            return <RaisedButton primary={index===0} label='Confirm'></RaisedButton>
+        } else if (confirmWinners && !bid.bidderConfirmed) {
             return 'Pending Bidder';
-        } else if (bid.ownerConfirmed && bid.bidderConfirmed) {
+        } else if (confirmWinners && bid.ownerConfirmed && bid.bidderConfirmed) {
             return 'Confirmed';
+        } else {
+            return 'Bidding closed';
         }
     }
 
@@ -116,9 +133,7 @@ function createOwnedAuctionTable(auctionsOwned, biddingOpen) {
                                                 <TableRow selectable={false} key={index}>
                                                     <TableRowColumn>${bid.bidAmount}</TableRowColumn>
                                                     <TableRowColumn>{bid.bidderObj.name}</TableRowColumn>
-                                                    {biddingOpen ? '' : (
-                                                        <TableRowColumn>{getBidStatus(bid, index)}</TableRowColumn>
-                                                    )}
+                                                    {biddingOpen ? '' : <TableRowColumn>{getBidStatus(bid, index, confirmWinners)}</TableRowColumn>}
                                                 </TableRow>
                                             );
                                         })}
