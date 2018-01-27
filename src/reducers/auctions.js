@@ -54,7 +54,7 @@ function getAuctionsWithUserBids(userPersona, auctionCollection) {
 
             let uniqueBids = filterBidsByUniqueBidder(auction.bids);
 
-            let userHighBidValue = null;
+            let userHighBid = null;
             let userHighBidRank = null;
             let i = uniqueBids.length;
             let found = false;
@@ -62,8 +62,8 @@ function getAuctionsWithUserBids(userPersona, auctionCollection) {
             while (i-- && !found) {
                 if (uniqueBids[i].bidderObj.persona === userPersona) {
                     found = true;
-                    userHighBidValue = uniqueBids[i].bidAmount;
-                    userHighBidRank = uniqueBids.length - i;
+                    userHighBid = uniqueBids[i];
+                    userHighBidRank = i + 1;
                 }
                 // else keep looping
             }
@@ -77,8 +77,8 @@ function getAuctionsWithUserBids(userPersona, auctionCollection) {
                 },
                 title: auction.title,
                 uid: auction.uid,
+                userHighBid,
                 userHighBidRank,
-                userHighBidValue,
             }
             
         });
