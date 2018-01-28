@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+
+import muiThemeable from 'material-ui/styles/muiThemeable';
 import {
     Table,
     TableBody,
@@ -24,6 +26,8 @@ class Status extends Component {
 
         const { user, config, auctionsWithUserBids, auctionsOwned, ...rest } = this.props;
 
+        const themePalette = this.props.muiTheme.palette;
+
         return (
             <div className='page'>
                 <div className='text-content'>
@@ -32,7 +36,7 @@ class Status extends Component {
                         <h2>Auctions with Your Bids</h2>
                         <p>If you are the top bidder when the auction closes, you are expected to claim that item.</p>
                         <p>If an auction owner is awarding multiple winners and you have one of the highest few bids, you may be offered a chance to accept this at your highest bid for that item.</p>
-                        {this.createLeadingBidTable(auctionsWithUserBids, config.BIDDING_OPEN, config.CONFIRM_WINNERS)}
+                        {this.createLeadingBidTable(auctionsWithUserBids, config.BIDDING_OPEN, config.CONFIRM_WINNERS, themePalette)}
                     </section>
 
                     {!user.permissions.donor || !auctionsOwned ? '' : (
@@ -41,7 +45,7 @@ class Status extends Component {
                             <p>Choose the winners from the top bids.</p>
                             <p>You may select multiple winners. Except for the top winner you choose, bidders will have the option to confirm or pass.</p>
                             <p>You will see three bids more than the number you are offering, in case you wish to skip one or two.</p>
-                            {this.createOwnedAuctionTable(auctionsOwned, config.BIDDING_OPEN, config.CONFIRM_WINNERS)}
+                            {this.createOwnedAuctionTable(auctionsOwned, config.BIDDING_OPEN, config.CONFIRM_WINNERS, themePalette)}
                         </section>
                     )}
 
@@ -50,7 +54,7 @@ class Status extends Component {
         );
     }
 
-    createLeadingBidTable(auctionsWithUserBids, biddingOpen, confirmWinners) {
+    createLeadingBidTable(auctionsWithUserBids, biddingOpen, confirmWinners, themePalette) {
 
         const getStatus = (auction, biddingOpen) => {
             if (biddingOpen) {
@@ -94,7 +98,7 @@ class Status extends Component {
                         return (
                             <TableRow selectable={false} key={auctionWithUserBid.uid}>
                                 <TableRowColumn colSpan={3}>{auctionWithUserBid.title}</TableRowColumn>
-                                {biddingOpen ? '' : <TableRowColumn colSpan={4}>{getStatus(auctionWithUserBid, biddingOpen)}</TableRowColumn>}
+                                {biddingOpen ? '' : <TableRowColumn colSpan={4}>{getStatus(auctionWithUserBid, biddingOpen, themePalette)}</TableRowColumn>}
                                 <TableRowColumn>{auctionWithUserBid.owner.displayName}</TableRowColumn>
                                 <TableRowColumn>${auctionWithUserBid.highBid}</TableRowColumn>
                                 <TableRowColumn>${auctionWithUserBid.userHighBid.bidAmount}</TableRowColumn>
@@ -109,7 +113,7 @@ class Status extends Component {
     }
 
 
-    createOwnedAuctionTable(auctionsOwned, biddingOpen, confirmWinners) {
+    createOwnedAuctionTable(auctionsOwned, biddingOpen, confirmWinners, themePalette) {
 
         const getBidStatus = (bid, topBidIndex, allBidsIndex, confirmWinners, auctionUid) => {
             if (biddingOpen) {
@@ -124,7 +128,7 @@ class Status extends Component {
                             auctionUid
                         })}></RaisedButton>
                     ) : (
-                        <RaisedButton label={'Request'} onClick={() => this.ownerBidConfirmation({
+                        <RaisedButton labelColor={themePalette.primary1Color} label={'Request'} onClick={() => this.ownerBidConfirmation({
                             ownerConfirmed: true, 
                             bid, 
                             topBidIndex,
@@ -132,7 +136,7 @@ class Status extends Component {
                             auctionUid
                         })}></RaisedButton>
                     )}
-                    <FlatButton icon={<CloseIcon />} onClick={() => this.ownerBidConfirmation({
+                    <FlatButton icon={<CloseIcon />} style={{color: themePalette.primary1Color}} onClick={() => this.ownerBidConfirmation({
                         ownerConfirmed: false, 
                         bid, 
                         topBidIndex,
@@ -141,11 +145,11 @@ class Status extends Component {
                     })}></FlatButton>
                 </div>
             } else if (confirmWinners && !bid.bidderConfirmed) {
-                return 'Pending Bidder';
+                return <span style={{color: themePalette.ternaryTextColor}}>Pending Bidder</span>;
             } else if (confirmWinners && bid.ownerConfirmed && bid.bidderConfirmed) {
                 return <div>
-                    <CleckCircle style={{marginTop:'.6em', marginBottom: '-.6em'}}/>
-                    <FlatButton style={{width:'10px'}} icon={<MailOutlineIcon />} href={'mailto:'+bid.bidderObj.email}/>
+                    <CleckCircle style={{ marginBottom: '-0.75em'}}/>
+                    <FlatButton style={{width:'10px', color: themePalette.primary1Color}} icon={<MailOutlineIcon />} href={'mailto:'+bid.bidderObj.email}/>
                     {bid.bidderObj.email}
                 </div>
             } else {
@@ -177,7 +181,7 @@ class Status extends Component {
                                                     <TableRow selectable={false} key={topBidIndex}>
                                                         <TableRowColumn colSpan={2}>${bid.bidAmount}</TableRowColumn>
                                                         <TableRowColumn colSpan={3}>{bid.bidderObj.name}</TableRowColumn>
-                                                        {biddingOpen ? '' : <TableRowColumn colSpan={11}>{getBidStatus(bid, topBidIndex, bid.allBidsIndex, confirmWinners, auctionOwned.uid)}</TableRowColumn>}
+                                                        {biddingOpen ? '' : <TableRowColumn colSpan={11}>{getBidStatus(bid, topBidIndex, bid.allBidsIndex, confirmWinners, auctionOwned.uid, themePalette)}</TableRowColumn>}
                                                     </TableRow>
                                                 );
                                             })}
@@ -194,4 +198,4 @@ class Status extends Component {
     }
 }
 
-export default Status;
+export default muiThemeable()(Status);
