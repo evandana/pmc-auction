@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 /** MATERIAL UI **/
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {cyan50,limeA200,yellow800} from 'material-ui/styles/colors';
+import {cyan50,cyan900,limeA200,yellow800} from 'material-ui/styles/colors';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 /** ROUTER **/
 import { Route } from 'react-router-dom';
@@ -75,6 +75,7 @@ class App extends Component {
                 accent1Color: limeA200,
                 ternaryTextColor: yellow800,
                 fadedPrimary1Color: cyan50,
+                primary2Color: cyan900,
                 // DEFAULTS
                 // primary1Color: cyan500,
                 // primary2Color: cyan700,
