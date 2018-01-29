@@ -21,6 +21,7 @@ class Status extends Component {
     constructor(props) {
         super(props);
         this.ownerBidConfirmation = this.props.ownerBidConfirmation.bind(this);
+        this.bidderBidConfirmation = this.props.bidderBidConfirmation.bind(this);
     }
 
     render() {
@@ -33,7 +34,7 @@ class Status extends Component {
             <div className='page'>
                 <div className='text-content'>
 
-                    <section className='row'>
+                    <section>
                         <h2>Auctions with Your Bids</h2>
                         <p>If you are the top bidder when the auction closes, you are expected to claim that item.</p>
                         <p>If an auction owner is awarding multiple winners and you have one of the highest few bids, you may be offered a chance to accept this at your highest bid for that item.</p>
@@ -57,13 +58,31 @@ class Status extends Component {
 
     createLeadingBidTable(auctionsWithUserBids, biddingOpen, confirmWinners, themePalette) {
 
-        const getStatus = (auction, biddingOpen) => {
+        const getStatus = (auction) => {
+
+            const bid = auction.userHighBid,
+                topBidIndex = auction.userHighBidRank,
+                allBidsIndex = auction.userHighBid.allBidsIndex, 
+                auctionUid = auction.uid;
+
             if (biddingOpen) {
                 return 'Bidding Open';
-            } else if (confirmWinners && auction.userHighBid.ownerConfirmed && !auction.userHighBid.bidderConfirmed) {
+            } else if (confirmWinners && auction.userHighBid.ownerConfirmed && auction.userHighBid.bidderConfirmed === undefined) {
                 return <div>
-                    <RaisedButton primary={true} label={'Confirm ($' + auction.userHighBid.bidAmount + ')'}></RaisedButton>
-                    <FlatButton style={{minWidth:undefined, color: themePalette.primary1Color}} label='Pass' />
+                    <RaisedButton primary={true} label={'Confirm ($' + auction.userHighBid.bidAmount + ')'} onClick={() => this.bidderBidConfirmation({
+                            bidderConfirmed: true,
+                            bid,
+                            topBidIndex,
+                            allBidsIndex,
+                            auctionUid
+                        })}></RaisedButton>
+                    <FlatButton style={{minWidth:undefined, color: themePalette.primary1Color}} label='Pass' onClick={() => this.bidderBidConfirmation({
+                            bidderConfirmed: false,
+                            bid,
+                            topBidIndex,
+                            allBidsIndex,
+                            auctionUid
+                        })}/>
                 </div>
             } else if (confirmWinners && (auction.userHighBid.ownerConfirmed === false || auction.userHighBidRank > auction.numberOffered + 3)) {
                 return 'Not won';
@@ -71,6 +90,8 @@ class Status extends Component {
                 return <span style={{color: themePalette.ternaryTextColor}}>Pending owner confirmation</span>;
             } else if (confirmWinners && auction.userHighBid.bidderConfirmed && auction.userHighBid.ownerConfirmed) {
                 return <span style={{color: themePalette.primary2Color}}>Confirmed!</span>;
+            } else if (auction.userHighBid.bidderConfirmed === false) {
+                return 'You declined'
             } else {
                 return 'Bidding closed';
             }
@@ -82,14 +103,14 @@ class Status extends Component {
                     return (
                         <Paper className='row middle-xs middle-sm' key={auctionWithUserBid.uid} style={{ padding: '2em', marginBottom: '1.5em' }}>
                             <div className='row col-xs-12 col-sm-12 col-md-5 middle-xs middle-sm middle-md'>
-                                <h3 style={{ margin: 0, padding:0, display:'block'}}  
+                                <h3 style={{ margin: 0, padding: '0 1em 0 0', display:'block'}}  
                                     className={biddingOpen ? 'col-xs-12' : confirmWinners && auctionWithUserBid.userHighBid.bidderConfirmed && auctionWithUserBid.userHighBid.ownerConfirmed ? 'col-xs-8 col-sm-6 col-md-8' : 'col-xs-6 col-sm-6 col-md-6'}>{
                                         auctionWithUserBid.title
                                     }</h3>
                                 {biddingOpen ? '' : <div 
                                     style={{padding:0, margin:0, display:'block'}} 
                                     className={confirmWinners && auctionWithUserBid.userHighBid.bidderConfirmed && auctionWithUserBid.userHighBid.ownerConfirmed ? 'col-xs-4 col-sm-6 col-md-4' : 'col-xs-6 col-sm-6 col-md-6'}>{
-                                    getStatus(auctionWithUserBid, biddingOpen, themePalette)
+                                    getStatus(auctionWithUserBid)
                                 }</div>}
                             </div>
 
@@ -133,9 +154,12 @@ class Status extends Component {
 
     createOwnedAuctionTable(auctionsOwned, biddingOpen, confirmWinners, themePalette) {
 
-        const getBidStatus = (bid, topBidIndex, allBidsIndex, confirmWinners, auctionUid) => {
+        const getBidStatus = (bid, topBidIndex, allBidsIndex, auctionUid) => {
             if (biddingOpen) {
-            } else if (confirmWinners && !bid.ownerConfirmed) {
+                return 'Bidding open'; // will never be shown
+            } else if (bid.ownerConfirmed === false) {
+                return 'You declined';
+            } else if (confirmWinners && bid.ownerConfirmed === undefined) {
                 return <div>
                     {topBidIndex === 0 ? (
                         <RaisedButton primary={true} label={'Confirm'} onClick={() => this.ownerBidConfirmation({
@@ -162,13 +186,15 @@ class Status extends Component {
                         auctionUid
                     })}></FlatButton>
                 </div>
-            } else if (confirmWinners && !bid.bidderConfirmed) {
+            } else if (confirmWinners && bid.bidderConfirmed === undefined) {
                 return <span style={{ color: themePalette.ternaryTextColor }}>Pending Bidder</span>;
             } else if (confirmWinners && bid.ownerConfirmed && bid.bidderConfirmed) {
                 return <div>
                     <FlatButton style={{ width: '10px', color: themePalette.primary1Color }} icon={<MailOutlineIcon />} href={'mailto:' + bid.bidderObj.email} />
                     {bid.bidderObj.email}
                 </div>
+            } else if ( bid.bidderConfirmed === false) {
+                return 'Bidder declined'
             } else {
                 return 'Bidding closed';
             }
@@ -178,10 +204,10 @@ class Status extends Component {
             <div>
                 {auctionsOwned.map(auctionOwned => {
                     return (
-                        <Paper key={auctionOwned.uid} style={{ padding: '2em', marginBottom: '1.5em' }}>
-                            <div style={{ position: 'relative' }}>
-                                <h3 style={{ marginTop: 0 }}>{auctionOwned.title}</h3>
-                                <p style={{ position: 'absolute', top: 0, right: 0, margin: 0, color: themePalette.accent3Color }}>{auctionOwned.numberOffered} Offered</p>
+                        <Paper key={auctionOwned.uid} style={{ padding: '2em 2em 1em 2em', marginBottom: '1.5em' }}>
+                            <div style={{ position: 'relative' }} className='row'>
+                                <h3 className='col-xs-8 col-sm-6 col-md-8' style={{ marginTop: 0 }}>{auctionOwned.title}</h3>
+                                <p className='col-xs-4 col-sm-6 col-md-4' style={{ position: 'absolute', top: 0, right: 0, margin: 0, color: themePalette.accent3Color }}>{auctionOwned.numberOffered} Offered</p>
                             </div>
 
                             <div>{!auctionOwned.topBids || !auctionOwned.topBids.length ? 'No bids yet' : (
@@ -194,7 +220,7 @@ class Status extends Component {
                                                     <TableRowColumn colSpan={1} style={{minWidth: '3em', padding:0}}>${bid.bidAmount}</TableRowColumn>
                                                     <TableRowColumn colSpan={2} style={{padding:0}}>{bid.bidderObj.name}</TableRowColumn>
                                                     {biddingOpen ? '' : <TableRowColumn colSpan={4} style={{padding:0}}>{
-                                                        getBidStatus(bid, topBidIndex, bid.allBidsIndex, confirmWinners, auctionOwned.uid, themePalette)
+                                                        getBidStatus(bid, topBidIndex, bid.allBidsIndex, auctionOwned.uid)
                                                     }</TableRowColumn>}
                                                 </TableRow>
                                             );
