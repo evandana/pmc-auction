@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import StatusView from 'components/view/Status';
 
-import { ownerBidConfirmation } from 'actions'
+import { ownerBidConfirmation, bidderBidConfirmation } from 'actions'
 
 const mapStateToProps = (state) => {
     return {
@@ -16,6 +16,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         ownerBidConfirmation: (...rest) => {dispatch(ownerBidConfirmation(...rest))},
+        bidderBidConfirmation: (...rest) => {dispatch(bidderBidConfirmation(...rest))},
     }
 };
 

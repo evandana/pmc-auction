@@ -21,6 +21,7 @@ import {
 
     // AUCTIONS
     OWNER_BID_CONFIRMATION,
+    BIDDER_BID_CONFIRMATION,
     FETCH_AUCTION,
     FETCH_AUCTIONS,
     GET_AUCTIONS,
@@ -119,6 +120,17 @@ export function ownerBidConfirmation({ownerConfirmed, bid, topBidIndex, allBidsI
     return {
         type: OWNER_BID_CONFIRMATION,
         ownerConfirmed,
+        bid,
+        topBidIndex,
+        allBidsIndex,
+        auctionUid,
+    }
+}
+
+export function bidderBidConfirmation({bidderConfirmed, bid, topBidIndex, allBidsIndex, auctionUid}) {
+    return {
+        type: BIDDER_BID_CONFIRMATION,
+        bidderConfirmed,
         bid,
         topBidIndex,
         allBidsIndex,
