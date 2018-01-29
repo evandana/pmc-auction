@@ -33,7 +33,7 @@ class Status extends Component {
             <div className='page'>
                 <div className='text-content'>
 
-                    <section>
+                    <section className='row'>
                         <h2>Auctions with Your Bids</h2>
                         <p>If you are the top bidder when the auction closes, you are expected to claim that item.</p>
                         <p>If an auction owner is awarding multiple winners and you have one of the highest few bids, you may be offered a chance to accept this at your highest bid for that item.</p>
@@ -62,8 +62,8 @@ class Status extends Component {
                 return 'Bidding Open';
             } else if (confirmWinners && auction.userHighBid.ownerConfirmed && !auction.userHighBid.bidderConfirmed) {
                 return <div>
-                    <RaisedButton primary={true} label={'Confirm at $' + auction.userHighBid.bidAmount}></RaisedButton>
-                    <RaisedButton label='Pass'></RaisedButton>
+                    <RaisedButton primary={true} label={'Confirm ($' + auction.userHighBid.bidAmount + ')'}></RaisedButton>
+                    <FlatButton style={{minWidth:undefined, color: themePalette.primary1Color}} label='Pass' />
                 </div>
             } else if (confirmWinners && (auction.userHighBid.ownerConfirmed === false || auction.userHighBidRank > auction.numberOffered + 3)) {
                 return 'Not won';
@@ -80,38 +80,49 @@ class Status extends Component {
             <div>
                 {auctionsWithUserBids.map(auctionWithUserBid => {
                     return (
-                        <Paper key={auctionWithUserBid.uid} style={{ padding: '2em', marginBottom: '1.5em' }}>
-                            <div style={{ position: 'relative' }}>
-                                <h3 style={{ marginTop: 0 }}>{auctionWithUserBid.title}</h3>
-                                {biddingOpen ? '' : <div>{getStatus(auctionWithUserBid, biddingOpen, themePalette)}</div>}
+                        <Paper className='row middle-xs middle-sm' key={auctionWithUserBid.uid} style={{ padding: '2em', marginBottom: '1.5em' }}>
+                            <div className='row col-xs-12 col-sm-12 col-md-5 middle-xs middle-sm middle-md'>
+                                <h3 style={{ margin: 0, padding:0, display:'block'}}  
+                                    className={biddingOpen ? 'col-xs-12' : confirmWinners && auctionWithUserBid.userHighBid.bidderConfirmed && auctionWithUserBid.userHighBid.ownerConfirmed ? 'col-xs-8 col-sm-6 col-md-8' : 'col-xs-6 col-sm-6 col-md-6'}>{
+                                        auctionWithUserBid.title
+                                    }</h3>
+                                {biddingOpen ? '' : <div 
+                                    style={{padding:0, margin:0, display:'block'}} 
+                                    className={confirmWinners && auctionWithUserBid.userHighBid.bidderConfirmed && auctionWithUserBid.userHighBid.ownerConfirmed ? 'col-xs-4 col-sm-6 col-md-4' : 'col-xs-6 col-sm-6 col-md-6'}>{
+                                    getStatus(auctionWithUserBid, biddingOpen, themePalette)
+                                }</div>}
                             </div>
 
-                            <Table selectable={false} >
-                                <TableHeader
-                                    displaySelectAll={false}
-                                    adjustForCheckbox={false}
-                                    style={{borderBottom: 'none'}}
-                                    >
-                                    <TableRow
-                                        style={{borderBottom: 'none', height:'1em'}}
+                            <div className='col-xs-12 col-sm-12 col-md-1'>&nbsp;</div>
+
+                            <div className='col-sm-12 col-md-6'>
+                                <Table selectable={false} style={{padding:0}}>
+                                    <TableHeader
+                                        displaySelectAll={false}
+                                        adjustForCheckbox={false}
+                                        style={{borderBottom: 'none'}}
                                         >
-                                        <TableHeaderColumn colSpan={2} style={{height:'1em'}}>Owner</TableHeaderColumn>
-                                        <TableHeaderColumn style={{height:'1em'}}>Your Bid</TableHeaderColumn>
-                                        <TableHeaderColumn style={{height:'1em'}}>Bid Rank</TableHeaderColumn>
-                                        <TableHeaderColumn style={{height:'1em'}}># Offered</TableHeaderColumn>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody
-                                    displayRowCheckbox={false}
-                                >
-                                    <TableRow selectable={false} key={auctionWithUserBid.uid}>
-                                        <TableRowColumn colSpan={2}>{auctionWithUserBid.owner.displayName}</TableRowColumn>
-                                        <TableRowColumn>${auctionWithUserBid.userHighBid.bidAmount}</TableRowColumn>
-                                        <TableRowColumn>{auctionWithUserBid.userHighBidRank} / {auctionWithUserBid.bidCount}</TableRowColumn>
-                                        <TableRowColumn>{auctionWithUserBid.numberOffered}</TableRowColumn>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
+                                        <TableRow
+                                            style={{borderBottom: 'none', height:'1em'}}
+                                            >
+                                            <TableHeaderColumn colSpan={2} style={{padding:0, height:'1em'}}>Owner</TableHeaderColumn>
+                                            <TableHeaderColumn style={{padding:0, height:'1em'}}>Your Bid</TableHeaderColumn>
+                                            <TableHeaderColumn style={{padding:0, height:'1em'}}>Bid Rank</TableHeaderColumn>
+                                            <TableHeaderColumn style={{padding:0, height:'1em'}}># Offered</TableHeaderColumn>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody
+                                        displayRowCheckbox={false}
+                                    >
+                                        <TableRow selectable={false} key={auctionWithUserBid.uid} style={{height:'1em'}}>
+                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}} colSpan={2}>{auctionWithUserBid.owner.displayName}</TableRowColumn>
+                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>${auctionWithUserBid.userHighBid.bidAmount}</TableRowColumn>
+                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.userHighBidRank} / {auctionWithUserBid.bidCount}</TableRowColumn>
+                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.numberOffered}</TableRowColumn>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </Paper>
                     );
                 })}
@@ -180,9 +191,9 @@ class Status extends Component {
                                         {auctionOwned.topBids.map((bid, topBidIndex) => {
                                             return (
                                                 <TableRow selectable={false} key={topBidIndex} style={bid.bidderConfirmed && bid.ownerConfirmed ? { margin: '1px solid ' + themePalette.fadedPrimary1Color } : {}}>
-                                                    <TableRowColumn colSpan={1} style={{minWidth: '3em', paddingLeft:0}}>${bid.bidAmount}</TableRowColumn>
-                                                    <TableRowColumn colSpan={2}>{bid.bidderObj.name}</TableRowColumn>
-                                                    {biddingOpen ? '' : <TableRowColumn colSpan={4}>{
+                                                    <TableRowColumn colSpan={1} style={{minWidth: '3em', padding:0}}>${bid.bidAmount}</TableRowColumn>
+                                                    <TableRowColumn colSpan={2} style={{padding:0}}>{bid.bidderObj.name}</TableRowColumn>
+                                                    {biddingOpen ? '' : <TableRowColumn colSpan={4} style={{padding:0}}>{
                                                         getBidStatus(bid, topBidIndex, bid.allBidsIndex, confirmWinners, auctionOwned.uid, themePalette)
                                                     }</TableRowColumn>}
                                                 </TableRow>
