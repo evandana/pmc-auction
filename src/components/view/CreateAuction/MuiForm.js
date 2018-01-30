@@ -2,10 +2,10 @@ import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import TextField from 'material-ui/TextField'
 import FlatButton from 'material-ui/FlatButton'
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
+// import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import Checkbox from 'material-ui/Checkbox'
-import SelectField from 'material-ui/SelectField'
-import MenuItem from 'material-ui/MenuItem'
+// import SelectField from 'material-ui/SelectField'
+// import MenuItem from 'material-ui/MenuItem'
 // import asyncValidate from './asyncValidate'
 
 const validate = values => {
@@ -54,31 +54,31 @@ const renderCheckbox = ({ input, label }) => (
   />
 )
 
-const renderRadioGroup = ({ input, ...rest }) => (
-  <RadioButtonGroup
-    {...input}
-    {...rest}
-    valueSelected={input.value}
-    onChange={(event, value) => input.onChange(value)}
-  />
-)
+// const renderRadioGroup = ({ input, ...rest }) => (
+//   <RadioButtonGroup
+//     {...input}
+//     {...rest}
+//     valueSelected={input.value}
+//     onChange={(event, value) => input.onChange(value)}
+//   />
+// )
 
-const renderSelectField = ({
-  input,
-  label,
-  meta: { touched, error },
-  children,
-  ...custom
-}) => (
-    <SelectField
-      floatingLabelText={label}
-      errorText={touched && error}
-      {...input}
-      onChange={(event, index, value) => input.onChange(value)}
-      children={children}
-      {...custom}
-    />
-  )
+// const renderSelectField = ({
+//   input,
+//   label,
+//   meta: { touched, error },
+//   children,
+//   ...custom
+// }) => (
+//     <SelectField
+//       floatingLabelText={label}
+//       errorText={touched && error}
+//       {...input}
+//       onChange={(event, index, value) => input.onChange(value)}
+//       children={children}
+//       {...custom}
+//     />
+//   )
 
 const MaterialUiForm = props => {
   const { handleSubmit, submitForm, pristine, reset, submitting } = props
