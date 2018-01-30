@@ -31,7 +31,7 @@ import Status from 'components/controller/Status';
 import Navigation from 'components/controller/Navigation';
 import Footer from 'components/view/common/Footer';
 import AppModal from 'components/controller/Modal';
-import { getUser, getProducts, setCurrentUser, fetchAuctions, fetchConfig } from './actions';
+import { getUser, fetchAuctions, fetchConfig } from './actions';
 
 import './app.css';
 
@@ -105,7 +105,7 @@ class App extends Component {
                         <div className="app">
                             <Navigation />
                             <Switch>
-                                <AuthorizedRoute exact path="/" component={Home} />
+                                <Route exact path="/" component={Home} />
                                 <AuthorizedRoute exact path="/about" component={Home} />
                                 <AuthorizedRoute exact path="/auctions" component={Auctions} />
                                 <AuthorizedRoute exact path="/status" component={Status} />

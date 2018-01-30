@@ -1,10 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-
-import CreateAuctionForm from './CreateAuctionForm'
-
-import RemoteSubmit from './RemoteSubmit';
-import RemoteSubmitButton from './RemoteSubmitButton';
+import React, { Component } from 'react'
 
 import { createAuction } from 'actions';
 

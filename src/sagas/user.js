@@ -1,4 +1,4 @@
-import { select, takeEvery } from 'redux-saga/effects';
+import { takeEvery } from 'redux-saga/effects';
 
 import adjectiveList from 'static/persona-adjectives'
 import animalList from 'static/persona-animals'
@@ -9,7 +9,6 @@ import {
 } from '../constants';
 
 import { setCurrentUser, updateUser as updateUserAction } from 'actions';
-import { querystring } from '@firebase/util';
 
 
 function* getUser({ googleUserData }) {
@@ -81,7 +80,6 @@ function* getUser({ googleUserData }) {
 
 function* updateUser({ userData }) {
 
-    let uid = userData.uid || userData.googleUid;
     const personaUid = transformPersonaStringIntoUid(userData.persona);
     const updates = {};
     updates['users/' + personaUid] = {

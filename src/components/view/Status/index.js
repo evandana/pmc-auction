@@ -12,9 +12,6 @@ import {
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import CleckCircle from 'material-ui/svg-icons/action/check-circle';
 import MailOutlineIcon from 'material-ui/svg-icons/communication/mail-outline';
 import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import KeyboardArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
@@ -33,7 +30,7 @@ class Status extends Component {
 
     render() {
 
-        const { user, config, auctionsWithUserBids, auctionsOwned, ...rest } = this.props;
+        const { user, config, auctionsWithUserBids, auctionsOwned } = this.props;
 
         const themePalette = this.props.muiTheme.palette;
 

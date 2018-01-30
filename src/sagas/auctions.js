@@ -1,4 +1,4 @@
-import { select, takeEvery } from 'redux-saga/effects';
+import { takeEvery } from 'redux-saga/effects';
 
 import {
     FETCH_AUCTION,
@@ -155,6 +155,8 @@ function* createAuction({auctionData}) {
 
     window._FIREBASE_DB_.ref()
         .update(updates);
+    
+    yield;
 }
 
 
