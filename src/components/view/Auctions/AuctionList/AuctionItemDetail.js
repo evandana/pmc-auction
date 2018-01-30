@@ -1,17 +1,16 @@
 // Libraries
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 // Material UI
-import Avatar from 'material-ui/Avatar';
 import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
 import Card from 'material-ui/Card/Card';
 import CardActions from 'material-ui/Card/CardActions';
-import CardHeader from 'material-ui/Card/CardHeader';
+// import CardHeader from 'material-ui/Card/CardHeader';
 import CardMedia from 'material-ui/Card/CardMedia';
 import CardText from 'material-ui/Card/CardText';
 import CardTitle from 'material-ui/Card/CardTitle';
-import Colors, { cyan200 } from 'material-ui/styles/colors';
+import { cyan200 } from 'material-ui/styles/colors';
 import ContentClear from 'material-ui/svg-icons/content/clear';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -19,8 +18,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 import { getImageForEnv } from 'static/images/index'
-
-import { placeBid } from 'actions'
 
 // Styles
 import './_auctionItemDetail.css';
@@ -70,8 +67,6 @@ class AuctionItemDetail extends Component {
 
 	render() {
 
-		// console.log('render in item detail')
-
 		const {
 			config,
 			data,
@@ -80,11 +75,6 @@ class AuctionItemDetail extends Component {
 			toggleAuctionDetail,
 			user,
 		} = this.props;
-
-		let {
-
-		  } = this.props;
-
 
 		let urlStr = getImageForEnv('auction-big/' + data.image + '.png');
 
@@ -96,13 +86,12 @@ class AuctionItemDetail extends Component {
 				position: 'relative'
 			},
 			actionsContainer: {
-				zIndex: 100,
-				position: 'fixed',
 				marginTop: 25,
-				zIndex: 100,
-				width: '100%',
 				maxWidth: 675,
-				textAlign: 'right'
+				position: 'fixed',
+				textAlign: 'right',
+				width: '100%',
+				zIndex: 100,
 			},
 			closeButton: {
 			},
@@ -269,7 +258,7 @@ class AuctionItemDetail extends Component {
 					<CardMedia
 						overlay={<CardTitle subtitle={data.subTitle || data.title} />}
 					>
-						<img src={urlStr} />
+						<img alt="Auction item teaser" src={urlStr} />
 					</CardMedia>
 				</Card>
 			</div>

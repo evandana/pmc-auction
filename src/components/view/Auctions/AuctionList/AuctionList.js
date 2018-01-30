@@ -1,29 +1,19 @@
 // Libraries
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
 
 // Material-UI
 import { GridList, GridTile } from 'material-ui/GridList';
-import StarBorder from 'material-ui/svg-icons/toggle/star-border';
-import PlusOne from 'material-ui/svg-icons/social/plus-one';
-import IconButton from 'material-ui/IconButton';
 
 import { getImageForEnv } from 'static/images/index'
-
-// Styles
-// import './header.scss';
-// Application Components
-import AuctionItem from './';
-import AuctionItemDetail from './';
 
 import './_auctionList.scss'
 
 
 class AuctionList extends Component {
 
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
 
@@ -33,7 +23,6 @@ class AuctionList extends Component {
       config,
 
       // methods
-      placeBid,
       toggleAuctionDetail,
      } = this.props;
 
@@ -109,7 +98,7 @@ class AuctionList extends Component {
               rows={tile.featured ? 1 : 1}
               className="auction-list__tile"
             >
-              <img src={tile.img} />
+              <img src={tile.img} alt="Auction Item teaser"/>
             </GridTile>
           ))}
         </GridList>
