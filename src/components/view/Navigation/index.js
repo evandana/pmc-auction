@@ -5,7 +5,6 @@ import AppBar from 'material-ui/AppBar';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import { blueGrey600, cyan600 } from 'material-ui/styles/colors'
 
@@ -14,15 +13,15 @@ import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
 import ChromeReaderModeIcon from 'material-ui/svg-icons/action/chrome-reader-mode';
 import CreditCardIcon from 'material-ui/svg-icons/action/credit-card';
 import RedeemIcon from 'material-ui/svg-icons/action/redeem';
-import TimelineIcon from 'material-ui/svg-icons/action/timeline';
+// import TimelineIcon from 'material-ui/svg-icons/action/timeline';
 import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
-import LocalOfferIcon from 'material-ui/svg-icons/maps/local-offer';
-import MoodIcon from 'material-ui/svg-icons/social/mood';
+// import LocalOfferIcon from 'material-ui/svg-icons/maps/local-offer';
+// import MoodIcon from 'material-ui/svg-icons/social/mood';
 import PollIcon from 'material-ui/svg-icons/social/poll';
-import PeopleIcon from 'material-ui/svg-icons/social/people';
+// import PeopleIcon from 'material-ui/svg-icons/social/people';
 import PersonIcon from 'material-ui/svg-icons/social/person';
-import WhatsHotIcon from 'material-ui/svg-icons/social/whatshot';
-import StarIcon from 'material-ui/svg-icons/toggle/star';
+// import WhatsHotIcon from 'material-ui/svg-icons/social/whatshot';
+// import StarIcon from 'material-ui/svg-icons/toggle/star';
 import AddCircleIcon from 'material-ui/svg-icons/content/add-circle';
 
 import { getImageForEnv } from 'static/images/index'
@@ -165,7 +164,7 @@ class Navigation extends React.Component {
                                 marginLeft:'-8px',
                                 marginBottom:'-8px',
                             }}>
-                            <img style={{height:'56px',width:'56px'}} src={getImageForEnv('happinessexchange.png')} />
+                            <img style={{height:'56px',width:'56px'}} alt="Eappiness Exchange logo" src={getImageForEnv('happinessexchange.png')} />
                         </div>
                     }
                 >
@@ -192,7 +191,7 @@ class Navigation extends React.Component {
                                 marginLeft:'-8px',
                                 marginBottom:'-8px',
                             }}>
-                            <img style={{height:'56px',width:'56px'}} src={getImageForEnv('happinessexchange.png')} />
+                            <img style={{height:'56px',width:'56px'}} alt="Happiness Exchange logo" src={getImageForEnv('happinessexchange.png')} />
                         </div>
                     }
                     iconElementRight={iconMenu}

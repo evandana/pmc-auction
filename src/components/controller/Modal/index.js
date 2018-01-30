@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import Modal from 'components/view/Modal';
 import LoginController from 'components/controller/Modal/Login';
-import PendingUserController from 'components/controller/Modal/PendingUser';
 
 const mapStateToProps = (state) => {
     let { open, activeModal, title, ModalComponent } = state.modal;

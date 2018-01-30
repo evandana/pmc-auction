@@ -3,9 +3,9 @@ import './styles.css';
 
 const NotAuthorizedPage = props => {
 
-    const { from } = props;
+    // const { from } = props;
 
-    const path = from.pathname;
+    // const path = from.pathname;
 
     return (
         <div className="page">
