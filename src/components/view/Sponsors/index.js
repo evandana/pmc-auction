@@ -13,20 +13,20 @@ import './sponsors.css'
 const Sponsors = ({ prop }) => {
 
     const sponsors = [
-        {
-            name: 'Landry\'s Bicycles',
-            link: 'http://www.landrys.com/',
-            subtext: 'Our gracious hosts',
-            image: getImageForEnv('sponsor-landrys.png'),
-            color: amber500
-        },
-        {
-            name: 'OTTO Pizza',
-            link: 'http://www.ottoportland.com/',
-            subtext: 'A little slice of heaven',
-            image: getImageForEnv('ottos.png'),
-            color: amber500
-        },
+        // {
+        //     name: 'Landry\'s Bicycles',
+        //     link: 'http://www.landrys.com/',
+        //     subtext: 'Our gracious hosts',
+        //     image: getImageForEnv('sponsor-landrys.png'),
+        //     color: amber500
+        // },
+        // {
+        //     name: 'OTTO Pizza',
+        //     link: 'http://www.ottoportland.com/',
+        //     subtext: 'A little slice of heaven',
+        //     image: getImageForEnv('ottos.png'),
+        //     color: amber500
+        // },
         {
             name: 'Holly Broussard and Matthew Kihm',
             subtext: 'Our incredible graphic designers',
@@ -40,48 +40,48 @@ const Sponsors = ({ prop }) => {
             image: '', //getImageForEnv('dave.png'),
             color: amber500
         },
-        {
-            name: 'Cambridge Brewing Company',
-            link: 'http://www.cambridgebrewingcompany.com/',
-            subtext: 'Amazing local brews',
-            image: getImageForEnv('sponsor-cbc.png'),
-            color: yellow600
-        },
-        {
-            name: 'Sky Zone',
-            link: 'http://www.skyzone.com/',
-            subtext: 'Bounce with me now...',
-            image: getImageForEnv('skyzone-logo.png'),
-            color: yellow400
-        },
-        {
-            name: 'Harpoon Brewery',
-            link: 'http://www.harpoonbrewery.com/',
-            subtext: 'Love Beer. Love Life.',
-            image: getImageForEnv('harpoon.jpg'),
-            color: yellow400
-        },
-        {
-            name: 'Bantam Cider',
-            link: 'http://www.bantamcider.com/',
-            subtext: 'Local Wunderkind',
-            image: getImageForEnv('bantam.png'),
-            color: yellow400
-        },
-        {
-            name: 'Washington Square Tavern',
-            link: 'http://washingtonsquaretavern.com/',
-            subtext: 'For a good time, call Gerry',
-            image: getImageForEnv('washsq.png'),
-            color: yellow400
-        },
-        {
-            name: 'Launch Trampoline Park',
-            link: 'http://launchwatertown.com/',
-            subtext: 'Boing!',
-            image: getImageForEnv('launch.png'),
-            color: yellow400
-        },
+        // {
+        //     name: 'Cambridge Brewing Company',
+        //     link: 'http://www.cambridgebrewingcompany.com/',
+        //     subtext: 'Amazing local brews',
+        //     image: getImageForEnv('sponsor-cbc.png'),
+        //     color: yellow600
+        // },
+        // {
+        //     name: 'Sky Zone',
+        //     link: 'http://www.skyzone.com/',
+        //     subtext: 'Bounce with me now...',
+        //     image: getImageForEnv('skyzone-logo.png'),
+        //     color: yellow400
+        // },
+        // {
+        //     name: 'Harpoon Brewery',
+        //     link: 'http://www.harpoonbrewery.com/',
+        //     subtext: 'Love Beer. Love Life.',
+        //     image: getImageForEnv('harpoon.jpg'),
+        //     color: yellow400
+        // },
+        // {
+        //     name: 'Bantam Cider',
+        //     link: 'http://www.bantamcider.com/',
+        //     subtext: 'Local Wunderkind',
+        //     image: getImageForEnv('bantam.png'),
+        //     color: yellow400
+        // },
+        // {
+        //     name: 'Washington Square Tavern',
+        //     link: 'http://washingtonsquaretavern.com/',
+        //     subtext: 'For a good time, call Gerry',
+        //     image: getImageForEnv('washsq.png'),
+        //     color: yellow400
+        // },
+        // {
+        //     name: 'Launch Trampoline Park',
+        //     link: 'http://launchwatertown.com/',
+        //     subtext: 'Boing!',
+        //     image: getImageForEnv('launch.png'),
+        //     color: yellow400
+        // },
     ]
 
 

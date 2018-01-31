@@ -7,8 +7,7 @@ const Donate = (props) => {
     return (
         <div className='page'>
             <div className='text-content'>
-                <h1>Donate</h1>
-
+            
                 <div className="row">
                     <div className="col-xs-12 col-sm-6" style={{paddingRight:'2em'}}>
                         <h3>Double your donation!</h3>
