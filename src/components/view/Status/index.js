@@ -22,10 +22,9 @@ import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
 import ContentCopyIcon from 'material-ui/svg-icons/content/content-copy';
 import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import KeyboardArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
-import MailOutlineIcon from 'material-ui/svg-icons/communication/mail-outline';
+// import MailOutlineIcon from 'material-ui/svg-icons/communication/mail-outline';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import RemoveCircleOutlineIcon from 'material-ui/svg-icons/content/remove-circle-outline'
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 class Status extends Component {
 
@@ -211,8 +210,6 @@ class Status extends Component {
 
 
     createOwnedAuctionTable(auctionsOwned, biddingOpen, confirmWinners, themePalette) {
-        
-        const localSetState = this.setState;
 
         const getBidStatus = (bid, topBidIndex, allBidsIndex, auctionUid) => {
             if (biddingOpen) {
