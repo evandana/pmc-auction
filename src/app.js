@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 /** MATERIAL UI **/
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {cyan50,blueGrey200,cyan500,cyan900,limeA200,yellow800} from 'material-ui/styles/colors';
+import {cyan50,blueGrey200,cyan500,cyan900,limeA200,yellow800,pink800,green400} from 'material-ui/styles/colors';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 /** ROUTER **/
 import { Route } from 'react-router-dom';
@@ -78,6 +78,9 @@ class App extends Component {
                 primaryLinkColor: cyan500,
                 secondaryLinkColor: blueGrey200,
                 primary2Color: cyan900,
+                errorColor: pink800,
+                warningColor: yellow800,
+                successColor: green400,
                 // DEFAULTS
                 // primary1Color: cyan500,
                 // primary2Color: cyan700,

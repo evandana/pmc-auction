@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { getImageForEnv } from 'static/images/index'
+
 const Home = (props) => {
 
     const { user, userPermissions, openLoginModal } = props;
@@ -8,22 +10,35 @@ const Home = (props) => {
 
     if (userPermissions.basic) {
         view = (
-            <div>
-                <h2>Welcome!</h2>
+            <div className="row middle-sm">
 
-                <p>The Happiness Exchange is a friendly auction of time and talent benefitting Cancer Research.</p>
+                <section className="col-xs-12 col-sm-4 col-md-6" style={{textAlign:'center'}}>
+                    <img
+                        style={{maxWidth:'calc(100% - 4em)',maxHeight:'calc(100%-4em)', padding:'2em'}}
+                        src={getImageForEnv('he-lockup.png')} 
+                        alt="Happiness Exchange logo"
+                        />
+                </section>
 
-                <p>Thank you to those who have supported this cause in the past!
-                This will be my 6th year riding the PMC, in honor of my father and countless other family and friends.</p>
+                <section className="col-xs-12 col-sm-8 col-md-6">
 
-                <p>100% of every donated dollar will go to Dana Farber Cancer Institute, where my dad recieved exceptional care.
-                Your help is greatly appreciated in my goal of raising over $8,000 for this August bike ride.</p>
+                    <h2>Welcome!</h2>
 
-                <h2>Bidding</h2>
+                    <p>The Happiness Exchange is a friendly auction of time and talent benefitting Cancer Research.</p>
 
-                <p>Live the evening of February [TBD].</p>
+                    <p>Thank you to those who have supported this cause in the past!
+                    This will be my 6th year riding the PMC, in honor of my father and countless other family and friends.</p>
 
-                <p>For funsies, you will be seen by other bidders as "{user.persona}".</p>
+                    <p>100% of every donated dollar will go to Dana Farber Cancer Institute, where my dad recieved exceptional care.
+                    Your help is greatly appreciated in my goal of raising over $8,000 for this August bike ride.</p>
+
+                    <h2>Bidding</h2>
+
+                    <p>Live the evening of February [TBD].</p>
+
+                    <p>For funsies, you will be seen by other bidders as "{user.persona}".</p>
+
+                </section>
 
             </div>
         );
@@ -39,7 +54,6 @@ const Home = (props) => {
     return (
         <div className='page'>
             <div className='text-content'>
-                <h1>About</h1>
                 {view}
             </div>
         </div>

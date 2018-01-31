@@ -8,6 +8,8 @@ import {
     CREATE_AUCTION,
     OWNER_BID_CONFIRMATION,
     BIDDER_BID_CONFIRMATION,
+    OWNER_BID_CONTACTED,
+    OWNER_BID_PLANNED,
 } from '../constants';
 
 import { refreshAuctions, refreshAuction } from '../actions';
@@ -124,6 +126,36 @@ function* bidderBidConfirmation({bidderConfirmed, bid, topBidIndex, allBidsIndex
     yield;
 }
 
+function* ownerBidContacted({contacted, bid, topBidIndex, allBidsIndex, auctionUid}) {
+    
+    let updatedBidObj = {
+        ...bid,
+        contacted,
+    };
+
+    delete updatedBidObj.allBidsIndex;
+    
+    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + allBidsIndex)
+        .set(updatedBidObj);
+
+    yield;
+}
+
+function* ownerBidPlanned({planned, bid, topBidIndex, allBidsIndex, auctionUid}) {
+
+    let updatedBidObj = {
+        ...bid,
+        planned,
+    };
+
+    delete updatedBidObj.allBidsIndex;
+    
+    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + allBidsIndex)
+        .set(updatedBidObj);
+
+    yield;
+}
+
 function* updateAuction({auctionData}) {
     window._FIREBASE_DB_.ref('auctions/' + auctionData.uid)
         .set(auctionData);
@@ -169,6 +201,8 @@ export default function* () {
         takeEvery(CREATE_AUCTION, createAuction),
         takeEvery(OWNER_BID_CONFIRMATION, ownerBidConfirmation),
         takeEvery(BIDDER_BID_CONFIRMATION, bidderBidConfirmation),
+        takeEvery(OWNER_BID_CONTACTED, ownerBidContacted),
+        takeEvery(OWNER_BID_PLANNED, ownerBidPlanned),
     ];
 }
 

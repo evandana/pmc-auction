@@ -27,6 +27,8 @@ import {
     REFRESH_AUCTION,
     SHOW_AUCTION_DETAIL,
     CREATE_AUCTION,
+    OWNER_BID_CONTACTED,
+    OWNER_BID_PLANNED,
 
 } from '../constants';
 
@@ -126,6 +128,28 @@ export function bidderBidConfirmation({bidderConfirmed, bid, topBidIndex, allBid
     return {
         type: BIDDER_BID_CONFIRMATION,
         bidderConfirmed,
+        bid,
+        topBidIndex,
+        allBidsIndex,
+        auctionUid,
+    }
+}
+
+export function ownerBidContacted ({contacted, bid, topBidIndex, allBidsIndex, auctionUid}) {
+    return {
+        type: OWNER_BID_CONTACTED,
+        contacted,
+        bid,
+        topBidIndex,
+        allBidsIndex,
+        auctionUid,
+    }
+}
+
+export function ownerBidPlanned ({planned, bid, topBidIndex, allBidsIndex, auctionUid}) {
+    return {
+        type: OWNER_BID_PLANNED,
+        planned,
         bid,
         topBidIndex,
         allBidsIndex,
