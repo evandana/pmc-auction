@@ -101,9 +101,11 @@ class Navigation extends React.Component {
             return this.buildTab(tabObj);
         });
 
+        const initialSelectedIndex = tabObjs.findIndex(tab => '/' + tab.link === currentPagePath) 
+
         return (
             <Tabs
-                initialSelectedIndex={tabs.findIndex(tab => tab.props['data-route'] === currentPagePath)}
+                initialSelectedIndex={initialSelectedIndex === -1 ? 0 : initialSelectedIndex}
                 onChange={this.navigateToRoute}
                 tabItemContainerStyle={{backgroundColor: cyan600}}
                 >
