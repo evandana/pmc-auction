@@ -1,7 +1,7 @@
 import { takeEvery } from 'redux-saga/effects';
 
-import adjectiveList from 'static/persona-adjectives'
-import animalList from 'static/persona-animals'
+import adjectiveList from './persona-adjectives'
+import animalList from './persona-animals'
 
 import {
     GET_USER,

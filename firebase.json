@@ -1,9 +1,20 @@
 {
-  "firebase": "pmc-auction",
-  "public": "public",
-  "ignore": [
-    "firebase.json",
-    "**/.*",
-    "**/node_modules/**"
-  ]
+  "hosting": {
+    "firebase": "pmc-auction",
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+      {"source": "/service-worker.js", "headers": [{"key": "Cache-Control", "value": "no-cache"}]}
+    ],
+    "rewrites": [
+      {
+        "source": "/{about,auctions,status,donate,sponsors,results,donor-info,create-auctions}",
+        "destination": "/index.html"
+      }
+    ]
+  }
 }
