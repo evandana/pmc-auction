@@ -42,14 +42,16 @@ class Auctions extends Component {
 
             // console.log('detailObj', detailObj);
             return (
-                <AuctionItemDetail
-                    key={detailObj.uid}
-                    data={detailObj}
-                    config={config}
-                    placeBid={this.placeBid}
-                    open={false}
-                    toggleAuctionDetail={this.toggleAuctionDetail}
-                />
+                <div className="page">
+                    <AuctionItemDetail
+                        key={detailObj.uid}
+                        data={detailObj}
+                        config={config}
+                        placeBid={this.placeBid}
+                        open={false}
+                        toggleAuctionDetail={this.toggleAuctionDetail}
+                    />
+                </div>
             )
         } else {
 

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import muiThemeable from 'material-ui/styles/muiThemeable';
+
 import { Link } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar';
 import IconMenu from 'material-ui/IconMenu';
@@ -34,6 +36,7 @@ class Navigation extends React.Component {
         super(props);
         this.navigateToRoute = this.navigateToRoute.bind(this);
         this.toggleAuctionDetail = this.props.toggleAuctionDetail.bind(this);
+        this.themePalette = this.props.muiTheme.palette;
     }
     
     buildIconMenu (permissions, actions) {
@@ -109,6 +112,7 @@ class Navigation extends React.Component {
 
         return (
             <Tabs
+                inkBarStyle={{background: this.themePalette.highlight1Color}}
                 initialSelectedIndex={initialSelectedIndex === -1 ? 0 : initialSelectedIndex}
                 onChange={this.navigateToRoute}
                 tabItemContainerStyle={{backgroundColor: cyan600}}
@@ -216,4 +220,4 @@ class Navigation extends React.Component {
     }
 }
 
-export default Navigation;
+export default muiThemeable()(Navigation);
