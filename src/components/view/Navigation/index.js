@@ -33,6 +33,7 @@ class Navigation extends React.Component {
     constructor(props) {
         super(props);
         this.navigateToRoute = this.navigateToRoute.bind(this);
+        this.toggleAuctionDetail = this.props.toggleAuctionDetail.bind(this);
     }
     
     buildIconMenu (permissions, actions) {
@@ -51,6 +52,9 @@ class Navigation extends React.Component {
     };
 
     navigateToRoute (someArg, evt, tabEl) {
+        // close any open auction item
+        // this.toggleAuctionDetail();
+        // navigate
         this.props.history.push(tabEl.props['data-route']);
     };
 
@@ -108,6 +112,9 @@ class Navigation extends React.Component {
                 initialSelectedIndex={initialSelectedIndex === -1 ? 0 : initialSelectedIndex}
                 onChange={this.navigateToRoute}
                 tabItemContainerStyle={{backgroundColor: cyan600}}
+                onClick={() => {
+                        if (currentPagePath === 'auctions') { this.toggleAuctionDetail() }
+                    }}
                 >
                 {tabs}
             </Tabs>
