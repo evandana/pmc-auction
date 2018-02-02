@@ -174,7 +174,7 @@ class Navigation extends React.Component {
             );
         }
 
-        const titleLink = (<Link className="navigation__title-link" to="/">Welcome, {user.persona}</Link>);
+        const titleLink = (<Link className="navigation__title-link" to="/">Welcome, {user.displayName}</Link>);
         const iconMenu = this.buildIconMenu(userPermissions, { logout, openLoginModal });
         
         const navigationTabs = this.buildNavigationTabs(userPermissions, config);

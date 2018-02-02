@@ -13,4 +13,11 @@ footer {
     padding: 1em;
     color: #777;
 
+    height:1em;
+    min-height:1em;
+    max-height:1em;
+
+    text-overflow: ellipsis;
+    overflow-y: hidden;
+
 }

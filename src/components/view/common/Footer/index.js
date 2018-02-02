@@ -5,7 +5,7 @@ const Footer = () => {
 
     return (
         <footer>
-            100% of every dollar goes to cancer research at the Dana Farber Cancer Institute.
+            100% of every dollar goes to cancer research at DFCI.
         </footer>
     )
 }
