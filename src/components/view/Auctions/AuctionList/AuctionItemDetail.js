@@ -1,4 +1,5 @@
 // Libraries
+import moment from 'moment';
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
@@ -164,7 +165,7 @@ class AuctionItemDetail extends Component {
 					</div>
 					<CardTitle
 						title={data.title}
-						subtitle={'with ' + data.owner.persona}
+						subtitle={'with ' + data.owner.displayName}
 					/>
 					{
 						config.BIDDING_OPEN
@@ -253,7 +254,7 @@ class AuctionItemDetail extends Component {
 
 						</div>
 						<div className="detail-field"><label>Description</label><span>{data.description}</span></div>
-						<div className="detail-field"><label>Please use by</label><span>{data.expiration}</span></div>
+						<div className="detail-field"><label>Please use by</label><span>{moment(data.useBy).format('MMM Do')}</span></div>
 					</CardText>
 					<CardMedia
 						overlay={<CardTitle subtitle={data.subTitle || data.title} />}
