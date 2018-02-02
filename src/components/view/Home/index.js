@@ -25,6 +25,13 @@ const Home = (props) => {
                     <h2>Welcome!</h2>
 
                     <p>The Happiness Exchange is a friendly auction of time and talent benefitting Cancer Research.</p>
+    
+                    <h3>Goals</h3>
+                    <ol>
+                        <li>Honor the skills and talents of auction donors</li>
+                        <li>Connect people under shared interests</li>
+                        <li>Raise money towards treating and curing cancer</li>
+                    </ol>
 
                     <p>Thank you to those who have supported this cause in the past!
                     This will be my 6th year riding the PMC, in honor of my father and countless other family and friends.</p>
