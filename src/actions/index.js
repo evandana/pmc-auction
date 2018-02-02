@@ -168,7 +168,7 @@ export function toggleAuctionDetail(auctionUid) {
     if (auctionUid) {
         return {
             type: SHOW_AUCTION_DETAIL,
-            auctionUid
+            auctionUid,
         }
     } else {
         return {
