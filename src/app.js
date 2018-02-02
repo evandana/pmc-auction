@@ -72,7 +72,7 @@ class App extends Component {
 
         const muiTheme = getMuiTheme({
             palette: {
-                accent1Color: limeA200,
+                highlight1Color: limeA200,
                 ternaryTextColor: yellow800,
                 fadedPrimary1Color: cyan50,
                 primaryLinkColor: cyan500,

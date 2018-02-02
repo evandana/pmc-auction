@@ -153,20 +153,23 @@ class AuctionItemDetail extends Component {
 		return (
 			<div className="auction-item-detail">
 				<Card style={style.detailsPage} >
-					<div style={style.actionsContainer}>
-						<FloatingActionButton
-							backgroundColor={cyan200}
-							mini={true}
-							style={style.closeButton}
-							onClick={e => toggleAuctionDetail('', e)}
-						>
-							<ContentClear />
-						</FloatingActionButton>
+					<div className="row middle-xs middle-sm middle-md">
+						<CardTitle
+							title={data.title}
+							subtitle={'with ' + data.owner.displayName}
+							className="col-xs-9 col-sm-10 col-md-11"
+						/>
+						<div className="col-xs-3 col-sm-2 col-md-1">
+							<FloatingActionButton
+								backgroundColor={cyan200}
+								mini={true}
+								style={style.closeButton}
+								onClick={e => toggleAuctionDetail('', e)}
+							>
+								<ContentClear />
+							</FloatingActionButton>
+						</div>
 					</div>
-					<CardTitle
-						title={data.title}
-						subtitle={'with ' + data.owner.displayName}
-					/>
 					{
 						config.BIDDING_OPEN
 							?
@@ -228,25 +231,25 @@ class AuctionItemDetail extends Component {
 						}
 						<div className="detail-field">
 							<label>{data.highestBid === 0 ? 'Opening Bid' : 'Top Bid'}</label>
-							{ data.highestBid === 0 ? (
-									<span>
-										${data.openingBid}
-									</span>
-								) : (
+							{data.highestBid === 0 ? (
+								<span>
+									${data.openingBid}
+								</span>
+							) : (
 									<span style={config.BIDDING_OPEN ? {} : style.biddingNotAvailable}>
-									{ 
-										config.BIDDING_OPEN
-										?
-											<span> 
-												${ highestBid && highestBid.bidderObj ?
-													highestBid.bidAmount + (!highestBid.bidderObj.persona ? '' : ' by ' + highestBid.bidderObj.persona)
-													:
-													data.openingBid
-												}
-											</span>
-										:
-											'[bidding closed]'
-									}
+										{
+											config.BIDDING_OPEN
+												?
+												<span>
+													${highestBid && highestBid.bidderObj ?
+														highestBid.bidAmount + (!highestBid.bidderObj.persona ? '' : ' by ' + highestBid.bidderObj.persona)
+														:
+														data.openingBid
+													}
+												</span>
+												:
+												'[bidding closed]'
+										}
 									</span>
 								)
 							}
@@ -284,7 +287,7 @@ function mapStateToProps(state) {
 
 	const increment = auction.incrementAmount || DEFAULT_INCREMENT_AMOUNT
 	const openingBid = auction.openingBid || DEFAULT_OPENING_BID;
-	const bidAmountMin = highestBidVal > 0 ? highestBidVal + increment : openingBid ;
+	const bidAmountMin = highestBidVal > 0 ? highestBidVal + increment : openingBid;
 
 	return {
 		// app-level, static
