@@ -6,7 +6,7 @@ import {
 } from '../constants';
 
 function* loginGoogleRequest() {
-    window._FIREBASE_.auth().signInWithPopup(window._FIREBASE_PROVIDER_)
+    window._FIREBASE_.auth().signInWithRedirect(window._FIREBASE_PROVIDER_)
         .catch(function(error) {
             console.log('ERROR with Google Login', error)
     });

@@ -153,7 +153,7 @@ class AuctionItemDetail extends Component {
 		return (
 			<div className="auction-item-detail">
 				<Card style={style.detailsPage} >
-					<div className="row middle-xs middle-sm middle-md">
+					<div className="row middle-xs middle-sm middle-md" style={{marginLeft:0, marginRight:0}}>
 						<CardTitle
 							title={data.title}
 							subtitle={'with ' + data.owner.displayName}
