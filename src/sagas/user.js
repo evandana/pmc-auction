@@ -37,15 +37,11 @@ function* getUser({ googleUserData }) {
                                     persona: user.persona
                                 }));
                             } else {
-                                
-                                
-                                // SET USER FOR THE REST OF THE APP
+                                // set user for the rest of the app
                                 window._UI_STORE_.dispatch(setCurrentUser(user));
-
-
                             }
                         } else {
-                            // triggers updateUser method below
+                            // triggers updateUser method below for persona
                             window._UI_STORE_.dispatch(updateUserAction({
                                 ...googleUserData, // googleUid, displayName, email
                                 ...user,
@@ -65,11 +61,23 @@ function* getUser({ googleUserData }) {
                     );
             } else {
 
+                // not yet in the system
+                const newPersona = generateUserPersona()
+
                 window._UI_STORE_.dispatch(updateUserAction({
                     ...googleUserData, // googleUid, displayName, email
-                    persona: generateUserPersona(),
+                    persona: newPersona,
                     permissions: { basic: true }
                 }));
+
+                // hook up listener for changes to user until they log in again
+                window._FIREBASE_DB_.ref('/users/' + transformPersonaStringIntoUid(newPersona))
+                .on('value', (snapshot) => {
+                    const user = snapshot.val();
+
+                    window._UI_STORE_.dispatch(setCurrentUser(user))
+                });
+
             }
 
 
