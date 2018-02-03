@@ -104,7 +104,7 @@ class Status extends Component {
                                     <p>You will see three bids more than the number you are offering, in case you wish to skip one or two.</p>
                                 </div>
                             )}
-                            {this.createOwnedAuctionTable(auctionsOwned, config.BIDDING_OPEN, config.CONFIRM_WINNERS, themePalette)}
+                            {!auctionsOwned || auctionsOwned.length < 1 ? (config.BIDDING_OPEN ? 'Go make some bids' : 'Bidding not open') : this.createOwnedAuctionTable(auctionsOwned, config.BIDDING_OPEN, config.CONFIRM_WINNERS, themePalette)}
                         </section>
                     )}
 
