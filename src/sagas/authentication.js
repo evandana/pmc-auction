@@ -5,19 +5,26 @@ import {
     LOGOUT_USER_REQUEST,
 } from '../constants';
 
+import { setCurrentUser, showLoginSpinner } from 'actions';
+
 function* loginGoogleRequest() {
+
+    window._UI_STORE_.dispatch(showLoginSpinner(true));
+
     window._FIREBASE_.auth().signInWithRedirect(window._FIREBASE_PROVIDER_)
         .catch(function(error) {
+
             console.log('ERROR with Google Login', error)
+            window._UI_STORE_.dispatch( setCurrentUser({permissions: {}}) );
     });
     console.log('You have been logged in');
-    console.log('TODO: refresh the page if first login')
     
     yield;
 }
 
 function* logoutUserRequest() {
     window._FIREBASE_.auth().signOut();
+    window._UI_STORE_.dispatch( setCurrentUser({permissions: {}}) );
     console.log('You have been logged out');
     console.log('TODO: refresh the page')
     yield;

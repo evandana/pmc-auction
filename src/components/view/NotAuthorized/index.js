@@ -9,9 +9,9 @@ const NotAuthorizedPage = props => {
 
     return (
         <div className="page">
-            <div className="loader">
+            {/* <div className="loader">
                 <div className="loader-spinner" />
-            </div>
+            </div> */}
         </div>
     );
 };

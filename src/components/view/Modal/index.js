@@ -8,15 +8,11 @@ export default class Modal extends Component {
     render() {
         
         const { open, title, ModalComponent } = this.props;
-        
-        const actions = [
-        ];
 
         return (
             <div>
                 <Dialog
                     title={title}
-                    actions={actions}
                     modal={true}
                     open={open}
                 >

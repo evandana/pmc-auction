@@ -9,6 +9,7 @@ import {
     HIDE_AUCTION_DETAIL,
     REFRESH_AUCTIONS,
     SHOW_AUCTION_DETAIL,
+    SHOW_LOGIN_SPINNER,
 } from '../constants'
 
 const defaultAuctionState = {
@@ -19,6 +20,7 @@ const defaultAuctionState = {
         permissions: {},
         name: '',
         uid: '',
+        showLoginSpinner: true,
     },
 };
 
@@ -111,10 +113,20 @@ function auctions(state = defaultAuctionState, action) {
     const { 
         auctionCollection, 
         auctionUid,
+        showLoginSpinner,
         ...rest
     } = action;
 
+
     switch (action.type) {
+
+        case SHOW_LOGIN_SPINNER: 
+            return {
+                ...state,
+                user: {...state.user, showLoginSpinner}
+            };
+
+            break;
         
         case SET_CURRENT_USER: 
 
@@ -154,7 +166,6 @@ function auctions(state = defaultAuctionState, action) {
             };
 
         case SHOW_AUCTION_DETAIL:
-            console.log('SHOW_AUCTION_DETAIL')
 
             const expandedAuction = state.auctionCollection.find(auction => {
                 return auction.uid === auctionUid;
