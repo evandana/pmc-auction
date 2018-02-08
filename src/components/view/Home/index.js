@@ -50,6 +50,7 @@ const Home = (props) => {
             </div>
         );
     } else {
+        // this is a fallback and unlikely to be used
         view = (
             <div>
                 Welcome to the Happiness Exchange 2018 site.

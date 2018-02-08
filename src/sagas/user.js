@@ -8,10 +8,13 @@ import {
     UPDATE_USER,
 } from '../constants';
 
-import { setCurrentUser, updateUser as updateUserAction } from 'actions';
+import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner } from 'actions';
 
 
 function* getUser({ googleUserData }) {
+
+    window._UI_STORE_.dispatch(showLoginSpinner(true));
+
     // use public info to get uid for accessing protected info
     window._FIREBASE_DB_.ref('/publicUserInfo')
         .once('value', (snapshot) => {

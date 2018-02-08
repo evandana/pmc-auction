@@ -7,6 +7,7 @@ import {
     GET_USER,
     UPDATE_USER,
     SET_CURRENT_USER,
+    SHOW_LOGIN_SPINNER,
 
     // MODALS
     OPEN_MODAL,
@@ -69,6 +70,13 @@ export function openLoginModal() {
     return {
         type: OPEN_MODAL,
     };
+}
+
+export function showLoginSpinner(showLoginSpinner) {
+    return {
+        type: SHOW_LOGIN_SPINNER,
+        showLoginSpinner,
+    }
 }
 
 /** CONFIG */

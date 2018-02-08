@@ -31,7 +31,7 @@ import Status from 'components/controller/Status';
 import Navigation from 'components/controller/Navigation';
 import Footer from 'components/view/common/Footer';
 import AppModal from 'components/controller/Modal';
-import { getUser, fetchAuctions, fetchConfig } from './actions';
+import { getUser, fetchAuctions, fetchConfig, showLoginSpinner } from './actions';
 
 import './app.css';
 
@@ -48,6 +48,9 @@ class App extends Component {
         window._FIREBASE_DB_ = firebase.database();
         window._FIREBASE_.auth().onAuthStateChanged(
             (googleUser) => {
+                
+                window._UI_STORE_.dispatch(showLoginSpinner(false));
+
                 // user data from Google Auth
                 if (googleUser && googleUser.uid) {
                     const googleUserData = {
