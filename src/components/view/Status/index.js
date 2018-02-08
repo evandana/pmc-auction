@@ -39,9 +39,13 @@ class Status extends Component {
             showOwnedAuctionstext: false,
             snackbar: {
                 open: false,
-                message: 'applesauce',
+                message: '',
             }
         }
+    }
+
+    createMessageDiv(textContent) {
+        return <div style={{textAlign:'center', width:'100%', color: '#999'}}>{textContent}</div>
     }
 
     render() {
@@ -80,10 +84,14 @@ class Status extends Component {
                                 <p>If an auction owner is awarding multiple winners and you have one of the highest few bids, you may be offered a chance to accept this at your highest bid for that item.</p>
                             </div>
                         )}
-                        {this.createLeadingBidTable(auctionsWithUserBids, config.BIDDING_OPEN, config.CONFIRM_WINNERS, themePalette)}
+                        {
+                            !auctionsWithUserBids || auctionsWithUserBids.length < 1 ? 
+                                (config.BIDDING_OPEN ? this.createMessageDiv('You haven\'t made any bids yet') : this.createMessageDiv('Bidding not open')) : 
+                                this.createLeadingBidTable(auctionsWithUserBids, config.BIDDING_OPEN, config.CONFIRM_WINNERS, themePalette)
+                        }
                     </section>
 
-                    {!user.permissions.donor || !auctionsOwned ? '' : (
+                    {!user.permissions.donor || !auctionsOwned || !auctionsOwned.length ? '' : (
 
                         <section className="row middle-xs" style={{marginTop:'2em'}}>
                             <h2 className="col-xs-10">Owned Auctions</h2>
@@ -104,7 +112,7 @@ class Status extends Component {
                                     <p>You will see three bids more than the number you are offering, in case you wish to skip one or two.</p>
                                 </div>
                             )}
-                            {!auctionsOwned || auctionsOwned.length < 1 ? (config.BIDDING_OPEN ? 'Go make some bids' : 'Bidding not open') : this.createOwnedAuctionTable(auctionsOwned, config.BIDDING_OPEN, config.CONFIRM_WINNERS, themePalette)}
+                            {this.createOwnedAuctionTable(auctionsOwned, config.BIDDING_OPEN, config.CONFIRM_WINNERS, themePalette)}
                         </section>
                     )}
 
