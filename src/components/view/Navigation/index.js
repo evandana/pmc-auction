@@ -24,7 +24,8 @@ import PollIcon from 'material-ui/svg-icons/social/poll';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 // import WhatsHotIcon from 'material-ui/svg-icons/social/whatshot';
 // import StarIcon from 'material-ui/svg-icons/toggle/star';
-import AddCircleIcon from 'material-ui/svg-icons/content/add-circle';
+// import AddCircleIcon from 'material-ui/svg-icons/content/add-circle';
+import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit';
 
 import { getImageForEnv } from 'static/images/index'
 
@@ -81,6 +82,13 @@ class Navigation extends React.Component {
                 link: 'about',
             },
             {
+                icon: <ModeEditIcon />,
+                label: 'Editor',
+                link: 'create-auction',
+                permissionsRequired: ['donor'],
+                configRequired: ['CREATE_AUCTIONS']
+            },
+            {
                 icon: <LocalPlayIcon />,
                 label: 'Auctions',
                 link: 'auctions',
@@ -104,9 +112,16 @@ class Navigation extends React.Component {
 
         const currentPagePath = window.location.pathname; // e.g. '/auctions'
 
-        const tabs = tabObjs.map(tabObj => {
-            return this.buildTab(tabObj);
-        });
+        const tabs = tabObjs
+            .filter(tabObj => {
+                return !tabObj.permissionsRequired || tabObj.permissionsRequired.every(reqPermission => permissions[reqPermission] === true);
+            })
+            .filter(tabObj => {
+                return !tabObj.configRequired || tabObj.configRequired.every(reqConfig => config[reqConfig] === true);
+            })
+            .map(tabObj => {
+                return this.buildTab(tabObj);
+            });
 
         const initialSelectedIndex = tabObjs.findIndex(tab => '/' + tab.link === currentPagePath) 
 
@@ -128,11 +143,6 @@ class Navigation extends React.Component {
     buildAdminTabs () {
 
         const tabObjs = [
-            {
-                icon: <AddCircleIcon />,
-                label: 'Create Auction',
-                link: 'create-auction',
-            },
             {
                 icon: <PollIcon />,
                 label: 'Results',

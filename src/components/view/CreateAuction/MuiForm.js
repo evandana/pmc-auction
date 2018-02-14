@@ -2,6 +2,7 @@ import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 import TextField from 'material-ui/TextField'
 import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
 // import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import Checkbox from 'material-ui/Checkbox'
 // import SelectField from 'material-ui/SelectField'
@@ -34,6 +35,7 @@ const validate = values => {
 const renderTextField = ({
   input,
   label,
+  type,
   meta: { touched, error },
   ...custom
 }) => (
@@ -41,6 +43,9 @@ const renderTextField = ({
       hintText={label}
       floatingLabelText={label}
       errorText={touched && error}
+      floatingLabelFixed={type==='date' ? true : false}
+      hintText={type==='date' ? '' : label}
+      type={type}
       {...input}
       {...custom}
     />
@@ -54,93 +59,91 @@ const renderCheckbox = ({ input, label }) => (
   />
 )
 
-// const renderRadioGroup = ({ input, ...rest }) => (
-//   <RadioButtonGroup
-//     {...input}
-//     {...rest}
-//     valueSelected={input.value}
-//     onChange={(event, value) => input.onChange(value)}
-//   />
-// )
-
-// const renderSelectField = ({
-//   input,
-//   label,
-//   meta: { touched, error },
-//   children,
-//   ...custom
-// }) => (
-//     <SelectField
-//       floatingLabelText={label}
-//       errorText={touched && error}
-//       {...input}
-//       onChange={(event, index, value) => input.onChange(value)}
-//       children={children}
-//       {...custom}
-//     />
-//   )
+{
+  // const renderRadioGroup = ({ input, ...rest }) => (
+  //   <RadioButtonGroup
+  //     {...input}
+  //     {...rest}
+  //     valueSelected={input.value}
+  //     onChange={(event, value) => input.onChange(value)}
+  //   />
+  // )
+  
+  // const renderSelectField = ({
+  //   input,
+  //   label,
+  //   meta: { touched, error },
+  //   children,
+  //   ...custom
+  // }) => (
+  //     <SelectField
+  //       floatingLabelText={label}
+  //       errorText={touched && error}
+  //       {...input}
+  //       onChange={(event, index, value) => input.onChange(value)}
+  //       children={children}
+  //       {...custom}
+  //     />
+  //   )
+}
 
 const MaterialUiForm = props => {
   const { handleSubmit, submitForm, pristine, reset, submitting } = props
   return (
     <form onSubmit={handleSubmit(submitForm)}>
-      <div>
+
+      <section className="row middle-xs middle-sm">
+        <RaisedButton className="col-xs-6" type="submit" style={{padding:0}} primary disabled={pristine || submitting}>
+          Submit
+        </RaisedButton>
+        <FlatButton className="col-xs-6" type="button" style={{padding:0}} disabled={pristine || submitting} onClick={reset}>
+          Clear Values
+        </FlatButton>
+      </section>
+
+      <section classname="row">
         <Field
           name="title"
           type="text"
           component={renderTextField}
           label="Title"
         />
-      </div>
-      <div>
         <Field
           name="subTitle"
           type="text"
           component={renderTextField}
           label="Subtitle"
         />
-      </div>
-      <div>
         <Field
           name="location"
           type="text"
           component={renderTextField}
           label="Location"
         />
-      </div>
-      <div>
         <Field
           name="useBy"
           type="date"
           component={renderTextField}
           label="Use By"
         />
-      </div>
-      <div>
         <Field
           name="openingBid"
           type="number"
           component={renderTextField}
           label="Opening Bid"
         />
-      </div>
-      <div>
         <Field
           name="bidIncrement"
           type="number"
           component={renderTextField}
           label="Bid Increment"
         />
-      </div>
-      <div>
         <Field
           name="numberOffered"
           type="number"
           component={renderTextField}
           label="Number Offered"
         />
-      </div>
-      <div>
         <Field
           name="description"
           type="text"
@@ -149,29 +152,9 @@ const MaterialUiForm = props => {
           multiLine={true}
           rows={2}
         />
-      </div>
-      <Field name="featured" component={renderCheckbox} label="Featured" />
-      <Field name="show" component={renderCheckbox} label="Show" />
-      {/* <div>
-        <Field name="featured" component={renderRadioGroup}>
-          <RadioButton value="true" label="yes" />
-          <RadioButton value="false" label="no" />
-        </Field>
-      </div>
-      <div>
-        <Field name="show" component={renderRadioGroup}>
-          <RadioButton value="true" label="yes" />
-          <RadioButton value="false" label="no" />
-        </Field>
-      </div> */}
-      <div>
-        <FlatButton type="submit" disabled={pristine || submitting}>
-          Submit
-        </FlatButton>
-        <FlatButton type="button" disabled={pristine || submitting} onClick={reset}>
-          Clear Values
-        </FlatButton>
-      </div>
+        <Field name="featured" component={renderCheckbox} label="Featured" />
+        <Field name="show" component={renderCheckbox} label="Show" />
+      </section>
     </form>
   )
 }
