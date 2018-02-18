@@ -199,7 +199,7 @@ class Navigation extends React.Component {
         const iconMenu = this.buildIconMenu(userPermissions, { logout, openLoginModal });
         
         const navigationTabs = this.buildNavigationTabs(userPermissions, config);
-        const adminTabs = userPermissions.admin ? this.buildAdminTabs() : '';
+        // const adminTabs = userPermissions.admin ? this.buildAdminTabs() : '';
 
         return (
             <div>
@@ -223,7 +223,7 @@ class Navigation extends React.Component {
 
                 {navigationTabs}
 
-                {adminTabs}
+                {/* {adminTabs} */}
 
             </div>
         );  
