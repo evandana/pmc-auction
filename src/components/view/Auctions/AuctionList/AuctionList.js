@@ -40,19 +40,25 @@ class AuctionList extends Component {
     auctions.forEach((obj, index) => {
 
 
-      if (obj.show && obj.image) {
-        const urlStr = getImageForEnv('auction-list/' + obj.image + '.png');
+      if (obj.show) {
 
-        countShown++;
+        let urlStr;
 
-        auctionItems.push(Object.assign({}, obj, {
-          key: urlStr + '?q=' + index,
-          img: urlStr,
-          title: config && config.BIDDING_OPEN ? obj.title : obj.title,
-          featured: featuredPattern.includes(countShown),
-          value: '$' + (obj.highestBid || obj.openingBid)
-        }));
-      }
+        if (obj.image) {
+          urlStr = getImageForEnv('auction-list/' + obj.image + '.png');
+        } else {
+          urlStr = getImageForEnv('auction-list/default.png');
+        }
+          countShown++;
+
+          auctionItems.push(Object.assign({}, obj, {
+            key: urlStr + '?q=' + index,
+            img: urlStr,
+            title: config && config.BIDDING_OPEN ? obj.title : obj.title,
+            featured: featuredPattern.includes(countShown),
+            value: '$' + (obj.highestBid || obj.openingBid)
+          }));
+        }
 
     });
 

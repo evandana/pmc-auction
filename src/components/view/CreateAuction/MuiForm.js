@@ -33,11 +33,13 @@ const validate = values => {
   // }
   return errors
 }
-
+// name === 'openingBid' || name === 'bidIncrement' ? '$' : ''}
 const renderTextField = ({
   input,
   label,
   type,
+  name,
+  value,
   meta: { touched, error },
   ...custom
 }) => (
@@ -117,11 +119,11 @@ class MuiForm extends Component {
       >
 
         <section className="row middle-xs middle-sm">
-          <RaisedButton className="col-xs-8" type="submit" style={{ padding: 0 }} primary disabled={pristine || submitting}>
+          <RaisedButton className="col-xs-7" type="submit" style={{ padding: 0 }} primary disabled={pristine || submitting}>
             Submit
           </RaisedButton>
           <span className="col-xs-1"> </span>
-          <RaisedButton className="col-xs-3" type="button" style={{ padding: 0 }} disabled={pristine || submitting} onClick={reset}>
+          <RaisedButton className="col-xs-4" type="button" style={{ padding: 0 }} disabled={pristine || submitting} onClick={reset}>
             Clear Values
           </RaisedButton>
         </section>
@@ -136,7 +138,7 @@ class MuiForm extends Component {
             label="Title"
           />
           <Field
-            className="col-xs-6"
+            className="col-xs-12 col-sm-8"
             style={style.field}
             name="subTitle"
             type="text"
@@ -144,7 +146,7 @@ class MuiForm extends Component {
             label="Subtitle"
           />
           <Field
-            className="col-xs-6"
+            className="col-xs-12 col-sm-4"
             style={style.field}
             name="location"
             type="text"
@@ -152,38 +154,38 @@ class MuiForm extends Component {
             label="Location"
           />
           <Field
-            className="col-xs-6"
+            className="col-xs-8 col-sm-3"
             style={style.field}
             name="useBy"
             type="date"
             component={renderTextField}
-            label="Use By"
+            label="Offered until"
           />
           <Field
-            className="col-xs-6"
-            style={style.field}
-            name="openingBid"
-            type="number"
-            component={renderTextField}
-            hintText={10}
-            label="Opening Bid"
-          />
-          <Field
-            className="col-xs-6"
-            style={style.field}
-            name="bidIncrement"
-            type="number"
-            component={renderTextField}
-            hintText={5}
-            label="Bid Increment"
-          />
-          <Field
-            className="col-xs-6"
+            className="col-xs-4 col-sm-3"
             style={style.field}
             name="numberOffered"
             type="number"
             component={renderTextField}
             label="Qty Offered"
+          />
+          <Field
+            className="col-xs-6 col-sm-3"
+            style={style.field}
+            name="openingBid"
+            type="number"
+            component={renderTextField}
+            hintText={10}
+            label="Opening Bid ($)"
+          />
+          <Field
+            className="col-xs-6 col-sm-3"
+            style={style.field}
+            name="bidIncrement"
+            type="number"
+            component={renderTextField}
+            hintText={5}
+            label="Bid Increment ($)"
           />
           <Field
             className="col-xs-12"
