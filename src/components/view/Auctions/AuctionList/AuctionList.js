@@ -72,7 +72,9 @@ class AuctionList extends Component {
         justifyContent: 'flex-start' // for dev
       },
       gridList: {
-        width: window.innerWidth < 600 ? window.innerWidth : window.innerWidth - 20,
+        width: '100%',
+        // width: window.innerWidth,
+        // width: window.innerWidth, //< 600 ? window.innerWidth : window.innerWidth - 20,
         // height: 700,
         overflowY: 'auto',
         marginBottom: 24
