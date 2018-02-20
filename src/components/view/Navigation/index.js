@@ -105,7 +105,7 @@ class Navigation extends React.Component {
             },
             {
                 icon: <RedeemIcon />,
-                label: 'Sponsors',
+                label: 'Thanks',
                 link: 'sponsors',
             },
         ];
