@@ -132,8 +132,8 @@ class Navigation extends React.Component {
                 onChange={this.navigateToRoute}
                 tabItemContainerStyle={{backgroundColor: cyan600}}
                 onClick={() => {
-                        if (currentPagePath === 'auctions') { this.toggleAuctionDetail() }
-                    }}
+                    if (currentPagePath === '/auctions') { this.toggleAuctionDetail() }
+                }}
                 >
                 {tabs}
             </Tabs>
@@ -198,7 +198,7 @@ class Navigation extends React.Component {
         const titleLink = (<Link className="navigation__title-link" to="/">Welcome, {user.displayName}</Link>);
         const iconMenu = this.buildIconMenu(userPermissions, { logout, openLoginModal });
         
-        const navigationTabs = this.buildNavigationTabs(userPermissions, config);
+        const navigationTabs = this.buildNavigationTabs(userPermissions, config, this.toggleAuctionDetail);
         // const adminTabs = userPermissions.admin ? this.buildAdminTabs() : '';
 
         return (

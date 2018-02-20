@@ -14,7 +14,8 @@ const AuthorizedRoute = (props) => {
     const pageWrapperStyles = {
         position: 'fixed',
         width: '100%',
-        height: userPermissions.admin ? 'calc(100% - 247px)' : 'calc(100% - 175px)',
+        height: 'calc(100% - 175px)',
+        // height: userPermissions.admin ? 'calc(100% - 247px)' : 'calc(100% - 175px)',
     }
 
     return (
