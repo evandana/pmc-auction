@@ -76,6 +76,7 @@ class CreateAuction extends Component {
                                 >
                                 <div className="text-content">
                                     <MuiForm
+                                        key={auction.uid}
                                         form={auction.uid}
                                         initialValues={auction}
                                         createAuctionSubmitForm={this.submitForm}
@@ -88,10 +89,10 @@ class CreateAuction extends Component {
                         <div className="text-content">
                             <div className="col-xs-12">
                                 <p>
-                                    After clicking submit, refresh the page.
+                                    Thanks for offering to donate your time!
                                 </p>
                                 <p>
-                                    Email an image to evan.dana@gmail.com
+                                    Let me know if you have any further questions about this process. 
                                 </p>
                             </div>
                             <MuiForm
