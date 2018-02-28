@@ -103,7 +103,7 @@ class MuiForm extends Component {
 
   render() {
 
-    const { handleSubmit, createAuctionSubmitForm, pristine, reset, submitting, initialValues } = this.props;
+    const { handleSubmit, createAuctionSubmitForm, pristine, reset, submitting, initialValues, auctionSubmitLabel } = this.props;
 
     // this.setState({initialValues});  
 
@@ -120,7 +120,7 @@ class MuiForm extends Component {
 
         <section className="row middle-xs middle-sm">
           <RaisedButton className="col-xs-7" type="submit" style={{ padding: 0 }} primary disabled={pristine || submitting}>
-            Submit
+            {auctionSubmitLabel || ''}
           </RaisedButton>
           <span className="col-xs-1"> </span>
           <RaisedButton className="col-xs-4" type="button" style={{ padding: 0 }} disabled={pristine || submitting} onClick={reset}>
