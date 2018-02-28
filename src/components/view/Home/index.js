@@ -34,7 +34,7 @@ const Home = (props) => {
 
                     <h2>Bidding</h2>
 
-                    <p>Live the evening of February [TBD].</p>
+                    <p>Live on Friday March 30th, in person or online.</p>
 
                     <p>For funsies, you will be seen by other bidders as "{user.persona}".</p>
     
