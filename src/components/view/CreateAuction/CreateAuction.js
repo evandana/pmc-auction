@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
+import Paper from 'material-ui/Paper';
+
 import { Field, reduxForm } from 'redux-form'
 
 import TextField from 'material-ui/TextField'
@@ -79,6 +81,7 @@ class CreateAuction extends Component {
                                         key={auction.uid}
                                         form={auction.uid}
                                         initialValues={auction}
+                                        auctionSubmitLabel='Save'
                                         createAuctionSubmitForm={this.submitForm}
                                     />
                                 </div>
@@ -87,14 +90,20 @@ class CreateAuction extends Component {
                     })}
                     <Tab icon={<AddCircleIcon />} value={'new'}>
                         <div className="text-content">
-                            <div className="col-xs-12">
+                            <Paper style={{
+                                width: '100%',
+                                padding: '1em',
+                                marginTop: '-.5em',
+                                marginBottom: '1.5em',
+                                background: this.themePalette.fadedPrimary1Color
+                            }}>
                                 <p>
                                     Thanks for offering to donate your time!
                                 </p>
                                 <p>
-                                    Let me know if you have any further questions about this process. 
+                                    Text or email images (landscape orientation) to Evan
                                 </p>
-                            </div>
+                            </Paper>
                             <MuiForm
                                 form={'new'}
                                 initialValues={{
@@ -104,6 +113,7 @@ class CreateAuction extends Component {
                                     useBy: '2018-09-01',
                                     show: true,
                                 }}
+                                auctionSubmitLabel='Create Auction'
                                 createAuctionSubmitForm={this.submitForm}
                             />
                         </div>
