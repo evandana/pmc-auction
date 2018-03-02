@@ -197,12 +197,12 @@ class MuiForm extends Component {
             multiLine={true}
             rows={2}
           />
-          <Field
+          {/* <Field
             className="col-xs-6"
             name="featured"
             component={renderCheckbox}
             label="Featured"
-          />
+          /> */}
           <Field
             className="col-xs-6"
             name="show"
