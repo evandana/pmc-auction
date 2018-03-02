@@ -163,7 +163,7 @@ class AuctionItemDetail extends Component {
 						/>
 						<div className="col-xs-3 col-sm-2 col-md-1">
 							<FloatingActionButton
-								backgroundColor={cyan200}
+								backgroundColor='#8EC449' // TODO: make this use themePalette
 								mini={true}
 								style={style.closeButton}
 								onClick={e => toggleAuctionDetail('', e)}
@@ -233,7 +233,7 @@ class AuctionItemDetail extends Component {
 						}
 						<div className="detail-field">
 							<label>{data.highestBid === 0 ? 'Opening Bid' : 'Top Bid'}</label>
-							{data.highestBid === 0 ? (
+							{data.highestBid === 0 && config.BIDDING_OPEN ? (
 								<span>
 									${data.openingBid}
 								</span>
@@ -258,6 +258,7 @@ class AuctionItemDetail extends Component {
 
 
 						</div>
+						<div className="detail-field"><label>Location</label><span>{data.location}</span></div>
 						<div className="detail-field"><label>Description</label><span>{data.description}</span></div>
 						<div className="detail-field"><label>Please use by</label><span>{moment(data.useBy).format('MMM Do')}</span></div>
 						<div className="detail-field"><label>Qty offered</label><span>{data.numberOffered}</span></div>
