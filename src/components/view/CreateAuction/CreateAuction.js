@@ -96,7 +96,7 @@ class CreateAuction extends Component {
                                 padding: '1em',
                                 marginTop: '-.5em',
                                 marginBottom: '1.5em',
-                                background: this.themePalette.fadedPrimary1Color
+                                background: this.themePalette.accent1Color
                             }}>
                                 <p>
                                     Thanks for offering to donate your time!
