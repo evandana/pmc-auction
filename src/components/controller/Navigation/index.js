@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         logout: () => dispatch(logoutUserRequest()),
         openLoginModal: () => dispatch(openLoginModal()),
-        toggleAuctionDetail: () => {console.log('asdf'); dispatch(toggleAuctionDetail())},
+        toggleAuctionDetail: () => {dispatch(toggleAuctionDetail())},
     }
 };
 

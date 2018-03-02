@@ -260,6 +260,7 @@ class AuctionItemDetail extends Component {
 						</div>
 						<div className="detail-field"><label>Description</label><span>{data.description}</span></div>
 						<div className="detail-field"><label>Please use by</label><span>{moment(data.useBy).format('MMM Do')}</span></div>
+						<div className="detail-field"><label>Qty offered</label><span>{data.numberOffered}</span></div>
 					</CardText>
 					<CardMedia
 						overlay={<CardTitle subtitle={data.subTitle || data.title} />}
