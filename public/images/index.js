@@ -6,4 +6,3 @@ export function getImageForEnv(imagePath) {
         // return require('url-loader?limit=8192!' + './' + imagePath);
     }
 }
-
