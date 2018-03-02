@@ -65,7 +65,8 @@ class CreateAuction extends Component {
         return (
             <div className="page">
                 <Tabs
-                    tabItemContainerStyle={{ backgroundColor: this.themePalette.secondaryLinkColor }}
+                    inkBarStyle={{background: this.themePalette.highlight1Color}}
+                    tabItemContainerStyle={{ backgroundColor: this.themePalette.ternaryTextColor }}
                     value={this.state.selectedTab}
                     onChange={this.handleChange}
                 >

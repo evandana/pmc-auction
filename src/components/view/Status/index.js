@@ -141,7 +141,7 @@ class Status extends Component {
                             allBidsIndex,
                             auctionUid
                         })}></RaisedButton>
-                    <FlatButton style={{minWidth:undefined, color: themePalette.primaryLinkColor}} label='Pass' onClick={() => this.bidderBidConfirmation({
+                    <FlatButton style={{minWidth:undefined, color: themePalette.fadedPrimary1Color}} label='Pass' onClick={() => this.bidderBidConfirmation({
                             bidderConfirmed: false,
                             bid,
                             topBidIndex,
@@ -152,7 +152,7 @@ class Status extends Component {
             } else if (confirmWinners && (auction.userHighBid.ownerConfirmed === false || auction.userHighBidRank > auction.numberOffered + 3)) {
                 return 'Not won';
             } else if (confirmWinners && auction.userHighBid.ownerConfirmed !== true && auction.userHighBid.ownerConfirmed !== false) {
-                return <span style={{color: themePalette.ternaryTextColor}}>Pending owner confirmation</span>;
+                return <span style={{color: themePalette.warningColor}}>Pending owner confirmation</span>;
             } else if (confirmWinners && auction.userHighBid.bidderConfirmed === true && auction.userHighBid.ownerConfirmed === true) {
                 return <span style={{color: themePalette.primary2Color}}>Confirmed!</span>;
             } else if (auction.userHighBid.bidderConfirmed === false) {
@@ -252,7 +252,7 @@ class Status extends Component {
                     })}></FlatButton>
                 </div>
             } else if (confirmWinners && bid.bidderConfirmed === undefined) {
-                return <span style={{ color: themePalette.ternaryTextColor }}>Pending Bidder</span>;
+                return <span style={{ color: themePalette.warningColor }}>Pending Bidder</span>;
             } else if (confirmWinners && bid.ownerConfirmed === true && bid.bidderConfirmed === true) {
                 return <div className="row middle-xs middle-sm" style={{textAlign:'left'}}>
                     <div

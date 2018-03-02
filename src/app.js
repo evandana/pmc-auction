@@ -77,15 +77,17 @@ class App extends Component {
 
         const muiTheme = getMuiTheme({
             palette: {
-                highlight1Color: limeA200,
-                ternaryTextColor: yellow800,
-                fadedPrimary1Color: cyan50,
-                primaryLinkColor: cyan500,
-                secondaryLinkColor: blueGrey200,
-                primary2Color: cyan900,
-                errorColor: pink800,
-                warningColor: yellow800,
-                successColor: green400,
+                primary1Color: '#1DAFEC',
+                accent1Color: '#8EC449',
+                highlight1Color: '#E8448B',
+                ternaryTextColor: '#8DC3DB', // TODO: rename
+                fadedPrimary1Color: '#4FDFFF',
+                primaryLinkColor: '#4FDFFF',
+                secondaryLinkColor: '#8AC9EC',
+                primary2Color: '#47B4E0',
+                errorColor: '#E8448B',
+                warningColor: '#FF953F',
+                successColor: '#8EC449',
                 // DEFAULTS
                 // primary1Color: cyan500,
                 // primary2Color: cyan700,

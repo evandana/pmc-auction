@@ -130,7 +130,7 @@ class Navigation extends React.Component {
                 inkBarStyle={{background: this.themePalette.highlight1Color}}
                 initialSelectedIndex={initialSelectedIndex === -1 ? 0 : initialSelectedIndex}
                 onChange={this.navigateToRoute}
-                tabItemContainerStyle={{backgroundColor: cyan600}}
+                tabItemContainerStyle={{backgroundColor: this.themePalette.primary2Color}}
                 onClick={() => {
                     if (currentPagePath === '/auctions') { this.toggleAuctionDetail() }
                 }}
