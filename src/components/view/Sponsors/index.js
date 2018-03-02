@@ -28,6 +28,13 @@ const Sponsors = ({ prop }) => {
         //     color: amber500
         // },
         {
+            name: 'Janji',
+            link: 'https://runjanji.com/',
+            subtext: 'Performance running apparel that connects people',
+            image: getImageForEnv('janji-logo.png'),
+            color: amber500
+        },
+        {
             name: 'Holly Broussard and Matthew Kihm',
             subtext: 'Our incredible graphic designers',
             image: getImageForEnv('happinessexchange.png'),
