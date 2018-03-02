@@ -15,6 +15,7 @@ import { Provider } from 'react-redux';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/storage';
 /** APP **/
 import config from 'config';
 import AuthorizedRoute from 'components/controller/AuthorizedRoute';
@@ -46,6 +47,7 @@ class App extends Component {
         window._FIREBASE_ = firebase.initializeApp(config.firebase);
         window._FIREBASE_PROVIDER_ = new firebase.auth.GoogleAuthProvider();
         window._FIREBASE_DB_ = firebase.database();
+        window._FIREBASE_STORAGE_ = firebase.storage().ref();
         window._FIREBASE_.auth().onAuthStateChanged(
             (googleUser) => {
                 
