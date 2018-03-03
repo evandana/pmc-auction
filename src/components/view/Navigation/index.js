@@ -194,8 +194,7 @@ class Navigation extends React.Component {
                 </AppBar>
             );
         }
-
-        const titleLink = (<Link className="navigation__title-link" to="/">Welcome, {user.displayName}</Link>);
+        
         const iconMenu = this.buildIconMenu(userPermissions, { logout, openLoginModal });
         
         const navigationTabs = this.buildNavigationTabs(userPermissions, config, this.toggleAuctionDetail);
@@ -205,7 +204,7 @@ class Navigation extends React.Component {
             <div>
                 
                 {<AppBar
-                    title={titleLink}
+                    title={'Welcome, ' + user.displayName}
                     iconElementLeft={
                         <div style={{
                                 backgroundColor:'#fff',
