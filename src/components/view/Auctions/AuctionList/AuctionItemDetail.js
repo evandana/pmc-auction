@@ -66,6 +66,16 @@ class AuctionItemDetail extends Component {
 		// console.log('bidDisplayAmount', bidDisplayAmount);
 	}
 
+	translateNewLinesToBrs(text) {
+		return text.split('\n').map(function (item, key) {
+			return (
+				<p key={key}>
+					{item}
+				</p>
+			)
+		});
+	}
+
 	render() {
 
 		const {
@@ -155,7 +165,7 @@ class AuctionItemDetail extends Component {
 		return (
 			<div className="auction-item-detail">
 				<Card style={style.detailsPage} >
-					<div className="row middle-xs middle-sm middle-md" style={{marginLeft:0, marginRight:0}}>
+					<div className="row middle-xs middle-sm middle-md" style={{ marginLeft: 0, marginRight: 0 }}>
 						<CardTitle
 							title={data.title}
 							subtitle={'with ' + data.owner.displayName}
@@ -259,7 +269,7 @@ class AuctionItemDetail extends Component {
 
 						</div>
 						<div className="detail-field"><label>Location</label><span>{data.location}</span></div>
-						<div className="detail-field"><label>Description</label><span>{data.description}</span></div>
+						<div className="detail-field"><label>Description</label><span>{this.translateNewLinesToBrs(data.description)}</span></div>
 						<div className="detail-field"><label>Please use by</label><span>{moment(data.useBy).format('MMM Do')}</span></div>
 						<div className="detail-field"><label>Qty offered</label><span>{data.numberOffered}</span></div>
 					</CardText>
