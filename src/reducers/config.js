@@ -17,7 +17,7 @@ function config(state = defaultState, action) {
 
     switch (action.type) {
         case REFRESH_CONFIG:
-            console.log('reducer', state, action)
+            // console.log('reducer', state, action)
 
             return Object.assign({}, config);
 

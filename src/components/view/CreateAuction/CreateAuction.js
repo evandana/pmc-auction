@@ -34,7 +34,7 @@ class CreateAuction extends Component {
     }
 
     submitForm(formData) {
-        console.log('form', formData);
+        // console.log('form', formData);
         const { dispatch, user } = this.props;
 
         formData.openingBid = this.numberify(formData.openingBid, 15);

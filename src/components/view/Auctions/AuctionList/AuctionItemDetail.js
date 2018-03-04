@@ -274,6 +274,7 @@ class AuctionItemDetail extends Component {
 						<div className="detail-field"><label>Qty offered</label><span>{data.numberOffered}</span></div>
 					</CardText>
 					<CardMedia
+						overlayContentStyle={{top:0, bottom:''}}
 						overlay={<CardTitle subtitle={data.subTitle || data.title} />}
 					>
 						<img alt="Auction item teaser" src={urlStr} />
