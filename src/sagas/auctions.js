@@ -10,6 +10,7 @@ import {
     BIDDER_BID_CONFIRMATION,
     OWNER_BID_CONTACTED,
     OWNER_BID_PLANNED,
+    SET_CLAIM_STEP,
 } from '../constants';
 
 import { refreshAuctions, refreshAuction } from '../actions';
@@ -148,6 +149,7 @@ function* ownerBidPlanned({planned, bid, topBidIndex, allBidsIndex, auctionUid})
         planned,
     };
 
+    // UI-only prop
     delete updatedBidObj.allBidsIndex;
     
     window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + allBidsIndex)
@@ -160,6 +162,22 @@ function* updateAuction({auctionData}) {
     window._FIREBASE_DB_.ref('auctions/' + auctionData.uid)
         .set(auctionData);
     
+    yield;
+}
+
+function* setClaimStep({claimStep, bid, allBidsIndex, auctionUid}) {
+    
+    let updatedBidObj = {
+        ...bid,
+        claimStep,
+    };
+
+    // UI-only prop
+    delete updatedBidObj.allBidsIndex;
+    
+    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + allBidsIndex)
+        .set(updatedBidObj);
+
     yield;
 }
 
@@ -203,6 +221,7 @@ export default function* () {
         takeEvery(BIDDER_BID_CONFIRMATION, bidderBidConfirmation),
         takeEvery(OWNER_BID_CONTACTED, ownerBidContacted),
         takeEvery(OWNER_BID_PLANNED, ownerBidPlanned),
+        takeEvery(SET_CLAIM_STEP, setClaimStep),
     ];
 }
 

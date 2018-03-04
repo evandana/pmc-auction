@@ -30,6 +30,7 @@ import {
     CREATE_AUCTION,
     OWNER_BID_CONTACTED,
     OWNER_BID_PLANNED,
+    SET_CLAIM_STEP,
 
 } from '../constants';
 
@@ -210,4 +211,14 @@ export function createAuction(userInputData, user) {
         auctionData,
     }
 
+}
+
+export function setClaimStep({claimStep, bid, allBidsIndex, auctionUid}) {
+    return {
+        type: SET_CLAIM_STEP,
+        claimStep,
+        bid,
+        allBidsIndex,
+        auctionUid,
+    }
 }
