@@ -62,13 +62,14 @@ class Navigation extends React.Component {
         this.props.history.push(tabEl.props['data-route']);
     };
 
-    buildTab ({icon, label, active, link}) {
+    buildTab ({icon, label, active, link, style}) {
         return (
             <Tab
                 label={label}
                 data-route={'/'+link}
                 icon={icon}
                 key={link}
+                style={style}
             />
             );
     };
@@ -82,11 +83,12 @@ class Navigation extends React.Component {
                 link: 'about',
             },
             {
-                icon: <ModeEditIcon />,
+                icon: <ModeEditIcon/>,
                 label: 'Editor',
                 link: 'create-auction',
                 permissionsRequired: ['donor'],
-                configRequired: ['CREATE_AUCTIONS']
+                configRequired: ['CREATE_AUCTIONS'],
+                style: {background: this.themePalette.accent1Color}
             },
             {
                 icon: <LocalPlayIcon />,
