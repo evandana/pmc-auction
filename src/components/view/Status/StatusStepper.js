@@ -7,6 +7,8 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 
+import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
+
 /**
  * This is similar to the horizontal non-linear example, except the
  * `<Step>` components are being controlled manually via individual props.
@@ -23,7 +25,13 @@ class StatusStepper extends React.Component {
     }
 
     render() {
-        const { claimStep, setClaimStep, bidDetails } = this.props;
+        const { claimStep, setClaimStep, bidDetails, themePalette } = this.props;
+
+        const stepLabels = [
+            'Contact',
+            'Plan',
+            'Meet'
+        ];
 
         return (
             <div style={{
@@ -35,42 +43,38 @@ class StatusStepper extends React.Component {
                     linear={false}
                     activeStep={typeof claimStep === "number" ? claimStep + 1 : 0}
                 >
-                    <Step>
-                        <StepButton
-                            completed={claimStep >= 0}
-                            style={{ marginTop: '-20px', height: '40px' }}
-                            onClick={() => setClaimStep({
-                                claimStep: claimStep === 0 ? null : 0, 
-                                ...bidDetails
-                            })}
-                            >
-                            Contact
-                        </StepButton>
-                    </Step>
-                    <Step>
-                        <StepButton
-                            completed={claimStep >= 1}
-                            style={{ marginTop: '-20px', height: '40px' }}
-                            onClick={() => setClaimStep({
-                                claimStep: claimStep === 1 ? 0 : 1, 
-                                ...bidDetails
-                            })}
-                            >
-                            Plan
-                        </StepButton>
-                    </Step>
-                    <Step>
-                        <StepButton
-                            completed={claimStep >= 2}
-                            style={{ marginTop: '-20px', height: '40px' }}
-                            onClick={() => setClaimStep({
-                                claimStep: claimStep === 2 ? 1 : 2, 
-                                ...bidDetails
-                            })}
-                            >
-                            Meet
-                        </StepButton>
-                    </Step>
+                    {stepLabels.map((label, i) => {
+                        return (
+                            <Step key={i}>
+                                {claimStep >= i ? (
+                                    // completed
+                                    <StepButton
+                                        completed={claimStep >= i}
+                                        style={{ marginTop: '-20px', height: '40px' }}
+                                        onClick={() => setClaimStep({
+                                            claimStep: claimStep === i ? i - 1 : i,
+                                            ...bidDetails
+                                        })}
+                                        icon={<CheckCircleIcon style={{ color: themePalette.accent1Color }} />}
+                                        >
+                                        {stepLabels[i]}
+                                    </StepButton>
+                                ) : (
+                                    // not completed
+                                    <StepButton
+                                        completed={claimStep >= i}
+                                        style={{ marginTop: '-20px', height: '40px' }}
+                                        onClick={() => setClaimStep({
+                                            claimStep: claimStep === i ? i - 1 : i,
+                                            ...bidDetails
+                                        })}
+                                        >
+                                        {label}
+                                    </StepButton>
+                                )}
+                            </Step>
+                        );
+                    })}
                 </Stepper>
             </div>
         );

@@ -22,6 +22,7 @@ import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
 import ContentCopyIcon from 'material-ui/svg-icons/content/content-copy';
 import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import KeyboardArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
+import AttachMoneyIcon from 'material-ui/svg-icons/editor/attach-money';
 // import MailOutlineIcon from 'material-ui/svg-icons/communication/mail-outline';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import RemoveCircleOutlineIcon from 'material-ui/svg-icons/content/remove-circle-outline'
@@ -57,6 +58,12 @@ class Status extends Component {
 
         const themePalette = this.props.muiTheme.palette;
 
+        const totalAmountDue = auctionsWithUserBids.reduce((acc, curr) => {
+            return acc + curr.userHighBid.bidAmount;
+        }, 0);
+
+        const amountPaid = user.amountPaid || 0; 
+
         return (
             <div className='page'>
                 <Snackbar
@@ -82,11 +89,30 @@ class Status extends Component {
                             </IconButton>
                         </div>
                         {this.state.showAuctionsWithYourBidsText && (
-                            <div>
+                            <div className="col-xs-12">
                                 <p>If you are the top bidder when the auction closes, you are expected to claim that item.</p>
                                 <p>If an auction owner is awarding multiple winners and you have one of the highest few bids, you may be offered a chance to accept this at your highest bid for that item.</p>
                             </div>
                         )}
+                        <div 
+                            className="col-xs-12" 
+                            hidden={config.BIDDING_OPEN || ( totalAmountDue && amountPaid )}
+                            style={{textAlign:'right'}}
+                            >
+                            <RaisedButton
+                                hidden={totalAmountDue === 0}
+                                buttonStyle={{backgroundColor: themePalette.accent1Color}}
+                                label={'Pay ' + totalAmountDue}
+                                primary={true}
+                                href='/donate'
+                                icon={<AttachMoneyIcon />}
+                                />
+                            <span 
+                                hidden={totalAmountDue !== 0}
+                                >
+                                Thanks for your donation!
+                            </span>
+                        </div>
                         {
                             !auctionsWithUserBids || auctionsWithUserBids.length < 1 ? 
                                 (config.BIDDING_OPEN ? this.createMessageDiv('You haven\'t made any bids yet') : this.createMessageDiv('Bidding not open')) : 
@@ -157,7 +183,7 @@ class Status extends Component {
             } else if (confirmWinners && auction.userHighBid.ownerConfirmed !== true && auction.userHighBid.ownerConfirmed !== false) {
                 return <span style={{color: themePalette.warningColor}}>Pending owner confirmation</span>;
             } else if (confirmWinners && auction.userHighBid.bidderConfirmed === true && auction.userHighBid.ownerConfirmed === true) {
-                return <span style={{color: themePalette.primary2Color}}>Confirmed!</span>;
+                return <span style={{color: themePalette.accent1Color}}>Confirmed!</span>;
             } else if (auction.userHighBid.bidderConfirmed === false) {
                 return 'You declined'
             } else {
@@ -269,7 +295,6 @@ class Status extends Component {
                         style={{padding:0, margin:0}}
                         >
 
-
                         <IconButton 
                             tooltip="Copy email" 
                             onClick={() => {
@@ -280,48 +305,6 @@ class Status extends Component {
                             >
                             <ContentCopyIcon />
                         </IconButton>
-
-                        {/* iconButtonElement={<IconButton iconStyle={{color: themePalette.primaryLinkColor}}><MoreVertIcon /></IconButton>} */}
-                        {/* <IconMenu
-                            iconButtonElement={<FlatButton>
-                                <ContentCopyIcon style={{fill: themePalette.primaryLinkColor}}/>
-                                
-                            </FlatButton>}
-                            anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                            targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                            >
-                            <MenuItem 
-                                primaryText="Copy email" 
-                                onClick={() => {
-                                    copy(bid.bidderObj.email);
-                                    this.setState({snackbar: {open: true, message: bid.bidderObj.email + ' copied to clipboard'}})
-                                }}
-                                rightIcon={(
-                                    <ContentCopyIcon style={{fill: themePalette.primaryLinkColor}}/>
-                                )}/>
-                            <MenuItem 
-                                primaryText="Contacted"
-                                onClick={() => this.ownerBidContacted({
-                                    contacted: !bid.contacted,
-                                    bid,
-                                    topBidIndex,
-                                    allBidsIndex,
-                                    auctionUid
-                                })}
-                                rightIcon={!bid.contacted ? <RemoveCircleOutlineIcon style={{fill: themePalette.warningColor}}/> : <CheckCircleIcon style={{fill: themePalette.successColor}}/>}
-                                />
-                            <MenuItem 
-                                primaryText="Date planned"
-                                onClick={() => this.ownerBidPlanned({
-                                    planned: !bid.planned,
-                                    bid,
-                                    topBidIndex,
-                                    allBidsIndex,
-                                    auctionUid
-                                })}
-                                rightIcon={!bid.planned ? <RemoveCircleOutlineIcon style={{fill: themePalette.warningColor}}/> : <CheckCircleIcon style={{fill: themePalette.successColor}}/>}
-                                />
-                        </IconMenu> */}
                     </div>
                 </div>
             } else if ( bid.bidderConfirmed === false) {
@@ -351,6 +334,7 @@ class Status extends Component {
                                 <StatusStepper 
                                     claimStep={bid.claimStep} 
                                     setClaimStep={this.setClaimStep} 
+                                    themePalette={themePalette}
                                     bidDetails={{
                                         bid, 
                                         allBidsIndex: bid.allBidsIndex, 
