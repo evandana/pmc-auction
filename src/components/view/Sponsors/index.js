@@ -41,12 +41,30 @@ const Sponsors = ({ prop }) => {
             color: amber500
         },
         {
+            name: 'Broadsheet Coffee Roasters',
+            link: 'https://www.broadsheetcoffee.com/',
+            subtext: 'Locally roasted beans; best espresso in town',
+            image: getImageForEnv('broadsheet-logo.png'),
+            color: amber500
+        },
+        {
             name: 'Dave Thomas',
             link: 'http://github.com/dwthomas77',
             subtext: 'If he codes it, they will bid',
             image: '', //getImageForEnv('dave.png'),
             color: amber500
         },
+        {
+            name: 'Second Chance Ranch',
+            link: 'https://www.secondchanceranchrescue.com/',
+            subtext: 'Doggie boarding / find your rescue dog',
+            image: getImageForEnv('second-chance-ranch-logo.png'),
+            color: amber500
+        },
+
+       
+        
+
         // {
         //     name: 'Cambridge Brewing Company',
         //     link: 'http://www.cambridgebrewingcompany.com/',
