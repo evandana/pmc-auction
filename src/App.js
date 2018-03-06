@@ -82,7 +82,7 @@ class App extends Component {
                 highlight1Color: '#E8448B',
                 ternaryTextColor: '#8DC3DB', // TODO: rename
                 fadedPrimary1Color: '#4FDFFF',
-                primaryLinkColor: '#4FDFFF',
+                primaryLinkColor: '#1DAFEC',
                 secondaryLinkColor: '#8AC9EC',
                 primary2Color: '#47B4E0',
                 errorColor: '#E8448B',
