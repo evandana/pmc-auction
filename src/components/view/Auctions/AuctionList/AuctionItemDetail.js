@@ -164,6 +164,10 @@ class AuctionItemDetail extends Component {
 			/>,
 		];
 
+		const cleanReferenceLink = (linkText) => {
+			return linkText.replace(/https?:\/\/(www\.)?/ig, '');
+		}
+
 		return (
 			<div className="auction-item-detail">
 				<Card style={style.detailsPage} >
@@ -281,10 +285,7 @@ class AuctionItemDetail extends Component {
 								labelStyle={{paddingLeft:0}} 
 								target="_blank" 
 								href={(data.referenceLink.indexOf('http') > -1 ? '' : 'https://') + data.referenceLink} 
-								label={data.referenceLink.indexOf('://') > -1 ? 
-									data.referenceLink.substr(data.referenceLink.indexOf('://') + 3).length < 25 ? data.referenceLink.substr(data.referenceLink.indexOf('://') + 3) : data.referenceLink.substr(data.referenceLink.indexOf('://') + 3,25) + '...'
-									 : 
-									 data.referenceLink.length < 25 ? data.referenceLink : data.referenceLink.substr(0,25) + '...'}
+								label={cleanReferenceLink(data.referenceLink).length < 25 ? cleanReferenceLink(data.referenceLink) : cleanReferenceLink(data.referenceLink).substr(0,25) + '...'}
 								/></div>
 						)}
 					</CardText>
