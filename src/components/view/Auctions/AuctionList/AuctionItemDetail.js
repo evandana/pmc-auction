@@ -278,7 +278,9 @@ class AuctionItemDetail extends Component {
 						<div className="detail-field"><label>Location</label><span>{data.location}</span></div>
 						<div className="detail-field"><label>Description</label><span>{this.translateNewLinesToBrs(data.description)}</span></div>
 						<div className="detail-field"><label>Use by</label><span>{moment(data.useBy).format('MMM Do')}</span></div>
-						<div className="detail-field"><label>Qty offered</label><span>{data.numberOffered}</span></div>
+						{/* 
+							// Hiding this so it doesn't influence people to not bid higher
+							<div className="detail-field"><label>Qty offered</label><span>{data.numberOffered}</span></div> */}
 						{ !data.referenceLink ? '' : (
 							<div className="detail-field"><label>More Info</label><FlatButton 
 								style={{height:'auto', marginTop: -2}} 
