@@ -3,6 +3,8 @@ import moment from 'moment';
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import { Link } from 'react-router-dom'
+
 // Material UI
 import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
 import Card from 'material-ui/Card/Card';
@@ -268,10 +270,23 @@ class AuctionItemDetail extends Component {
 
 
 						</div>
+						{ !data.commercialValue || data.highestBid > data.commercialValue ? '' : <div className="detail-field"><label>Value</label><span>${data.commercialValue}</span></div>}
 						<div className="detail-field"><label>Location</label><span>{data.location}</span></div>
 						<div className="detail-field"><label>Description</label><span>{this.translateNewLinesToBrs(data.description)}</span></div>
-						<div className="detail-field"><label>Please use by</label><span>{moment(data.useBy).format('MMM Do')}</span></div>
+						<div className="detail-field"><label>Use by</label><span>{moment(data.useBy).format('MMM Do')}</span></div>
 						<div className="detail-field"><label>Qty offered</label><span>{data.numberOffered}</span></div>
+						{ !data.referenceLink ? '' : (
+							<div className="detail-field"><label>More Info</label><FlatButton 
+								style={{height:'auto', marginTop: -2}} 
+								labelStyle={{paddingLeft:0}} 
+								target="_blank" 
+								href={(data.referenceLink.indexOf('http') > -1 ? '' : 'https://') + data.referenceLink} 
+								label={data.referenceLink.indexOf('://') > -1 ? 
+									data.referenceLink.substr(data.referenceLink.indexOf('://') + 3).length < 25 ? data.referenceLink.substr(data.referenceLink.indexOf('://') + 3) : data.referenceLink.substr(data.referenceLink.indexOf('://') + 3,25) + '...'
+									 : 
+									 data.referenceLink.length < 25 ? data.referenceLink : data.referenceLink.substr(0,25) + '...'}
+								/></div>
+						)}
 					</CardText>
 					<CardMedia
 						overlayContentStyle={{top:0, bottom:''}}

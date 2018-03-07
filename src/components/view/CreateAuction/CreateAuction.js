@@ -37,6 +37,7 @@ class CreateAuction extends Component {
         // console.log('form', formData);
         const { dispatch, user } = this.props;
 
+        formData.commercialValue = this.numberify(formData.commercialValue, 0);
         formData.openingBid = this.numberify(formData.openingBid, 15);
         formData.highestBid = this.numberify(formData.highestBid, 0);
         formData.bidIncrement = this.numberify(formData.bidIncrement, 5);
