@@ -196,6 +196,7 @@ export function placeBid(bidDetails) {
 export function createAuction(userInputData, user) {
 
     const auctionData = {
+        image: '',
         ...userInputData,
         highestBid: 0,
         owner: {
@@ -203,7 +204,6 @@ export function createAuction(userInputData, user) {
             persona: user.persona,
             displayName: user.displayName,
         },
-        image: '',
     };
 
     return {

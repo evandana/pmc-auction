@@ -50,7 +50,6 @@ class StatusStepper extends React.Component {
                                     // completed
                                     <StepButton
                                         completed={claimStep >= i}
-                                        style={{ marginTop: '-20px', height: '40px' }}
                                         onClick={() => setClaimStep({
                                             claimStep: claimStep === i ? i - 1 : i,
                                             ...bidDetails
@@ -63,7 +62,6 @@ class StatusStepper extends React.Component {
                                     // not completed
                                     <StepButton
                                         completed={claimStep >= i}
-                                        style={{ marginTop: '-20px', height: '40px' }}
                                         onClick={() => setClaimStep({
                                             claimStep: claimStep === i ? i - 1 : i,
                                             ...bidDetails

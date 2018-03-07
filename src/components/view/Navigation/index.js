@@ -2,7 +2,6 @@ import React from 'react';
 
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
-import { Link } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';

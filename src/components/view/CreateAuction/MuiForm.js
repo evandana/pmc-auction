@@ -188,6 +188,24 @@ class MuiForm extends Component {
             label="Bid Increment ($)"
           />
           <Field
+            className="col-xs-8 col-sm-6"
+            style={style.field}
+            name="referenceLink"
+            type="text"
+            component={renderTextField}
+            hintText={'http://somesite.com'}
+            label="Reference Link"
+          />
+          <Field
+            className="col-xs-4 col-sm-3"
+            style={style.field}
+            name="commercialValue"
+            type="number"
+            component={renderTextField}
+            hintText={0}
+            label="Value ($)"
+          />
+          <Field
             className="col-xs-12"
             style={style.field}
             name="description"
@@ -203,6 +221,13 @@ class MuiForm extends Component {
             component={renderCheckbox}
             label="Featured"
           /> */}
+          <Field
+            style={{display:'none'}}
+            className="col-xs-6"
+            component={renderTextField}
+            name="image"
+            type="text"
+          />
           <Field
             className="col-xs-6"
             name="show"
