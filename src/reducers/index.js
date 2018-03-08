@@ -1,6 +1,7 @@
 import modal from './modal';
 import auctions from './auctions';
 import config from './config';
+import asyncForm from './async-form';
 
 function isLoggedIn(state = false, action) {
     return state;
@@ -8,6 +9,7 @@ function isLoggedIn(state = false, action) {
 
 const reducers = {
     isLoggedIn,
+    asyncForm,
     modal,
     auctions,
     config,

@@ -31,6 +31,8 @@ import {
     OWNER_BID_CONTACTED,
     OWNER_BID_PLANNED,
     SET_CLAIM_STEP,
+    SUBMIT_DONOR_CODE,
+    ASYNC_FORM_STATUS_UPDATE,
 
 } from '../constants';
 
@@ -77,6 +79,26 @@ export function showLoginSpinner(showLoginSpinner) {
     return {
         type: SHOW_LOGIN_SPINNER,
         showLoginSpinner,
+    }
+}
+
+/** DONOR CODE */
+
+export function submitDonorCode({formData, user}) {
+    return {
+        type: SUBMIT_DONOR_CODE,
+        formData,
+        user,
+    }
+}
+
+/** ASYNC FORM */
+
+export function asyncFormStatusUpdate({status, success}) {
+    return {
+        type: ASYNC_FORM_STATUS_UPDATE,
+        status,
+        success,
     }
 }
 
@@ -222,3 +244,4 @@ export function setClaimStep({claimStep, bid, allBidsIndex, auctionUid}) {
         auctionUid,
     }
 }
+
