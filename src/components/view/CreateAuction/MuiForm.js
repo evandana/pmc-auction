@@ -191,7 +191,7 @@ class MuiForm extends Component {
             className="col-xs-8 col-sm-6"
             style={style.field}
             name="referenceLink"
-            type="text"
+            type="url"
             component={renderTextField}
             hintText={'http://somesite.com'}
             label="Reference Link"

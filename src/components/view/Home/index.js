@@ -1,5 +1,7 @@
 import React from 'react';
 
+import DonorCodeForm from 'components/controller/DonorCodeForm'
+
 import { getImageForEnv } from 'static/images/index'
 
 const Home = (props) => {
@@ -44,6 +46,17 @@ const Home = (props) => {
                         <li>Connect people under shared interests</li>
                         <li>Raise money towards treating and curing cancer</li>
                     </ul>
+
+                    <h2>Auction Donors</h2>
+
+                    <p>If you would like to create an auction item, please enter the access code here:</p>
+
+                    {user.permissions.donor ? '' : (
+                        <DonorCodeForm 
+                            className="col-xs-12"
+                            style={{paddingLeft:'1em'}}
+                            />
+                    )}
 
                 </section>
 

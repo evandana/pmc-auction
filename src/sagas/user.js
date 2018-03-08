@@ -6,10 +6,12 @@ import animalList from './persona-animals'
 import {
     GET_USER,
     UPDATE_USER,
+    SUBMIT_DONOR_CODE,
 } from '../constants';
 
-import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner } from 'actions';
+import { SubmissionError } from 'redux-form'
 
+import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner, asyncFormStatusUpdate } from 'actions';
 
 function* getUser({ googleUserData }) {
 
@@ -109,10 +111,32 @@ function* updateUser({ userData }) {
     yield;
 }
 
+function* submitDonorCode({formData, user}) {
+
+    const personaUid = transformPersonaStringIntoUid(user.persona);
+
+    const updatedPermissionsObj = {
+        ...user.permissions,
+        donor: true,
+        donorCode: formData.donorCode,
+    };
+
+    window._FIREBASE_DB_.ref('users/' + personaUid + '/permissions/')
+        .set(updatedPermissionsObj)
+        .catch(err => {
+            window._UI_STORE_.dispatch(asyncFormStatusUpdate({status: err.message, success: false}));
+        });
+
+    yield;
+
+}
+
+
 export default function* () {
     yield [
         takeEvery(GET_USER, getUser),
         takeEvery(UPDATE_USER, updateUser),
+        takeEvery(SUBMIT_DONOR_CODE, submitDonorCode),
     ];
 }
 
