@@ -47,15 +47,17 @@ const Home = (props) => {
                         <li>Raise money towards treating and curing cancer</li>
                     </ul>
 
-                    <h2>Auction Donors</h2>
-
-                    <p>If you would like to create an auction item, please enter the access code here:</p>
-
                     {user.permissions.donor ? '' : (
-                        <DonorCodeForm 
-                            className="col-xs-12"
-                            style={{paddingLeft:'1em'}}
-                            />
+                        <section>
+                            <h2>Auction Donors</h2>
+
+                            <p>If you would like to create an auction item, please enter the access code here:</p>
+
+                            <DonorCodeForm 
+                                className="col-xs-12"
+                                style={{paddingLeft:'1em'}}
+                                />
+                        </section>
                     )}
 
                 </section>
