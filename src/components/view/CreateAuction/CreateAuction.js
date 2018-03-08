@@ -97,14 +97,20 @@ class CreateAuction extends Component {
                                 padding: '1em',
                                 marginTop: '-.5em',
                                 marginBottom: '1.5em',
-                                background: this.themePalette.accent1Color
+                                border: '1px solid '+ this.themePalette.accent1Color,
+                                background: '#eee'
                             }}>
-                                <p>
-                                    Thanks for offering to donate your time!
-                                </p>
+                                <h3>Thanks for offering to donate your time!</h3>
                                 <p>
                                     Text or email images (landscape orientation) to Evan
                                 </p>
+
+                                <h3>Auction success tips:</h3>
+                                <ul>
+                                    <li>Think about experiences that you would love doing</li>
+                                    <li>Feature your skills and talents</li>
+                                    <li>Include a "commercial value" aspect to it in some way, even if just a cup of coffee</li>
+                                </ul>
                             </Paper>
                             <MuiForm
                                 form={'new'}
