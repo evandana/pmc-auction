@@ -54,12 +54,6 @@ class Messages extends React.Component {
                     >
                     {config.MESSAGE_ALERT}
                 </Dialog>
-                {/* <RaisedButton
-                    buttonStyle={{background: this.themePalette.errorColor}}
-                    labelStyle={{color: this.themePalette.canvasColor}}
-                    label={config.MESSAGE_ALERT}
-                    fullWidth={true}
-                    /> */}
 
             </div>
         );  
