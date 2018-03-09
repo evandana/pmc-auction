@@ -28,6 +28,7 @@ import Home from 'components/controller/Home';
 import Results from 'components/controller/Results';
 import Sponsors from 'components/controller/Sponsors';
 import Status from 'components/controller/Status';
+import Messages from 'components/controller/Messages';
 
 import Navigation from 'components/controller/Navigation';
 import Footer from 'components/view/common/Footer';
@@ -114,6 +115,7 @@ class App extends Component {
                     <ConnectedRouter history={history}>
                         <div className="app">
                             <Navigation />
+                            <Messages />
                             <Switch>
                                 <Route exact path="/" component={Home} />
                                 <AuthorizedRoute exact path="/about" component={Home} />
