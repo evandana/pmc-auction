@@ -27,18 +27,28 @@ class AuctionList extends Component {
      } = this.props;
 
     let auctionItems = [];
-    const cols = window.innerWidth < 600 ? 2 : 3;
+    let cols = 2;
+    if (window.innerWidth > 1000) {
+      cols = 4;
+    } else if (window.innerWidth > 600) {
+      cols = 3;
+    }
     const featuredPatternMap = {
       // 1 is first item
       small: [1, 6, 13, 18, 25, 30, 37],
-      medium: [1, 7, 11, 17, 21, 27, 31, 37]
+      medium: [1, 7, 11, 17, 21, 27, 31, 37],
+      large: []
     }
 
-    const featuredPattern = window.innerWidth < 600 ? featuredPatternMap.small : featuredPatternMap.medium;
+    let featuredPattern = featuredPatternMap.small;
+    if (window.innerWidth > 900) {
+      featuredPattern = featuredPatternMap.large;
+    } else if (window.innerWidth > 600) {
+      featuredPattern = featuredPatternMap.medium;
+    }
 
     let countShown = 0;
     auctions.forEach((obj, index) => {
-
 
       if (obj.show) {
 

@@ -102,17 +102,31 @@ class Status extends Component {
                             <RaisedButton
                                 hidden={totalAmountDue === 0}
                                 buttonStyle={{backgroundColor: themePalette.accent1Color}}
-                                label={'Pay ' + totalAmountDue}
+                                label={'Venmo $' + totalAmountDue}
                                 primary={true}
+                                target='_blank'
+                                href='https://www.venmo.com/EvanDana'
+                                />
+                            <FlatButton 
+                                hidden={totalAmountDue === 0}
                                 href='/donate'
-                                icon={<AttachMoneyIcon />}
+                                style={{color: themePalette.ternaryTextColor}}
+                                label='Other options'
                                 />
                             <span 
                                 hidden={totalAmountDue !== 0}
                                 >
-                                Thanks for your donation!
+                                Thanks for your payments!
                             </span>
                         </div>
+
+                        <span
+                            className="col-xs-12"
+                            hidden={totalAmountDue === 0}
+                            style={{textAlign: 'right', color: themePalette.disabledColor, fontSize: '80%', paddingTop: '1em', paddingBottom: '1em', paddingRight: '2em'}}
+                            > 
+                            Payments not automatically reflected here
+                        </span>
                         {
                             !auctionsWithUserBids || auctionsWithUserBids.length < 1 ? 
                                 (config.BIDDING_OPEN ? this.createMessageDiv('You haven\'t made any bids yet') : this.createMessageDiv('Bidding not open')) : 
