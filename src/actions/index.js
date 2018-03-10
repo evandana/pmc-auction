@@ -69,12 +69,6 @@ export function updateUser(userData) {
     };
 }
 
-export function openLoginModal() {
-    return {
-        type: OPEN_MODAL,
-    };
-}
-
 export function showLoginSpinner(showLoginSpinner) {
     return {
         type: SHOW_LOGIN_SPINNER,

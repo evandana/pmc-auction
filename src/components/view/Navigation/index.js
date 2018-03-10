@@ -174,7 +174,7 @@ class Navigation extends React.Component {
     }
 
     render () {
-        const { user, userPermissions, config, logout, openLoginModal } = this.props;
+        const { user, userPermissions, config, logout } = this.props;
 
         if (!userPermissions || Object.keys(userPermissions).length < 1) {
             return (
@@ -196,7 +196,7 @@ class Navigation extends React.Component {
             );
         }
         
-        const iconMenu = this.buildIconMenu(userPermissions, { logout, openLoginModal });
+        const iconMenu = this.buildIconMenu(userPermissions, { logout });
         
         const navigationTabs = this.buildNavigationTabs(userPermissions, config, this.toggleAuctionDetail);
         // const adminTabs = userPermissions.admin ? this.buildAdminTabs() : '';
