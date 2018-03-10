@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { loginGoogleRequest } from 'actions';
-import LoginModal from 'components/view/Modal/Login';
+import Login from 'components/view/Login';
 
 
 const mapStateToProps = (state) => {
@@ -9,9 +9,9 @@ const mapStateToProps = (state) => {
     }
 };
 
-const LoginModalController = connect(
+const LoginController = connect(
     mapStateToProps, 
     { loginGoogleRequest }
-)(LoginModal);
+)(Login);
 
-export default LoginModalController;
+export default LoginController;

@@ -1,17 +1,13 @@
 import React from 'react';
 import './styles.css';
 
+import Home from 'components/controller/Home'
+
 const NotAuthorizedPage = props => {
-
-    // const { from } = props;
-
-    // const path = from.pathname;
 
     return (
         <div className="page">
-            {/* <div className="loader">
-                <div className="loader-spinner" />
-            </div> */}
+            <Home />
         </div>
     );
 };

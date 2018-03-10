@@ -32,7 +32,6 @@ import Messages from 'components/controller/Messages';
 
 import Navigation from 'components/controller/Navigation';
 import Footer from 'components/view/common/Footer';
-import AppModal from 'components/controller/Modal';
 import { getUser, fetchAuctions, fetchConfig, showLoginSpinner } from './actions';
 
 import './app.css';
@@ -128,7 +127,6 @@ class App extends Component {
                                 <AuthorizedRoute exact path="/create-auction" component={CreateAuction} />
                             </Switch>
                             <Footer />
-                            <AppModal />
                         </div>
                     </ConnectedRouter>
                 </Provider>

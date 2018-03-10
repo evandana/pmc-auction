@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { openLoginModal } from 'actions';
 import Home from 'components/view/Home';
 
 const mapStateToProps = (state) => {
@@ -9,10 +8,8 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = { openLoginModal };
-
 const HomeController = connect(
-    mapStateToProps, mapDispatchToProps
+    mapStateToProps,
 )(Home);
 
 export default HomeController;
