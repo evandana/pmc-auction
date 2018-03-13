@@ -49,6 +49,12 @@ class Navigation extends React.Component {
                     targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                 >
                     <MenuItem onTouchTap={logout} primaryText="Logout" />
+                    {permissions.admin && (
+                        <MenuItem 
+                            onClick={() => this.props.history.push('donor-info')}
+                            primaryText="Donor Info" 
+                            />
+                    )}
                 </IconMenu>
             );
         }
@@ -124,12 +130,18 @@ class Navigation extends React.Component {
                 return this.buildTab(tabObj);
             });
 
-        const initialSelectedIndex = tabObjs.findIndex(tab => '/' + tab.link === currentPagePath) 
+        const initialSelectedIndex = tabObjs.findIndex(tab => {
+            if (tab.link === 'about') {
+                return '/' + tab.link === currentPagePath || '/' === currentPagePath;
+            } else {
+                return '/' + tab.link === currentPagePath;
+            }
+        }); 
 
         return (
             <Tabs
                 inkBarStyle={{background: this.themePalette.highlight1Color}}
-                initialSelectedIndex={initialSelectedIndex === -1 ? 0 : initialSelectedIndex}
+                initialSelectedIndex={initialSelectedIndex}
                 onChange={this.navigateToRoute}
                 tabItemContainerStyle={{backgroundColor: this.themePalette.primary2Color}}
                 onClick={() => {
@@ -140,38 +152,6 @@ class Navigation extends React.Component {
             </Tabs>
         );
     };
-
-    buildAdminTabs () {
-
-        const tabObjs = [
-            {
-                icon: <PollIcon />,
-                label: 'Results',
-                link: 'results',
-            },
-            {
-                icon: <AssignmentInd />,
-                label: 'Donor Info',
-                link: 'donor-info',
-            },
-        ];
-
-        const currentPagePath = window.location.pathname; // e.g. '/auctions'
-
-        const tabs = tabObjs.map(tabObj => {
-            return this.buildTab(tabObj);
-        });
-
-        return (
-            <Tabs
-                initialSelectedIndex={tabs.findIndex(tab => tab.props['data-route'] === currentPagePath)}
-                onChange={this.navigateToRoute}
-                tabItemContainerStyle={{backgroundColor: blueGrey600}}
-                >
-                {tabs}
-            </Tabs>
-        );
-    }
 
     render () {
         const { user, userPermissions, config, logout } = this.props;
@@ -199,7 +179,6 @@ class Navigation extends React.Component {
         const iconMenu = this.buildIconMenu(userPermissions, { logout });
         
         const navigationTabs = this.buildNavigationTabs(userPermissions, config, this.toggleAuctionDetail);
-        // const adminTabs = userPermissions.admin ? this.buildAdminTabs() : '';
 
         return (
             <div>
@@ -222,8 +201,6 @@ class Navigation extends React.Component {
                 </AppBar>}
 
                 {navigationTabs}
-
-                {/* {adminTabs} */}
 
             </div>
         );  

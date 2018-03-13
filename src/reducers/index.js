@@ -1,7 +1,8 @@
-import modal from './modal';
+import asyncForm from './async-form';
 import auctions from './auctions';
 import config from './config';
-import asyncForm from './async-form';
+import modal from './modal';
+import users from './users';
 
 function isLoggedIn(state = false, action) {
     return state;
@@ -10,9 +11,10 @@ function isLoggedIn(state = false, action) {
 const reducers = {
     isLoggedIn,
     asyncForm,
-    modal,
-    auctions,
+    auctions, // contains current user
     config,
+    modal,
+    users, // list of all users
 };
 
 export default reducers;

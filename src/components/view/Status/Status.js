@@ -96,13 +96,13 @@ class Status extends Component {
                         )}
                         <div 
                             className="col-xs-12" 
-                            hidden={config.BIDDING_OPEN || ( totalAmountDue && amountPaid )}
+                            hidden={config.BIDDING_OPEN || ( totalAmountDue <= amountPaid )}
                             style={{textAlign:'right'}}
                             >
                             <RaisedButton
                                 hidden={totalAmountDue === 0}
                                 buttonStyle={{backgroundColor: themePalette.accent1Color}}
-                                label={'Venmo $' + totalAmountDue}
+                                label={'Venmo $' + (totalAmountDue - amountPaid)}
                                 primary={true}
                                 target='_blank'
                                 href='https://www.venmo.com/EvanDana'
