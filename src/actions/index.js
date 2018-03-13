@@ -9,6 +9,10 @@ import {
     SET_CURRENT_USER,
     SHOW_LOGIN_SPINNER,
 
+    // ALL USERS
+    GET_USERS,
+    SET_USERS,
+
     // MODALS
     OPEN_MODAL,
 
@@ -73,6 +77,21 @@ export function showLoginSpinner(showLoginSpinner) {
     return {
         type: SHOW_LOGIN_SPINNER,
         showLoginSpinner,
+    }
+}
+
+/** ALL USERS */
+
+export function getUsers() {
+    return {
+        type: GET_USERS,
+    }
+}
+
+export function setUsers(users) {
+    return {
+        type: SET_USERS,
+        users,
     }
 }
 

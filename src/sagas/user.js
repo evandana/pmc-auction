@@ -11,7 +11,7 @@ import {
 
 import { SubmissionError } from 'redux-form'
 
-import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner, asyncFormStatusUpdate } from 'actions';
+import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner, asyncFormStatusUpdate, getUsers } from 'actions';
 
 function* getUser({ googleUserData }) {
 
@@ -42,8 +42,15 @@ function* getUser({ googleUserData }) {
                                     persona: user.persona
                                 }));
                             } else {
+                                // HAPPY PATH
                                 // set user for the rest of the app
                                 window._UI_STORE_.dispatch(setCurrentUser(user));
+
+                                // get data only for admins
+                                if (user.permissions.admin) {
+                                    window._UI_STORE_.dispatch(getUsers());
+                                }
+
                             }
                         } else {
                             // triggers updateUser method below for persona
