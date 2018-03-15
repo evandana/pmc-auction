@@ -55,6 +55,20 @@ const Sponsors = ({ prop }) => {
             color: amber500
         },
         {
+            name: 'Bone Up Brewing',
+            link: 'https://www.boneup.beer/',
+            subtext: 'There\'s a coloring contest and flights come with a fruit roll up',
+            image: getImageForEnv('bone-up-logo.png'),
+            color: amber500
+        },
+        {
+            name: 'Saus',
+            link: 'https://www.sausboston.com/',
+            subtext: 'Beer and Belgian street food: waffles, fries, and more',
+            image: getImageForEnv('saus-logo.png'),
+            color: amber500
+        },
+        {
             name: 'Second Chance Ranch',
             link: 'https://www.secondchanceranchrescue.com/',
             subtext: 'Doggie boarding / find your rescue dog',
@@ -137,8 +151,8 @@ const Sponsors = ({ prop }) => {
                                 secondaryText={sponsor.subtext}
                                 secondaryTextLines={2}
                                 key={sponsor.name}
-                                leftIcon={<ActionGrade style={style} />}
-                                rightAvatar={<Avatar src={sponsor.image} backgroundColor={transparent} />}
+                                // leftIcon={<ActionGrade style={style} />}
+                                leftIcon={<Avatar style={{ height:40, width:40 }} src={sponsor.image} backgroundColor={transparent} />}
                             />
                         )
                     })
