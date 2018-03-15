@@ -1,0 +1,31 @@
+.image-upload-hidden {
+    display: none;
+}
+
+.image-upload {
+    border: medium gray solid;
+    background-color: white;
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.image-upload h3 {
+    margin-top: 0;
+}
+
+.image-upload-btn {
+    text-align: center;
+}
+
+.image-upload-btn > * {
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.image-upload__file {
+    text-align: center;
+}
+
+.image-upload__file img {
+    max-width: 100%;
+}

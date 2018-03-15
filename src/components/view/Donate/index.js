@@ -1,6 +1,7 @@
 import React from 'react'
 
 import FlatButton from 'material-ui/FlatButton';
+import ImageUpload from 'components/controller/ImageUpload';
 
 const Donate = (props) => {
 
@@ -18,6 +19,7 @@ const Donate = (props) => {
                     <div className="col-xs-12 col-sm-6" style={{paddingRight:'2em'}}>
                         <h3>Get a tax-deductible receipt from the PMC</h3>
                         <FlatButton primary={true} target="_blank" href='http://pmc.org/ed0074' label="PMC Site: pmc.org/ed0074"></FlatButton>
+                        <ImageUpload />
                     </div>
                 </div>
 

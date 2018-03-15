@@ -13,6 +13,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 // import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import Checkbox from 'material-ui/Checkbox'
 import AddCircleIcon from 'material-ui/svg-icons/content/add-circle';
+import ImageUpload from 'components/controller/ImageUpload';
 
 import { createAuction } from 'actions';
 
@@ -111,6 +112,7 @@ class CreateAuction extends Component {
                                     <li>Feature your skills and talents</li>
                                     <li>Include a "commercial value" aspect to it in some way, even if just a cup of coffee</li>
                                 </ul>
+                                <ImageUpload />
                             </Paper>
                             <MuiForm
                                 form={'new'}
