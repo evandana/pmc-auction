@@ -4,6 +4,7 @@ import user from './user';
 import users from './users';
 import auctions from './auctions';
 import config from './config';
+import imageUpload from './imageUpload';
 
 /**
  * use one root saga to yield all other side effect sagas
@@ -15,6 +16,7 @@ function* sagas() {
         fork(users),
         fork(auctions),
         fork(config),
+        fork(imageUpload),
     ];
 }
 
