@@ -64,6 +64,7 @@ class Navigation extends React.Component {
         // close any open auction item
         // this.toggleAuctionDetail();
         // navigate
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
         this.props.history.push(tabEl.props['data-route']);
     };
 
