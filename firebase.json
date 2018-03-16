@@ -12,7 +12,7 @@
     ],
     "rewrites": [
       {
-        "source": "/{about,auctions,status,donate,sponsors,results,donor-info,create-auctions}",
+        "source": "/{about,auctions,status,donate,sponsors,results,donor-info,create-auction}",
         "destination": "/index.html"
       }
     ]
