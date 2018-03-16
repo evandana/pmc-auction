@@ -20,13 +20,6 @@ const Sponsors = ({ prop }) => {
         //     image: getImageForEnv('sponsor-landrys.png'),
         //     color: amber500
         // },
-        // {
-        //     name: 'OTTO Pizza',
-        //     link: 'http://www.ottoportland.com/',
-        //     subtext: 'A little slice of heaven',
-        //     image: getImageForEnv('ottos.png'),
-        //     color: amber500
-        // },
         {
             name: 'Janji',
             link: 'https://runjanji.com/',
@@ -77,15 +70,6 @@ const Sponsors = ({ prop }) => {
         },
 
        
-        
-
-        // {
-        //     name: 'Cambridge Brewing Company',
-        //     link: 'http://www.cambridgebrewingcompany.com/',
-        //     subtext: 'Amazing local brews',
-        //     image: getImageForEnv('sponsor-cbc.png'),
-        //     color: yellow600
-        // },
         // {
         //     name: 'Sky Zone',
         //     link: 'http://www.skyzone.com/',
@@ -128,8 +112,6 @@ const Sponsors = ({ prop }) => {
         var win = window.open(link, '_blank');
         win.focus();
     }
-    // <Divider inset={true} />
-    // secondaryTextLines={2}
 
     return (
         <div className='page'>
