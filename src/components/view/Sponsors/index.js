@@ -13,13 +13,6 @@ import './sponsors.css'
 const Sponsors = ({ prop }) => {
 
     const sponsors = [
-        // {
-        //     name: 'Landry\'s Bicycles',
-        //     link: 'http://www.landrys.com/',
-        //     subtext: 'Our gracious hosts',
-        //     image: getImageForEnv('sponsor-landrys.png'),
-        //     color: amber500
-        // },
         {
             name: 'Janji',
             link: 'https://runjanji.com/',
@@ -68,8 +61,15 @@ const Sponsors = ({ prop }) => {
             image: getImageForEnv('second-chance-ranch-logo.png'),
             color: amber500
         },
+        {
+            name: 'Landry\'s Bicycles',
+            link: 'http://www.landrys.com/',
+            subtext: 'Where bikes come from',
+            image: getImageForEnv('sponsor-landrys.png'),
+            color: amber500
+        },
 
-       
+        
         // {
         //     name: 'Sky Zone',
         //     link: 'http://www.skyzone.com/',
