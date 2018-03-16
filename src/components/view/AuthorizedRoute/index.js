@@ -18,15 +18,13 @@ class AuthorizedRoute extends Component {
         };
         
         const pageWrapperStyles = {
-            position: 'fixed',
             width: '100%',
-            height: 'calc(100% - 175px)',
-            // height: userPermissions.admin ? 'calc(100% - 247px)' : 'calc(100% - 175px)',
+            marginTop: '136px',
         }
 
         return (
             <Route {...rest} render={props => (
-                userPermissions.basic || userPermissions.admin || userPermissions.seller ? (
+                userPermissions.basic || userPermissions.admin ? (
                         <div className='page-wrapper' style={pageWrapperStyles}>
                             <Component {...props}/>
                         </div>

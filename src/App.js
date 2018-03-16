@@ -113,7 +113,6 @@ class App extends Component {
                 <Provider store={store}>
                     <ConnectedRouter history={history}>
                         <div className="app">
-                            <Navigation />
                             <Messages />
                             <Switch>
                                 <Route exact path="/" component={Home} />
@@ -126,6 +125,7 @@ class App extends Component {
                                 <AuthorizedRoute exact path="/donor-info" component={DonorInfo} />
                                 <AuthorizedRoute exact path="/create-auction" component={CreateAuction} />
                             </Switch>
+                            <Navigation />
                             <Footer />
                         </div>
                     </ConnectedRouter>
