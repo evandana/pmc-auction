@@ -158,21 +158,29 @@ class Navigation extends React.Component {
 
         if (!userPermissions || Object.keys(userPermissions).length < 1) {
             return (
-                <AppBar
-                    title='Happiness Exchange'
-                    iconElementLeft={
-                        <div style={{
-                                backgroundColor:'#fff',
-                                padding:'2px',
-                                marginTop:'-8px',
-                                marginLeft:'-8px',
-                                marginBottom:'-8px',
-                            }}>
-                            <img style={{height:'56px',width:'56px'}} alt="Eappiness Exchange logo" src={getImageForEnv('happinessexchange.png')} />
-                        </div>
-                    }
-                >
-                </AppBar>
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        width: '100%',
+                    }}
+                    >
+                    <AppBar
+                        title='Happiness Exchange'
+                        iconElementLeft={
+                            <div style={{
+                                    backgroundColor:'#fff',
+                                    padding:'2px',
+                                    marginTop:'-8px',
+                                    marginLeft:'-8px',
+                                    marginBottom:'-8px',
+                                }}>
+                                <img style={{height:'56px',width:'56px'}} alt="Eappiness Exchange logo" src={getImageForEnv('happinessexchange.png')} />
+                            </div>
+                        }
+                    >
+                    </AppBar>
+                </div>
             );
         }
         
@@ -181,7 +189,13 @@ class Navigation extends React.Component {
         const navigationTabs = this.buildNavigationTabs(userPermissions, config, this.toggleAuctionDetail);
 
         return (
-            <div>
+            <div
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    width: '100%',
+                }}
+                >
                 
                 {<AppBar
                     title={'Welcome, ' + user.displayName}

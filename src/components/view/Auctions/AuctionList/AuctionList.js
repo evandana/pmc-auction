@@ -72,29 +72,19 @@ class AuctionList extends Component {
 
     });
 
-    // console.log('auctionItems', auctionItems)
-
     const styles = {
       root: {
         display: 'flex',
         flexWrap: 'wrap',
-        //justifyContent: 'space-around' // for prod
+        marginRight: '-1px',
         justifyContent: 'flex-start' // for dev
       },
       gridList: {
         width: '100%',
-        // width: window.innerWidth,
-        // width: window.innerWidth, //< 600 ? window.innerWidth : window.innerWidth - 20,
-        // height: 700,
         overflowY: 'auto',
         marginBottom: 24
       }
     }
-
-    // TODO: put this back in
-    // actionIcon={<IconButton><PlusOne color="white"/></IconButton>}
-
-    // console.log('config', this.props.config)
 
     return (
       <div style={styles.root}>

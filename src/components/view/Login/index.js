@@ -41,7 +41,10 @@ class Login extends Component {
         const isBrowserSupported = this.isBrowserSupported();
 
         return (
-            <div>
+            <div style={{
+                    marginTop: '100px',
+                }}
+                >
                 {isBrowserSupported || this.state.hideUnsupportedBrowserText ? '' : (
                     <Paper
                         style={{
