@@ -14,7 +14,7 @@ const Sponsors = ({ prop }) => {
 
     const sponsors = [
         {
-            name: 'Janji',
+            name: 'Janji (the event host)',
             link: 'https://runjanji.com/',
             subtext: 'Performance running apparel that connects people',
             image: getImageForEnv('janji-logo.png'),
