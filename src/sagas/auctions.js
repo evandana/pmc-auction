@@ -1,19 +1,26 @@
-import { takeEvery } from 'redux-saga/effects';
+import {takeEvery, take, cancel, call, fork} from 'redux-saga/effects';
+import {delay} from 'redux-saga';
 
 import {
-    FETCH_AUCTIONS,
-    PLACE_BID,
-    UPDATE_AUCTION,
-    CREATE_AUCTION,
-    OWNER_BID_CONFIRMATION,
     BIDDER_BID_CONFIRMATION,
+    CREATE_AUCTION,
+    DEBOUNCE_REFRESH_AUCTIONS,
+    FETCH_AUCTIONS,
+    OWNER_BID_CONFIRMATION,
     OWNER_BID_CONTACTED,
     OWNER_BID_PLANNED,
+    PLACE_BID,
     SET_CLAIM_STEP,
+    UPDATE_AUCTION,
 } from '../constants';
 
-import { refreshAuctions, refreshAuction } from '../actions';
+import { refreshAuctions, debounceRefreshAuctions as debounceFetchAuctionsAction } from '../actions';
 
+
+// debounce refresh auctions to prevent extraneous refreshes during a bidding spree
+function* debouncedRefreshAuctions({auctionCollection}) {
+    yield window._UI_STORE_.dispatch(refreshAuctions(auctionCollection));
+};
 
 function* fetchAuctions() {
     window._FIREBASE_DB_.ref('/auctions')
@@ -27,7 +34,8 @@ function* fetchAuctions() {
             return auction;
         });
 
-        window._UI_STORE_.dispatch(refreshAuctions(auctions));
+        // debounce refresh auctions to prevent extraneous refreshes during a bidding spree
+        window._UI_STORE_.dispatch(debounceFetchAuctionsAction(auctions));
     });
     yield;
 }
@@ -189,6 +197,10 @@ function* createAuction({auctionData}) {
 
 export default function* () {
     yield [
+        // debounce refresh auctions to prevent extraneous refreshes during a bidding spree
+        debounceFor(DEBOUNCE_REFRESH_AUCTIONS, debouncedRefreshAuctions, 500),
+        
+        // normal saga actions
         takeEvery(FETCH_AUCTIONS, fetchAuctions),
         takeEvery(UPDATE_AUCTION, updateAuction),
         takeEvery(PLACE_BID, placeBid),
@@ -201,105 +213,20 @@ export default function* () {
     ];
 }
 
+// copied from, and credit to: https://github.com/madewithlove/redux-saga-debounce-effect/blob/master/src/debounceFor.js
+function *debounceFor(pattern, saga, ms, ...args) {
+    function *delayedSaga(action) {
+        yield call(delay, ms);
+        yield call(saga, action, ...args);
+    }
 
-// export function confirmAuctionWinners (auction, winningBidsCollection, auctionOwner) {
-//     // TODO: do I need a dispatch here? it works without it
-//     //, () => { dispatch({ type: CONFIRM_WINNERS }) }
-//     return firebase.updateWinningBid(auction, winningBidsCollection, auctionOwner)
-// }
+    let task;
+    while (true) {
+        const action = yield take(pattern);
+        if (task) {
+            yield cancel(task);
+        }
 
-// export function createAuction (fields, user) {
-
-//     let auction = Object.assign({}, fields, {
-//         donorId: user.uid,
-//         donorName: user.name,
-//         highestBid: null,
-//         expiration: fields.expiration || "12/31/2016",
-//         openDate: "01/30/2016",
-//         closeDate: "12/31/2016"
-//     });
-
-//     // console.log("CREATING AUCTION", auction)
-
-//     return dispatch => {
-//         firebase.addAuction(auction,
-//             error => dispatch(auctionPushErrorHandler(error))
-//         )
-//     }
-
-// }
-
-
-
-// addAuction (auctionObj, callback) {
-//     auctionsRef.push(auctionObj, callback);
-// },
-
-// loadAuctions (callback) {
-//     auctionsRef.on("child_added", (snapshot) => {
-//         let auction = snapshot.val();
-//         auction.uid = snapshot.key();
-//         callback(auction);
-//     });
-// },
-
-// updateAuctions (callback) {
-//     auctionsRef.on("child_changed", (snapshot) => {
-//         let auction = snapshot.val();
-//         auction.uid = snapshot.key();
-//         callback(auction);
-//     });
-// },
-
-// updateWinningBid(auction, winningBids, auctionOwner) {
-//     return new Promise( (resolve, reject) => {
-//         auctionsRef.child(auction.uid).update({
-//             winningBids: winningBids,
-//             auctionOwner: auctionOwner
-//         }, error => {
-//             if (error) {
-//                 reject("Data could not be saved." + error);
-//             } else {
-//                 resolve("Data saved successfully.");
-//             }
-//         });
-//     })
-// },
-
-// placeBid (bidObject, successCallback, failCallback) {
-//     // console.log('firebase adapter', bidObject);
-//     // add bid
-//     auctionsRef.child(bidObject.auctionUid).child('bids').push(bidObject);
-//     // update highest bid for auction item
-//     auctionsRef.child(bidObject.auctionUid).update({highestBid: bidObject.bidAmount});
-// },
-
-// export function placeBid(bidDetails) {
-//     return dispatch => {
-//         firebase.placeBid(
-//             bidDetails,
-//             () => {console.log('bid success')},
-//             () => {console.log('bid fail')}
-//         )
-//     }
-// }
-
-// export function updateAuctions() {
-//     return dispatch => {
-//         firebase.updateAuctions( auction => dispatch(updateAuctionObj(auction)) )
-//     }
-// }
-
-// export function updateAuctionObj(auction) {
-//     // console.log('update auction action', auction)
-//     return {
-//         type: UPDATE_AUCTION,
-//         auction
-//     }
-// }
-
-// export function fetchAuctions() {
-//     return dispatch => {
-//         firebase.loadAuctions( auction => dispatch(loadAuctionObj(auction)) )
-//     }
-// }
+        task = yield fork(delayedSaga, action);
+    }
+}

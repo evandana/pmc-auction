@@ -21,22 +21,23 @@ import {
     REFRESH_CONFIG,
 
     // AUCTIONS
-    OWNER_BID_CONFIRMATION,
+    ASYNC_FORM_STATUS_UPDATE,
     BIDDER_BID_CONFIRMATION,
+    CREATE_AUCTION,
     FETCH_AUCTIONS,
     GET_AUCTIONS,
     HIDE_AUCTION_DETAIL,
     LOAD_AUCTION,
-    PLACE_BID,
-    REFRESH_AUCTIONS,
-    REFRESH_AUCTION,
-    SHOW_AUCTION_DETAIL,
-    CREATE_AUCTION,
+    OWNER_BID_CONFIRMATION,
     OWNER_BID_CONTACTED,
     OWNER_BID_PLANNED,
+    PLACE_BID,
+    REFRESH_AUCTION,
+    REFRESH_AUCTIONS,
+    DEBOUNCE_REFRESH_AUCTIONS,
     SET_CLAIM_STEP,
+    SHOW_AUCTION_DETAIL,
     SUBMIT_DONOR_CODE,
-    ASYNC_FORM_STATUS_UPDATE,
 
 } from '../constants';
 
@@ -148,12 +149,10 @@ export function refreshAuctions(auctionCollection) {
         auctionCollection,
     }
 }
-
-export function refreshAuction(uid, auction) {
+export function debounceRefreshAuctions(auctionCollection) {
     return {
-        type: REFRESH_AUCTION,
-        uid,
-        auction,
+        type: DEBOUNCE_REFRESH_AUCTIONS,
+        auctionCollection,
     }
 }
 
@@ -194,13 +193,6 @@ export function ownerBidPlanned ({planned, bid, topBidIndex, auctionUid}) {
         bid,
         topBidIndex,
         auctionUid,
-    }
-}
-
-export function loadAuctionObj(auction) {
-    return {
-        type: LOAD_AUCTION,
-        auction
     }
 }
 
