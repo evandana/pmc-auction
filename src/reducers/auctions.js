@@ -5,7 +5,7 @@ import {
     // auctions
     CONFIRM_WINNERS,
     CREATE_AUCTION_SUCCESS,
-    GET_CONFIG_SUCCESS,
+    REFRESH_CONFIG,
     HIDE_AUCTION_DETAIL,
     REFRESH_AUCTIONS,
     SHOW_AUCTION_DETAIL,
@@ -22,37 +22,25 @@ const defaultAuctionState = {
         uid: '',
         showLoginSpinner: true,
     },
+    config: {} // 
 };
 
-function getAuctionsWithUserBids(userPersona, auctionCollection) {
+function getAuctionsWithUserBids(user, auctionCollection) {
     return auctionCollection
         // filter in any that have at least one bid by this user
         .filter(auction => {
-            if (!!auction.bids && auction.bids.length) {
-                return auction.bids.some(bid => {
-                    return bid.bidderObj.persona === userPersona;
-                });
-            } else {
-                return false;
-            }
+            return !!auction.bids && auction.bids[user.uid]
         })
         .map(auction => {
 
-            let uniqueBids = filterBidsByUniqueBidder(auction.bids);
+            const uniqueBids = Object.keys(auction.bids)
+                .map(personaAsBidKey => auction.bids[personaAsBidKey])
+                .sort((a, b) => a.bidAmount < b.bidAmount);
+            
+                const allBidsIndex = uniqueBids.findIndex(bid => bid.bidderObj.uid === user.uid);
 
-            let userHighBid = null;
-            let userHighBidRank = null;
-            let i = uniqueBids.length;
-            let found = false;
-            // assume bids are sorted, hence manual loop from top
-            while (i-- && !found) {
-                if (uniqueBids[i].bidderObj.persona === userPersona) {
-                    found = true;
-                    userHighBid = uniqueBids[i];
-                    userHighBidRank = i + 1;
-                }
-                // else keep looping
-            }
+            let userHighBid = auction.bids && auction.bids[user.uid] ? auction.bids[user.uid] : null;
+            let userHighBidRank = userHighBid ? allBidsIndex + 1 : null;
             return {
                 bidCount: uniqueBids.length,
                 numberOffered: auction.numberOffered,
@@ -65,42 +53,39 @@ function getAuctionsWithUserBids(userPersona, auctionCollection) {
                 uid: auction.uid,
                 userHighBid,
                 userHighBidRank,
-            }
+            };
             
         });
 }
 
-function getAuctionsOwned(userPersona, auctionCollection) {
+function getAuctionBidsAsArray(auction) {
+    return !auction.bids || !Object.keys(auction.bids).length ? [] : Object.keys(auction.bids)
+		.map(personaAsBidKey => auction.bids[personaAsBidKey]);
+}
+
+function getAuctionsOwned(userPersona, auctionCollection, config) {
     return auctionCollection
         .filter(auction => auction.owner.persona === userPersona)
         .map(auction => {
-            auction.topBids = filterBidsByUniqueBidder(auction.bids)
-                .slice(0, auction.numberOffered + 2);
+            auction.topBids = getAuctionBidsAsArray(auction)
+                .sort((a, b) => {
+                    if (a.bidAmount < b.bidAmount) {
+                        return 1;
+                    } else if (a.bidAmount > b.bidAmount) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                })
+                .slice(0, auction.numberOffered + (config ? config.NUM_OFFERED_BUFFER : 2));
             return auction;
         });
 }
 
-function filterBidsByUniqueBidder (bids) {
-    let uniqueBidderList = [];
-    return !bids ? [] : bids
-        .map((bid, allBidsIndex) => {
-            bid.allBidsIndex = allBidsIndex;
-            return bid;
-        })
-        .filter(bid => {
-            if (uniqueBidderList.indexOf(bid.bidderObj.persona) === -1) {
-                uniqueBidderList.push(bid.bidderObj.persona)
-                return true;
-            } else {
-                return false;
-            }
-        })
-}
+function getAuctionAggregations(user, auctionCollection, config) {
 
-function getAuctionAggregations(state, auctionCollection) {
-
-    const auctionsWithUserBids = !state.user.persona ? [] : getAuctionsWithUserBids(state.user.persona, auctionCollection);
-    const auctionsOwned = !state.user.persona ? [] : getAuctionsOwned(state.user.persona, auctionCollection);
+    const auctionsWithUserBids = !user.persona ? [] : getAuctionsWithUserBids(user, auctionCollection);
+    const auctionsOwned = !user.persona ? [] : getAuctionsOwned(user.persona, auctionCollection, config);
 
     return {
         auctionsWithUserBids,
@@ -133,7 +118,7 @@ function auctions(state = defaultAuctionState, action) {
             return {
                 ...state,
                 user: {...rest},
-                ...getAuctionAggregations({...state, user: {...rest}}, state.auctionCollection),
+                ...getAuctionAggregations({...rest}, state.auctionCollection, state.config),
             };    
 
         case REFRESH_AUCTIONS: 
@@ -141,7 +126,7 @@ function auctions(state = defaultAuctionState, action) {
             return {
                 ...state,
                 auctionCollection,
-                ...getAuctionAggregations(state, auctionCollection),
+                ...getAuctionAggregations(state.user, auctionCollection, state.config),
             };
 
         case CONFIRM_WINNERS:
@@ -151,10 +136,11 @@ function auctions(state = defaultAuctionState, action) {
         case CREATE_AUCTION_SUCCESS:
 
             return state;
-
-        case GET_CONFIG_SUCCESS:
+            
+        case REFRESH_CONFIG:
             return {
                 ...state, 
+                ...getAuctionAggregations(state.user, state.auctionCollection, action.data),
                 config: action.data
             };
 
