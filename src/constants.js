@@ -9,7 +9,7 @@ export const LOGOUT_USER_REQUEST = 'LOGOUT_USER_REQUEST';
 export const SHOW_LOGIN_SPINNER = 'SHOW_LOGIN_SPINNER';
 
 /** LIST OF ALL USERS ACTIONS */
-export const GET_USERS = 'GET_USERS';
+export const FETCH_USERS = 'FETCH_USERS';
 export const SET_USERS = 'SET_USERS';
 
 /** AUTHENTICATION **/

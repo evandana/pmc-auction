@@ -10,7 +10,7 @@ import {
     SHOW_LOGIN_SPINNER,
 
     // ALL USERS
-    GET_USERS,
+    FETCH_USERS,
     SET_USERS,
 
     // MODALS
@@ -85,7 +85,7 @@ export function showLoginSpinner(showLoginSpinner) {
 
 export function getUsers() {
     return {
-        type: GET_USERS,
+        type: FETCH_USERS,
     }
 }
 
