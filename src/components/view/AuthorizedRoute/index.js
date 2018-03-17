@@ -20,6 +20,7 @@ class AuthorizedRoute extends Component {
         const pageWrapperStyles = {
             width: '100%',
             marginTop: '136px',
+            marginBottom: '39px',
         }
 
         return (

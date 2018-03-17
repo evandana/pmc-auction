@@ -82,7 +82,7 @@ class AuctionList extends Component {
       gridList: {
         width: '100%',
         overflowY: 'auto',
-        marginBottom: 24
+        marginBottom: '-1px',
       }
     }
 
