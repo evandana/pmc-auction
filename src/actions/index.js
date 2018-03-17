@@ -157,46 +157,42 @@ export function refreshAuction(uid, auction) {
     }
 }
 
-export function ownerBidConfirmation({ownerConfirmed, bid, topBidIndex, allBidsIndex, auctionUid}) {
+export function ownerBidConfirmation({ownerConfirmed, bid, topBidIndex,  auctionUid}) {
     return {
         type: OWNER_BID_CONFIRMATION,
         ownerConfirmed,
         bid,
         topBidIndex,
-        allBidsIndex,
         auctionUid,
     }
 }
 
-export function bidderBidConfirmation({bidderConfirmed, bid, topBidIndex, allBidsIndex, auctionUid}) {
+export function bidderBidConfirmation({bidderConfirmed, bid, topBidIndex,  auctionUid}) {
     return {
         type: BIDDER_BID_CONFIRMATION,
         bidderConfirmed,
         bid,
         topBidIndex,
-        allBidsIndex,
         auctionUid,
     }
 }
 
-export function ownerBidContacted ({contacted, bid, topBidIndex, allBidsIndex, auctionUid}) {
+export function ownerBidContacted ({contacted, bid, topBidIndex, auctionUid}) {
     return {
         type: OWNER_BID_CONTACTED,
         contacted,
         bid,
         topBidIndex,
-        allBidsIndex,
         auctionUid,
     }
 }
 
-export function ownerBidPlanned ({planned, bid, topBidIndex, allBidsIndex, auctionUid}) {
+export function ownerBidPlanned ({planned, bid, topBidIndex, auctionUid}) {
     return {
         type: OWNER_BID_PLANNED,
         planned,
         bid,
         topBidIndex,
-        allBidsIndex,
         auctionUid,
     }
 }
@@ -248,12 +244,11 @@ export function createAuction(userInputData, user) {
 
 }
 
-export function setClaimStep({claimStep, bid, allBidsIndex, auctionUid}) {
+export function setClaimStep({claimStep, bid, auctionUid}) {
     return {
         type: SET_CLAIM_STEP,
         claimStep,
         bid,
-        allBidsIndex,
         auctionUid,
     }
 }

@@ -111,7 +111,7 @@ class Status extends Component {
                                 hidden={totalAmountDue === 0}
                                 href='/donate'
                                 style={{color: themePalette.ternaryTextColor}}
-                                label='Other options'
+                                label='Other $ options'
                                 />
                             <span 
                                 hidden={totalAmountDue !== 0}
@@ -122,7 +122,7 @@ class Status extends Component {
 
                         <span
                             className="col-xs-12"
-                            hidden={totalAmountDue === 0}
+                            hidden={totalAmountDue === 0 || config.BIDDING_OPEN}
                             style={{textAlign: 'right', color: themePalette.disabledColor, fontSize: '80%', paddingTop: '1em', paddingBottom: '1em', paddingRight: '2em'}}
                             > 
                             Payments not automatically reflected here
@@ -130,7 +130,7 @@ class Status extends Component {
                         {
                             !auctionsWithUserBids || auctionsWithUserBids.length < 1 ? 
                                 (config.BIDDING_OPEN ? this.createMessageDiv('You haven\'t made any bids yet') : this.createMessageDiv('Bidding not open')) : 
-                                this.createLeadingBidTable(auctionsWithUserBids, config.BIDDING_OPEN, config.CONFIRM_WINNERS, themePalette)
+                                this.createLeadingBidTable(auctionsWithUserBids, config, themePalette)
                         }
                     </section>
 
@@ -155,7 +155,7 @@ class Status extends Component {
                                     <p>You will see three bids more than the number you are offering, in case you wish to skip one or two.</p>
                                 </div>
                             )}
-                            {this.createOwnedAuctionTable(auctionsOwned, config.BIDDING_OPEN, config.CONFIRM_WINNERS, themePalette)}
+                            {this.createOwnedAuctionTable(auctionsOwned, config, themePalette)}
                         </section>
                     )}
 
@@ -164,39 +164,38 @@ class Status extends Component {
         );
     }
 
-    createLeadingBidTable(auctionsWithUserBids, biddingOpen, confirmWinners, themePalette) {
+    createLeadingBidTable(auctionsWithUserBids, config, themePalette) {
+
+        const {BIDDING_OPEN, CONFIRM_WINNERS, NUM_OFFERED_BUFFER} = config;
 
         const getStatus = (auction) => {
 
             const bid = auction.userHighBid,
                 topBidIndex = auction.userHighBidRank,
-                allBidsIndex = auction.userHighBid.allBidsIndex, 
                 auctionUid = auction.uid;
 
-            if (biddingOpen) {
+            if (BIDDING_OPEN) {
                 return 'Bidding Open';
-            } else if (confirmWinners && auction.userHighBid.ownerConfirmed && auction.userHighBid.bidderConfirmed === undefined) {
+            } else if (CONFIRM_WINNERS && auction.userHighBid.ownerConfirmed && auction.userHighBid.bidderConfirmed === undefined) {
                 return <div style={{textAlign:'center'}}>
                     <RaisedButton style={{minWidth:undefined}} primary={true} label={'Confirm ($' + auction.userHighBid.bidAmount + ')'} onClick={() => this.bidderBidConfirmation({
                             bidderConfirmed: true,
                             bid,
                             topBidIndex,
-                            allBidsIndex,
                             auctionUid
                         })}></RaisedButton>
                     <FlatButton style={{minWidth:undefined, color: themePalette.fadedPrimary1Color}} label='Pass' onClick={() => this.bidderBidConfirmation({
                             bidderConfirmed: false,
                             bid,
                             topBidIndex,
-                            allBidsIndex,
                             auctionUid
                         })}/>
                 </div>
-            } else if (confirmWinners && (auction.userHighBid.ownerConfirmed === false || auction.userHighBidRank > auction.numberOffered + 3)) {
+            } else if (CONFIRM_WINNERS && (auction.userHighBid.ownerConfirmed === false || auction.userHighBidRank > auction.numberOffered + NUM_OFFERED_BUFFER)) {
                 return 'Not won';
-            } else if (confirmWinners && auction.userHighBid.ownerConfirmed !== true && auction.userHighBid.ownerConfirmed !== false) {
+            } else if (CONFIRM_WINNERS && auction.userHighBid.ownerConfirmed !== true && auction.userHighBid.ownerConfirmed !== false) {
                 return <span style={{color: themePalette.warningColor}}>Pending owner confirmation</span>;
-            } else if (confirmWinners && auction.userHighBid.bidderConfirmed === true && auction.userHighBid.ownerConfirmed === true) {
+            } else if (CONFIRM_WINNERS && auction.userHighBid.bidderConfirmed === true && auction.userHighBid.ownerConfirmed === true) {
                 return <span style={{color: themePalette.accent1Color}}>Confirmed!</span>;
             } else if (auction.userHighBid.bidderConfirmed === false) {
                 return 'You declined'
@@ -210,21 +209,21 @@ class Status extends Component {
                 {auctionsWithUserBids.map(auctionWithUserBid => {
                     return (
                         <Paper className='row middle-xs middle-sm' key={auctionWithUserBid.uid} style={{padding: '1em', marginBottom: '1.5em' }}>
-                            <div className={'row middle-xs middle-sm middle-md ' + (biddingOpen ? 'col-xs-12 col-sm-12 col-md-5' : 'col-xs-12 col-sm-7 col-md-8')}>
+                            <div className={'row middle-xs middle-sm middle-md ' + (BIDDING_OPEN ? 'col-xs-12 col-sm-12 col-md-5' : 'col-xs-12 col-sm-7 col-md-8')}>
                                 <h3 style={{ margin: 0, padding: '0 1em 0 0', display:'block'}}  
-                                    className={biddingOpen ? 'col-xs-12' : confirmWinners && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-9 col-sm-10 col-md-10' : 'col-xs-6 col-sm-6 col-md-6'}>{
+                                    className={BIDDING_OPEN ? 'col-xs-12' : CONFIRM_WINNERS && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-9 col-sm-10 col-md-10' : 'col-xs-6 col-sm-6 col-md-6'}>{
                                         auctionWithUserBid.title
                                     }</h3>
-                                {biddingOpen ? '' : <div 
+                                {BIDDING_OPEN ? '' : <div 
                                     style={{padding:0, margin:0, display:'block'}} 
-                                    className={confirmWinners && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-3 col-sm-2 col-md-2' : 'col-xs-6 col-sm-6 col-md-6'}>{
+                                    className={CONFIRM_WINNERS && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-3 col-sm-2 col-md-2' : 'col-xs-6 col-sm-6 col-md-6'}>{
                                     getStatus(auctionWithUserBid)
                                 }</div>}
                             </div>
 
-                            <div className={biddingOpen ? 'col-xs-12 col-sm-12 col-md-1' : 'col-xs-12 col-sm-1 col-md-1'}>&nbsp;</div>
+                            <div className={BIDDING_OPEN ? 'col-xs-12 col-sm-12 col-md-1' : 'col-xs-12 col-sm-1 col-md-1'}>&nbsp;</div>
 
-                            <div className={biddingOpen ? 'col-xs-12 col-sm-12 col-md-6' : 'col-xs-12 col-sm-4 col-md-3'}>
+                            <div className={BIDDING_OPEN ? 'col-xs-12 col-sm-12 col-md-6' : 'col-xs-12 col-sm-4 col-md-3'} style={{paddingLeft:0, paddingRight:0}}>
                                 <Table selectable={false} style={{padding:0}}>
                                     <TableHeader
                                         displaySelectAll={false}
@@ -232,12 +231,12 @@ class Status extends Component {
                                         style={{borderBottom: 'none'}}
                                         >
                                         <TableRow
-                                            style={{borderBottom: 'none', height:'1em'}}
+                                            style={{borderBottom: 'none', height:'1em', }}
                                             >
-                                            <TableHeaderColumn colSpan={2} style={{padding:0, height:'1em'}}>Owner</TableHeaderColumn>
+                                            <TableHeaderColumn colSpan={2} style={{padding:0, height:'1em'}}>With</TableHeaderColumn>
                                             <TableHeaderColumn style={{padding:0, height:'1em'}}>Bid</TableHeaderColumn>
-                                            {biddingOpen && <TableHeaderColumn style={{padding:0, height:'1em'}}>Bid Rank</TableHeaderColumn>}
-                                            {biddingOpen && <TableHeaderColumn style={{padding:0, height:'1em'}}># Offered</TableHeaderColumn>}
+                                            {BIDDING_OPEN && <TableHeaderColumn style={{padding:0, height:'1em'}}>Bid Rank</TableHeaderColumn>}
+                                            {BIDDING_OPEN && <TableHeaderColumn style={{padding:0, height:'1em'}}># Offered</TableHeaderColumn>}
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody
@@ -246,8 +245,8 @@ class Status extends Component {
                                         <TableRow selectable={false} key={auctionWithUserBid.uid} style={{height:'1em'}}>
                                             <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}} colSpan={2}>{auctionWithUserBid.owner.displayName}</TableRowColumn>
                                             <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>${auctionWithUserBid.userHighBid.bidAmount}</TableRowColumn>
-                                            {biddingOpen && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.userHighBidRank} / {auctionWithUserBid.bidCount}</TableRowColumn>}
-                                            {biddingOpen && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.numberOffered}</TableRowColumn>}
+                                            {BIDDING_OPEN && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.userHighBidRank} / {auctionWithUserBid.bidCount}</TableRowColumn>}
+                                            {BIDDING_OPEN && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.numberOffered}</TableRowColumn>}
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -260,21 +259,22 @@ class Status extends Component {
     }
 
 
-    createOwnedAuctionTable(auctionsOwned, biddingOpen, confirmWinners, themePalette) {
+    createOwnedAuctionTable(auctionsOwned, config, themePalette) {
 
-        const getBidStatus = (bid, topBidIndex, allBidsIndex, auctionUid) => {
-            if (biddingOpen) {
+        const {BIDDING_OPEN, CONFIRM_WINNERS} = config;
+
+        const getBidStatus = (bid, topBidIndex, auctionUid) => {
+            if (BIDDING_OPEN) {
                 return 'Bidding open'; // will never be shown
             } else if (bid.ownerConfirmed === false) {
                 return 'You declined';
-            } else if (confirmWinners && bid.ownerConfirmed === undefined) {
+            } else if (CONFIRM_WINNERS && bid.ownerConfirmed === undefined) {
                 return <div>
                     {topBidIndex === 0 ? (
                         <RaisedButton primary={true} label={'Confirm'} onClick={() => this.ownerBidConfirmation({
                             ownerConfirmed: true,
                             bid,
                             topBidIndex,
-                            allBidsIndex,
                             auctionUid
                         })}></RaisedButton>
                     ) : (
@@ -282,7 +282,6 @@ class Status extends Component {
                                 ownerConfirmed: true,
                                 bid,
                                 topBidIndex,
-                                allBidsIndex,
                                 auctionUid
                             })}></RaisedButton>
                         )}
@@ -290,13 +289,12 @@ class Status extends Component {
                         ownerConfirmed: false,
                         bid,
                         topBidIndex,
-                        allBidsIndex,
                         auctionUid
                     })}></FlatButton>
                 </div>
-            } else if (confirmWinners && bid.bidderConfirmed === undefined) {
+            } else if (CONFIRM_WINNERS && bid.bidderConfirmed === undefined) {
                 return <span style={{ color: themePalette.warningColor }}>Pending Bidder</span>;
-            } else if (confirmWinners && bid.ownerConfirmed === true && bid.bidderConfirmed === true) {
+            } else if (CONFIRM_WINNERS && bid.ownerConfirmed === true && bid.bidderConfirmed === true) {
                 return <div className="row middle-xs middle-sm" style={{textAlign:'left'}}>
                     <div
                         className="col-xs-9"
@@ -336,12 +334,12 @@ class Status extends Component {
                     <TableRow selectable={false} key={topBidIndex+'-main'} style={{borderBottom:''}}>
                         <TableRowColumn colSpan={1} style={{minWidth: '3em', padding:0}}>${bid.bidAmount}</TableRowColumn>
                         <TableRowColumn colSpan={2} style={{padding:0}}>{bid.bidderObj.name}</TableRowColumn>
-                        {biddingOpen ? '' : <TableRowColumn colSpan={4} style={{padding:0}}>{
-                            getBidStatus(bid, topBidIndex, bid.allBidsIndex, auctionOwned.uid)
+                        {BIDDING_OPEN ? '' : <TableRowColumn colSpan={4} style={{padding:0}}>{
+                            getBidStatus(bid, topBidIndex, auctionOwned.uid)
                         }</TableRowColumn>}
                     </TableRow>
                 );
-                if (confirmWinners && bid.ownerConfirmed === true && bid.bidderConfirmed === true) {
+                if (CONFIRM_WINNERS && bid.ownerConfirmed === true && bid.bidderConfirmed === true) {
                     topBidsElements.push(
                         <TableRow selectable={false} key={topBidIndex+'-stepper'}>
                             <TableRowColumn colSpan={7} style={{paddingLeft:0, paddingRight:0, paddingBottom: '2em'}}>
@@ -351,7 +349,6 @@ class Status extends Component {
                                     themePalette={themePalette}
                                     bidDetails={{
                                         bid, 
-                                        allBidsIndex: bid.allBidsIndex, 
                                         auctionUid: auctionOwned.uid,
                                     }}
                                     />
@@ -365,13 +362,13 @@ class Status extends Component {
         }
 
         return (
-            <div>
+            <div style={{width:'100%'}}>
                 {auctionsOwned.map(auctionOwned => {
                     return (
                         <Paper key={auctionOwned.uid} style={{ padding: '1em 1em .5em 1em', marginBottom: '1.5em' }}>
                             <div style={{ position: 'relative', marginBottom: '1em' }} className='row middle-xs middle-sm'>
                                 <h3 className='col-xs-8 col-sm-6 col-md-8' style={{ margin: 0 }}>{auctionOwned.title}</h3>
-                                <p className='col-xs-4 col-sm-6 col-md-4' style={{ fontSize: '12px', position: 'absolute', top: '4px', right: 0, margin: 0, color: themePalette.accent3Color }}>{auctionOwned.numberOffered} Offered</p>
+                                <p className='col-xs-4 col-sm-6 col-md-4' style={{ fontSize: '12px', position: 'absolute', top: '4px', right: 0, margin: 0, color: themePalette.accent3Color }}>Offering {auctionOwned.numberOffered}</p>
                             </div>
 
                             <div>{!auctionOwned.topBids || !auctionOwned.topBids.length ? 'No bids yet' : (

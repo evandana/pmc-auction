@@ -21,7 +21,7 @@ const Home = (props) => {
         
                         <section className="col-xs-12 col-sm-4 col-md-6" style={{textAlign:'center'}}>
                             <img
-                                style={{maxWidth:'calc(100% - 4em)',maxHeight:'calc(100%-4em)', padding:'2em'}}
+                                style={{maxWidth:'calc(100% - 4em)',maxHeight:'calc(100%-4em)', padding:'.5em 2em'}}
                                 src={getImageForEnv('he-lockup.png')} 
                                 alt="Happiness Exchange logo"
                                 />

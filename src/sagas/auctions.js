@@ -76,11 +76,10 @@ function* placeBid(bidDetails) {
                     }
                 };
 
-                if ( auction.bids ) {
-                    auction.bids.push(bid);
-                } else {
-                    auction.bids = [bid];
-                }
+                auction.bids = !auction.bids ? {} : auction.bids;
+                
+                // set bid as key based on persona
+                auction.bids[bidDetails.bidderObj.uid] = bid;
                 
                 // update highestBid
                 window._FIREBASE_DB_.ref('auctions/' + bidDetails.auctionUid)
@@ -93,7 +92,7 @@ function* placeBid(bidDetails) {
     yield;
 }
 
-function* ownerBidConfirmation({ownerConfirmed, bid, topBidIndex, allBidsIndex, auctionUid}) {
+function* ownerBidConfirmation({ownerConfirmed, bid, topBidIndex, auctionUid}) {
     
     let updatedBidObj = {
         ...bid,
@@ -104,55 +103,46 @@ function* ownerBidConfirmation({ownerConfirmed, bid, topBidIndex, allBidsIndex, 
         updatedBidObj.bidderConfirmed = true;
     }
     
-    delete updatedBidObj.allBidsIndex;
-    
-    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + allBidsIndex)
+    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + bid.bidderObj.uid)
         .set(updatedBidObj);
     
     yield;
 }
 
-function* bidderBidConfirmation({bidderConfirmed, bid, topBidIndex, allBidsIndex, auctionUid}) {
+function* bidderBidConfirmation({bidderConfirmed, bid, topBidIndex, auctionUid}) {
     
     let updatedBidObj = {
         ...bid,
         bidderConfirmed,
     };
-
-    delete updatedBidObj.allBidsIndex;
     
-    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + allBidsIndex)
+    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + bid.bidderObj.uid)
         .set(updatedBidObj);
     
     yield;
 }
 
-function* ownerBidContacted({contacted, bid, topBidIndex, allBidsIndex, auctionUid}) {
+function* ownerBidContacted({contacted, bid, topBidIndex, auctionUid}) {
     
     let updatedBidObj = {
         ...bid,
         contacted,
     };
-
-    delete updatedBidObj.allBidsIndex;
     
-    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + allBidsIndex)
+    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + bid.bidderObj.uid)
         .set(updatedBidObj);
 
     yield;
 }
 
-function* ownerBidPlanned({planned, bid, topBidIndex, allBidsIndex, auctionUid}) {
+function* ownerBidPlanned({planned, bid, topBidIndex, auctionUid}) {
 
     let updatedBidObj = {
         ...bid,
         planned,
     };
-
-    // UI-only prop
-    delete updatedBidObj.allBidsIndex;
     
-    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + allBidsIndex)
+    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + bid.bidderObj.uid)
         .set(updatedBidObj);
 
     yield;
@@ -165,17 +155,14 @@ function* updateAuction({auctionData}) {
     yield;
 }
 
-function* setClaimStep({claimStep, bid, allBidsIndex, auctionUid}) {
+function* setClaimStep({claimStep, bid, auctionUid}) {
     
     let updatedBidObj = {
         ...bid,
         claimStep,
     };
-
-    // UI-only prop
-    delete updatedBidObj.allBidsIndex;
     
-    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + allBidsIndex)
+    window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + bid.bidderObj.uid)
         .set(updatedBidObj);
 
     yield;

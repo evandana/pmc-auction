@@ -233,7 +233,7 @@ class AuctionItemDetail extends Component {
 									open={this.state.confirmModalOpen}
 									onRequestClose={() => this.handleClose()}
 								>
-									{data.title} with {data.owner.persona}
+									{data.title} with {data.owner.displayName}
 								</Dialog>
 							</div>
 							:
@@ -304,13 +304,18 @@ class AuctionItemDetail extends Component {
 
 }
 
+function getAuctionBidsAsArray(auction) {
+    return !auction.bids || !Object.keys(auction.bids).length ? [] : Object.keys(auction.bids)
+		.map(personaAsBidKey => auction.bids[personaAsBidKey]);
+}
+
 function mapStateToProps(state) {
 
 	const auction = state.auctions.auctionCollection.find(
 		auction => { return auction.uid === state.auctions.expandedAuction.uid; }
 	);
 
-	let highestBidObj = !auction.bids || auction.bids.length < 1 ? {} : auction.bids.sort((a, b) => {
+	let highestBidObj = !auction.bids || Object.keys(auction.bids).length < 1 ? {} : getAuctionBidsAsArray(auction).sort((a, b) => {
 		return a.bidAmount < b.bidAmount;
 	})[0];
 
