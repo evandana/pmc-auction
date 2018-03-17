@@ -15,7 +15,7 @@ function asyncForm(state = initialState, action) {
             all: users,
         };
     } else {
-        return initialState;
+        return state;
     }
 }
 
