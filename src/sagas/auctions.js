@@ -1,7 +1,6 @@
 import { takeEvery } from 'redux-saga/effects';
 
 import {
-    FETCH_AUCTION,
     FETCH_AUCTIONS,
     PLACE_BID,
     UPDATE_AUCTION,
@@ -30,17 +29,6 @@ function* fetchAuctions() {
 
         window._UI_STORE_.dispatch(refreshAuctions(auctions));
     });
-    yield;
-}
-
-function* fetchAuction({uid}) {
-    window._FIREBASE_DB_.ref('/auctions/' + uid)
-        .on('value', (snapshot) => {
-            const auction = snapshot.val();
-            
-            window._UI_STORE_.dispatch(refreshAuction(uid, auction));
-        });
-    
     yield;
 }
 
@@ -201,7 +189,6 @@ function* createAuction({auctionData}) {
 
 export default function* () {
     yield [
-        takeEvery(FETCH_AUCTION, fetchAuction),
         takeEvery(FETCH_AUCTIONS, fetchAuctions),
         takeEvery(UPDATE_AUCTION, updateAuction),
         takeEvery(PLACE_BID, placeBid),
