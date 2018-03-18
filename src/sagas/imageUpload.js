@@ -1,9 +1,21 @@
 import firebase from 'firebase/app';
 import { call, takeEvery } from 'redux-saga/effects';
-
+import { setImages } from 'actions';
 import {
+    FETCH_IMAGES,
     UPLOAD_IMAGE,
 } from 'constants.js';
+
+function* fetchImages() {
+    window._FIREBASE_DB_.ref('/images')
+        .on('value', (snapshot) => {
+            const images = snapshot.val();
+
+            const imageList = Object.keys(images).map(key => images[key]);
+            window._UI_STORE_.dispatch(setImages(imageList));
+        });
+    yield;
+}
 
 function* uploadImage(action) {
     const { file } = action;
@@ -14,7 +26,7 @@ function* uploadImage(action) {
     };
 
 
-// Upload file and metadata to the object 'images/mountains.jpg'
+    // Upload file and metadata to the object 'images/mountains.jpg'
     var uploadTask = window._FIREBASE_STORAGE_REF_.child('images/auctions/' + file.name).put(file, metadata);
     
     console.log('the upload image action is', file.name);
@@ -53,11 +65,30 @@ function* uploadImage(action) {
         }, function() {
             // Upload completed successfully, now we can get the download URL
             var downloadURL = uploadTask.snapshot.downloadURL;
+            if (uploadTask.snapshot && uploadTask.snapshot.metadata) {
+                const {
+                    contentType,
+                    fullPath,
+                    name,
+                    size, 
+                } = uploadTask.snapshot.metadata;
+                
+                let dataName = uploadTask.snapshot.metadata.name.replace(/\./g,'');
+                dataName = dataName.replace(/jpg?$/g,'');
+                dataName = dataName.replace(/jpeg?$/g,'');
+                dataName = dataName.replace(/png?$/g,'');
+                
+                const imageData = {
+                    contentType, downloadURL, fullPath, name, size
+                };
+                window._FIREBASE_DB_.ref('images/' + dataName).set(imageData);
+            }
         });
-    
-    
 }
 
 export default function* () {
-    yield takeEvery(UPLOAD_IMAGE, uploadImage);
+    yield [
+        takeEvery(UPLOAD_IMAGE, uploadImage),
+        takeEvery(FETCH_IMAGES, fetchImages)
+    ];
 }

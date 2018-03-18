@@ -3,7 +3,7 @@ import { uploadImage } from 'actions';
 import ImageUpload from 'components/view/ImageUpload';
 
 const mapStateToProps = (state) => {
-    return {};
+    return { images: state.images };
 };
 
 const mapDispatchToProps = { uploadImage };

@@ -56,7 +56,7 @@ class CreateAuction extends Component {
 
     render() {
 
-        const { auctionsOwned } = this.props;
+        const { auctionsOwned, images } = this.props;
 
         const style = {
             field: {
@@ -79,6 +79,7 @@ class CreateAuction extends Component {
                                 value={auction.uid} 
                                 key={auction.uid}
                                 >
+                                <ImageUpload />
                                 <div className="text-content">
                                     <MuiForm
                                         key={auction.uid}
@@ -86,12 +87,14 @@ class CreateAuction extends Component {
                                         initialValues={auction}
                                         auctionSubmitLabel='Save'
                                         createAuctionSubmitForm={this.submitForm}
+                                        images={images}
                                     />
                                 </div>
                             </Tab>
                         );
                     })}
                     <Tab icon={<AddCircleIcon />} value={'new'}>
+                        <ImageUpload />
                         <div className="text-content">
                             <Paper style={{
                                 width: '100%',
@@ -125,6 +128,7 @@ class CreateAuction extends Component {
                                 }}
                                 auctionSubmitLabel='Create Auction'
                                 createAuctionSubmitForm={this.submitForm}
+                                images={images}
                             />
                         </div>
                     </Tab>
