@@ -9,6 +9,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import IconButton from 'material-ui/IconButton';
 import { blueGrey600, cyan600 } from 'material-ui/styles/colors'
 
+import PanToolIcon from 'material-ui/svg-icons/action/pan-tool';
 import ExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import AssignmentInd from 'material-ui/svg-icons/action/assignment-ind';
 import ChromeReaderModeIcon from 'material-ui/svg-icons/action/chrome-reader-mode';
@@ -97,7 +98,7 @@ class Navigation extends React.Component {
                 style: {background: this.themePalette.accent1Color}
             },
             {
-                icon: <LocalPlayIcon />,
+                icon: <PanToolIcon />, // alt: LocalPlayIcon
                 label: 'Auctions',
                 link: 'auctions',
             },
