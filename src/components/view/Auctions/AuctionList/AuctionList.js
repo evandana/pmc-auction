@@ -102,7 +102,11 @@ class AuctionList extends Component {
         >
           {auctionItems.map(tile => (
             <GridTile
-              onTouchTap={e => toggleAuctionDetail(tile.uid, e)}
+              onTouchTap={e => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleAuctionDetail(tile.uid, e)
+              }}
               key={tile.key}
               title={tile.title}
               subtitle={config && config.BIDDING_OPEN ? <span>with <b>{tile.owner.displayName}</b> - {tile.value}</span> : <span>with <b>{tile.owner.displayName}</b></span>}
