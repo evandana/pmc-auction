@@ -260,7 +260,7 @@ class AuctionItemDetail extends Component {
 												?
 												<span>
 													${highestBid && highestBid.bidderObj ?
-														highestBid.bidAmount + (!highestBid.bidderObj.persona ? '' : ' by ' + highestBid.bidderObj.persona)
+														highestBid.bidAmount + (!highestBid.bidderObj.persona ? '' : (highestBid.bidderObj.persona === user.persona ? ' (you)' : ' by ' + highestBid.bidderObj.persona))
 														:
 														data.openingBid
 													}

@@ -32,6 +32,7 @@ class Auctions extends Component {
             auctionCollection,
             expandedAuction,
             config,
+            user,
         } = this.props;
 
         if ( expandedAuction && expandedAuction.uid ) {
@@ -61,6 +62,7 @@ class Auctions extends Component {
 
                 <div className="page">
                     <AuctionList
+                        user={user}
                         auctions={filteredAuctions}
                         expandedAuction={this.props.expandedAuction}
                         placeBid={this.placeBid}

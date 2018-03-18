@@ -1,13 +1,16 @@
 // Libraries
 import React, { Component } from 'react';
 
+import muiThemeable from 'material-ui/styles/muiThemeable';
+
 // Material-UI
 import { GridList, GridTile } from 'material-ui/GridList';
+// import WhatsHotIcon from 'material-ui/svg-icons/social/whatshot';
+import LooksOneIcon from 'material-ui/svg-icons/image/looks-one'
 
 import { getImageForEnv } from 'static/images/index'
 
 import './auctionList.css'
-
 
 class AuctionList extends Component {
 
@@ -21,10 +24,14 @@ class AuctionList extends Component {
       // objects
       auctions,
       config,
+      user,
+      muiTheme,
 
       // methods
       toggleAuctionDetail,
      } = this.props;
+
+    const themePalette = muiTheme.palette;
 
     let auctionItems = [];
     let cols = 2;
@@ -59,16 +66,16 @@ class AuctionList extends Component {
         } else {
           urlStr = getImageForEnv('auction-list/default.png');
         }
-          countShown++;
+        countShown++;
 
-          auctionItems.push(Object.assign({}, obj, {
-            key: urlStr + '?q=' + index,
-            img: urlStr,
-            title: config && config.BIDDING_OPEN ? obj.title : obj.title,
-            featured: featuredPattern.includes(countShown),
-            value: '$' + (obj.highestBid || obj.openingBid)
-          }));
-        }
+        auctionItems.push(Object.assign({}, obj, {
+          key: urlStr + '?q=' + index,
+          img: urlStr,
+          title: config && config.BIDDING_OPEN ? obj.title : obj.title,
+          featured: featuredPattern.includes(countShown),
+          value: '$' + (obj.highestBid || obj.openingBid)
+        }));
+      }
 
     });
 
@@ -101,12 +108,16 @@ class AuctionList extends Component {
               subtitle={config && config.BIDDING_OPEN ? <span>with <b>{tile.owner.displayName}</b> - {tile.value}</span> : <span>with <b>{tile.owner.displayName}</b></span>}
               actionPosition="right"
               titlePosition="top"
-              titleBackground="linear-gradient(to bottom, rgba(5,10,30,0.8) 0%,rgba(5,10,30,0.6) 50%,rgba(0,0,0,0) 100%)"
+              titleBackground={!tile.bids || !tile.bids[user.uid] || tile.bids[user.uid].bidAmount !== tile.highestBid ?
+                'linear-gradient(to bottom, rgba(5,10,30,0.8) 0%,rgba(5,10,30,0.6) 50%,rgba(0,0,0,0) 100%)' :
+                'linear-gradient(to bottom, ' + themePalette.successColor+' 0%,rgba(0,0,0,0) 100%)'
+              }
               cols={tile.featured ? 2 : 1}
               rows={tile.featured ? 1 : 1}
               className="auction-list__tile"
+              actionIcon={!tile.bids || !tile.bids[user.uid] || tile.bids[user.uid].bidAmount !== tile.highestBid ? <div /> : <LooksOneIcon style={{fill:themePalette.errorColor, marginRight: 5, marginTop: -10}}/>}
             >
-              <img src={tile.img} alt="Auction Item teaser"/>
+              <img src={tile.img} alt="Auction Item teaser" />
             </GridTile>
           ))}
         </GridList>
@@ -117,4 +128,4 @@ class AuctionList extends Component {
 
 }
 
-export default AuctionList;
+export default muiThemeable()(AuctionList);
