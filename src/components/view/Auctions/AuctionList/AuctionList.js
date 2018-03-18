@@ -105,6 +105,7 @@ class AuctionList extends Component {
               onTouchTap={e => {
                 e.preventDefault();
                 e.stopPropagation();
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
                 toggleAuctionDetail(tile.uid, e)
               }}
               key={tile.key}
