@@ -1,0 +1,13 @@
+.auction-list__tile {
+    opacity: 0.8;
+}
+
+/* mobile should always show 100% opacity */
+@media screen and (max-width: 480px) {
+    opacity: 0.9;
+}
+
+.auction-list__tile:hover {
+    cursor: pointer;
+    opacity: 1;
+}

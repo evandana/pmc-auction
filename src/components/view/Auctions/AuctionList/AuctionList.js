@@ -6,7 +6,7 @@ import { GridList, GridTile } from 'material-ui/GridList';
 
 import { getImageForEnv } from 'static/images/index'
 
-import './_auctionList.scss'
+import './auctionList.css'
 
 
 class AuctionList extends Component {
@@ -101,7 +101,7 @@ class AuctionList extends Component {
               subtitle={config && config.BIDDING_OPEN ? <span>with <b>{tile.owner.displayName}</b> - {tile.value}</span> : <span>with <b>{tile.owner.displayName}</b></span>}
               actionPosition="right"
               titlePosition="top"
-              titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+              titleBackground="linear-gradient(to bottom, rgba(5,10,30,0.8) 0%,rgba(5,10,30,0.6) 50%,rgba(0,0,0,0) 100%)"
               cols={tile.featured ? 2 : 1}
               rows={tile.featured ? 1 : 1}
               className="auction-list__tile"
