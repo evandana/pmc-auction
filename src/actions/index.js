@@ -37,6 +37,8 @@ import {
     OWNER_BID_CONTACTED,
     OWNER_BID_PLANNED,
     // FILE UPLOAD
+    FETCH_IMAGES,
+    SET_IMAGES,
     UPLOAD_IMAGE,
 
 } from '../constants';
@@ -224,10 +226,21 @@ export function createAuction(userInputData, user) {
 
 }
 
+export function fetchImages() {
+    return { type: FETCH_IMAGES };
+}
+
 export function uploadImage (file) {
     return {
         file,
         type: UPLOAD_IMAGE,
+    };
+}
+
+export function setImages(images) {
+    return {
+        images,
+        type: SET_IMAGES,
     };
 }
 

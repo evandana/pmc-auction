@@ -17,6 +17,15 @@ function fileToDataURI(file) {
     });
 }
 
+function showErrors(list) {
+    return (<div className="imageUpload-errors">
+        <span>Your image could not be uploaded because of the following errors:</span>
+        <ul>
+            {list.map((err, key) => { return <li key={key}>{err}</li> })}
+        </ul>
+        </div>);
+}
+
 class ImageUpdate extends Component {
     
     constructor(props) {
@@ -49,11 +58,12 @@ class ImageUpdate extends Component {
     }
 
     updatePendingImage(file = {}) {
-        const { size, type } = file;
-
+        const { size, type, name } = file;
+        const { images } = this.props;
+        const isNewName = !images.find( image => image.name === name );
         const isImage = isValidImageMimeType(type);
         const isValidSize = size < 3000000;
-        const isValid = isImage && isValidSize;
+        const isValid = isImage && isValidSize && isNewName;
 
         if (isValid) {
             this.setState({ file, errors: [] });
@@ -65,6 +75,9 @@ class ImageUpdate extends Component {
             }
             if (!isValidSize) {
                 errorList.push('Upload an image less than 3MB');
+            }
+            if (!isNewName) {
+                errorList.push("An image with this name already exists.  Please change the name or pick a different image");
             }
             this.setState({ errors: errorList });
         }
@@ -81,7 +94,13 @@ class ImageUpdate extends Component {
     
     render() {
 
-        const { file, uri } = this.state;
+        const { file, uri, errors } = this.state;
+        const { images } = this.props;
+        
+        if (file) {
+            const uploadedImage = images.find( image => image.name === file.name );
+            
+        }
         
         const fileInputProps = {
             onChange: this.onFileChange,
@@ -97,11 +116,12 @@ class ImageUpdate extends Component {
         
         const cancelImageProps = {
             label: 'Cancel',
-            onClick: () => {console.log('cancel click')},
+            onClick: () => { this.setState({ file: null, uri: null, errors: []})},
         };
         
         return (<div className="image-upload">
             <h3>Image Upload</h3>
+            {errors.length ? showErrors(errors) : null}
             {uri && <div className="image-upload__file">
                 <img src={uri} alt={file.name} />
             </div>}
