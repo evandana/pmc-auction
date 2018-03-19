@@ -11,7 +11,7 @@ class AuthorizedRoute extends Component {
     
     render() {
 
-        const { location, userPermissions, component: Component, ...rest } = this.props;
+        const { config, location, userPermissions, component: Component, ...rest } = this.props;
 
         const notAuthProps = {
             from: location
@@ -19,8 +19,8 @@ class AuthorizedRoute extends Component {
         
         const pageWrapperStyles = {
             width: '100%',
-            marginTop: '136px',
-            marginBottom: '39px',
+            marginTop: !!config.MESSAGE_GLOBAL && config.MESSAGE_GLOBAL.length > 0 ? 136 + 36 : 136,
+            marginBottom: 39,
         }
 
         return (

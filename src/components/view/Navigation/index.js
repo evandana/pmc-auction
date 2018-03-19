@@ -27,6 +27,8 @@ import PersonIcon from 'material-ui/svg-icons/social/person';
 // import AddCircleIcon from 'material-ui/svg-icons/content/add-circle';
 import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit';
 
+import Messages from 'components/controller/Messages';
+
 import { getImageForEnv } from 'static/images/index'
 
 import './styles.css';
@@ -225,6 +227,8 @@ class Navigation extends React.Component {
                     iconElementRight={iconMenu}
                 >
                 </AppBar>}
+
+                <Messages />
 
                 {navigationTabs}
 
