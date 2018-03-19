@@ -205,7 +205,7 @@ class AuctionItemDetail extends Component {
 						</div>
 					</div>
 					{
-						config.BIDDING_OPEN
+						(config.BIDDING_OPEN && user.persona !== data.owner.persona) || user.permissions.admin === true
 							?
 							<div style={style.bidContainer}>
 								<CardActions>
@@ -215,6 +215,7 @@ class AuctionItemDetail extends Component {
 										label="-"
 										onTouchTap={() => this.decreaseBidAmount()}
 										disabled={
+											// TODO: remove these `state` and `props` references
 											this.state.bidDisplayAmount <= this.props.bidAmountMin
 												? true : false
 										}
@@ -223,6 +224,7 @@ class AuctionItemDetail extends Component {
 									<RaisedButton
 										style={style.bidSubmit}
 										labelStyle={style.actionLabel}
+										// TODO: remove this `state` reference
 										label={'bid $' + this.state.bidDisplayAmount}
 										labelPosition="before"
 										primary={true}
@@ -255,6 +257,19 @@ class AuctionItemDetail extends Component {
 							:
 							''
 					}
+					{config.BIDDING_OPEN && user.persona === data.owner.persona && user.permissions.admin !== true ? (
+						<div style={style.bidContainer}>
+							<CardActions>
+								<RaisedButton
+									disabled={true}
+									style={style.bidSubmit}
+									labelStyle={style.actionLabel}
+									label='You own this auction'
+									labelPosition="before"
+									/>
+							</CardActions>
+						</div>
+					) : ''}
 					<CardText>
 						{
 							this.state.modalMessage
