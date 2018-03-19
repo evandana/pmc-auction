@@ -120,13 +120,23 @@ function auctions(state = defaultAuctionState, action) {
                 user: {...rest},
                 ...getAuctionAggregations({...rest}, state.auctionCollection, state.config),
             };    
-
+            
         case REFRESH_AUCTIONS: 
-
+            
+            let expandedAuctionOverride = state.expandedAuction;
+            // on setting current user, also set expanded auctions (if set by url)
+            if ( window.location.pathname === '/auctions' && (!expandedAuction || !Object.keys(expandedAuction).length) && window.location.hash.length > 1) {
+                const expandedAuctionUidFromUrl = window.location.hash.substr(1);
+                expandedAuctionOverride = auctionCollection.find(auction => {
+                    return auction.uid === expandedAuctionUidFromUrl;
+                });
+            }
+            
             return {
                 ...state,
                 auctionCollection,
                 ...getAuctionAggregations(state.user, auctionCollection, state.config),
+                expandedAuction: expandedAuctionOverride,
             };
 
         case CONFIRM_WINNERS:

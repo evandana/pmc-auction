@@ -24,3 +24,19 @@
 .auction-item-detail .detail-message {
     background: #fbb;
 }
+
+.auction-list__tile img {
+    opacity: 0.8;
+}
+
+/* mobile should always show 100% opacity */
+@media screen and (max-width: 480px) {
+    .auction-list__tile img {
+        opacity: 0.9;
+    }
+}
+
+.auction-list__tile:hover img {
+    cursor: pointer;
+    opacity: 1;
+}

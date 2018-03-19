@@ -69,7 +69,7 @@ class Navigation extends React.Component {
         this.props.history.push(tabEl.props['data-route']);
     };
 
-    buildTab ({icon, label, active, link, style}) {
+    buildTab ({icon, label, active, link, style, value}) {
         return (
             <Tab
                 label={label}
@@ -77,11 +77,12 @@ class Navigation extends React.Component {
                 icon={icon}
                 key={link}
                 style={style}
+                value={value}
             />
             );
     };
 
-    buildNavigationTabs (permissions, config) {
+    buildNavigationTabs (location, permissions, config) {
 
         const tabObjs = [
             {
@@ -119,7 +120,6 @@ class Navigation extends React.Component {
             },
         ];
 
-        const currentPagePath = window.location.pathname; // e.g. '/auctions'
 
         const tabs = tabObjs
             .filter(tabObj => {
@@ -128,13 +128,18 @@ class Navigation extends React.Component {
             .filter(tabObj => {
                 return !tabObj.configRequired || tabObj.configRequired.every(reqConfig => config[reqConfig] === true);
             })
-            .map(tabObj => {
+            .map((tabObj, i) => {
+                tabObj.value = i;
                 return this.buildTab(tabObj);
             });
+        
+        const currentPagePath = location.pathname; // e.g. '/auctions'
 
         const initialSelectedIndex = tabObjs.findIndex(tab => {
             if (tab.link === 'about') {
                 return '/' + tab.link === currentPagePath || '/' === currentPagePath;
+            } else if (tab.link === 'auctions') {
+                return currentPagePath.indexOf('/auctions') > -1;
             } else {
                 return '/' + tab.link === currentPagePath;
             }
@@ -143,11 +148,14 @@ class Navigation extends React.Component {
         return (
             <Tabs
                 inkBarStyle={{background: this.themePalette.highlight1Color}}
-                initialSelectedIndex={initialSelectedIndex}
+                value={initialSelectedIndex}
                 onChange={this.navigateToRoute}
                 tabItemContainerStyle={{backgroundColor: this.themePalette.primary2Color}}
                 onClick={() => {
-                    if (currentPagePath === '/auctions') { this.toggleAuctionDetail() }
+                    if (currentPagePath === '/auctions' && window.location.hash.length > 1) { 
+                        this.props.history.push('/auctions');
+                        this.toggleAuctionDetail();
+                    }
                 }}
                 >
                 {tabs}
@@ -156,7 +164,9 @@ class Navigation extends React.Component {
     };
 
     render () {
-        const { user, userPermissions, config, logout } = this.props;
+        const { user, userPermissions, config, logout, router} = this.props;
+
+        const location = router.location;
 
         if (!userPermissions || Object.keys(userPermissions).length < 1) {
             return (
@@ -189,7 +199,7 @@ class Navigation extends React.Component {
         
         const iconMenu = this.buildIconMenu(userPermissions, { logout });
         
-        const navigationTabs = this.buildNavigationTabs(userPermissions, config, this.toggleAuctionDetail);
+        const navigationTabs = this.buildNavigationTabs(location, userPermissions, config);
 
         return (
             <div

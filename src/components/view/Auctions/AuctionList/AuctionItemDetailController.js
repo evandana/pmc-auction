@@ -1,13 +1,11 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import AuctionsView from 'components/view/Auctions';
+import AuctionItemDetailView from './AuctionItemDetail';
 
 const mapStateToProps = (state) => {
     return {
         user: state.auctions.user,
-        userPermissions: state.auctions.user.permissions,
         auctionCollection: state.auctions.auctionCollection,
-        expandedAuction: state.auctions.expandedAuction,
         config: state.config,
     }
 };
