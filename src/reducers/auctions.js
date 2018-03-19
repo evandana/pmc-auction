@@ -6,9 +6,7 @@ import {
     CONFIRM_WINNERS,
     CREATE_AUCTION_SUCCESS,
     REFRESH_CONFIG,
-    HIDE_AUCTION_DETAIL,
     REFRESH_AUCTIONS,
-    SHOW_AUCTION_DETAIL,
     SHOW_LOGIN_SPINNER,
 } from '../constants'
 
@@ -120,9 +118,9 @@ function auctions(state = defaultAuctionState, action) {
                 user: {...rest},
                 ...getAuctionAggregations({...rest}, state.auctionCollection, state.config),
             };    
-
+            
         case REFRESH_AUCTIONS: 
-
+        
             return {
                 ...state,
                 auctionCollection,
@@ -142,24 +140,6 @@ function auctions(state = defaultAuctionState, action) {
                 ...state, 
                 ...getAuctionAggregations(state.user, state.auctionCollection, action.data),
                 config: action.data
-            };
-
-        case HIDE_AUCTION_DETAIL:
-
-            return {
-                ...state,
-                expandedAuction: {}
-            };
-
-        case SHOW_AUCTION_DETAIL:
-
-            const expandedAuction = state.auctionCollection.find(auction => {
-                return auction.uid === auctionUid;
-            });
-
-            return {
-                ...state, 
-                expandedAuction
             };
 
         default:

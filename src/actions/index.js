@@ -26,7 +26,6 @@ import {
     CREATE_AUCTION,
     FETCH_AUCTIONS,
     GET_AUCTIONS,
-    HIDE_AUCTION_DETAIL,
     LOAD_AUCTION,
     OWNER_BID_CONFIRMATION,
     OWNER_BID_CONTACTED,
@@ -36,7 +35,6 @@ import {
     REFRESH_AUCTIONS,
     DEBOUNCE_REFRESH_AUCTIONS,
     SET_CLAIM_STEP,
-    SHOW_AUCTION_DETAIL,
     SUBMIT_DONOR_CODE,
 
 } from '../constants';
@@ -193,19 +191,6 @@ export function ownerBidPlanned ({planned, bid, topBidIndex, auctionUid}) {
         bid,
         topBidIndex,
         auctionUid,
-    }
-}
-
-export function toggleAuctionDetail(auctionUid) {
-    if (auctionUid) {
-        return {
-            type: SHOW_AUCTION_DETAIL,
-            auctionUid,
-        }
-    } else {
-        return {
-            type: HIDE_AUCTION_DETAIL
-        }
     }
 }
 

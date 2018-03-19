@@ -117,7 +117,7 @@ class App extends Component {
                             <Switch>
                                 <Route exact path="/" component={Home} />
                                 <AuthorizedRoute exact path="/about" component={Home} />
-                                <AuthorizedRoute exact path="/auctions" component={Auctions} />
+                                <AuthorizedRoute path="/auctions" component={Auctions} />
                                 <AuthorizedRoute exact path="/status" component={Status} />
                                 <AuthorizedRoute exact path="/donate" component={Donate} />
                                 <AuthorizedRoute exact path="/sponsors" component={Sponsors} />

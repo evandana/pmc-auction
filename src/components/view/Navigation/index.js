@@ -36,7 +36,6 @@ class Navigation extends React.Component {
     constructor(props) {
         super(props);
         this.navigateToRoute = this.navigateToRoute.bind(this);
-        this.toggleAuctionDetail = this.props.toggleAuctionDetail.bind(this);
         this.themePalette = this.props.muiTheme.palette;
     }
     
@@ -52,7 +51,10 @@ class Navigation extends React.Component {
                     <MenuItem onTouchTap={logout} primaryText="Logout" />
                     {permissions.admin && (
                         <MenuItem 
-                            onClick={() => this.props.history.push('donor-info')}
+                            onClick={() => {
+                                document.body.scrollTop = document.documentElement.scrollTop = 0;
+                                this.props.history.push('donor-info')
+                            }}
                             primaryText="Donor Info" 
                             />
                     )}
@@ -61,15 +63,15 @@ class Navigation extends React.Component {
         }
     };
 
-    navigateToRoute (someArg, evt, tabEl) {
-        // close any open auction item
-        // this.toggleAuctionDetail();
+    navigateToRoute (e, link) {
         // navigate
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-        this.props.history.push(tabEl.props['data-route']);
+        e.preventDefault();
+        e.stopPropagation();
+        this.props.history.push(link);
     };
 
-    buildTab ({icon, label, active, link, style}) {
+    buildTab ({icon, label, active, link, style, value}) {
         return (
             <Tab
                 label={label}
@@ -77,11 +79,15 @@ class Navigation extends React.Component {
                 icon={icon}
                 key={link}
                 style={style}
+                value={value}
+                onClick={e => {
+                    this.navigateToRoute(e, '/' + link)
+                }}
             />
             );
     };
 
-    buildNavigationTabs (permissions, config) {
+    buildNavigationTabs (location, permissions, config) {
 
         const tabObjs = [
             {
@@ -119,7 +125,6 @@ class Navigation extends React.Component {
             },
         ];
 
-        const currentPagePath = window.location.pathname; // e.g. '/auctions'
 
         const tabs = tabObjs
             .filter(tabObj => {
@@ -128,13 +133,18 @@ class Navigation extends React.Component {
             .filter(tabObj => {
                 return !tabObj.configRequired || tabObj.configRequired.every(reqConfig => config[reqConfig] === true);
             })
-            .map(tabObj => {
+            .map((tabObj, i) => {
+                tabObj.value = i;
                 return this.buildTab(tabObj);
             });
+        
+        const currentPagePath = location.pathname; // e.g. '/auctions'
 
         const initialSelectedIndex = tabObjs.findIndex(tab => {
             if (tab.link === 'about') {
                 return '/' + tab.link === currentPagePath || '/' === currentPagePath;
+            } else if (tab.link === 'auctions') {
+                return currentPagePath.indexOf('/auctions') > -1;
             } else {
                 return '/' + tab.link === currentPagePath;
             }
@@ -143,12 +153,8 @@ class Navigation extends React.Component {
         return (
             <Tabs
                 inkBarStyle={{background: this.themePalette.highlight1Color}}
-                initialSelectedIndex={initialSelectedIndex}
-                onChange={this.navigateToRoute}
+                value={initialSelectedIndex}
                 tabItemContainerStyle={{backgroundColor: this.themePalette.primary2Color}}
-                onClick={() => {
-                    if (currentPagePath === '/auctions') { this.toggleAuctionDetail() }
-                }}
                 >
                 {tabs}
             </Tabs>
@@ -156,7 +162,9 @@ class Navigation extends React.Component {
     };
 
     render () {
-        const { user, userPermissions, config, logout } = this.props;
+        const { user, userPermissions, config, logout, router} = this.props;
+
+        const location = router.location;
 
         if (!userPermissions || Object.keys(userPermissions).length < 1) {
             return (
@@ -189,7 +197,7 @@ class Navigation extends React.Component {
         
         const iconMenu = this.buildIconMenu(userPermissions, { logout });
         
-        const navigationTabs = this.buildNavigationTabs(userPermissions, config, this.toggleAuctionDetail);
+        const navigationTabs = this.buildNavigationTabs(location, userPermissions, config);
 
         return (
             <div
