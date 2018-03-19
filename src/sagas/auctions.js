@@ -1,5 +1,5 @@
-import {takeEvery, take, cancel, call, fork} from 'redux-saga/effects';
-import {delay} from 'redux-saga';
+import { takeEvery, take, cancel, call, fork } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 
 import {
     BIDDER_BID_CONFIRMATION,
@@ -18,34 +18,56 @@ import { refreshAuctions, debounceRefreshAuctions as debounceFetchAuctionsAction
 
 
 // debounce refresh auctions to prevent extraneous refreshes during a bidding spree
-function* debouncedRefreshAuctions({auctionCollection}) {
+function* debouncedRefreshAuctions({ auctionCollection }) {
     yield window._UI_STORE_.dispatch(refreshAuctions(auctionCollection));
 };
 
 function* fetchAuctions() {
     window._FIREBASE_DB_.ref('/auctions')
-    .on('value', (snapshot) => {
-        let auctions = snapshot.val();
+        .on('value', (snapshot) => {
+            let auctions = snapshot.val();
 
-        auctions = !auctions ? [] : Object.keys(auctions).map(key => {
-            let auction = auctions[key];
-            auction.uid = key;
+            auctions = !auctions ? [] : Object.keys(auctions)
+                .map(key => {
+                    let auction = auctions[key];
+                    auction.uid = key;
 
-            return auction;
+                    return auction;
+                })
+                .sort((a, b) => {
+
+                    const aVal = (a.commercialValue || 1) * a.numberOffered;
+                    const bVal = (b.commercialValue || 1) * b.numberOffered;
+
+                    // highest first
+                    // then nulls
+                    if (!aVal) {
+                        return 1;
+                    } else if (!bVal) {
+                        return -1;
+                    } else if (aVal === bVal) {
+                        return 0;
+                    } else if (aVal < bVal) {
+                        return 1;
+                    } else if (aVal > bVal) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+
+            // debounce refresh auctions to prevent extraneous refreshes during a bidding spree
+            window._UI_STORE_.dispatch(debounceFetchAuctionsAction(auctions));
         });
-
-        // debounce refresh auctions to prevent extraneous refreshes during a bidding spree
-        window._UI_STORE_.dispatch(debounceFetchAuctionsAction(auctions));
-    });
     yield;
 }
 
 function* placeBid(bidDetails) {
-    
+
     window._FIREBASE_DB_.ref('/auctions/' + bidDetails.auctionUid)
-    .once('value', (snapshot) => {
-        
-        const auction = snapshot.val();
+        .once('value', (snapshot) => {
+
+            const auction = snapshot.val();
 
             const incrementAmount = auction.incrementAmount || 5;
             const highestBid = auction.highestBid > 0 ? auction.highestBid : auction.openingBid;
@@ -56,11 +78,11 @@ function* placeBid(bidDetails) {
             if (validBid) {
 
                 // will trigger an update to that auction
-                
+
                 console.log('bidDetails', bidDetails)
-                
+
                 auction.highestBid = bidDetails.bidAmount;
-                
+
                 const bid = {
                     // auctionUid: bidDetails.auctionUid,
                     bidAmount: bidDetails.bidAmount,
@@ -73,23 +95,23 @@ function* placeBid(bidDetails) {
                 };
 
                 auction.bids = !auction.bids ? {} : auction.bids;
-                
+
                 // set bid as key based on persona
                 auction.bids[bidDetails.bidderObj.uid] = bid;
-                
+
                 // update highestBid
                 window._FIREBASE_DB_.ref('auctions/' + bidDetails.auctionUid)
-                    .set(auction); 
-            } 
+                    .set(auction);
+            }
             // else: invalid bid => do nothing
 
         });
-    
+
     yield;
 }
 
-function* ownerBidConfirmation({ownerConfirmed, bid, topBidIndex, auctionUid}) {
-    
+function* ownerBidConfirmation({ ownerConfirmed, bid, topBidIndex, auctionUid }) {
+
     let updatedBidObj = {
         ...bid,
         ownerConfirmed,
@@ -98,76 +120,76 @@ function* ownerBidConfirmation({ownerConfirmed, bid, topBidIndex, auctionUid}) {
     if (topBidIndex === 0) {
         updatedBidObj.bidderConfirmed = true;
     }
-    
+
     window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + bid.bidderObj.uid)
         .set(updatedBidObj);
-    
+
     yield;
 }
 
-function* bidderBidConfirmation({bidderConfirmed, bid, topBidIndex, auctionUid}) {
-    
+function* bidderBidConfirmation({ bidderConfirmed, bid, topBidIndex, auctionUid }) {
+
     let updatedBidObj = {
         ...bid,
         bidderConfirmed,
     };
-    
+
     window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + bid.bidderObj.uid)
         .set(updatedBidObj);
-    
+
     yield;
 }
 
-function* ownerBidContacted({contacted, bid, topBidIndex, auctionUid}) {
-    
+function* ownerBidContacted({ contacted, bid, topBidIndex, auctionUid }) {
+
     let updatedBidObj = {
         ...bid,
         contacted,
     };
-    
+
     window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + bid.bidderObj.uid)
         .set(updatedBidObj);
 
     yield;
 }
 
-function* ownerBidPlanned({planned, bid, topBidIndex, auctionUid}) {
+function* ownerBidPlanned({ planned, bid, topBidIndex, auctionUid }) {
 
     let updatedBidObj = {
         ...bid,
         planned,
     };
-    
+
     window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + bid.bidderObj.uid)
         .set(updatedBidObj);
 
     yield;
 }
 
-function* updateAuction({auctionData}) {
+function* updateAuction({ auctionData }) {
     window._FIREBASE_DB_.ref('auctions/' + auctionData.uid)
         .set(auctionData);
-    
+
     yield;
 }
 
-function* setClaimStep({claimStep, bid, auctionUid}) {
-    
+function* setClaimStep({ claimStep, bid, auctionUid }) {
+
     let updatedBidObj = {
         ...bid,
         claimStep,
     };
-    
+
     window._FIREBASE_DB_.ref('auctions/' + auctionUid + '/bids/' + bid.bidderObj.uid)
         .set(updatedBidObj);
 
     yield;
 }
 
-function* createAuction({auctionData}) {
+function* createAuction({ auctionData }) {
 
     const updates = {};
-    const auctionUid = auctionData.uid || ( auctionData.owner.persona + '-' + auctionData.title.substr(0,5) ).replace(/ /ig, '').toLowerCase();
+    const auctionUid = auctionData.uid || (auctionData.owner.persona + '-' + auctionData.title.substr(0, 5)).replace(/ /ig, '').toLowerCase();
     updates['auctions/' + auctionUid] = {
         owner: {},
         bids: [],
@@ -190,7 +212,7 @@ function* createAuction({auctionData}) {
 
     window._FIREBASE_DB_.ref()
         .update(updates);
-    
+
     yield;
 }
 
@@ -199,7 +221,7 @@ export default function* () {
     yield [
         // debounce refresh auctions to prevent extraneous refreshes during a bidding spree
         debounceFor(DEBOUNCE_REFRESH_AUCTIONS, debouncedRefreshAuctions, 500),
-        
+
         // normal saga actions
         takeEvery(FETCH_AUCTIONS, fetchAuctions),
         takeEvery(UPDATE_AUCTION, updateAuction),
@@ -214,8 +236,8 @@ export default function* () {
 }
 
 // copied from, and credit to: https://github.com/madewithlove/redux-saga-debounce-effect/blob/master/src/debounceFor.js
-function *debounceFor(pattern, saga, ms, ...args) {
-    function *delayedSaga(action) {
+function* debounceFor(pattern, saga, ms, ...args) {
+    function* delayedSaga(action) {
         yield call(delay, ms);
         yield call(saga, action, ...args);
     }
