@@ -10,14 +10,13 @@ import AuctionItemDetail from './AuctionList/AuctionItemDetail';
 
 import './auctions.css';
 
-import { placeBid, toggleAuctionDetail } from 'actions'
+import { placeBid } from 'actions'
 
 class Auctions extends Component {
 
     constructor(props) {
         super(props)
         this.placeBid = this.placeBid.bind(this)
-        this.toggleAuctionDetail = this.toggleAuctionDetail.bind(this)
     }
 
     placeBid(auctionUid, amount, event) {
@@ -25,17 +24,10 @@ class Auctions extends Component {
         dispatch(placeBid(auctionUid, amount))
     }
 
-    toggleAuctionDetail(auctionUid, event) {
-        const { dispatch } = this.props
-        // Don't trigger when target is button - button is used for placing bids
-        dispatch(toggleAuctionDetail(auctionUid))
-    }
-
     render() {
         
         const {
             auctionCollection,
-            expandedAuction,
             config,
             user,
             history,
@@ -54,9 +46,7 @@ class Auctions extends Component {
                                 history={history}
                                 user={user}
                                 auctions={filteredAuctions}
-                                expandedAuction={expandedAuction || {}}
                                 placeBid={this.placeBid}
-                                toggleAuctionDetail={this.toggleAuctionDetail}
                                 config={config}
                                 />
                         )}
@@ -76,7 +66,6 @@ class Auctions extends Component {
                                     user={user}
                                     placeBid={this.placeBid}
                                     open={false}
-                                    toggleAuctionDetail={this.toggleAuctionDetail}
                                     />
                                 )
                         )}

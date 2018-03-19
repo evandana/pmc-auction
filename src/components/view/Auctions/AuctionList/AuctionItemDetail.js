@@ -97,7 +97,6 @@ class AuctionItemDetail extends Component {
 			highestBid,
 			history,
 			placeBid,
-			toggleAuctionDetail,
 			user,
 		} = this.props;
 
@@ -195,8 +194,10 @@ class AuctionItemDetail extends Component {
 								mini={true}
 								style={style.closeButton}
 								onClick={e => {
+									document.body.scrollTop = document.documentElement.scrollTop = 0;
+									e.preventDefault();
+									e.stopPropagation();
 									history.push('/auctions');
-									toggleAuctionDetail('', e);
 								}}
 							>
 								<ContentClear />

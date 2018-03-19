@@ -36,7 +36,6 @@ class Navigation extends React.Component {
     constructor(props) {
         super(props);
         this.navigateToRoute = this.navigateToRoute.bind(this);
-        this.toggleAuctionDetail = this.props.toggleAuctionDetail.bind(this);
         this.themePalette = this.props.muiTheme.palette;
     }
     
@@ -52,7 +51,10 @@ class Navigation extends React.Component {
                     <MenuItem onTouchTap={logout} primaryText="Logout" />
                     {permissions.admin && (
                         <MenuItem 
-                            onClick={() => this.props.history.push('donor-info')}
+                            onClick={() => {
+                                document.body.scrollTop = document.documentElement.scrollTop = 0;
+                                this.props.history.push('donor-info')
+                            }}
                             primaryText="Donor Info" 
                             />
                     )}
@@ -61,12 +63,12 @@ class Navigation extends React.Component {
         }
     };
 
-    navigateToRoute (someArg, evt, tabEl) {
-        // close any open auction item
-        // this.toggleAuctionDetail();
+    navigateToRoute (e, link) {
         // navigate
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-        this.props.history.push(tabEl.props['data-route']);
+        e.preventDefault();
+        e.stopPropagation();
+        this.props.history.push(link);
     };
 
     buildTab ({icon, label, active, link, style, value}) {
@@ -78,6 +80,9 @@ class Navigation extends React.Component {
                 key={link}
                 style={style}
                 value={value}
+                onClick={e => {
+                    this.navigateToRoute(e, '/' + link)
+                }}
             />
             );
     };
@@ -149,14 +154,7 @@ class Navigation extends React.Component {
             <Tabs
                 inkBarStyle={{background: this.themePalette.highlight1Color}}
                 value={initialSelectedIndex}
-                onChange={this.navigateToRoute}
                 tabItemContainerStyle={{backgroundColor: this.themePalette.primary2Color}}
-                onClick={() => {
-                    if (currentPagePath === '/auctions' && window.location.hash.length > 1) { 
-                        this.props.history.push('/auctions');
-                        this.toggleAuctionDetail();
-                    }
-                }}
                 >
                 {tabs}
             </Tabs>
