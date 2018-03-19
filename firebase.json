@@ -14,6 +14,10 @@
       {
         "source": "/{about,auctions,status,donate,sponsors,results,donor-info,create-auction}",
         "destination": "/index.html"
+      },
+      {
+        "source": "/auctions/*",
+        "destination": "/index.html"
       }
     ]
   }
