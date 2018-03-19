@@ -4,6 +4,7 @@ import AuthorizedRoute from 'components/view/AuthorizedRoute';
 const mapStateToProps = (state) => {
     return {
         userPermissions: state.auctions.user.permissions,
+        config: state.config,
     }
 };
 

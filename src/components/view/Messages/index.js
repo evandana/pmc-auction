@@ -43,6 +43,7 @@ class Messages extends React.Component {
                             labelStyle={{color: this.themePalette.canvasColor}}
                             label={config.MESSAGE_GLOBAL}
                             fullWidth={true}
+                            disabled={true}
                             />
                     </div>
                 )}
