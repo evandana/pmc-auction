@@ -6,9 +6,7 @@ import {
     CONFIRM_WINNERS,
     CREATE_AUCTION_SUCCESS,
     REFRESH_CONFIG,
-    HIDE_AUCTION_DETAIL,
     REFRESH_AUCTIONS,
-    SHOW_AUCTION_DETAIL,
     SHOW_LOGIN_SPINNER,
 } from '../constants'
 
@@ -122,21 +120,11 @@ function auctions(state = defaultAuctionState, action) {
             };    
             
         case REFRESH_AUCTIONS: 
-            
-            let expandedAuctionOverride = state.expandedAuction;
-            // on setting current user, also set expanded auctions (if set by url)
-            if ( window.location.pathname === '/auctions' && (!expandedAuction || !Object.keys(expandedAuction).length) && window.location.hash.length > 1) {
-                const expandedAuctionUidFromUrl = window.location.hash.substr(1);
-                expandedAuctionOverride = auctionCollection.find(auction => {
-                    return auction.uid === expandedAuctionUidFromUrl;
-                });
-            }
-            
+        
             return {
                 ...state,
                 auctionCollection,
                 ...getAuctionAggregations(state.user, auctionCollection, state.config),
-                expandedAuction: expandedAuctionOverride,
             };
 
         case CONFIRM_WINNERS:
@@ -152,24 +140,6 @@ function auctions(state = defaultAuctionState, action) {
                 ...state, 
                 ...getAuctionAggregations(state.user, state.auctionCollection, action.data),
                 config: action.data
-            };
-
-        case HIDE_AUCTION_DETAIL:
-
-            return {
-                ...state,
-                expandedAuction: {}
-            };
-
-        case SHOW_AUCTION_DETAIL:
-
-            const expandedAuction = state.auctionCollection.find(auction => {
-                return auction.uid === auctionUid;
-            });
-
-            return {
-                ...state, 
-                expandedAuction
             };
 
         default:

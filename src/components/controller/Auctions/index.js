@@ -7,7 +7,6 @@ const mapStateToProps = (state) => {
         user: state.auctions.user,
         userPermissions: state.auctions.user.permissions,
         auctionCollection: state.auctions.auctionCollection,
-        expandedAuction: state.auctions.expandedAuction,
         config: state.config,
     }
 };

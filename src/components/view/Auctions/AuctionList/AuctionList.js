@@ -21,15 +21,11 @@ class AuctionList extends Component {
   render() {
 
     const {
-      // objects
       auctions,
       config,
       history,
       muiTheme,
       user,
-
-      // methods
-      toggleAuctionDetail,
      } = this.props;
 
     const themePalette = muiTheme.palette;
@@ -104,11 +100,10 @@ class AuctionList extends Component {
           {auctionItems.map(tile => (
             <GridTile
               onTouchTap={e => {
-                history.push('/auctions/'+ tile.uid);
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
                 e.preventDefault();
                 e.stopPropagation();
-                document.body.scrollTop = document.documentElement.scrollTop = 0;
-                toggleAuctionDetail(tile.uid, e)
+                history.push('/auctions/'+ tile.uid);
               }}
               key={tile.key}
               title={tile.title}
