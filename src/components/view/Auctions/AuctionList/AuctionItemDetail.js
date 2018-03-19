@@ -2,6 +2,7 @@
 import moment from 'moment';
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router';
 
 import { Link } from 'react-router-dom'
 
@@ -80,10 +81,21 @@ class AuctionItemDetail extends Component {
 
 	render() {
 
+		const { error } = this.props;
+
+		if (error) {
+			return (
+				<div className="loader">
+					<div className="loader-spinner" />
+				</div>
+			);
+		}
+
 		const {
 			config,
 			data,
 			highestBid,
+			history,
 			placeBid,
 			toggleAuctionDetail,
 			user,
@@ -182,7 +194,10 @@ class AuctionItemDetail extends Component {
 								backgroundColor='#8EC449' // TODO: make this use themePalette
 								mini={true}
 								style={style.closeButton}
-								onClick={e => toggleAuctionDetail('', e)}
+								onClick={e => {
+									history.push('/auctions');
+									toggleAuctionDetail('', e);
+								}}
 							>
 								<ContentClear />
 							</FloatingActionButton>
@@ -311,9 +326,15 @@ function getAuctionBidsAsArray(auction) {
 
 function mapStateToProps(state) {
 
+	const auctionUidFromRouter = state.router.location.pathname.replace('/auctions/','');
+
 	const auction = state.auctions.auctionCollection.find(
-		auction => { return auction.uid === state.auctions.expandedAuction.uid; }
+		auction => { return auction.uid === auctionUidFromRouter; }
 	);
+
+	if (!auction) {
+		return {error: 'auction not found'};
+	}
 
 	let highestBidObj = !auction.bids || Object.keys(auction.bids).length < 1 ? {} : getAuctionBidsAsArray(auction).sort((a, b) => {
 		return a.bidAmount < b.bidAmount;
@@ -343,7 +364,8 @@ function mapStateToProps(state) {
 }
 
 
+const AuctionItemDetailWithRouter = withRouter(AuctionItemDetail);
 
 export default connect(
 	mapStateToProps
-)(AuctionItemDetail);
+)(AuctionItemDetailWithRouter);

@@ -24,8 +24,9 @@ class AuctionList extends Component {
       // objects
       auctions,
       config,
-      user,
+      history,
       muiTheme,
+      user,
 
       // methods
       toggleAuctionDetail,
@@ -103,6 +104,7 @@ class AuctionList extends Component {
           {auctionItems.map(tile => (
             <GridTile
               onTouchTap={e => {
+                history.push('/auctions/'+ tile.uid);
                 e.preventDefault();
                 e.stopPropagation();
                 document.body.scrollTop = document.documentElement.scrollTop = 0;
