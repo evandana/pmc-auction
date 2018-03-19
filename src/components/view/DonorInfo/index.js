@@ -191,8 +191,8 @@ class DonorInfo extends Component {
                                 <TableHeaderColumn>Earned</TableHeaderColumn>
                                 <TableHeaderColumn>Owed</TableHeaderColumn>
                                 <TableHeaderColumn>Due</TableHeaderColumn>
-                                <TableHeaderColumn colSpan={4}>Owned Auctions</TableHeaderColumn>
-                                <TableHeaderColumn colSpan={3}>Bid Auctions</TableHeaderColumn>
+                                <TableHeaderColumn colSpan={4}>Owned Auction Confirmations</TableHeaderColumn>
+                                <TableHeaderColumn colSpan={3}>Bid Auction Confirmations</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody
