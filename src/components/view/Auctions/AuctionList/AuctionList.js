@@ -53,12 +53,14 @@ class AuctionList extends Component {
 
     let countShown = 0;
     auctions.forEach((obj, index) => {
-
+        
       if (obj.show) {
 
         let urlStr;
 
-        if (obj.image) {
+        if (obj.auctionImage) {
+          urlStr = obj.auctionImage;
+        } else if (obj.image) {
           urlStr = getImageForEnv('auction-list/' + obj.image + '.png');
         } else {
           urlStr = getImageForEnv('auction-list/default.png');

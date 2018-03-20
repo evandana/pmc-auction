@@ -97,9 +97,10 @@ class ImageUpdate extends Component {
         const { file, uri, errors } = this.state;
         const { images } = this.props;
         
+        let imageWasUploaded = false;
+        
         if (file) {
-            const uploadedImage = images.find( image => image.name === file.name );
-            
+            imageWasUploaded = !!images.find( image => image.name === file.name );
         }
         
         const fileInputProps = {
@@ -122,8 +123,13 @@ class ImageUpdate extends Component {
         return (<div className="image-upload">
             <h3>Image Upload</h3>
             {errors.length ? showErrors(errors) : null}
-            {uri && <div className="image-upload__file">
+            {uri && !imageWasUploaded && <div className="image-upload__file">
                 <img src={uri} alt={file.name} />
+            </div>}
+            {uri && imageWasUploaded && <div>
+                <p>The following image was uploaded successfully:</p>
+                <ul><li>{file.name}</li></ul>
+                <p>To add this image to your auction listing, select the file name on the form below and save your <changes className=""></changes></p>
             </div>}
             {uri && (<div className="image-upload-btn">
                 <RaisedButton {...cancelImageProps} />
