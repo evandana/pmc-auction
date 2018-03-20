@@ -21,3 +21,7 @@
 ## DEPLOY
 
 `firebase deploy`
+
+## LICENSE
+
+GNU GPL - Free to use and modify. Licensing does not permit any commercial. Applies to any and all parts of this codebase at any point in time.
