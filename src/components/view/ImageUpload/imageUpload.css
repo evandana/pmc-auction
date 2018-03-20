@@ -6,8 +6,10 @@
     border: medium gray solid;
     background-color: white;
     border-radius: 6px;
+    width: 80%;
+    min-width: 360px;
     padding: 15px;
-    margin: 15px;
+    margin: 15px auto;
 }
 
 .image-upload h3 {

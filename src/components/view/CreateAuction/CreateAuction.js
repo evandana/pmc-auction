@@ -94,7 +94,6 @@ class CreateAuction extends Component {
                         );
                     })}
                     <Tab icon={<AddCircleIcon />} value={'new'}>
-                        <ImageUpload />
                         <div className="text-content">
                             <Paper style={{
                                 width: '100%',
