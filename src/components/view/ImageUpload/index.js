@@ -120,27 +120,31 @@ class ImageUpdate extends Component {
             onClick: () => { this.setState({ file: null, uri: null, errors: []})},
         };
         
-        return (<div className="image-upload">
-            <h3>Image Upload</h3>
+        return (<div className="image-upload row">
+            <h4 className="col-xs-5">Image Upload</h4>
             {errors.length ? showErrors(errors) : null}
-            {uri && !imageWasUploaded && <div className="image-upload__file">
+            {uri && !imageWasUploaded && <div className="image-upload__file col-xs-12">
                 <img src={uri} alt={file.name} />
             </div>}
+            {!uri && (
+                <div className="image-upload-btn col-xs-6">
+                    <RaisedButton {...this.selectImageProps} />
+            </div>)}
+            {!uri && (<div className="col-xs-12">
+                    <p>Upload an image for your auction listing.</p>
+                    <p>Ideal image size: 600px X 400px, landscape.</p>
+            </div>)}
             {uri && imageWasUploaded && <div>
                 <p>The following image was uploaded successfully:</p>
                 <ul><li>{file.name}</li></ul>
                 <p>To add this image to your auction listing, select the file name on the form below and save your <changes className=""></changes></p>
             </div>}
-            {uri && (<div className="image-upload-btn">
+            {uri && (<div className="image-upload-btn col-xs-12">
                 <RaisedButton {...cancelImageProps} />
                 <RaisedButton {...this.selectImageProps} />
                 <RaisedButton {...uploadImgProps} />
             </div>)}
-            {!uri && (<div className="image-upload-btn">
-                <RaisedButton {...this.selectImageProps} />
-                <br /><span>Upload an image for your auction listing.</span>
-            </div>)}
-            <div className="image-upload-hidden">
+            <div className="image-upload-hidden col-xs-12">
                 <input {...fileInputProps} />
             </div>
         </div>);
