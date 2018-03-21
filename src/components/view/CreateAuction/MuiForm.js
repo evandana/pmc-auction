@@ -7,8 +7,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 // import muiThemeable from 'material-ui/styles/muiThemeable';
 // import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import Checkbox from 'material-ui/Checkbox'
-// import SelectField from 'material-ui/SelectField'
-// import MenuItem from 'material-ui/MenuItem'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 // import asyncValidate from './asyncValidate'
 
 const validate = values => {
@@ -62,6 +62,25 @@ const renderCheckbox = ({ input, label }) => (
   />
 )
 
+const renderSelectField = ({
+    input,
+    label,
+    meta: { touched, error },
+    children,
+    ...custom
+}) => {
+  return (
+        <SelectField
+            floatingLabelText={label}
+            errorText={touched && error}
+            {...input}
+            onChange={(event, index, value) => input.onChange(value)}
+            children={children}
+            {...custom}
+        />
+    )
+}
+
 class MuiForm extends Component {
 
   constructor(props) {
@@ -83,28 +102,26 @@ class MuiForm extends Component {
   //   />
   // )
 
-  // const renderSelectField = ({
-  //   input,
-  //   label,
-  //   meta: { touched, error },
-  //   children,
-  //   ...custom
-  // }) => (
-  //     <SelectField
-  //       floatingLabelText={label}
-  //       errorText={touched && error}
-  //       {...input}
-  //       onChange={(event, index, value) => input.onChange(value)}
-  //       children={children}
-  //       {...custom}
-  //     />
-  //   )
-
 
   render() {
 
-    const { handleSubmit, createAuctionSubmitForm, pristine, reset, submitting, initialValues, auctionSubmitLabel } = this.props;
-
+    const {
+        handleSubmit,
+        createAuctionSubmitForm,
+        pristine,
+        reset,
+        submitting,
+        initialValues,
+        auctionSubmitLabel,
+        images,
+    } = this.props;
+      
+    let imageMenuItems = [];
+    
+    if (images && images.length) {
+      imageMenuItems = images.map((image, key) => <MenuItem value={image.downloadURL} primaryText={image.name} key={key} />);
+    } 
+      
     // this.setState({initialValues});  
 
     const style = {
@@ -234,6 +251,15 @@ class MuiForm extends Component {
             component={renderCheckbox}
             label="Show"
           />
+          <Field
+              className="col-xs-12"
+              name="auctionImage"
+              component={renderSelectField}
+              label="Auction Image"
+          >
+              {imageMenuItems}
+          </Field>
+          
         </section>
       </form>
     )

@@ -13,6 +13,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 // import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import Checkbox from 'material-ui/Checkbox'
 import AddCircleIcon from 'material-ui/svg-icons/content/add-circle';
+import ImageUpload from 'components/controller/ImageUpload';
 
 import { createAuction } from 'actions';
 
@@ -55,7 +56,7 @@ class CreateAuction extends Component {
 
     render() {
 
-        const { auctionsOwned } = this.props;
+        const { auctionsOwned, images } = this.props;
 
         const style = {
             field: {
@@ -85,7 +86,9 @@ class CreateAuction extends Component {
                                         initialValues={auction}
                                         auctionSubmitLabel='Save'
                                         createAuctionSubmitForm={this.submitForm}
+                                        images={images}
                                     />
+                                    <ImageUpload />
                                 </div>
                             </Tab>
                         );
@@ -123,7 +126,9 @@ class CreateAuction extends Component {
                                 }}
                                 auctionSubmitLabel='Create Auction'
                                 createAuctionSubmitForm={this.submitForm}
+                                images={images}
                             />
+                            <ImageUpload />
                         </div>
                     </Tab>
                 </Tabs>

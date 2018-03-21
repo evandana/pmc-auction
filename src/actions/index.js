@@ -28,14 +28,18 @@ import {
     GET_AUCTIONS,
     LOAD_AUCTION,
     OWNER_BID_CONFIRMATION,
-    OWNER_BID_CONTACTED,
-    OWNER_BID_PLANNED,
     PLACE_BID,
     REFRESH_AUCTION,
     REFRESH_AUCTIONS,
     DEBOUNCE_REFRESH_AUCTIONS,
     SET_CLAIM_STEP,
     SUBMIT_DONOR_CODE,
+    OWNER_BID_CONTACTED,
+    OWNER_BID_PLANNED,
+    // FILE UPLOAD
+    FETCH_IMAGES,
+    SET_IMAGES,
+    UPLOAD_IMAGE,
 
 } from '../constants';
 
@@ -212,6 +216,7 @@ export function createAuction(userInputData, user) {
             persona: user.persona,
             displayName: user.displayName,
         },
+        image: '',
     };
 
     return {
@@ -219,6 +224,24 @@ export function createAuction(userInputData, user) {
         auctionData,
     }
 
+}
+
+export function fetchImages() {
+    return { type: FETCH_IMAGES };
+}
+
+export function uploadImage (file) {
+    return {
+        file,
+        type: UPLOAD_IMAGE,
+    };
+}
+
+export function setImages(images) {
+    return {
+        images,
+        type: SET_IMAGES,
+    };
 }
 
 export function setClaimStep({claimStep, bid, auctionUid}) {
@@ -229,4 +252,3 @@ export function setClaimStep({claimStep, bid, auctionUid}) {
         auctionUid,
     }
 }
-

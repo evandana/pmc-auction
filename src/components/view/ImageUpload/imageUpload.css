@@ -1,0 +1,38 @@
+.image-upload-hidden {
+    display: none;
+}
+
+.image-upload {
+    /* border: medium gray solid; */
+    /* background-color: white; */
+    /* border-radius: 6px; */
+    /* min-width: 360px; */
+    margin-top: 2em;
+    background: #f5f5f5;
+    padding-bottom: 1em;
+}
+
+.image-upload h3 {
+    margin-top: 0;
+}
+
+.image-upload-btn {
+    text-align: center;
+    margin-top: 11px;
+}
+/* 
+.image-upload-btn > * {
+    margin-bottom: 10px;
+} */
+
+.image-upload__file {
+    text-align: center;
+}
+
+.image-upload__file img {
+    max-width: 100%;
+}
+
+.imageUpload-errors li {
+    color: red;
+}

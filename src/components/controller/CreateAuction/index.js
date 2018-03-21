@@ -6,6 +6,7 @@ const mapStateToProps = (state) => {
         user: state.auctions.user,
         form: state.auctions.createAuctionForm,
         auctionsOwned: state.auctions.auctionsOwned,
+        images: state.images,
     }
 };
   

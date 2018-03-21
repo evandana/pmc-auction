@@ -72,3 +72,8 @@ export const LOCKDOWN_MODE = 'LOCKDOWN_MODE';
 export const SET_USER = 'SET_USER';
 export const GET_CONFIG_SUCCESS = 'GET_CONFIG_SUCCESS';
 export const UPDATE_CONFIG_SUCCESS = 'UPDATE_CONFIG_SUCCESS';
+
+/* FILE UPLOAD */
+export const FETCH_IMAGES = 'FETCH_IMAGES';
+export const SET_IMAGES = 'SET_IMAGES';
+export const UPLOAD_IMAGE = 'UPLOAD_IMAGE';

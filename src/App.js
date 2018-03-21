@@ -31,7 +31,7 @@ import Status from 'components/controller/Status';
 
 import Navigation from 'components/controller/Navigation';
 import Footer from 'components/view/common/Footer';
-import { getUser, fetchAuctions, fetchConfig, showLoginSpinner } from './actions';
+import { getUser, fetchAuctions, fetchConfig, fetchImages, showLoginSpinner } from './actions';
 
 import './app.css';
 
@@ -46,7 +46,8 @@ class App extends Component {
         window._FIREBASE_ = firebase.initializeApp(config.firebase);
         window._FIREBASE_PROVIDER_ = new firebase.auth.GoogleAuthProvider();
         window._FIREBASE_DB_ = firebase.database();
-        window._FIREBASE_STORAGE_ = firebase.storage().ref();
+        window._FIREBASE_STORAGE_ = firebase.storage();
+        window._FIREBASE_STORAGE_REF_ = firebase.storage().ref();
         window._FIREBASE_.auth().onAuthStateChanged(
             (googleUser) => {
                 
@@ -65,6 +66,7 @@ class App extends Component {
                     window._UI_STORE_.dispatch(getUser(googleUserData));
                     
                     window._UI_STORE_.dispatch(fetchAuctions());
+                    window._UI_STORE_.dispatch(fetchImages());
 
                 }
             }
