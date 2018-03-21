@@ -79,7 +79,6 @@ class CreateAuction extends Component {
                                 value={auction.uid} 
                                 key={auction.uid}
                                 >
-                                <ImageUpload />
                                 <div className="text-content">
                                     <MuiForm
                                         key={auction.uid}
@@ -89,6 +88,7 @@ class CreateAuction extends Component {
                                         createAuctionSubmitForm={this.submitForm}
                                         images={images}
                                     />
+                                    <ImageUpload />
                                 </div>
                             </Tab>
                         );
@@ -114,7 +114,6 @@ class CreateAuction extends Component {
                                     <li>Feature your skills and talents</li>
                                     <li>Include a "commercial value" aspect to it in some way, even if just a cup of coffee</li>
                                 </ul>
-                                <ImageUpload />
                             </Paper>
                             <MuiForm
                                 form={'new'}
@@ -129,6 +128,7 @@ class CreateAuction extends Component {
                                 createAuctionSubmitForm={this.submitForm}
                                 images={images}
                             />
+                            <ImageUpload />
                         </div>
                     </Tab>
                 </Tabs>
