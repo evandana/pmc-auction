@@ -142,15 +142,16 @@ class Navigation extends React.Component {
         
         const currentPagePath = location.pathname; // e.g. '/auctions'
 
-        const initialSelectedIndex = tabObjs.findIndex(tab => {
-            if (tab.link === 'about') {
-                return '/' + tab.link === currentPagePath || '/' === currentPagePath;
-            } else if (tab.link === 'auctions') {
-                return currentPagePath.indexOf('/auctions') > -1;
-            } else {
-                return '/' + tab.link === currentPagePath;
-            }
-        }); 
+        const initialSelectedIndex = tabs
+            .findIndex(tab => {
+                if (tab.props['data-route'] === '/about') {
+                    return tab.props['data-route'] === '/' + currentPagePath || '/' === currentPagePath;
+                } else if (tab.props['data-route'] === '/auctions') {
+                    return currentPagePath.indexOf('/auctions') > -1;
+                } else {
+                    return tab.props['data-route'] === '/' + currentPagePath;
+                }
+            }); 
 
         return (
             <Tabs
