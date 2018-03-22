@@ -111,9 +111,6 @@ const Sponsors = ({ prop }) => {
                 <p>Generous sponsors make this possible. We're proud to support these community-focused businesses.</p>
                 <List>
                     {sponsors.map(sponsor => {
-                        const style = {
-                            fill: sponsor.color
-                        }
 
                         return (
                             <ListItem
@@ -124,8 +121,11 @@ const Sponsors = ({ prop }) => {
                                 secondaryText={sponsor.subtext}
                                 secondaryTextLines={2}
                                 key={sponsor.name}
-                                // leftIcon={<ActionGrade style={style} />}
-                                leftIcon={<Avatar style={{ height:40, width:40 }} src={sponsor.image} backgroundColor={transparent} />}
+                                leftIcon={
+                                    !sponsor.image ? 
+                                    <ActionGrade style={{ height:40, width:40, fill: amber500 }} /> : (
+                                    <Avatar style={{ height:40, width:40 }} src={sponsor.image} backgroundColor={transparent} />
+                                )}
                             />
                         )
                     })
