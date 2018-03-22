@@ -145,11 +145,11 @@ class Navigation extends React.Component {
         const initialSelectedIndex = tabs
             .findIndex(tab => {
                 if (tab.props['data-route'] === '/about') {
-                    return tab.props['data-route'] === '/' + currentPagePath || '/' === currentPagePath;
+                    return tab.props['data-route'] === currentPagePath || '/' === currentPagePath;
                 } else if (tab.props['data-route'] === '/auctions') {
                     return currentPagePath.indexOf('/auctions') > -1;
                 } else {
-                    return tab.props['data-route'] === '/' + currentPagePath;
+                    return tab.props['data-route'] === currentPagePath;
                 }
             }); 
 
