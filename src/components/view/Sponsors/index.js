@@ -18,65 +18,56 @@ const Sponsors = ({ prop }) => {
             link: 'https://runjanji.com/',
             subtext: 'Performance running apparel that connects people',
             image: getImageForEnv('janji-logo.png'),
-            color: amber500
         },
         {
             name: 'Holly Broussard and Matthew Kihm',
             subtext: 'Our incredible graphic designers',
             image: getImageForEnv('happinessexchange.png'),
-            color: amber500
         },
         {
             name: 'Broadsheet Coffee Roasters',
             link: 'https://www.broadsheetcoffee.com/',
             subtext: 'Locally roasted beans; best espresso in town',
             image: getImageForEnv('broadsheet-logo.png'),
-            color: amber500
+        },
+        {
+            name: 'Sky Zone',
+            link: 'http://www.skyzone.com/',
+            subtext: 'Bounce with me now...',
+            image: getImageForEnv('skyzone-logo.png'),
         },
         {
             name: 'Dave Thomas',
             link: 'http://github.com/dwthomas77',
             subtext: 'If he codes it, they will bid',
             image: '', //getImageForEnv('dave.png'),
-            color: amber500
         },
         {
             name: 'Bone Up Brewing',
             link: 'https://www.boneup.beer/',
             subtext: 'There\'s a coloring contest and flights come with a fruit roll up',
             image: getImageForEnv('bone-up-logo.png'),
-            color: amber500
         },
         {
             name: 'Saus',
             link: 'https://www.sausboston.com/',
             subtext: 'Beer and Belgian street food: waffles, fries, and more',
             image: getImageForEnv('saus-logo.png'),
-            color: amber500
         },
         {
             name: 'Second Chance Ranch',
             link: 'https://www.secondchanceranchrescue.com/',
             subtext: 'Doggie boarding / find your rescue dog',
             image: getImageForEnv('second-chance-ranch-logo.png'),
-            color: amber500
         },
         {
             name: 'Landry\'s Bicycles',
             link: 'http://www.landrys.com/',
             subtext: 'Where bikes come from',
             image: getImageForEnv('sponsor-landrys.png'),
-            color: amber500
         },
 
         
-        // {
-        //     name: 'Sky Zone',
-        //     link: 'http://www.skyzone.com/',
-        //     subtext: 'Bounce with me now...',
-        //     image: getImageForEnv('skyzone-logo.png'),
-        //     color: yellow400
-        // },
         // {
         //     name: 'Harpoon Brewery',
         //     link: 'http://www.harpoonbrewery.com/',
