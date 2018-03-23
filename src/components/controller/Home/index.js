@@ -5,6 +5,7 @@ const mapStateToProps = (state) => {
     return {
         user: state.auctions.user,
         userPermissions: state.auctions.user.permissions,
+        config: state.config,
     };
 };
 
