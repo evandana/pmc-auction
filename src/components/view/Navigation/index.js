@@ -37,7 +37,7 @@ class Navigation extends React.Component {
 
     constructor(props) {
         super(props);
-        this.navigateToRoute = this.navigateToRoute.bind(this);
+        // this.navigateToRoute = this.navigateToRoute.bind(this);
         this.themePalette = this.props.muiTheme.palette;
     }
     
@@ -65,11 +65,9 @@ class Navigation extends React.Component {
         }
     };
 
-    navigateToRoute (e, link) {
+    navigateToRoute (link) {
         // navigate
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-        e.preventDefault();
-        e.stopPropagation();
         this.props.history.push(link);
     };
 
@@ -82,8 +80,8 @@ class Navigation extends React.Component {
                 key={link}
                 style={style}
                 value={value}
-                onClick={e => {
-                    this.navigateToRoute(e, '/' + link)
+                onActive={activeTab => {
+                    this.navigateToRoute(activeTab.props['data-route'])
                 }}
             />
             );
@@ -107,7 +105,7 @@ class Navigation extends React.Component {
             },
             {
                 icon: <PanToolIcon />, // alt: LocalPlayIcon
-                label: 'Auctions',
+                label: 'Auction',
                 link: 'auctions',
             },
             {
