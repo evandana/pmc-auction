@@ -11,7 +11,7 @@ import {
 
 import { SubmissionError } from 'redux-form'
 
-import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner, asyncFormStatusUpdate, getUsers } from 'actions';
+import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner, asyncFormStatusUpdate, getUsers, fetchAuctions, fetchImages } from 'actions';
 
 function* getUser({ googleUserData }) {
 
@@ -87,7 +87,7 @@ function* getUser({ googleUserData }) {
                 .on('value', (snapshot) => {
                     const user = snapshot.val();
 
-                    window._UI_STORE_.dispatch(setCurrentUser(user))
+                    window._UI_STORE_.dispatch(setCurrentUser(user));
                 });
 
             }
@@ -113,7 +113,21 @@ function* updateUser({ userData }) {
     };
 
     window._FIREBASE_DB_.ref()
-        .update(updates);
+        .update(updates)
+        .then( success => {
+
+            window._UI_STORE_.dispatch(fetchAuctions());
+            window._UI_STORE_.dispatch(fetchImages());
+        })
+        .catch(err => {
+            window._UI_STORE_.dispatch(setCurrentUser({
+                ...userData,
+                permissions: {
+                    basic: false,
+                    error: true,
+                }
+            }));
+        });;
 
     yield;
 }
