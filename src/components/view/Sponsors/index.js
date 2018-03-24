@@ -23,6 +23,7 @@ const Sponsors = ({ prop }) => {
             name: 'Holly Broussard and Matthew Kihm',
             subtext: 'Our incredible graphic designers',
             image: getImageForEnv('happinessexchange.png'),
+            background: 'Honeydew',
         },
         {
             name: 'Broadsheet Coffee Roasters',
@@ -40,7 +41,9 @@ const Sponsors = ({ prop }) => {
             name: 'Dave Thomas',
             link: 'http://github.com/dwthomas77',
             subtext: 'If he codes it, they will bid',
-            image: '', //getImageForEnv('dave.png'),
+            image: '',
+            background: 'DarkSlateGray',
+            textColor: 'Gainsboro'
         },
         {
             name: 'Bone Up Brewing',
@@ -65,6 +68,28 @@ const Sponsors = ({ prop }) => {
             link: 'http://www.landrys.com/',
             subtext: 'Where bikes come from',
             image: getImageForEnv('sponsor-landrys.png'),
+            background: 'Linen'
+        },
+        {
+            name: 'Bantam Cider',
+            link: 'http://www.bantamcider.com/',
+            subtext: 'Local Wunderkind',
+            image: getImageForEnv('bantam.png'),
+            background: 'Beige'
+        },
+        {
+            name: 'Floyd\'s 99 Barbershop - Cambridge',
+            link: 'https://www.floydsbarbershop.com/cambridge/',
+            subtext: 'For a fresh fade, call Nick',
+            image: getImageForEnv('floyds.png'),
+            background: 'LightGray',
+        },
+        {
+            name: 'Winter Hill Brewing',
+            link: 'http://winterhillbrewing.com/',
+            subtext: 'Bratwurst and Darlin IPA combo, FTW',
+            image: getImageForEnv('whb.png'),
+            background: 'DimGray'
         },
 
         
@@ -73,13 +98,6 @@ const Sponsors = ({ prop }) => {
         //     link: 'http://www.harpoonbrewery.com/',
         //     subtext: 'Love Beer. Love Life.',
         //     image: getImageForEnv('harpoon.jpg'),
-        //     color: yellow400
-        // },
-        // {
-        //     name: 'Bantam Cider',
-        //     link: 'http://www.bantamcider.com/',
-        //     subtext: 'Local Wunderkind',
-        //     image: getImageForEnv('bantam.png'),
         //     color: yellow400
         // },
         // {
@@ -123,8 +141,10 @@ const Sponsors = ({ prop }) => {
                                 key={sponsor.name}
                                 leftIcon={
                                     !sponsor.image ? 
-                                    <ActionGrade style={{ height:40, width:40, fill: amber500 }} /> : (
-                                    <Avatar style={{ height:40, width:40 }} src={sponsor.image} backgroundColor={transparent} />
+                                    <Avatar style={{ height:40, width:40 }} backgroundColor={sponsor.background || transparent}>
+                                        <div style={{textAlign:'center', height:'100%', marginTop:12, color: sponsor.textColor || 'White'}}>{sponsor.name.split(' ').map(word => word[0] ).join('')}</div>
+                                    </Avatar> : (
+                                    <Avatar style={{ height:40, width:40 }} size={40} src={sponsor.image} backgroundColor={sponsor.background || transparent} />
                                 )}
                             />
                         )
@@ -137,16 +157,3 @@ const Sponsors = ({ prop }) => {
 }
 
 export default Sponsors;
-
-// import React from 'react'
-
-// const Sponsors = (props) => {
-
-//     const { ...rest } = props;
-
-//     return (
-//         <h2>Sponsors</h2>
-//     );
-// }
-
-// export default Sponsors;
