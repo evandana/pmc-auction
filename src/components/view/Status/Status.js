@@ -65,9 +65,9 @@ class Status extends Component {
 
         const amountPaid = user.amountPaid || 0; 
 
-        const bidCount = Object.keys(user.bids).length;
-        const raffleTicketsEarned = Math.floor(bidCount/config.BIDS_PER_FREE_RAFFLE);
-        const bidModulus = bidCount % config.BIDS_PER_FREE_RAFFLE;
+        const bidCount = !user.bids || !user.bids.length ? 0 : Object.keys(user.bids).length;
+        const raffleTicketsEarned = !user.bids || !user.bids.length ? 0 : Math.floor(bidCount/config.BIDS_PER_FREE_RAFFLE);
+        const bidModulus = !user.bids || !user.bids.length ? 0 : bidCount % config.BIDS_PER_FREE_RAFFLE;
 
 
         return (
@@ -85,7 +85,9 @@ class Status extends Component {
 
                 <div className='text-content' style={{padding:'1em'}}>
 
-                    <section className="row middle-xs">
+                    <section className="row middle-xs"
+                        hidden={!config.BIDDING_OPEN || !config.CONFIRM_WINNERS}
+                        >
                         <h2 className="col-xs-12">
                             Raffle
                         </h2>

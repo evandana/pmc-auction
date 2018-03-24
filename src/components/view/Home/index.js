@@ -1,5 +1,7 @@
 import React from 'react';
 
+import muiThemeable from 'material-ui/styles/muiThemeable';
+
 import Login from 'components/controller/Login'
 import DonorCodeForm from 'components/controller/DonorCodeForm'
 
@@ -7,7 +9,9 @@ import { getImageForEnv } from 'static/images/index'
 
 const Home = (props) => {
 
-    const { user, userPermissions, config } = props;
+    const { user, userPermissions, config, muiTheme } = props;
+
+    const themePalette = muiTheme.palette;
 
     const pageWrapperStyles = {
         width: '100%',
@@ -50,7 +54,7 @@ const Home = (props) => {
 
                                     <p>Live on Friday March 30th, in person or online.</p>
 
-                                    <p>For funsies, you will be seen by other bidders as "{user.persona}".</p>
+                                    <p>For funsies, you will be seen by other bidders as "<span style={{color:themePalette.accent1Color}}>{user.persona}</span>".</p>
 
                                     <h2>Goals</h2>
                                     <ul>
@@ -82,4 +86,4 @@ const Home = (props) => {
     );
 }
 
-export default Home;
+export default muiThemeable()(Home);
