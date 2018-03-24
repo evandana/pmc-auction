@@ -16,7 +16,7 @@ import ChromeReaderModeIcon from 'material-ui/svg-icons/action/chrome-reader-mod
 import CreditCardIcon from 'material-ui/svg-icons/action/credit-card';
 import RedeemIcon from 'material-ui/svg-icons/action/redeem';
 // import TimelineIcon from 'material-ui/svg-icons/action/timeline';
-import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
+// import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
 // import LocalOfferIcon from 'material-ui/svg-icons/maps/local-offer';
 // import MoodIcon from 'material-ui/svg-icons/social/mood';
 import PollIcon from 'material-ui/svg-icons/social/poll';

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { takeEvery, take, cancel, call, fork } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
@@ -51,6 +53,7 @@ function* fetchAuctions() {
                         return 1;
                     } else if (aVal > bVal) {
                         return -1;
+
                     } else {
                         return 0;
                     }
@@ -73,13 +76,13 @@ function* placeBid(bidDetails) {
             const highestBid = auction.highestBid > 0 ? auction.highestBid : auction.openingBid;
 
             const validBid = !!auction.bids ? (bidDetails.bidAmount >= highestBid + incrementAmount) : bidDetails.bidAmount >= auction.openingBid;
-
+            
             // if valid bid
             if (validBid) {
-
+                
+                let updates = {};
+                
                 // will trigger an update to that auction
-
-                console.log('bidDetails', bidDetails)
 
                 auction.highestBid = bidDetails.bidAmount;
 
@@ -98,10 +101,16 @@ function* placeBid(bidDetails) {
 
                 // set bid as key based on persona
                 auction.bids[bidDetails.bidderObj.uid] = bid;
+                
+                // bid
+                updates['/auctions/' + bidDetails.auctionUid] = auction;
 
-                // update highestBid
-                window._FIREBASE_DB_.ref('auctions/' + bidDetails.auctionUid)
-                    .set(auction);
+                updates['users/' + bidDetails.bidderObj.uid + '/bids/'+ bidDetails.auctionUid + '--' + bidDetails.bidAmount] = moment(new Date()).format('MMM Do h:mm:ssa');
+
+                window._FIREBASE_DB_.ref()
+                    .update(updates);
+
+
             }
             // else: invalid bid => do nothing
 
