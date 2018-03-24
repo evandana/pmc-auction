@@ -167,7 +167,7 @@ class Navigation extends React.Component {
 
         const location = router.location;
 
-        if (!userPermissions || Object.keys(userPermissions).length < 1) {
+        if (!userPermissions || Object.keys(userPermissions).length < 1 || !userPermissions.basic || userPermissions.error ) {
             return (
                 <div
                     style={{
@@ -187,11 +187,12 @@ class Navigation extends React.Component {
                                     marginLeft:'-8px',
                                     marginBottom:'-8px',
                                 }}>
-                                <img style={{height:'56px',width:'56px'}} alt="Eappiness Exchange logo" src={getImageForEnv('happinessexchange.png')} />
+                                <img style={{height:'56px',width:'56px'}} alt="Happiness Exchange logo" src={getImageForEnv('happinessexchange.png')} />
                             </div>
                         }
                     >
                     </AppBar>
+                    <Messages />
                 </div>
             );
         }

@@ -30,10 +30,23 @@ class Messages extends React.Component {
     }
 
     render () {
-        const { config } = this.props;
+        const { config, user } = this.props;
 
         return (
             <div>
+                {user.permissions.error && (
+                    <div style={{
+                        width: '100%'
+                    }}> 
+                        <RaisedButton
+                            buttonStyle={{background: this.themePalette.warningColor}}
+                            labelStyle={{color: this.themePalette.canvasColor}}
+                            label='Unable to log in - Contact Evan'
+                            fullWidth={true}
+                            disabled={true}
+                            />
+                    </div>
+                )}
                 {config.MESSAGE_GLOBAL && (
                     <div style={{
                         width: '100%'
