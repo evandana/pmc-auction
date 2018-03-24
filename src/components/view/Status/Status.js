@@ -23,6 +23,7 @@ import ContentCopyIcon from 'material-ui/svg-icons/content/content-copy';
 import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
 import KeyboardArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
 import AttachMoneyIcon from 'material-ui/svg-icons/editor/attach-money';
+import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
 // import MailOutlineIcon from 'material-ui/svg-icons/communication/mail-outline';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import RemoveCircleOutlineIcon from 'material-ui/svg-icons/content/remove-circle-outline'
@@ -64,8 +65,15 @@ class Status extends Component {
 
         const amountPaid = user.amountPaid || 0; 
 
+        const bidCount = Object.keys(user.bids).length;
+        const raffleTicketsEarned = Math.floor(bidCount/config.BIDS_PER_FREE_RAFFLE);
+        const bidModulus = bidCount % config.BIDS_PER_FREE_RAFFLE;
+
+
         return (
             <div className='page'>
+
+                {/* for copied email notifications */}
                 <Snackbar
                     style={{bottom:'57px'}}
                     bodyStyle={{backgroundColor: themePalette.successColor}}
@@ -74,14 +82,35 @@ class Status extends Component {
                     autoHideDuration={4000}
                     onRequestClose={this.handleRequestClose}
                     />
+
                 <div className='text-content' style={{padding:'1em'}}>
 
+                    <section className="row middle-xs">
+                        <h2 className="col-xs-12">
+                            Raffle
+                        </h2>
+                        <div style={{display:'inline-block', marginTop:-5, marginRight:'.5rem', paddingLeft:'.5rem'}}>
+                            Total Bids Placed: {bidCount}
+                            <br/>
+                            Tickets Earned: {raffleTicketsEarned}
+                        </div>
+                        <div style={{display:'inline-block', paddingLeft:'.5rem'}}>
+                            {[...Array(raffleTicketsEarned + 1)].map( (emptyItem, i) => (
+                                <div key={i} style={{display:'inline-block', width: i + 1 <= raffleTicketsEarned ? '50px' : 10*bidModulus + 'px', overflow:'hidden'}}>
+                                    <LocalPlayIcon
+                                        style={{height:'50px',width:'50px', color: themePalette.accent1Color}}
+                                        />
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                            
                     <section className="row middle-xs">
                         <h2 className="col-xs-10">Auctions with Your Bids</h2>
                         <div className="col-xs-2" style={{textAlign:'right'}}>
                             <IconButton
                                 tooltip={this.state.showAuctionsWithYourBidsText ? 'Hide description' : 'Show description'}
-                                tooltipPosition='bottom-left'
+                                tooltipPosition='top-left'
                                 onClick={() => this.setState({showAuctionsWithYourBidsText: !this.state.showAuctionsWithYourBidsText, snackbar: {open: false, message: ''}}) }
                                 style={{color: themePalette.secondaryLinkColor, minWidth: null}}
                                 >
