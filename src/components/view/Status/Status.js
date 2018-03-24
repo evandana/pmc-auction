@@ -65,9 +65,9 @@ class Status extends Component {
 
         const amountPaid = user.amountPaid || 0; 
 
-        const bidCount = !user.bids || !user.bids.length ? 0 : Object.keys(user.bids).length;
-        const raffleTicketsEarned = !user.bids || !user.bids.length ? 0 : Math.floor(bidCount/config.BIDS_PER_FREE_RAFFLE);
-        const bidModulus = !user.bids || !user.bids.length ? 0 : bidCount % config.BIDS_PER_FREE_RAFFLE;
+        const bidCount = !user.bids ? 0 : Object.keys(user.bids).length;
+        const raffleTicketsEarned = !user.bids ? 0 : Math.floor(bidCount/config.BIDS_PER_FREE_RAFFLE);
+        const bidModulus = !user.bids ? 0 : bidCount % config.BIDS_PER_FREE_RAFFLE;
 
 
         return (
