@@ -54,7 +54,7 @@ const Home = (props) => {
                                     {user.permissions.attendee  ? (
                                         <section>
                                             <h2>At the party!</h2>
-                                            <p>A raffle ticket has been added to your raffle page</p>
+                                            <p>A raffle ticket has been added to your raffle page.</p>
                                         </section>    
                                     ) : (
                                         !config.BIDDING_OPEN ? '' : (
