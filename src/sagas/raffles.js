@@ -8,6 +8,7 @@ import {
     PERSIST_RAFFLE_UPDATE,
     FETCH_RAFFLES,
     REFRESH_RAFFLES,
+    BUY_RAFFLE_TICKETS,
 } from '../constants';
 
 import { refreshRaffles, debounceRefreshRaffles as debounceFetchRafflesAction } from '../actions';
@@ -81,6 +82,31 @@ function* persistRaffleUpdate({ raffleData }) {
     yield;
 }
 
+function* buyRaffleTickets({count, user}) {
+
+    window._FIREBASE_DB_.ref('/users/' + user.uid)
+        .once('value', snapshot => {
+            
+            let user = snapshot.val();
+
+            const newTickets = [...Array(count)].map(ticket => ({number: Math.floor(Math.random()*100000)}))
+
+            user.tickets = user.tickets ? [
+                ...user.tickets,
+                ...newTickets
+            ] : [ 
+                ...newTickets
+            ];
+
+            user.raffleMoneyOwed = (user.raffleMoneyOwed || 0) + 5 * count;
+
+            window._FIREBASE_DB_.ref('/users/' + user.uid)
+                .update(user);
+        });
+
+
+    yield;
+}
 
 export default function* () {
     yield [
@@ -90,6 +116,7 @@ export default function* () {
         // normal saga actions
         takeEvery(FETCH_RAFFLES, fetchRaffles),
         takeEvery(PERSIST_RAFFLE_UPDATE, persistRaffleUpdate),
+        takeEvery(BUY_RAFFLE_TICKETS, buyRaffleTickets),
     ];
 }
 

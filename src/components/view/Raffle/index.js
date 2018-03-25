@@ -1,30 +1,17 @@
 import React, { Component } from 'react'
 
 import muiThemeable from 'material-ui/styles/muiThemeable';
-// import Paper from 'material-ui/Paper';
-// import {
-//     Table,
-//     TableBody,
-//     TableHeader,
-//     TableHeaderColumn,
-//     TableRow,
-//     TableRowColumn,
-// } from 'material-ui/Table';
-// import RaisedButton from 'material-ui/RaisedButton';
-// import FlatButton from 'material-ui/FlatButton';
-// import IconButton from 'material-ui/IconButton';
-// import IconMenu from 'material-ui/IconMenu';
-// import MenuItem from 'material-ui/MenuItem';
-// import Snackbar from 'material-ui/Snackbar';
-// import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
-// import ContentCopyIcon from 'material-ui/svg-icons/content/content-copy';
-// import KeyboardArrowDown from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-// import KeyboardArrowUp from 'material-ui/svg-icons/hardware/keyboard-arrow-up';
-// import AttachMoneyIcon from 'material-ui/svg-icons/editor/attach-money';
-// import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
-// // import MailOutlineIcon from 'material-ui/svg-icons/communication/mail-outline';
-// import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-// import RemoveCircleOutlineIcon from 'material-ui/svg-icons/content/remove-circle-outline'
+
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import Avatar from 'material-ui/Avatar';
+import Chip from 'material-ui/Chip';
+
+import PersonIcon from 'material-ui/svg-icons/social/person';
+import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
+
+import { buyRaffleTickets } from 'actions';
 
 class Raffle extends Component {
 
@@ -34,15 +21,108 @@ class Raffle extends Component {
 
     render() {
 
-        const { user, raffles } = this.props;
+        const { user, raffles, dispatch } = this.props;
 
         const themePalette = this.props.muiTheme.palette;
 
         return (
             <div className='page'>
-                <div className='text-content' style={{padding:'1em'}}>
+                <div className='text-content' style={{ padding: '1em' }}>
+                    <h2>Raffle Tickets Available: {user.tickets ? user.tickets.length : 0}</h2>
+
+                    <RaisedButton
+                        primary={true}
+                        label="Buy 1 Ticket ($5)"
+                        onTouchTap={() => {
+                            dispatch(buyRaffleTickets({
+                                user,
+                                count: 1
+                            }));
+                        }}
+                        style={{ marginRight: '1em' }}
+                    />
+
+                    <RaisedButton
+                        secondary={true}
+                        label="Buy 5 Tickets ($20)"
+                        onTouchTap={() => {
+                            dispatch(buyRaffleTickets({
+                                user,
+                                count: 5
+                            }));
+                        }}
+                    />
+
+                    <div
+                        className="col-xs-12"
+                        style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                        }}
+                    >
+                        {user.tickets && user.tickets.map(ticket => (
+                            <Chip
+                                key={ticket.number}
+                                backgroundColor={themePalette.primary2Color}
+                                style={{ margin: 4 }}
+                            >
+                                <Avatar backgroundColor={themePalette.primary2Color} ><PersonIcon color={themePalette.canvasColor} size={32} /></Avatar>
+                                <span style={{ color: themePalette.canvasColor }}>{ticket.number}</span>
+                            </Chip>
+                        ))}
+                    </div>
+
+
                     <h2>Raffles</h2>
-                    <pre>{JSON.stringify(raffles)}</pre>
+
+                    {raffles.map(raffle => {
+                        return (
+                            <Card
+                                key={raffle.uid}
+                            >
+                                {/* <CardHeader
+                                    title={raffle.title}
+                                    subtitle={raffle.subTitle}
+                                    avatar="images/jsa-128.jpg"
+                                /> */}
+                                {!raffle.raffleImage && !raffle.image ? '' : (
+                                    <CardMedia
+                                        overlay={<CardTitle title={raffle.title} subtitle={raffle.subTitle} />}
+                                    >
+                                        <img src={raffle.raffleImage || raffle.image} alt="" />
+                                    </CardMedia>
+                                )}
+                                {/* <CardTitle title="Card title" subtitle="Card subtitle" /> */}
+                                <CardText>{raffle.description}</CardText>
+                                <CardText
+                                    style={{
+                                        display: 'flex',
+                                        flexWrap: 'wrap',
+                                    }}
+                                >
+                                    {raffle.tickets.map(ticket => {
+                                        return user.uid === ticket.uid ? (
+                                            <Chip
+                                                key={ticket.number}
+                                                backgroundColor={user.uid === ticket.uid ? themePalette.primary2Color : themePalette.borderColor}
+                                                style={{ margin: 4 }}
+                                                >
+                                                <Avatar backgroundColor={themePalette.primary2Color} ><LocalPlayIcon color={themePalette.canvasColor} size={40} /></Avatar>
+                                                <span style={{ color: user.uid === ticket.uid ? themePalette.canvasColor : themePalette.disabledColor }}>{ticket.number}</span>
+                                            </Chip>
+                                        ) : (
+                                            <Avatar style={{ margin: 4 }} size={32} key={ticket.number} backgroundColor={themePalette.canvasColor} ><LocalPlayIcon color={themePalette.disabledColor} size={32} /></Avatar>
+                                        );
+                                    })}
+                                </CardText>
+                                <CardActions>
+                                    <FlatButton label="Use Ticket" />
+                                </CardActions>
+                            </Card>
+                        )
+                    })}
+
+
                 </div>
             </div>
         );

@@ -25,6 +25,7 @@ import {
     PERSIST_RAFFLE_UPDATE,
     FETCH_RAFFLES,
     REFRESH_RAFFLES,
+    BUY_RAFFLE_TICKETS,
 
     // AUCTIONS
     ASYNC_FORM_STATUS_UPDATE,
@@ -151,6 +152,7 @@ export function refreshRaffles(raffles) {
         raffles,
     }
 }
+
 export function debounceRefreshRaffles(raffles) {
     return {
         type: DEBOUNCE_REFRESH_RAFFLES,
@@ -169,6 +171,14 @@ export function persistRaffleUpdate(userInputData, user) {
         raffleData,
     }
 
+}
+
+export function buyRaffleTickets({count, user}) {
+    return {
+        type: BUY_RAFFLE_TICKETS,
+        count,
+        user,
+    }
 }
 
 
