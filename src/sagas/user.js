@@ -11,7 +11,7 @@ import {
 
 import { SubmissionError } from 'redux-form'
 
-import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner, asyncFormStatusUpdate, getUsers, fetchAuctions, fetchImages } from 'actions';
+import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner, asyncFormStatusUpdate, getUsers, fetchAuctions, fetchImages, fetchRaffles } from 'actions';
 
 function* getUser({ googleUserData }) {
 
@@ -118,6 +118,7 @@ function* updateUser({ userData }) {
 
             window._UI_STORE_.dispatch(fetchAuctions());
             window._UI_STORE_.dispatch(fetchImages());
+            window._UI_STORE_.dispatch(fetchRaffles());
         })
         .catch(err => {
             window._UI_STORE_.dispatch(setCurrentUser({
@@ -167,7 +168,7 @@ export default function* () {
 }
 
 function transformPersonaStringIntoUid (persona) {
-    return persona.replace(' ','');
+    return persona.replace(/[^\w\d]/g,'');
 }
 
 function generateUserPersona() {

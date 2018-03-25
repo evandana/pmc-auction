@@ -88,7 +88,12 @@ const Home = (props) => {
                                         <li>Raise money towards treating and curing cancer</li>
                                     </ul>
 
-                                    {user.permissions.donor && (!config.BIDDING_OPEN || !config.CONFIRM_WINNERS) ? '' : (
+                                    {user.permissions.donor && config.CREATE_AUCTIONS ? (
+                                        <section>
+                                            <h2>Donors</h2>
+                                            <p>Use the menu in the top right corner to access the Auction Editor</p>
+                                        </section>
+                                    ) : (
                                         <section className="row">
                                             <h2 className="col-xs-12">Auction Donors</h2>
 

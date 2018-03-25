@@ -198,7 +198,7 @@ function* setClaimStep({ claimStep, bid, auctionUid }) {
 function* createAuction({ auctionData }) {
 
     const updates = {};
-    const auctionUid = auctionData.uid || (auctionData.owner.persona + '-' + auctionData.title.substr(0, 5)).replace(/ /ig, '').toLowerCase();
+    const auctionUid = auctionData.uid || (auctionData.owner.persona + '-' + auctionData.title).replace(/[^\w\d]/g,'').substr(0, 15).toLowerCase();
     updates['auctions/' + auctionUid] = {
         owner: {},
         bids: [],

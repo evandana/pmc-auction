@@ -20,6 +20,12 @@ import {
     FETCH_CONFIG,
     REFRESH_CONFIG,
 
+    // RAFFLE
+    DEBOUNCE_REFRESH_RAFFLES,
+    PERSIST_RAFFLE_UPDATE,
+    FETCH_RAFFLES,
+    REFRESH_RAFFLES,
+
     // AUCTIONS
     ASYNC_FORM_STATUS_UPDATE,
     BIDDER_BID_CONFIRMATION,
@@ -132,6 +138,39 @@ export function refreshConfig(config) {
     }
 }
 
+/** RAFFLES */
+export function fetchRaffles() {
+    return {
+        type: FETCH_RAFFLES
+    }
+}
+
+export function refreshRaffles(raffles) {
+    return {
+        type: REFRESH_RAFFLES,
+        raffles,
+    }
+}
+export function debounceRefreshRaffles(raffles) {
+    return {
+        type: DEBOUNCE_REFRESH_RAFFLES,
+        raffles,
+    }
+}
+
+export function persistRaffleUpdate(userInputData, user) {
+
+    const raffleData = {
+        ...userInputData,
+    };
+
+    return {
+        type: PERSIST_RAFFLE_UPDATE,
+        raffleData,
+    }
+
+}
+
 
 /** AUCTIONS */
 export function fetchAuctions() {
@@ -217,7 +256,6 @@ export function createAuction(userInputData, user) {
             persona: user.persona,
             displayName: user.displayName,
         },
-        image: '',
     };
 
     return {

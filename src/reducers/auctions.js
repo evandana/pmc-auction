@@ -4,7 +4,6 @@ import {
 
     // auctions
     CONFIRM_WINNERS,
-    CREATE_AUCTION_SUCCESS,
     REFRESH_CONFIG,
     REFRESH_AUCTIONS,
     SHOW_LOGIN_SPINNER,
@@ -128,10 +127,6 @@ function auctions(state = defaultAuctionState, action) {
             };
 
         case CONFIRM_WINNERS:
-
-            return state;
-
-        case CREATE_AUCTION_SUCCESS:
 
             return state;
             

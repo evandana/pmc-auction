@@ -16,7 +16,7 @@ import ChromeReaderModeIcon from 'material-ui/svg-icons/action/chrome-reader-mod
 import CreditCardIcon from 'material-ui/svg-icons/action/credit-card';
 import RedeemIcon from 'material-ui/svg-icons/action/redeem';
 // import TimelineIcon from 'material-ui/svg-icons/action/timeline';
-// import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
+import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
 // import LocalOfferIcon from 'material-ui/svg-icons/maps/local-offer';
 // import MoodIcon from 'material-ui/svg-icons/social/mood';
 import PollIcon from 'material-ui/svg-icons/social/poll';
@@ -41,7 +41,7 @@ class Navigation extends React.Component {
         this.themePalette = this.props.muiTheme.palette;
     }
     
-    buildIconMenu (permissions, actions) {
+    buildIconMenu (permissions, actions, config) {
         const { logout } = actions;
         if (permissions.basic) {
             return (
@@ -50,16 +50,34 @@ class Navigation extends React.Component {
                     anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
                     targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                 >
-                    <MenuItem onTouchTap={logout} primaryText="Logout" />
+                    {config.CREATE_AUCTIONS && permissions.admin && (
+                            <MenuItem 
+                                onTouchTap={() => {
+                                    document.body.scrollTop = document.documentElement.scrollTop = 0;
+                                    this.props.history.push('create-auction')
+                                }}
+                                primaryText="Auction Editor" 
+                                />
+                    )}
+                    {permissions.admin && (
+                            <MenuItem 
+                                onTouchTap={() => {
+                                    document.body.scrollTop = document.documentElement.scrollTop = 0;
+                                    this.props.history.push('raffle-editor')
+                                }}
+                                primaryText="Raffle Editor" 
+                                />
+                    )}
                     {permissions.admin && (
                         <MenuItem 
-                            onClick={() => {
-                                document.body.scrollTop = document.documentElement.scrollTop = 0;
-                                this.props.history.push('donor-info')
-                            }}
-                            primaryText="Donor Info" 
-                            />
+                        onTouchTap={() => {
+                            document.body.scrollTop = document.documentElement.scrollTop = 0;
+                            this.props.history.push('donor-info')
+                        }}
+                        primaryText="Donor Info" 
+                        />
                     )}
+                    <MenuItem onTouchTap={logout} primaryText="Logout" />
                 </IconMenu>
             );
         }
@@ -95,18 +113,25 @@ class Navigation extends React.Component {
                 label: 'About',
                 link: 'about',
             },
+            // {
+            //     icon: <ModeEditIcon/>,
+            //     label: 'Editor',
+            //     link: 'create-auction',
+            //     permissionsRequired: ['donor'],
+            //     configRequired: ['CREATE_AUCTIONS'],
+            //     style: {background: this.themePalette.accent1Color}
+            // },
             {
-                icon: <ModeEditIcon/>,
-                label: 'Editor',
-                link: 'create-auction',
-                permissionsRequired: ['donor'],
-                configRequired: ['CREATE_AUCTIONS'],
-                style: {background: this.themePalette.accent1Color}
-            },
-            {
-                icon: <PanToolIcon />, // alt: LocalPlayIcon
+                icon: <PanToolIcon/>,
                 label: 'Auction',
                 link: 'auctions',
+                // style: {background: this.themePalette.primaryLinkColor},
+            },
+            {
+                icon: <LocalPlayIcon/>,
+                label: 'Raffle',
+                link: 'raffle',
+                // style: {background: this.themePalette.primaryLinkColor}
             },
             {
                 icon: <PersonIcon />,
@@ -197,7 +222,7 @@ class Navigation extends React.Component {
             );
         }
         
-        const iconMenu = this.buildIconMenu(userPermissions, { logout });
+        const iconMenu = this.buildIconMenu(userPermissions, { logout }, config);
         
         const navigationTabs = this.buildNavigationTabs(location, userPermissions, config);
 
