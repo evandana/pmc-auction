@@ -22,7 +22,6 @@ class DonorInfo extends Component {
                 // only owned auctionCollection
                 .filter(auction => auction.owner.uid === uid)
                 .reduce((sum, auction) => {
-                    debugger
                     return sum + (!auction.topBids ? 0 : auction.topBids
                         // only confirmed bids
                         .filter(bid => bid.ownerConfirmed && bid.bidderConfirmed)

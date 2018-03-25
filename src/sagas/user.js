@@ -6,7 +6,7 @@ import animalList from './persona-animals'
 import {
     GET_USER,
     UPDATE_USER,
-    SUBMIT_DONOR_CODE,
+    SUBMIT_SPECIAL_CODE,
 } from '../constants';
 
 import { SubmissionError } from 'redux-form'
@@ -132,20 +132,25 @@ function* updateUser({ userData }) {
     yield;
 }
 
-function* submitDonorCode({formData, user}) {
+function* submitSpecialCode({formData, user, codeKey, codePermission}) {
 
     const personaUid = transformPersonaStringIntoUid(user.persona);
 
+    let specialCodeObj = {};
+    specialCodeObj[codeKey] = formData[codeKey];
+    specialCodeObj[codePermission] = true;
+
     const updatedPermissionsObj = {
         ...user.permissions,
-        donor: true,
-        donorCode: formData.donorCode,
+        ...specialCodeObj
     };
 
     window._FIREBASE_DB_.ref('users/' + personaUid + '/permissions/')
         .set(updatedPermissionsObj)
         .catch(err => {
-            window._UI_STORE_.dispatch(asyncFormStatusUpdate({status: err.message, success: false}));
+            const statusObj = {};
+            statusObj[codeKey] = {status: err.message, success: false};
+            window._UI_STORE_.dispatch(asyncFormStatusUpdate({statusObj}));
         });
 
     yield;
@@ -157,7 +162,7 @@ export default function* () {
     yield [
         takeEvery(GET_USER, getUser),
         takeEvery(UPDATE_USER, updateUser),
-        takeEvery(SUBMIT_DONOR_CODE, submitDonorCode),
+        takeEvery(SUBMIT_SPECIAL_CODE, submitSpecialCode),
     ];
 }
 

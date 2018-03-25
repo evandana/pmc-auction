@@ -33,7 +33,7 @@ import {
     REFRESH_AUCTIONS,
     DEBOUNCE_REFRESH_AUCTIONS,
     SET_CLAIM_STEP,
-    SUBMIT_DONOR_CODE,
+    SUBMIT_SPECIAL_CODE,
     OWNER_BID_CONTACTED,
     OWNER_BID_PLANNED,
     // FILE UPLOAD
@@ -98,23 +98,24 @@ export function setUsers(users) {
     }
 }
 
-/** DONOR CODE */
+/** SPECIAL CODE */
 
-export function submitDonorCode({formData, user}) {
+export function submitSpecialCode({formData, user, codeKey, codePermission}) {
     return {
-        type: SUBMIT_DONOR_CODE,
+        type: SUBMIT_SPECIAL_CODE,
         formData,
         user,
+        codeKey,
+        codePermission,
     }
 }
 
 /** ASYNC FORM */
 
-export function asyncFormStatusUpdate({status, success}) {
+export function asyncFormStatusUpdate({statusObj}) {
     return {
         type: ASYNC_FORM_STATUS_UPDATE,
-        status,
-        success,
+        statusObj,
     }
 }
 
