@@ -9,6 +9,7 @@ import {
     FETCH_RAFFLES,
     REFRESH_RAFFLES,
     BUY_RAFFLE_TICKETS,
+    ENTER_RAFFLE_TICKET,
 } from '../constants';
 
 import { refreshRaffles, debounceRefreshRaffles as debounceFetchRafflesAction } from '../actions';
@@ -87,25 +88,68 @@ function* buyRaffleTickets({count, user}) {
     window._FIREBASE_DB_.ref('/users/' + user.uid)
         .once('value', snapshot => {
             
-            let user = snapshot.val();
+            window._FIREBASE_DB_.ref('/raffleIndex')
+                .once('value', raffleIndexSnapshot => {
 
-            const newTickets = [...Array(count)].map(ticket => ({number: Math.floor(Math.random()*100000)}))
+                    let user = snapshot.val();
+                    const raffleIndex = raffleIndexSnapshot.val();
+                    let updates = {};
 
-            user.tickets = user.tickets ? [
-                ...user.tickets,
-                ...newTickets
-            ] : [ 
-                ...newTickets
-            ];
+                    const newTickets = [...Array(count)].map((ticket, i) => ({number: raffleIndex + i + 1}))
 
-            user.raffleMoneyOwed = (user.raffleMoneyOwed || 0) + 5 * count;
+                    user.tickets = user.tickets ? [
+                        ...user.tickets,
+                        ...newTickets
+                    ] : [ 
+                        ...newTickets
+                    ];
 
-            window._FIREBASE_DB_.ref('/users/' + user.uid)
-                .update(user);
+                    user.raffle = user.raffle || {};
+                    user.raffle = {
+                        purchasedCount: (user.raffle.purchasedCount || 0) + count,
+                        cost: (user.raffle.cost || 0) + (count === 1 ? 5 : 20)
+                    };
+
+                    updates['/users/' + user.uid] = user;
+                    updates['raffleIndex'] = raffleIndex + count;
+
+                    window._FIREBASE_DB_.ref()
+                        .update(updates);
+                        
+                });
         });
 
 
     yield;
+}
+
+function* enterRaffleTicket({raffle, user}) {
+
+
+    window._FIREBASE_DB_.ref('/raffles/' + raffle.uid )
+        .once('value', snapshot => {
+
+            const freshRaffle = snapshot.val()    
+
+            let ticketToEnter = user.tickets.pop();
+            ticketToEnter = {
+                ...ticketToEnter,
+                googleUid: user.googleUid,
+                uid: user.uid,
+            };
+
+            let updates = {};
+            
+            updates['/raffles/' + freshRaffle.uid + '/tickets/' + (!raffle.tickets ? 0 : raffle.tickets.length)] = ticketToEnter;
+
+            updates['/users/' + user.uid + '/tickets'] = [
+                ...user.tickets
+            ];
+
+            window._FIREBASE_DB_.ref()
+                .update(updates);
+    });
+
 }
 
 export default function* () {
@@ -117,6 +161,7 @@ export default function* () {
         takeEvery(FETCH_RAFFLES, fetchRaffles),
         takeEvery(PERSIST_RAFFLE_UPDATE, persistRaffleUpdate),
         takeEvery(BUY_RAFFLE_TICKETS, buyRaffleTickets),
+        takeEvery(ENTER_RAFFLE_TICKET, enterRaffleTicket)
     ];
 }
 

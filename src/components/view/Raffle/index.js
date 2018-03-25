@@ -11,19 +11,31 @@ import Chip from 'material-ui/Chip';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
 
-import { buyRaffleTickets } from 'actions';
+import { buyRaffleTickets, enterRaffleTicket } from 'actions';
 
 class Raffle extends Component {
 
     constructor(props) {
         super(props);
+        this.themePalette = this.props.muiTheme.palette;
+    }
+
+    createOwnedTicketChip(ticket) {
+        return (
+            <Chip
+                key={ticket.number}
+                backgroundColor={this.themePalette.primary2Color}
+                style={{ margin: 4 }}
+                >
+                <Avatar backgroundColor={this.themePalette.primary2Color} ><LocalPlayIcon color={this.themePalette.canvasColor} size={40} /></Avatar>
+                <span style={{color: this.themePalette.canvasColor }}>{ticket.number}</span>
+            </Chip>
+        )
     }
 
     render() {
 
         const { user, raffles, dispatch } = this.props;
-
-        const themePalette = this.props.muiTheme.palette;
 
         return (
             <div className='page'>
@@ -58,18 +70,10 @@ class Raffle extends Component {
                         style={{
                             display: 'flex',
                             flexWrap: 'wrap',
+                            paddingTop: '.5em',
                         }}
                     >
-                        {user.tickets && user.tickets.map(ticket => (
-                            <Chip
-                                key={ticket.number}
-                                backgroundColor={themePalette.primary2Color}
-                                style={{ margin: 4 }}
-                            >
-                                <Avatar backgroundColor={themePalette.primary2Color} ><PersonIcon color={themePalette.canvasColor} size={32} /></Avatar>
-                                <span style={{ color: themePalette.canvasColor }}>{ticket.number}</span>
-                            </Chip>
-                        ))}
+                        {user.tickets && user.tickets.map(ticket => this.createOwnedTicketChip(ticket))}
                     </div>
 
 
@@ -100,23 +104,22 @@ class Raffle extends Component {
                                         flexWrap: 'wrap',
                                     }}
                                 >
-                                    {raffle.tickets.map(ticket => {
+                                    {raffle.tickets && raffle.tickets.map(ticket => {
                                         return user.uid === ticket.uid ? (
-                                            <Chip
-                                                key={ticket.number}
-                                                backgroundColor={user.uid === ticket.uid ? themePalette.primary2Color : themePalette.borderColor}
-                                                style={{ margin: 4 }}
-                                                >
-                                                <Avatar backgroundColor={themePalette.primary2Color} ><LocalPlayIcon color={themePalette.canvasColor} size={40} /></Avatar>
-                                                <span style={{ color: user.uid === ticket.uid ? themePalette.canvasColor : themePalette.disabledColor }}>{ticket.number}</span>
-                                            </Chip>
+                                            this.createOwnedTicketChip(ticket)
                                         ) : (
-                                            <Avatar style={{ margin: 4 }} size={32} key={ticket.number} backgroundColor={themePalette.canvasColor} ><LocalPlayIcon color={themePalette.disabledColor} size={32} /></Avatar>
+                                            <Avatar style={{ margin: 4 }} size={32} key={ticket.number} backgroundColor={this.themePalette.canvasColor} ><LocalPlayIcon color={this.themePalette.disabledColor} size={32} /></Avatar>
                                         );
                                     })}
                                 </CardText>
                                 <CardActions>
-                                    <FlatButton label="Use Ticket" />
+                                    {user.tickets && user.tickets.length > 0 && <RaisedButton 
+                                        onTouchTap={() => {
+                                            dispatch(enterRaffleTicket({raffle, user}));
+                                        }}
+                                        primary={true} 
+                                        label="Enter 1 Raffle Ticket" 
+                                        />}
                                 </CardActions>
                             </Card>
                         )

@@ -59,8 +59,8 @@ class Status extends Component {
 
         const themePalette = this.props.muiTheme.palette;
 
-        const totalAmountDue = auctionsWithUserBids.reduce((acc, curr) => {
-            return acc + curr.userHighBid.bidAmount;
+        const totalAuctionAmountDue = auctionsWithUserBids.reduce((acc, curr) => {
+            return curr.userHighBid.bidAmount === curr.highBid && curr.userHighBid.ownerConfirmed && curr.userHighBid.bidderConfirmed ? acc + curr.userHighBid.bidAmount : acc;
         }, 0);
 
         const amountPaid = user.amountPaid || 0; 
@@ -68,6 +68,8 @@ class Status extends Component {
         const bidCount = !user.bids ? 0 : Object.keys(user.bids).length;
         const raffleTicketsEarned = !user.bids ? 0 : Math.floor(bidCount/config.BIDS_PER_FREE_RAFFLE);
         const bidModulus = !user.bids ? 0 : bidCount % config.BIDS_PER_FREE_RAFFLE;
+
+        const totalAmountDue = totalAuctionAmountDue + (!user.raffle || !user.raffle.cost ? 0 : user.raffle.cost);
 
 
         return (
@@ -85,46 +87,7 @@ class Status extends Component {
 
                 <div className='text-content' style={{padding:'1em'}}>
 
-                    <section className="row middle-xs"
-                        hidden={!config.BIDDING_OPEN || !config.CONFIRM_WINNERS}
-                        >
-                        <h2 className="col-xs-12">
-                            Raffle
-                        </h2>
-                        <div style={{display:'inline-block', marginTop:-5, marginRight:'.5rem', paddingLeft:'.5rem'}}>
-                            Total Bids Placed: {bidCount}
-                            <br/>
-                            Tickets Earned: {raffleTicketsEarned}
-                        </div>
-                        <div style={{display:'inline-block', paddingLeft:'.5rem'}}>
-                            {[...Array(raffleTicketsEarned + 1)].map( (emptyItem, i) => (
-                                <div key={i} style={{display:'inline-block', width: i + 1 <= raffleTicketsEarned ? '50px' : 10*bidModulus + 'px', overflow:'hidden'}}>
-                                    <LocalPlayIcon
-                                        style={{height:'50px',width:'50px', color: themePalette.accent1Color}}
-                                        />
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-                            
-                    <section className="row middle-xs">
-                        <h2 className="col-xs-10">Auctions with Your Bids</h2>
-                        <div className="col-xs-2" style={{textAlign:'right'}}>
-                            <IconButton
-                                tooltip={this.state.showAuctionsWithYourBidsText ? 'Hide description' : 'Show description'}
-                                tooltipPosition='top-left'
-                                onClick={() => this.setState({showAuctionsWithYourBidsText: !this.state.showAuctionsWithYourBidsText, snackbar: {open: false, message: ''}}) }
-                                style={{color: themePalette.secondaryLinkColor, minWidth: null}}
-                                >
-                                {this.state.showAuctionsWithYourBidsText ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-                            </IconButton>
-                        </div>
-                        {this.state.showAuctionsWithYourBidsText && (
-                            <div className="col-xs-12">
-                                <p>If you are the top bidder when the auction closes, you are expected to claim that item.</p>
-                                <p>If an auction owner is awarding multiple winners and you have one of the highest few bids, you may be offered a chance to accept this at your highest bid for that item.</p>
-                            </div>
-                        )}
+                    <section className="row">
                         <div 
                             className="col-xs-12" 
                             hidden={config.BIDDING_OPEN || ( totalAmountDue <= amountPaid )}
@@ -150,7 +113,6 @@ class Status extends Component {
                                 Thanks for your payments!
                             </span>
                         </div>
-
                         <span
                             className="col-xs-12"
                             hidden={totalAmountDue === 0 || config.BIDDING_OPEN}
@@ -158,11 +120,70 @@ class Status extends Component {
                             > 
                             Payments not automatically reflected here
                         </span>
+                    </section>
+
+                    <section className="row middle-xs"
+                        hidden={!config.BIDDING_OPEN || !config.CONFIRM_WINNERS}
+                        >
+                        <h2 className="col-xs-12">
+                            Raffle
+                        </h2>
+                        <div style={{display:'inline-block', marginTop:-5, marginRight:'.5rem', paddingLeft:'.5rem'}}>
+                            Raffle Tickets Purchased: {!user.raffle || !user.raffle.purchasedCount ? 0 : user.raffle.purchasedCount}
+                            <br/>
+                            Total Spent on Raffle Tickets: ${!user.raffle || !user.raffle.cost ? 0 : user.raffle.cost }
+                        </div>
+                        <div style={{display:'inline-block', marginTop:-5, marginRight:'.5rem', paddingLeft:'.5rem'}}>
+                            Total Bids Placed: {bidCount}
+                            <br/>
+                            Tickets Earned: {raffleTicketsEarned}
+                        </div>
+                        <div style={{display:'inline-block', paddingLeft:'.5rem'}}>
+                            {[...Array(raffleTicketsEarned + 1)].map( (emptyItem, i) => (
+                                <div key={i} style={{display:'inline-block', width: i + 1 <= raffleTicketsEarned ? '50px' : 10*bidModulus + 'px', overflow:'hidden'}}>
+                                    <LocalPlayIcon
+                                        style={{height:'50px',width:'50px', color: themePalette.primary2Color}}
+                                        />
+                                </div>
+                            ))}
+                            {bidModulus != 0 && (<div style={{transform: 'scaleX(-1)', display:'inline-block', width: 10*(5-bidModulus) + 'px', overflow:'hidden'}}>
+                                <LocalPlayIcon
+                                    style={{height:'50px',width:'50px', color: themePalette.borderColor}}
+                                    />
+                            </div>)}
+                        </div>
+                    </section>
+                            
+                    <section className="row middle-xs">
+                        <h2 className="col-xs-10">Auctions with Your Bids</h2>
+                        <div className="col-xs-2" style={{textAlign:'right'}}>
+                            <IconButton
+                                tooltip={this.state.showAuctionsWithYourBidsText ? 'Hide description' : 'Show description'}
+                                tooltipPosition='top-left'
+                                onClick={() => this.setState({showAuctionsWithYourBidsText: !this.state.showAuctionsWithYourBidsText, snackbar: {open: false, message: ''}}) }
+                                style={{color: themePalette.secondaryLinkColor, minWidth: null}}
+                                >
+                                {this.state.showAuctionsWithYourBidsText ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                            </IconButton>
+                        </div>
+                        {this.state.showAuctionsWithYourBidsText && (
+                            <div className="col-xs-12">
+                                <p>If you are the top bidder when the auction closes, you are expected to claim that item.</p>
+                                <p>If an auction owner is awarding multiple winners and you have one of the highest few bids, you may be offered a chance to accept this at your highest bid for that item.</p>
+                            </div>
+                        )}
                         {
                             !auctionsWithUserBids || auctionsWithUserBids.length < 1 ? 
                                 (config.BIDDING_OPEN ? this.createMessageDiv('You haven\'t made any bids yet') : this.createMessageDiv('Bidding not open')) : 
                                 this.createLeadingBidTable(auctionsWithUserBids, config, themePalette)
                         }
+                        <span
+                            className="col-xs-12"
+                            hidden={totalAuctionAmountDue === 0 || config.BIDDING_OPEN}
+                            style={{textAlign: 'right', color: themePalette.disabledColor, fontSize: '80%', paddingTop: '1em', paddingBottom: '1em', paddingRight: '2em'}}
+                            > 
+                            Total due from auction winnings: ${totalAuctionAmountDue}
+                        </span>
                     </section>
 
                     {!user.permissions.donor || !auctionsOwned || !auctionsOwned.length ? '' : (

@@ -140,7 +140,7 @@ function* submitSpecialCode({formData, user, codeKey, codePermission}) {
     const personaUid = transformPersonaStringIntoUid(user.persona);
 
     let specialCodeObj = {};
-    specialCodeObj[codeKey] = formData[codeKey];
+    specialCodeObj[codeKey] = formData[codeKey].toLowerCase();
     specialCodeObj[codePermission] = true;
 
     const updatedPermissionsObj = {
