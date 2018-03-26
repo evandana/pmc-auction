@@ -175,11 +175,12 @@ export function persistRaffleUpdate(userInputData, user) {
 
 }
 
-export function buyRaffleTickets({count, user}) {
+export function buyRaffleTickets({count, user, freebie}) {
     return {
         type: BUY_RAFFLE_TICKETS,
         count,
         user,
+        freebie,
     }
 }
 

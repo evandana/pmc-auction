@@ -16,7 +16,7 @@ import {
     UPDATE_AUCTION,
 } from '../constants';
 
-import { refreshAuctions, debounceRefreshAuctions as debounceFetchAuctionsAction } from '../actions';
+import { refreshAuctions, debounceRefreshAuctions as debounceFetchAuctionsAction, buyRaffleTickets } from '../actions';
 
 
 // debounce refresh auctions to prevent extraneous refreshes during a bidding spree
@@ -108,7 +108,22 @@ function* placeBid(bidDetails) {
                 updates['users/' + bidDetails.bidderObj.uid + '/bids/'+ bidDetails.auctionUid + '--' + bidDetails.bidAmount] = moment(new Date()).format('MMM Do h:mm:ssa');
 
                 window._FIREBASE_DB_.ref()
-                    .update(updates);
+                    .update(updates)
+                    .then( () => {
+                        // count bids and add a new ticket if at 5
+                        window._FIREBASE_DB_.ref('/users/' + bidDetails.bidderObj.uid)
+                            .once('value', (snapshot) => {
+                                const user = snapshot.val();
+
+                                const bidCount = !user.bids ? 0 : Object.keys(user.bids).length;
+
+                                if (bidCount % 5 === 0) {
+                                    // add a new ticket
+                                    window._UI_STORE_.dispatch(buyRaffleTickets({count:1, user, freebie: true}))
+                                }
+
+                            });
+                    });
 
 
             }

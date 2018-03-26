@@ -84,7 +84,7 @@ function* persistRaffleUpdate({ raffleData }) {
     yield;
 }
 
-function* buyRaffleTickets({count, user}) {
+function* buyRaffleTickets({count, user, freebie}) {
 
     window._FIREBASE_DB_.ref('/users/' + user.uid)
         .once('value', snapshot => {
@@ -107,8 +107,9 @@ function* buyRaffleTickets({count, user}) {
 
                     user.raffle = user.raffle || {};
                     user.raffle = {
-                        purchasedCount: (user.raffle.purchasedCount || 0) + count,
-                        cost: (user.raffle.cost || 0) + (count === 1 ? 5 : 20)
+                        purchasedCount: (user.raffle.purchasedCount || 0) + (freebie ? 0 : count),
+                        cost: (user.raffle.cost || 0) + (freebie ? 0 : count === 1 ? 5 : 20),
+                        freebies: (user.raffle.freebies || 0) + (freebie ? 1 : 0),
                     };
 
                     updates['/users/' + user.uid] = user;
