@@ -27,6 +27,7 @@ import {
     REFRESH_RAFFLES,
     BUY_RAFFLE_TICKETS,
     ENTER_RAFFLE_TICKET,
+    PULL_RAFFLE_TICKET,
 
     // AUCTIONS
     ASYNC_FORM_STATUS_UPDATE,
@@ -187,6 +188,13 @@ export function enterRaffleTicket({raffle, user}) {
         type: ENTER_RAFFLE_TICKET,
         raffle,
         user,
+    }
+}
+
+export function pullRaffleTicket({raffle}) {
+    return {
+        type: PULL_RAFFLE_TICKET,
+        raffle,
     }
 }
 

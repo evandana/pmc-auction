@@ -11,7 +11,7 @@ import Chip from 'material-ui/Chip';
 import PersonIcon from 'material-ui/svg-icons/social/person';
 import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
 
-import { buyRaffleTickets, enterRaffleTicket } from 'actions';
+import { buyRaffleTickets, enterRaffleTicket, pullRaffleTicket } from 'actions';
 
 class Raffle extends Component {
 
@@ -26,9 +26,9 @@ class Raffle extends Component {
                 key={ticket.number}
                 backgroundColor={this.themePalette.primary2Color}
                 style={{ margin: 4 }}
-                >
+            >
                 <Avatar backgroundColor={this.themePalette.primary2Color} ><LocalPlayIcon color={this.themePalette.canvasColor} size={40} /></Avatar>
-                <span style={{color: this.themePalette.canvasColor }}>{ticket.number}</span>
+                <span style={{ color: this.themePalette.canvasColor }}>{ticket.number}</span>
             </Chip>
         )
     }
@@ -98,12 +98,37 @@ class Raffle extends Component {
                                 )}
                                 {/* <CardTitle title="Card title" subtitle="Card subtitle" /> */}
                                 <CardText>{raffle.description}</CardText>
+                                {raffle.winningTicket && (<CardText
+                                    style={{
+                                        display: 'flex',
+                                        flexWrap: 'wrap',
+                                    }}>
+                                    <h3 style={{marginRight:'1em', marginTop: 10, marginBottom: 10}}>Winner</h3>
+                                    {user.uid === raffle.winningTicket.uid ? (
+                                        <Chip
+                                            key={raffle.winningTicket.number}
+                                            backgroundColor={this.themePalette.accent1Color}
+                                            style={{ margin: 4 }}
+                                        >
+                                            <Avatar backgroundColor={this.themePalette.accent1Color} ><LocalPlayIcon color={this.themePalette.canvasColor} size={40} /></Avatar>
+                                            <span style={{ color: this.themePalette.canvasColor }}>{raffle.winningTicket.number}</span>
+                                        </Chip>
+                                    ) : (
+                                        <Chip
+                                            key={raffle.winningTicket.number}
+                                            backgroundColor={this.themePalette.disabledColor}
+                                            style={{ margin: 4 }}
+                                        >
+                                            <Avatar style={{ margin: 0 }} size={32} key={raffle.winningTicket.number} backgroundColor={this.themePalette.disabledColor} ><LocalPlayIcon color={this.themePalette.canvasColor} size={32} /></Avatar>
+                                            <span style={{ color: this.themePalette.canvasColor }}>{raffle.winningTicket.number}</span>
+                                        </Chip>
+                                    )}
+                                </CardText>)}
                                 <CardText
                                     style={{
                                         display: 'flex',
                                         flexWrap: 'wrap',
-                                    }}
-                                >
+                                    }}>
                                     {raffle.tickets && raffle.tickets.map(ticket => {
                                         return user.uid === ticket.uid ? (
                                             this.createOwnedTicketChip(ticket)
@@ -113,13 +138,23 @@ class Raffle extends Component {
                                     })}
                                 </CardText>
                                 <CardActions>
-                                    {user.tickets && user.tickets.length > 0 && <RaisedButton 
+                                    <RaisedButton
                                         onTouchTap={() => {
-                                            dispatch(enterRaffleTicket({raffle, user}));
+                                            dispatch(enterRaffleTicket({ raffle, user }));
                                         }}
-                                        primary={true} 
-                                        label="Enter 1 Raffle Ticket" 
-                                        />}
+                                        primary={true}
+                                        disabled={!user.tickets || !user.tickets.length}
+                                        label="Enter 1 Raffle Ticket"
+                                    />
+                                    {user.permissions.admin && <RaisedButton
+                                        onTouchTap={() => {
+                                            dispatch(pullRaffleTicket({ raffle }));
+                                        }}
+                                        backgroundColor={this.themePalette.errorColor}
+                                        labelColor={this.themePalette.canvasColor}
+                                        disabled={!raffle.tickets || !raffle.tickets.length}
+                                        label="Pull a ticket"
+                                    />}
                                 </CardActions>
                             </Card>
                         )

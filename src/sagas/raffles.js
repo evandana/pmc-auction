@@ -10,6 +10,7 @@ import {
     REFRESH_RAFFLES,
     BUY_RAFFLE_TICKETS,
     ENTER_RAFFLE_TICKET,
+    PULL_RAFFLE_TICKET,
 } from '../constants';
 
 import { refreshRaffles, debounceRefreshRaffles as debounceFetchRafflesAction } from '../actions';
@@ -125,7 +126,6 @@ function* buyRaffleTickets({count, user}) {
 
 function* enterRaffleTicket({raffle, user}) {
 
-
     window._FIREBASE_DB_.ref('/raffles/' + raffle.uid )
         .once('value', snapshot => {
 
@@ -152,6 +152,23 @@ function* enterRaffleTicket({raffle, user}) {
 
 }
 
+function* pullRaffleTicket({raffle}) {
+
+    const winningIndex = Math.floor( Math.random() * raffle.tickets.length );
+
+    // splice mutates array, removing 1 item and returning that item
+    const winningTicket = raffle.tickets.splice(winningIndex, 1);
+
+    raffle = {
+        ...raffle,
+        winningTicket: winningTicket[0],
+    }
+
+    window._FIREBASE_DB_.ref('raffles/' + raffle.uid )
+        .set(raffle);
+
+}
+
 export default function* () {
     yield [
         // debounce refresh raffles to prevent extraneous refreshes during a bidding spree
@@ -161,7 +178,8 @@ export default function* () {
         takeEvery(FETCH_RAFFLES, fetchRaffles),
         takeEvery(PERSIST_RAFFLE_UPDATE, persistRaffleUpdate),
         takeEvery(BUY_RAFFLE_TICKETS, buyRaffleTickets),
-        takeEvery(ENTER_RAFFLE_TICKET, enterRaffleTicket)
+        takeEvery(ENTER_RAFFLE_TICKET, enterRaffleTicket),
+        takeEvery(PULL_RAFFLE_TICKET, pullRaffleTicket),
     ];
 }
 
