@@ -35,46 +35,51 @@ class Raffle extends Component {
 
     render() {
 
-        const { user, raffles, dispatch } = this.props;
+        const { user, raffles, dispatch, config } = this.props;
 
         return (
             <div className='page'>
                 <div className='text-content' style={{ padding: '1em' }}>
-                    <h2>Raffle Tickets Available: {user.tickets ? user.tickets.length : 0}</h2>
+                    {config.RAFFLE_OPEN && (
 
-                    <RaisedButton
-                        primary={true}
-                        label="Buy 1 Ticket ($5)"
-                        onTouchTap={() => {
-                            dispatch(buyRaffleTickets({
-                                user,
-                                count: 1
-                            }));
-                        }}
-                        style={{ marginRight: '1em' }}
-                    />
+                        <section>
+                            <h2>Raffle Tickets Available: {user.tickets ? user.tickets.length : 0}</h2>
 
-                    <RaisedButton
-                        secondary={true}
-                        label="Buy 5 Tickets ($20)"
-                        onTouchTap={() => {
-                            dispatch(buyRaffleTickets({
-                                user,
-                                count: 5
-                            }));
-                        }}
-                    />
+                            <RaisedButton
+                                primary={true}
+                                label="Buy 1 Ticket ($5)"
+                                onTouchTap={() => {
+                                    dispatch(buyRaffleTickets({
+                                        user,
+                                        count: 1
+                                    }));
+                                }}
+                                style={{ marginRight: '1em' }}
+                            />
 
-                    <div
-                        className='col-xs-12'
-                        style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            paddingTop: '.5em',
-                        }}
-                    >
-                        {user.tickets && user.tickets.map(ticket => this.createOwnedTicketChip(ticket))}
-                    </div>
+                            <RaisedButton
+                                secondary={true}
+                                label="Buy 5 Tickets ($20)"
+                                onTouchTap={() => {
+                                    dispatch(buyRaffleTickets({
+                                        user,
+                                        count: 5
+                                    }));
+                                }}
+                            />
+
+                            <div
+                                className='col-xs-12'
+                                style={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    paddingTop: '.5em',
+                                }}
+                            >
+                                {user.tickets && user.tickets.map(ticket => this.createOwnedTicketChip(ticket))}
+                            </div>
+                        </section>
+                    )}
 
 
                     <h2>Raffles</h2>
@@ -140,14 +145,14 @@ class Raffle extends Component {
                                     })}
                                 </CardText>
                                 <CardActions>
-                                    <RaisedButton
+                                    {config.RAFFLE_OPEN && <RaisedButton
                                         onTouchTap={() => {
                                             dispatch(enterRaffleTicket({ raffle, user }));
                                         }}
                                         primary={true}
                                         disabled={!user.tickets || !user.tickets.length}
                                         label="Enter 1 Raffle Ticket"
-                                    />
+                                    />}
                                     {user.permissions.admin && <RaisedButton
                                         onTouchTap={() => {
                                             dispatch(pullRaffleTicket({ raffle }));

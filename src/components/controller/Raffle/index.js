@@ -5,6 +5,7 @@ const mapStateToProps = (state) => {
     return {
         user: state.auctions.user,
         raffles: state.raffles,
+        config: state.config,
     };
 };
 
