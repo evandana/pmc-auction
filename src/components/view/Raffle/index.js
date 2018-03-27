@@ -66,7 +66,7 @@ class Raffle extends Component {
                     />
 
                     <div
-                        className="col-xs-12"
+                        className='col-xs-12'
                         style={{
                             display: 'flex',
                             flexWrap: 'wrap',
@@ -79,10 +79,12 @@ class Raffle extends Component {
 
                     <h2>Raffles</h2>
 
+                    <section className='col-xs-12'>
                     {raffles.map(raffle => {
                         return (
                             <Card
                                 key={raffle.uid}
+
                             >
                                 {/* <CardHeader
                                     title={raffle.title}
@@ -159,6 +161,8 @@ class Raffle extends Component {
                             </Card>
                         )
                     })}
+
+                    </section>
 
 
                 </div>
