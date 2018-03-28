@@ -277,13 +277,13 @@ export function createAuction(userInputData, user) {
 
     const auctionData = {
         image: '',
-        ...userInputData,
-        highestBid: 0,
         owner: {
             googleUid: user.googleUid,
             persona: user.persona,
             displayName: user.displayName,
         },
+        ...userInputData,
+        highestBid: 0,
     };
 
     return {

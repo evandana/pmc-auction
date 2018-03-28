@@ -33,6 +33,16 @@ class Raffle extends Component {
         )
     }
 
+	translateNewLinesToBrs(text) {
+		return text.split('\n').map(function (item, key) {
+			return (
+				<p key={key}>
+					{item}
+				</p>
+			)
+		});
+	}
+
     render() {
 
         const { user, raffles, dispatch, config } = this.props;
@@ -94,14 +104,15 @@ class Raffle extends Component {
 
                     <h2>Raffles</h2>
 
-                    <section className='col-xs-12'>
+                    <section className="row">
                     {raffles
                         .filter(raffle => (raffle.raffleImage || raffle.image) && raffle.title && raffle.title.length)
                         .map(raffle => {
                         return (
                             <Card
                                 key={raffle.uid}
-
+                                className='col-xs-12 col-sm-6 col-md-4'
+                                style={{marginBottom:20}}
                             >
                                 {/* <CardHeader
                                     title={raffle.title}
@@ -111,12 +122,13 @@ class Raffle extends Component {
                                 {!raffle.raffleImage && !raffle.image ? '' : (
                                     <CardMedia
                                         overlay={<CardTitle title={raffle.title} subtitle={raffle.subTitle} />}
+                                        style={{maxHeight:300}}
                                     >
-                                        <img src={raffle.raffleImage || raffle.image} alt="" />
+                                        <img src={raffle.raffleImage || raffle.image} style={{maxHeight:300, objectFit:'cover'}} alt="" />
                                     </CardMedia>
                                 )}
                                 {/* <CardTitle title="Card title" subtitle="Card subtitle" /> */}
-                                <CardText>{raffle.description}</CardText>
+                                <CardText>{this.translateNewLinesToBrs(raffle.description)}</CardText>
                                 {user.permissions.attendee && raffle.winningTicket && (<CardText
                                     style={{
                                         display: 'flex',
