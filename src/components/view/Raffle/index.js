@@ -95,7 +95,9 @@ class Raffle extends Component {
                     <h2>Raffles</h2>
 
                     <section className='col-xs-12'>
-                    {raffles.map(raffle => {
+                    {raffles
+                        .filter(raffle => (raffle.raffleImage || raffle.image) && raffle.title && raffle.title.length)
+                        .map(raffle => {
                         return (
                             <Card
                                 key={raffle.uid}
