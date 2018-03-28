@@ -37,10 +37,20 @@ class Raffle extends Component {
 
         const { user, raffles, dispatch, config } = this.props;
 
+
         return (
             <div className='page'>
                 <div className='text-content' style={{ padding: '1em' }}>
-                    {config.RAFFLE_OPEN && (
+
+                    {!user.permissions.attendee && config.RAFFLE_OPEN && (
+                        <section>
+                            <h2>Raffles</h2>
+                            <h4>Raffles are intended for those at the party.</h4>
+                            <p>If you're at the party, enter the code on the About page.</p>
+                        </section>
+                    )}
+
+                    {user.permissions && user.permissions.attendee && config.RAFFLE_OPEN && (
 
                         <section>
                             <h2>Raffle Tickets Available: {user.tickets ? user.tickets.length : 0}</h2>
@@ -105,7 +115,7 @@ class Raffle extends Component {
                                 )}
                                 {/* <CardTitle title="Card title" subtitle="Card subtitle" /> */}
                                 <CardText>{raffle.description}</CardText>
-                                {raffle.winningTicket && (<CardText
+                                {user.permissions.attendee && raffle.winningTicket && (<CardText
                                     style={{
                                         display: 'flex',
                                         flexWrap: 'wrap',
@@ -131,38 +141,42 @@ class Raffle extends Component {
                                         </Chip>
                                     )}
                                 </CardText>)}
-                                <CardText
-                                    style={{
-                                        display: 'flex',
-                                        flexWrap: 'wrap',
-                                    }}>
-                                    {raffle.tickets && raffle.tickets.map(ticket => {
-                                        return user.uid === ticket.uid ? (
-                                            this.createOwnedTicketChip(ticket)
-                                        ) : (
-                                            <Avatar style={{ margin: 4 }} size={32} key={ticket.number} backgroundColor={this.themePalette.canvasColor} ><LocalPlayIcon color={this.themePalette.disabledColor} size={32} /></Avatar>
-                                        );
-                                    })}
-                                </CardText>
-                                <CardActions>
-                                    {config.RAFFLE_OPEN && <RaisedButton
-                                        onTouchTap={() => {
-                                            dispatch(enterRaffleTicket({ raffle, user }));
-                                        }}
-                                        primary={true}
-                                        disabled={!user.tickets || !user.tickets.length}
-                                        label="Enter 1 Raffle Ticket"
-                                    />}
-                                    {user.permissions.admin && <RaisedButton
-                                        onTouchTap={() => {
-                                            dispatch(pullRaffleTicket({ raffle }));
-                                        }}
-                                        backgroundColor={this.themePalette.errorColor}
-                                        labelColor={this.themePalette.canvasColor}
-                                        disabled={!raffle.tickets || !raffle.tickets.length}
-                                        label="Pull a ticket"
-                                    />}
-                                </CardActions>
+                                {user.permissions.attendee && (
+                                        <CardText
+                                        style={{
+                                            display: 'flex',
+                                            flexWrap: 'wrap',
+                                        }}>
+                                        {raffle.tickets && raffle.tickets.map(ticket => {
+                                            return user.uid === ticket.uid ? (
+                                                this.createOwnedTicketChip(ticket)
+                                            ) : (
+                                                <Avatar style={{ margin: 4 }} size={32} key={ticket.number} backgroundColor={this.themePalette.canvasColor} ><LocalPlayIcon color={this.themePalette.disabledColor} size={32} /></Avatar>
+                                            );
+                                        })}
+                                    </CardText>
+                                )}
+                                {user.permissions.attendee && (
+                                    <CardActions>
+                                        {config.RAFFLE_OPEN && <RaisedButton
+                                            onTouchTap={() => {
+                                                dispatch(enterRaffleTicket({ raffle, user }));
+                                            }}
+                                            primary={true}
+                                            disabled={!user.tickets || !user.tickets.length}
+                                            label="Enter 1 Raffle Ticket"
+                                        />}
+                                        {user.permissions.admin && <RaisedButton
+                                            onTouchTap={() => {
+                                                dispatch(pullRaffleTicket({ raffle }));
+                                            }}
+                                            backgroundColor={this.themePalette.errorColor}
+                                            labelColor={this.themePalette.canvasColor}
+                                            disabled={!raffle.tickets || !raffle.tickets.length}
+                                            label="Pull a ticket"
+                                        />}
+                                    </CardActions>
+                                )}
                             </Card>
                         )
                     })}
