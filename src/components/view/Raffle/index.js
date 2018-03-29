@@ -128,6 +128,28 @@ class Raffle extends Component {
                                     </CardMedia>
                                 )}
                                 {/* <CardTitle title="Card title" subtitle="Card subtitle" /> */}
+
+                                {user.permissions.attendee && (
+                                    <CardActions>
+                                        {config.RAFFLE_OPEN && <RaisedButton
+                                            onTouchTap={() => {
+                                                dispatch(enterRaffleTicket({ raffle, user }));
+                                            }}
+                                            primary={true}
+                                            disabled={!user.tickets || !user.tickets.length}
+                                            label="Enter 1 Raffle Ticket"
+                                        />}
+                                        {user.permissions.admin && <RaisedButton
+                                            onTouchTap={() => {
+                                                dispatch(pullRaffleTicket({ raffle }));
+                                            }}
+                                            backgroundColor={this.themePalette.errorColor}
+                                            labelColor={this.themePalette.canvasColor}
+                                            disabled={!raffle.tickets || !raffle.tickets.length}
+                                            label="Pull a ticket"
+                                        />}
+                                    </CardActions>
+                                )}
                                 <CardText>{this.translateNewLinesToBrs(raffle.description)}</CardText>
                                 {user.permissions.attendee && raffle.winningTicket && (<CardText
                                     style={{
@@ -169,27 +191,6 @@ class Raffle extends Component {
                                             );
                                         })}
                                     </CardText>
-                                )}
-                                {user.permissions.attendee && (
-                                    <CardActions>
-                                        {config.RAFFLE_OPEN && <RaisedButton
-                                            onTouchTap={() => {
-                                                dispatch(enterRaffleTicket({ raffle, user }));
-                                            }}
-                                            primary={true}
-                                            disabled={!user.tickets || !user.tickets.length}
-                                            label="Enter 1 Raffle Ticket"
-                                        />}
-                                        {user.permissions.admin && <RaisedButton
-                                            onTouchTap={() => {
-                                                dispatch(pullRaffleTicket({ raffle }));
-                                            }}
-                                            backgroundColor={this.themePalette.errorColor}
-                                            labelColor={this.themePalette.canvasColor}
-                                            disabled={!raffle.tickets || !raffle.tickets.length}
-                                            label="Pull a ticket"
-                                        />}
-                                    </CardActions>
                                 )}
                             </Card>
                         )
