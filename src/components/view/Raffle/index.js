@@ -124,7 +124,7 @@ class Raffle extends Component {
                                         overlay={<CardTitle title={raffle.title} subtitle={raffle.subTitle} />}
                                         style={{maxHeight:300}}
                                     >
-                                        <img src={raffle.raffleImage || raffle.image} style={{maxHeight:300, objectFit:'cover'}} alt="" />
+                                        <img src={raffle.raffleImage || raffle.image} style={{height:300, objectFit:'cover'}} alt="" />
                                     </CardMedia>
                                 )}
                                 {/* <CardTitle title="Card title" subtitle="Card subtitle" /> */}
