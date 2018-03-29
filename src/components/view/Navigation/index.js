@@ -50,7 +50,7 @@ class Navigation extends React.Component {
                     anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
                     targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                 >
-                    {config.CREATE_AUCTIONS && permissions.admin && (
+                    {((config.CREATE_AUCTIONS && permissions.donor) || permissions.admin) && (
                             <MenuItem 
                                 onTouchTap={() => {
                                     document.body.scrollTop = document.documentElement.scrollTop = 0;

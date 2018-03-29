@@ -156,7 +156,9 @@ class Raffle extends Component {
                                         display: 'flex',
                                         flexWrap: 'wrap',
                                     }}>
-                                    <h3 style={{marginRight:'1em', marginTop: 10, marginBottom: 10}}>Winner</h3>
+                                    <h3 style={{marginRight:'1em', marginTop: 10, marginBottom: 10}}>
+                                        {user.uid === raffle.winningTicket.uid ? 'Winner' : 'Not won'}
+                                    </h3>
                                     {user.uid === raffle.winningTicket.uid ? (
                                         <Chip
                                             key={raffle.winningTicket.number}
@@ -183,13 +185,23 @@ class Raffle extends Component {
                                             display: 'flex',
                                             flexWrap: 'wrap',
                                         }}>
-                                        {raffle.tickets && raffle.tickets.map(ticket => {
+                                        {raffle.tickets && raffle.tickets
+                                            .sort(ticket => {
+                                                if (user.uid === ticket.uid) {
+                                                    return -1;
+                                                } else {
+                                                    return 1;
+                                                }
+                                            })
+                                            .slice(0,30)
+                                            .map( (ticket, i) => {
                                             return user.uid === ticket.uid ? (
                                                 this.createOwnedTicketChip(ticket)
                                             ) : (
                                                 <Avatar style={{ margin: 4 }} size={32} key={ticket.number} backgroundColor={this.themePalette.canvasColor} ><LocalPlayIcon color={this.themePalette.disabledColor} size={32} /></Avatar>
                                             );
                                         })}
+                                        {raffle && raffle.tickets && raffle.tickets.length > 30 && <Avatar style={{ margin: 4 }} size={32} key='ellipsis' color={this.themePalette.disabledColor} backgroundColor={this.themePalette.canvasColor} >...</Avatar>}
                                     </CardText>
                                 )}
                             </Card>
