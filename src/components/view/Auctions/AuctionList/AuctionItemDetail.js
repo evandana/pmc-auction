@@ -100,7 +100,7 @@ class AuctionItemDetail extends Component {
 			user,
 		} = this.props;
 
-		let urlStr = data.auctionImage || getImageForEnv('auction-big/' + data.image || 'default' + '.png');
+		let urlStr = data.auctionImage || getImageForEnv('auction-big/' + (data.image || 'default') + '.png');
 
 		let style = {
 			hidden: {
