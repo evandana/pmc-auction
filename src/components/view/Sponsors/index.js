@@ -98,6 +98,37 @@ const Sponsors = ({ prop }) => {
             background: 'DimGray'
         },
 
+        {
+            name: 'Veggie Crust',
+            link: 'http://www.vegcrust.com/',
+            subtext: 'Delicious local pizza spot with healthy toppings',
+            image: getImageForEnv('veggiecrust-logo.jpg'),
+        },
+        {
+            name: 'Perfectos Cafe',
+            link: 'http://www.perfectoscaffe.com/',
+            subtext: 'Muffins never looked so good',
+            image: getImageForEnv('perfectos.jpg')
+        },
+        {
+            name: 'Panera Bread',
+            link: 'https://www.panerabread.com',
+            subtext: 'Tasty soups in bread bowls',
+            image: getImageForEnv('panera.png'),
+        },
+        {
+            name: 'Union Square Donuts',
+            link: 'http://unionsquaredonuts.com/',
+            subtext: 'Featuring sea-salt bourbon caramel, chocolate ganache, and oh so many more!',
+            image: getImageForEnv('usd.png'),
+        },
+        {
+            name: 'Tewksbury Dental Associates',
+            link: 'http://tewksburydentalassociates.com/',
+            subtext: 'Featuring sea-salt bourbon caramel, chocolate ganache, and oh so many more!',
+            image: getImageForEnv('tda.png'),
+        },
+
         
         // {
         //     name: 'Harpoon Brewery',
