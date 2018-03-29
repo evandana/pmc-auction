@@ -17,6 +17,9 @@ class Raffle extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            enterTicketEnabled: true
+        }
         this.themePalette = this.props.muiTheme.palette;
     }
 
@@ -134,9 +137,12 @@ class Raffle extends Component {
                                         {config.RAFFLE_OPEN && <RaisedButton
                                             onTouchTap={() => {
                                                 dispatch(enterRaffleTicket({ raffle, user }));
+                                                this.setState({enterTicketEnabled: false});
+                                                // there should be a way to avoid this by comparing the current value to what's coming from db
+                                                setTimeout(() => this.setState({enterTicketEnabled: true}), 500)
                                             }}
                                             primary={true}
-                                            disabled={!user.tickets || !user.tickets.length}
+                                            disabled={!user.tickets || !user.tickets.length || !this.state.enterTicketEnabled}
                                             label="Enter 1 Raffle Ticket"
                                         />}
                                         {user.permissions.admin && <RaisedButton

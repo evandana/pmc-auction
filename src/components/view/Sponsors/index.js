@@ -26,6 +26,12 @@ const Sponsors = ({ prop }) => {
             background: 'Honeydew',
         },
         {
+            name: 'Aeronaut',
+            link: 'http://aeronaut.net/',
+            subtext: 'Local brewer of fine beers, such as Tomorrow the World and Up Up and Away',
+            image: getImageForEnv('aeronaut-logo.png'),
+        },
+        {
             name: 'Broadsheet Coffee Roasters',
             link: 'https://www.broadsheetcoffee.com/',
             subtext: 'Locally roasted beans; best espresso in town',
