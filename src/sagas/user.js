@@ -13,7 +13,6 @@ import {
 import { SubmissionError } from 'redux-form'
 
 import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner, asyncFormStatusUpdate, getUsers, fetchAuctions, fetchImages, buyRaffleTickets, updateSnackbar, fetchRaffles } from 'actions';
-import { buyRaffleTickets } from '../actions/index';
 
 function* getUser({ googleUserData }) {
 
@@ -151,7 +150,7 @@ function* submitSpecialCode({formData, user, codeKey, codePermission}) {
     window._FIREBASE_DB_.ref('users/' + personaUid + '/permissions/')
         .set(updatedPermissionsObj)
         .then(success => {
-            if (user && user.permission.attendee && codeKey === 'attendeeCode') {
+            if (codeKey === 'attendeeCode') {
                 window._UI_STORE_.dispatch(buyRaffleTickets({count:1, user, freebie: true}))
                 window._UI_STORE_.dispatch(updateSnackbar({open: true, message: 'You earned 1 raffle ticket!'}));
             }
