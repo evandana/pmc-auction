@@ -235,7 +235,7 @@ class DonorInfo extends Component {
                                             >${remainderDue}</TableRowColumn>
                                         <TableRowColumn colSpan={4} >{ownedAuctionsStatusTable}</TableRowColumn>
                                         <TableRowColumn colSpan={3} >{bidAuctionsStatusTable}</TableRowColumn>
-                                        <TableRowColumn colSpan={1} >{wonRaffles.map(raffleTitle => <div>{raffleTitle}</div>)}</TableRowColumn>
+                                        <TableRowColumn colSpan={1} >{wonRaffles.map(raffleTitle => <div key={raffleTitle}>{raffleTitle}</div>)}</TableRowColumn>
                                     </TableRow>
                                 )}
                             )}
