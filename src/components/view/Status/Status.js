@@ -27,6 +27,7 @@ import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
 // import MailOutlineIcon from 'material-ui/svg-icons/communication/mail-outline';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import RemoveCircleOutlineIcon from 'material-ui/svg-icons/content/remove-circle-outline'
+import Chip from 'material-ui/Chip';
 
 import StatusStepper from './StatusStepper'
 
@@ -55,7 +56,7 @@ class Status extends Component {
 
     render() {
 
-        const { user, config, auctionsWithUserBids, auctionsOwned } = this.props;
+        const { user, config, auctionsWithUserBids, auctionsOwned, raffles } = this.props;
 
         const themePalette = this.props.muiTheme.palette;
 
@@ -71,6 +72,9 @@ class Status extends Component {
 
         const totalAmountDue = totalAuctionAmountDue + (!user.raffle || !user.raffle.cost ? 0 : user.raffle.cost);
 
+        const wonRaffles = raffles.filter(raffle => {
+            return raffle.winningTicket && raffle.winningTicket.uid === user.uid;
+        });
 
         return (
             <div className='page'>
@@ -123,11 +127,25 @@ class Status extends Component {
                     </section>
 
                     <section className="row middle-xs"
-                        hidden={!config.BIDDING_OPEN || !config.CONFIRM_WINNERS}
+                        hidden={!config.BIDDING_OPEN || !config.CONFIRM_WINNERS || !user.permissions.attendee}
                         >
                         <h2 className="col-xs-12">
                             Raffle
                         </h2>
+                        {!config.RAFFLE_OPEN && config.CONFIRM_WINNERS && wonRaffles && wonRaffles.length && (
+                        <div className="col-xs-12" style={{marginBottom:'3em'}}>
+                            <h3>You Won {wonRaffles && wonRaffles.length > 1 ? wonRaffles.length + ' Raffles' : 'a Raffle'}!</h3>
+                            See the Raffles page for more details
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                }}>
+                                {wonRaffles.map(raffle => (
+                                    <Chip key={raffle.uid}>{raffle.title}</Chip>
+                                ))}
+                            </div>
+                        </div>)}
                         <div style={{display:'inline-block', marginTop:-5, marginRight:'.5rem', paddingLeft:'.5rem'}}>
                             Raffle Tickets Purchased: {!user.raffle || !user.raffle.purchasedCount ? 0 : user.raffle.purchasedCount}
                             <br/>
