@@ -33,17 +33,19 @@ class DonorInfo extends Component {
 
     // curried function
     calcTotalAmountOwed (auctionCollection) {
-        return uid => {
+        return user => {
             return auctionCollection
                 .reduce((sum, auction) => {
                     return sum + (!auction.topBids ? 0 : auction.topBids
                         // only owned bids
-                        .filter(bid => bid.bidderObj.uid === uid)
+                        .filter(bid => bid.bidderObj.uid === user.uid)
                         // only confirmed bids
                         .filter(bid => bid.ownerConfirmed && bid.bidderConfirmed)
                         .reduce((bidSum, bid) => bidSum + bid.bidAmount, 0)
                     );
-                }, 0);
+                }, 0) + (
+                    user.raffle && user.raffle.cost ? user.raffle.cost : 0
+                );
         }
     }
     
@@ -154,15 +156,24 @@ class DonorInfo extends Component {
         );
     }
 
+    calcWonRaffles (raffles) {
+        return uid => {
+            return raffles.filter(raffle => {
+                return raffle.winningTicket && raffle.winningTicket.uid === uid
+            }).map(raffle => raffle.title);
+        }
+    }
+
     render() {
 
-        const { users, auctionCollection } = this.props;
+        const { users, auctionCollection, raffles } = this.props;
         
         // curried functions
         const calcAmountEarned = this.calcAmountEarned(auctionCollection);
         const calcTotalAmountOwed = this.calcTotalAmountOwed(auctionCollection);
         const calcOwnedAuctions = this.calcOwnedAuctions(auctionCollection);
         const calcBidAuctions = this.calcBidAuctions(auctionCollection);
+        const calcWonRaffles = this.calcWonRaffles(raffles);
 
         const style = {
             wordyCell: {
@@ -192,6 +203,7 @@ class DonorInfo extends Component {
                                 <TableHeaderColumn>Due</TableHeaderColumn>
                                 <TableHeaderColumn colSpan={4}>Owned Auction Confirmations</TableHeaderColumn>
                                 <TableHeaderColumn colSpan={3}>Bid Auction Confirmations</TableHeaderColumn>
+                                <TableHeaderColumn colSpan={1}>Raffles Won</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody
@@ -200,12 +212,13 @@ class DonorInfo extends Component {
                             {users.all.map(user => {
 
                                 const amountEarned = calcAmountEarned(user.uid) || 0;
-                                const totalAmountOwed = calcTotalAmountOwed(user.uid) || 0;
+                                const totalAmountOwed = calcTotalAmountOwed(user) || 0;
                                 const remainderDue = totalAmountOwed - (user.amountPaid || 0);
                                 const ownedAuctions = calcOwnedAuctions(user);
                                 const bidAuctions = calcBidAuctions(user);
                                 const ownedAuctionsStatusTable = this.createOwnedAuctionStatusTable(ownedAuctions, user);
                                 const bidAuctionsStatusTable = this.createBidAuctionStatusTable(bidAuctions, user);
+                                const wonRaffles = calcWonRaffles(user.uid);
 
                                 return (
                                     <TableRow
@@ -222,6 +235,7 @@ class DonorInfo extends Component {
                                             >${remainderDue}</TableRowColumn>
                                         <TableRowColumn colSpan={4} >{ownedAuctionsStatusTable}</TableRowColumn>
                                         <TableRowColumn colSpan={3} >{bidAuctionsStatusTable}</TableRowColumn>
+                                        <TableRowColumn colSpan={1} >{wonRaffles.map(raffleTitle => <div>{raffleTitle}</div>)}</TableRowColumn>
                                     </TableRow>
                                 )}
                             )}
