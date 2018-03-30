@@ -60,8 +60,6 @@ class RaffleEditor extends Component {
             }
         };
 
-        debugger;
-
         return (
             <div className="page">
                 <Tabs
