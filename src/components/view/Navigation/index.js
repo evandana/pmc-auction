@@ -8,6 +8,7 @@ import MenuItem from 'material-ui/MenuItem';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import IconButton from 'material-ui/IconButton';
 import { blueGrey600, cyan600 } from 'material-ui/styles/colors'
+import Snackbar from 'material-ui/Snackbar';
 
 import PanToolIcon from 'material-ui/svg-icons/action/pan-tool';
 import ExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
@@ -188,7 +189,7 @@ class Navigation extends React.Component {
     };
 
     render () {
-        const { user, userPermissions, config, logout, router} = this.props;
+        const { user, userPermissions, config, logout, router, snackbar} = this.props;
 
         const location = router.location;
 
@@ -252,6 +253,16 @@ class Navigation extends React.Component {
                     iconElementRight={iconMenu}
                 >
                 </AppBar>}
+
+
+                <Snackbar
+                    style={{top:'10px'}}
+                    bodyStyle={{backgroundColor: this.themePalette.successColor}}
+                    open={snackbar.open || false}
+                    message={snackbar.message || ''}
+                    autoHideDuration={4000}
+                    // onRequestClose={this.handleRequestClose}
+                    />
 
                 <Messages />
 

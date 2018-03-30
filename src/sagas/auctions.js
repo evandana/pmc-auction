@@ -16,7 +16,7 @@ import {
     UPDATE_AUCTION,
 } from '../constants';
 
-import { refreshAuctions, debounceRefreshAuctions as debounceFetchAuctionsAction, buyRaffleTickets } from '../actions';
+import { refreshAuctions, debounceRefreshAuctions as debounceFetchAuctionsAction, buyRaffleTickets, updateSnackbar } from '../actions';
 
 
 // debounce refresh auctions to prevent extraneous refreshes during a bidding spree
@@ -117,9 +117,10 @@ function* placeBid(bidDetails) {
 
                                 const bidCount = !user.bids ? 0 : Object.keys(user.bids).length;
 
-                                if (bidCount % 5 === 0) {
+                                if (bidCount % 5 === 0 && user.permissions.attendee) {
                                     // add a new ticket
                                     window._UI_STORE_.dispatch(buyRaffleTickets({count:1, user, freebie: true}))
+                                    window._UI_STORE_.dispatch(updateSnackbar({open: true, message: 'You earned 1 raffle ticket!'}));
                                 }
 
                             });

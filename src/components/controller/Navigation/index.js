@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
         userPermissions: state.auctions.user.permissions,
         config: state.config,
         router: state.router,
+        snackbar: state.snackbar,
     };
 };
 

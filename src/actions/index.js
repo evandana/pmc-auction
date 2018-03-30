@@ -16,6 +16,9 @@ import {
     // MODALS
     OPEN_MODAL,
 
+    // SNACKBAR
+    UPDATE_SNACKBAR,
+
     // CONFIG
     FETCH_CONFIG,
     REFRESH_CONFIG,
@@ -125,6 +128,15 @@ export function asyncFormStatusUpdate({statusObj}) {
     return {
         type: ASYNC_FORM_STATUS_UPDATE,
         statusObj,
+    }
+}
+
+/** SNACKBAR */
+export function updateSnackbar({open, message}) {
+    return {
+        type: UPDATE_SNACKBAR,
+        open,
+        message,
     }
 }
 

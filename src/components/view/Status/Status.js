@@ -82,7 +82,7 @@ class Status extends Component {
                     open={this.state.snackbar.open}
                     message={this.state.snackbar.message}
                     autoHideDuration={4000}
-                    onRequestClose={this.handleRequestClose}
+                    // onRequestClose={this.handleRequestClose}
                     />
 
                 <div className='text-content' style={{padding:'1em'}}>

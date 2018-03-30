@@ -4,6 +4,7 @@ import config from './config';
 import images from './images';
 import modal from './modal';
 import raffles from './raffles';
+import snackbar from './snackbar';
 import users from './users';
 
 function isLoggedIn(state = false, action) {
@@ -18,6 +19,7 @@ const reducers = {
     isLoggedIn,
     modal,
     raffles,
+    snackbar,
     users, // list of all users
 };
 
