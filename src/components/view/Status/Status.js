@@ -77,6 +77,14 @@ class Status extends Component {
             return raffle.winningTicket && raffle.winningTicket.uid === user.uid;
         });
 
+        function calculateTotalEarned (auctions, config) {
+            return auctions.reduce( (agg, curr) => {
+                return agg + (curr.topBids.reduce( (aggBid, currBid) => {
+                    return aggBid + (currBid.bidderConfirmed && currBid.ownerConfirmed ? currBid.bidAmount : 0)
+                }, 0))
+            }, 0);
+        }
+
         return (
             <div className='page'>
 
@@ -209,6 +217,7 @@ class Status extends Component {
 
                         <section className="row middle-xs" style={{marginTop:'2em'}}>
                             <h2 className="col-xs-10">Owned Auctions</h2>
+                            <h3>Total Earned: ${calculateTotalEarned(auctionsOwned, config)}</h3>
                             <div className="col-xs-2" style={{textAlign:'right'}}>
                                 <IconButton
                                     tooltip={this.state.showOwnedAuctionstext ? 'Hide description' : 'Show description'}
