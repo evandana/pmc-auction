@@ -60,8 +60,9 @@ class Status extends Component {
 
         const themePalette = this.props.muiTheme.palette;
 
+        // debugger;
         const totalAuctionAmountDue = auctionsWithUserBids.reduce((acc, curr) => {
-            return curr.userHighBid && curr.userHighBid.bidAmount === curr.highBid && curr.userHighBid.ownerConfirmed && curr.userHighBid.bidderConfirmed ? acc + curr.userHighBid.bidAmount : acc;
+            return curr.userHighBid && curr.userHighBid.ownerConfirmed && curr.userHighBid.bidderConfirmed ? acc + curr.userHighBid.bidAmount : acc;
         }, 0);
 
         const amountPaid = user.amountPaid || 0; 

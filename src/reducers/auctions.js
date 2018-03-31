@@ -37,7 +37,8 @@ function getAuctionsWithUserBids(user, auctionCollection, config) {
                     }
                 })
                 .slice(0, auction.numberOffered + (config ? config.NUM_OFFERED_BUFFER : 2))
-                .filter(bid => bid.bidderObj.uid === user.uid);
+                .filter(bid => bid.bidderObj.uid === user.uid)
+                .length;
         })
         .map(auction => {
 
