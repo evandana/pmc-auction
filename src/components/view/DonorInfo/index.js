@@ -79,9 +79,10 @@ class DonorInfo extends Component {
 
         const auctionState = auctionWon === true ? 'win' : auctionWon === false ? 'loss' : 'unknown';
 
-        if (primaryConfirmation === true) {
+        // swap auctionWon for primaryConfirmation to toggle between icons based on bidder/owner and auction state
+        if (auctionWon === true) {
             return <CheckCircleIcon key={key} style={knownWonStyle[auctionState]} />;
-        } else if (primaryConfirmation === false) {
+        } else if (auctionWon === false) {
             return < RemoveCircleOutlineIcon key={key} style={knownWonStyle[auctionState]} />;
         } else {
             return <HelpIcon key={key} style={knownWonStyle[auctionState]} />;
