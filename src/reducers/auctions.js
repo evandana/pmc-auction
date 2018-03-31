@@ -22,11 +22,22 @@ const defaultAuctionState = {
     config: {} // 
 };
 
-function getAuctionsWithUserBids(user, auctionCollection) {
+function getAuctionsWithUserBids(user, auctionCollection, config) {
     return auctionCollection
         // filter in any that have at least one bid by this user
         .filter(auction => {
-            return !!auction.bids && auction.bids[user.uid]
+            return getAuctionBidsAsArray(auction)
+                .sort((a, b) => {
+                    if (a.bidAmount < b.bidAmount) {
+                        return 1;
+                    } else if (a.bidAmount > b.bidAmount) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                })
+                .slice(0, auction.numberOffered + (config ? config.NUM_OFFERED_BUFFER : 2))
+                .filter(bid => bid.bidderObj.uid === user.uid);
         })
         .map(auction => {
 
@@ -44,7 +55,7 @@ function getAuctionsWithUserBids(user, auctionCollection) {
                 highBid: auction.highestBid,
                 owner: {
                     displayName: auction.owner.displayName,
-                    uid: auction.owner.uid
+                    uid: auction.owner.persona
                 },
                 title: auction.title,
                 uid: auction.uid,
@@ -81,7 +92,7 @@ function getAuctionsOwned(userPersona, auctionCollection, config) {
 
 function getAuctionAggregations(user, auctionCollection, config) {
 
-    const auctionsWithUserBids = !user.persona ? [] : getAuctionsWithUserBids(user, auctionCollection);
+    const auctionsWithUserBids = !user.persona ? [] : getAuctionsWithUserBids(user, auctionCollection, config);
     const auctionsOwned = !user.persona ? [] : getAuctionsOwned(user.persona, auctionCollection, config);
 
     return {

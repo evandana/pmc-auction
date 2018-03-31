@@ -139,7 +139,7 @@ class DonorInfo extends Component {
                     >
                     {auctions.map( auction => {
 
-                        const primaryConfirmed = auction.bids && auction.bids[user.uid].bidderConfirmed;
+                        const primaryConfirmed = auction.bids && (auction.bids[user.uid].bidderConfirmed);
                         const wonStatus = !auction.bids ? null : this.getAuctionWonStatus(auction.bids[user.uid]);
 
                         return (

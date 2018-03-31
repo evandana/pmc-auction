@@ -61,7 +61,7 @@ class Status extends Component {
         const themePalette = this.props.muiTheme.palette;
 
         const totalAuctionAmountDue = auctionsWithUserBids.reduce((acc, curr) => {
-            return curr.userHighBid.bidAmount === curr.highBid && curr.userHighBid.ownerConfirmed && curr.userHighBid.bidderConfirmed ? acc + curr.userHighBid.bidAmount : acc;
+            return curr.userHighBid && curr.userHighBid.bidAmount === curr.highBid && curr.userHighBid.ownerConfirmed && curr.userHighBid.bidderConfirmed ? acc + curr.userHighBid.bidAmount : acc;
         }, 0);
 
         const amountPaid = user.amountPaid || 0; 
@@ -246,7 +246,7 @@ class Status extends Component {
 
             if (BIDDING_OPEN) {
                 return 'Bidding Open';
-            } else if (CONFIRM_WINNERS && auction.userHighBid.ownerConfirmed && auction.userHighBid.bidderConfirmed === undefined) {
+            } else if (CONFIRM_WINNERS && auction.userHighBid && auction.userHighBid.ownerConfirmed && auction.userHighBid.bidderConfirmed === undefined) {
                 return <div style={{textAlign:'center'}}>
                     <RaisedButton style={{minWidth:undefined}} primary={true} label={'Confirm ($' + auction.userHighBid.bidAmount + ')'} onClick={() => this.bidderBidConfirmation({
                             bidderConfirmed: true,
@@ -261,13 +261,13 @@ class Status extends Component {
                             auctionUid
                         })}/>
                 </div>
-            } else if (CONFIRM_WINNERS && (auction.userHighBid.ownerConfirmed === false || auction.userHighBidRank > auction.numberOffered + NUM_OFFERED_BUFFER)) {
+            } else if (CONFIRM_WINNERS && auction.userHighBid && (auction.userHighBid.ownerConfirmed === false || auction.userHighBidRank > auction.numberOffered + NUM_OFFERED_BUFFER)) {
                 return 'Not won';
-            } else if (CONFIRM_WINNERS && auction.userHighBid.ownerConfirmed !== true && auction.userHighBid.ownerConfirmed !== false) {
+            } else if (CONFIRM_WINNERS && auction.userHighBid && auction.userHighBid.ownerConfirmed !== true && auction.userHighBid.ownerConfirmed !== false) {
                 return <span style={{color: themePalette.warningColor}}>Pending owner confirmation</span>;
-            } else if (CONFIRM_WINNERS && auction.userHighBid.bidderConfirmed === true && auction.userHighBid.ownerConfirmed === true) {
+            } else if (CONFIRM_WINNERS && auction.userHighBid && auction.userHighBid.bidderConfirmed === true && auction.userHighBid.ownerConfirmed === true) {
                 return <span style={{color: themePalette.accent1Color}}>Confirmed!</span>;
-            } else if (auction.userHighBid.bidderConfirmed === false) {
+            } else if (auction.userHighBid && auction.userHighBid.bidderConfirmed === false) {
                 return 'You declined'
             } else {
                 return 'Bidding closed';
@@ -281,12 +281,12 @@ class Status extends Component {
                         <Paper className='row middle-xs middle-sm' key={auctionWithUserBid.uid} style={{padding: '1em', marginBottom: '1.5em' }}>
                             <div className={'row middle-xs middle-sm middle-md ' + (BIDDING_OPEN ? 'col-xs-12 col-sm-12 col-md-5' : 'col-xs-12 col-sm-7 col-md-8')}>
                                 <h3 style={{ margin: 0, padding: '0 1em 0 0', display:'block'}}  
-                                    className={BIDDING_OPEN ? 'col-xs-12' : CONFIRM_WINNERS && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-9 col-sm-10 col-md-10' : 'col-xs-6 col-sm-6 col-md-6'}>{
+                                    className={BIDDING_OPEN ? 'col-xs-12' : CONFIRM_WINNERS && auctionWithUserBid.userHighBid && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-9 col-sm-10 col-md-10' : 'col-xs-6 col-sm-6 col-md-6'}>{
                                         auctionWithUserBid.title
                                     }</h3>
                                 {BIDDING_OPEN ? '' : <div 
                                     style={{padding:0, margin:0, display:'block'}} 
-                                    className={CONFIRM_WINNERS && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-3 col-sm-2 col-md-2' : 'col-xs-6 col-sm-6 col-md-6'}>{
+                                    className={CONFIRM_WINNERS && auctionWithUserBid.userHighBid && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-3 col-sm-2 col-md-2' : 'col-xs-6 col-sm-6 col-md-6'}>{
                                     getStatus(auctionWithUserBid)
                                 }</div>}
                             </div>
@@ -313,10 +313,10 @@ class Status extends Component {
                                         displayRowCheckbox={false}
                                     >
                                         <TableRow selectable={false} key={auctionWithUserBid.uid} style={{height:'1em'}}>
-                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}} colSpan={2}>{auctionWithUserBid.owner.displayName}</TableRowColumn>
-                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>${auctionWithUserBid.userHighBid.bidAmount}</TableRowColumn>
-                                            {BIDDING_OPEN && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.userHighBidRank} / {auctionWithUserBid.bidCount}</TableRowColumn>}
-                                            {BIDDING_OPEN && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.numberOffered}</TableRowColumn>}
+                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}} colSpan={2}>{auctionWithUserBid.owner && auctionWithUserBid.owner.displayName}</TableRowColumn>
+                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>${auctionWithUserBid.userHighBid && auctionWithUserBid.userHighBid.bidAmount}</TableRowColumn>
+                                            {BIDDING_OPEN && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.userHighBidRank && auctionWithUserBid.userHighBidRank} / {auctionWithUserBid.bidCount}</TableRowColumn>}
+                                            {BIDDING_OPEN && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.numberOffered && auctionWithUserBid.numberOffered}</TableRowColumn>}
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -337,7 +337,7 @@ class Status extends Component {
             if (BIDDING_OPEN) {
                 return 'Bidding open'; // will never be shown
             } else if (bid.ownerConfirmed === false) {
-                return 'You declined';
+                return <span style={{color: themePalette.disabledColor}} >You declined</span>;
             } else if (CONFIRM_WINNERS && bid.ownerConfirmed === undefined) {
                 return <div>
                     {topBidIndex === 0 ? (
@@ -390,7 +390,7 @@ class Status extends Component {
                     </div>
                 </div>
             } else if ( bid.bidderConfirmed === false) {
-                return 'Bidder declined'
+                return <span style={{color: themePalette.disabledColor}} >Bidder declined</span>
             } else {
                 return 'Bidding closed';
             }
