@@ -199,11 +199,6 @@ class Status extends Component {
                                 <p>If an auction owner is awarding multiple winners and you have one of the highest few bids, you may be offered a chance to accept this at your highest bid for that item.</p>
                             </div>
                         )}
-                        {
-                            !auctionsWithUserBids || auctionsWithUserBids.length < 1 ? 
-                                (config.BIDDING_OPEN ? this.createMessageDiv('You haven\'t made any bids yet') : this.createMessageDiv('Bidding not open')) : 
-                                this.createLeadingBidTable(auctionsWithUserBids, config, themePalette)
-                        }
                         <span
                             className="col-xs-12"
                             hidden={totalAuctionAmountDue === 0 || config.BIDDING_OPEN}
@@ -211,13 +206,17 @@ class Status extends Component {
                             > 
                             Total due from auction winnings: ${totalAuctionAmountDue}
                         </span>
+                        {
+                            !auctionsWithUserBids || auctionsWithUserBids.length < 1 ? 
+                                (config.BIDDING_OPEN ? this.createMessageDiv('You haven\'t made any bids yet') : this.createMessageDiv('Bidding not open')) : 
+                                this.createLeadingBidTable(auctionsWithUserBids, config, themePalette)
+                        }
                     </section>
 
                     {!user.permissions.donor || !auctionsOwned || !auctionsOwned.length ? '' : (
 
                         <section className="row middle-xs" style={{marginTop:'2em'}}>
                             <h2 className="col-xs-10">Owned Auctions</h2>
-                            <h3>Total Earned: ${calculateTotalEarned(auctionsOwned, config)}</h3>
                             <div className="col-xs-2" style={{textAlign:'right'}}>
                                 <IconButton
                                     tooltip={this.state.showOwnedAuctionstext ? 'Hide description' : 'Show description'}
@@ -235,6 +234,7 @@ class Status extends Component {
                                     <p>You will see three bids more than the number you are offering, in case you wish to skip one or two.</p>
                                 </div>
                             )}
+                            <h3>Total Earned: ${calculateTotalEarned(auctionsOwned, config)}</h3>
                             {this.createOwnedAuctionTable(auctionsOwned, config, themePalette)}
                         </section>
                     )}
