@@ -50,7 +50,21 @@ function getAuctionsWithUserBids(user, auctionCollection, config) {
 
             let userHighBid = auction.bids && auction.bids[user.uid] ? auction.bids[user.uid] : null;
             let userHighBidRank = userHighBid ? allBidsIndex + 1 : null;
+
+            auction.topBids = getAuctionBidsAsArray(auction)
+                .sort((a, b) => {
+                    if (a.bidAmount < b.bidAmount) {
+                        return 1;
+                    } else if (a.bidAmount > b.bidAmount) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                })
+                .slice(0, auction.numberOffered + (config ? config.NUM_OFFERED_BUFFER : 2));
+
             return {
+                ...auction,
                 bidCount: uniqueBids.length,
                 numberOffered: auction.numberOffered,
                 highBid: auction.highestBid,
@@ -72,9 +86,9 @@ function getAuctionBidsAsArray(auction) {
 		.map(personaAsBidKey => auction.bids[personaAsBidKey]);
 }
 
-function getAuctionsOwned(userPersona, auctionCollection, config) {
+function getAuctionsOwned(user, auctionCollection, config) {
     return auctionCollection
-        .filter(auction => auction.owner.persona === userPersona)
+        .filter(auction => auction.owner.persona === user.persona)
         .map(auction => {
             auction.topBids = getAuctionBidsAsArray(auction)
                 .sort((a, b) => {
@@ -91,14 +105,37 @@ function getAuctionsOwned(userPersona, auctionCollection, config) {
         });
 }
 
+function addTopBids(auctionCollection, config) {
+    return auctionCollection.map(auction => {
+        if (auction.topBids && auction.topBids.length) {
+            return auction;
+        } else {
+            auction.topBids = getAuctionBidsAsArray(auction)
+                .sort((a, b) => {
+                    if (a.bidAmount < b.bidAmount) {
+                        return 1;
+                    } else if (a.bidAmount > b.bidAmount) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                })
+                .slice(0, auction.numberOffered + (config ? config.NUM_OFFERED_BUFFER : 2));
+            return auction;
+        }
+    })
+}
+
 function getAuctionAggregations(user, auctionCollection, config) {
 
     const auctionsWithUserBids = !user.persona ? [] : getAuctionsWithUserBids(user, auctionCollection, config);
-    const auctionsOwned = !user.persona ? [] : getAuctionsOwned(user.persona, auctionCollection, config);
+    const auctionsOwned = !user.persona ? [] : getAuctionsOwned(user, auctionCollection, config);
+    auctionCollection = addTopBids(auctionCollection, config);
 
     return {
         auctionsWithUserBids,
         auctionsOwned,
+        auctionCollection,
     }
 }
 

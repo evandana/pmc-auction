@@ -17,15 +17,17 @@ class DonorInfo extends Component {
 
     // curried function
     calcAmountEarned (auctionCollection) {
-        return uid => {
+        return user => {
             return auctionCollection
                 // only owned auctionCollection
-                .filter(auction => auction.owner.uid === uid)
+                .filter(auction => auction.owner.persona === user.persona)
                 .reduce((sum, auction) => {
                     return sum + (!auction.topBids ? 0 : auction.topBids
                         // only confirmed bids
                         .filter(bid => bid.ownerConfirmed && bid.bidderConfirmed)
-                        .reduce((bidSum, bid) => bidSum + bid.bidAmount, 0)
+                        .reduce((bidSum, bid) => (
+                            bidSum + bid.bidAmount
+                        ), 0)
                     );
                 }, 0);
         }
@@ -196,6 +198,8 @@ class DonorInfo extends Component {
         const calcBidAuctions = this.calcBidAuctions(auctionCollection);
         const calcWonRaffles = this.calcWonRaffles(raffles);
 
+
+
         const style = {
             wordyCell: {
                 whiteSpace: 'normal',
@@ -203,10 +207,17 @@ class DonorInfo extends Component {
             }
         }
 
+        const totalRaisedFromAllUsers = users.all.reduce( (agg, currUser) => {
+            return agg + (calcAmountEarned(currUser) || 0);
+        }, 0);
+
         return (
             <div className='page'>
                 <div className='text-content'>
                     <h2>DonorInfo</h2>
+
+                    <h3>Total Raised: ${totalRaisedFromAllUsers}</h3>
+
                     <Table
                         selectable={false}
                         >
@@ -232,7 +243,7 @@ class DonorInfo extends Component {
                             >
                             {users.all.map(user => {
 
-                                const amountEarned = calcAmountEarned(user.uid) || 0;
+                                const amountEarned = calcAmountEarned(user) || 0;
                                 const totalAmountOwed = calcTotalAmountOwed(user) || 0;
                                 const remainderDue = totalAmountOwed - (user.amountPaid || 0);
                                 const ownedAuctions = calcOwnedAuctions(user);

@@ -138,7 +138,7 @@ class Navigation extends React.Component {
                 icon: <PersonIcon />,
                 label: 'Status',
                 link: 'status',
-                style: !config.BIDDING_OPEN && config.CONFIRM_WINNERS ? {background: this.themePalette.accent1Color} : {}
+                // style: !config.BIDDING_OPEN && config.CONFIRM_WINNERS ? {background: this.themePalette.accent1Color} : {}
             },
             {
                 icon: <CreditCardIcon />,
