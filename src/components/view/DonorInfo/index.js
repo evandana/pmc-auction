@@ -72,7 +72,7 @@ class DonorInfo extends Component {
         const knownWonStyle = {
             win: { color: '#8EC449'},
             loss: { color: '#FF953F'},
-            unknown: { color: '#ccc'}
+            unknown: { color: '#E8448B'}
         };
 
         const auctionState = auctionWon === true ? 'win' : auctionWon === false ? 'loss' : 'unknown';
@@ -118,18 +118,23 @@ class DonorInfo extends Component {
     }
 
     getAuctionWonStatus(bid) {
-        if (bid.ownerConfirmed === undefined || bid.bidderConfirmed === undefined) {
-            return null;
+        if (bid.ownerConfirmed === true && bid.bidderConfirmed === true) {
+            return true;
         } else if (bid.ownerConfirmed === false || bid.bidderConfirmed === false) {
             return false
-        } else if (bid.ownerConfirmed === true && bid.bidderConfirmed === true) {
-            return true;
+        } else if (bid.ownerConfirmed === undefined || bid.bidderConfirmed === undefined) {
+            return null;
         } else {
             return null;
         }
     }
 
-    createBidAuctionStatusTable(auctions, user) {
+    getAuctionBidsAsArray(auction) {
+        return !auction.bids || !Object.keys(auction.bids).length ? [] : Object.keys(auction.bids)
+            .map(personaAsBidKey => auction.bids[personaAsBidKey]);
+    }
+
+    createBidAuctionStatusTable(auctions, user, config) {
         return (
             <Table
                 selectable={false}
@@ -137,9 +142,25 @@ class DonorInfo extends Component {
                 <TableBody
                     displayRowCheckbox={false}
                     >
-                    {auctions.map( auction => {
+                    {auctions
+                        .filter(auction => {
+                            return this.getAuctionBidsAsArray(auction)
+                                .sort((a, b) => {
+                                    if (a.bidAmount < b.bidAmount) {
+                                        return 1;
+                                    } else if (a.bidAmount > b.bidAmount) {
+                                        return -1;
+                                    } else {
+                                        return 0;
+                                    }
+                                })
+                                .slice(0, auction.numberOffered + (config ? config.NUM_OFFERED_BUFFER : 2))
+                                .filter(bid => bid.bidderObj.uid === user.uid)
+                                .length;
+                        })
+                        .map( auction => {
 
-                        const primaryConfirmed = auction.bids && (auction.bids[user.uid].bidderConfirmed);
+                        const primaryConfirmed = auction.bids && (auction.bids[user.uid].bidderConfirmed || auction.bids[user.uid].ownerConfirmed === false);
                         const wonStatus = !auction.bids ? null : this.getAuctionWonStatus(auction.bids[user.uid]);
 
                         return (
@@ -166,7 +187,7 @@ class DonorInfo extends Component {
 
     render() {
 
-        const { users, auctionCollection, raffles } = this.props;
+        const { users, auctionCollection, raffles, config } = this.props;
         
         // curried functions
         const calcAmountEarned = this.calcAmountEarned(auctionCollection);
@@ -217,12 +238,12 @@ class DonorInfo extends Component {
                                 const ownedAuctions = calcOwnedAuctions(user);
                                 const bidAuctions = calcBidAuctions(user);
                                 const ownedAuctionsStatusTable = this.createOwnedAuctionStatusTable(ownedAuctions, user);
-                                const bidAuctionsStatusTable = this.createBidAuctionStatusTable(bidAuctions, user);
+                                const bidAuctionsStatusTable = this.createBidAuctionStatusTable(bidAuctions, user, config);
                                 const wonRaffles = calcWonRaffles(user.uid);
 
                                 return (
                                     <TableRow
-                                        key={user.googleUid}
+                                        key={user.googleUid + Math.floor(Math.random()*100)}
                                         >
                                         <TableRowColumn colSpan={2} style={style.wordyCell}>{user.displayName}</TableRowColumn>
                                         <TableRowColumn colSpan={2} style={style.wordyCell}>{user.persona}</TableRowColumn>
