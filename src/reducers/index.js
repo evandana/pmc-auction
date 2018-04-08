@@ -3,6 +3,8 @@ import auctions from './auctions';
 import config from './config';
 import images from './images';
 import modal from './modal';
+import raffles from './raffles';
+import snackbar from './snackbar';
 import users from './users';
 
 function isLoggedIn(state = false, action) {
@@ -10,12 +12,14 @@ function isLoggedIn(state = false, action) {
 }
 
 const reducers = {
-    images,
-    isLoggedIn,
     asyncForm,
     auctions, // contains current user
     config,
+    images,
+    isLoggedIn,
     modal,
+    raffles,
+    snackbar,
     users, // list of all users
 };
 

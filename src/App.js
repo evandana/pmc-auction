@@ -22,6 +22,8 @@ import AuthorizedRoute from 'components/controller/AuthorizedRoute';
 
 import Auctions from 'components/controller/Auctions';
 import CreateAuction from 'components/controller/CreateAuction';
+import Raffle from 'components/controller/Raffle';
+import RaffleEditor from 'components/controller/RaffleEditor';
 import Donate from 'components/controller/Donate';
 import DonorInfo from 'components/controller/DonorInfo';
 import Home from 'components/controller/Home';
@@ -31,7 +33,7 @@ import Status from 'components/controller/Status';
 
 import Navigation from 'components/controller/Navigation';
 import Footer from 'components/view/common/Footer';
-import { getUser, fetchAuctions, fetchConfig, fetchImages, showLoginSpinner } from './actions';
+import { getUser, fetchAuctions, fetchConfig, fetchImages, fetchRaffles, showLoginSpinner } from './actions';
 
 import './app.css';
 
@@ -67,6 +69,7 @@ class App extends Component {
                     
                     window._UI_STORE_.dispatch(fetchAuctions());
                     window._UI_STORE_.dispatch(fetchImages());
+                    window._UI_STORE_.dispatch(fetchRaffles());
 
                 }
             }
@@ -89,6 +92,7 @@ class App extends Component {
                 errorColor: '#E8448B',
                 warningColor: '#FF953F',
                 successColor: '#8EC449',
+                accent4Color: '#FFF176',
                 // DEFAULTS
                 // primary1Color: cyan500,
                 // primary2Color: cyan700,
@@ -118,12 +122,14 @@ class App extends Component {
                                 <Route exact path="/" component={Home} />
                                 <AuthorizedRoute exact path="/about" component={Home} />
                                 <AuthorizedRoute path="/auctions" component={Auctions} />
+                                <AuthorizedRoute exact path="/raffle" component={Raffle} />
                                 <AuthorizedRoute exact path="/status" component={Status} />
                                 <AuthorizedRoute exact path="/donate" component={Donate} />
                                 <AuthorizedRoute exact path="/sponsors" component={Sponsors} />
                                 <AuthorizedRoute exact path="/results" component={Results} />
                                 <AuthorizedRoute exact path="/donor-info" component={DonorInfo} />
                                 <AuthorizedRoute exact path="/create-auction" component={CreateAuction} />
+                                <AuthorizedRoute exact path="/raffle-editor" component={RaffleEditor} />
                             </Switch>
                             <Navigation />
                             <Footer />

@@ -3,7 +3,7 @@ import React from 'react';
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
 import Login from 'components/controller/Login'
-import DonorCodeForm from 'components/controller/DonorCodeForm'
+import SpecialCodeForm from 'components/controller/SpecialCodeForm'
 
 import { getImageForEnv } from 'static/images/index'
 
@@ -50,6 +50,31 @@ const Home = (props) => {
                                     <p>100% of every donated dollar will go to Dana Farber Cancer Institute, where my dad recieved exceptional care.
                             Your help is greatly appreciated in my goal of raising over $8,000 for this August bike ride.</p>
 
+                                    
+                                    {user.permissions.attendee  ? (
+                                        <section>
+                                            <h2>At the party!</h2>
+                                            <p>A raffle ticket has been added to your raffle page.</p>
+                                        </section>    
+                                    ) : (
+                                        !config.BIDDING_OPEN ? '' : (
+                                            <section className="row">
+                                                <h2 className="col-xs-12">At the party?</h2>
+
+                                                <div style={{marginTop:-25}} className="col-xs-6">
+                                                    <SpecialCodeForm 
+                                                        codeKey='attendeeCode'
+                                                        codeLabel='Attendee Code'
+                                                        codePermission='attendee'
+                                                        style={{ paddingLeft: '1em'}}
+                                                    />
+                                                </div>
+
+                                                <p className="col-xs-6">Get a free raffle ticket if you're at Janji Homebase right now!</p>
+                                            </section>
+                                        )
+                                    )}
+
                                     <h2>Bidding</h2>
 
                                     <p>Live on Friday March 30th, in person or online.</p>
@@ -63,16 +88,25 @@ const Home = (props) => {
                                         <li>Raise money towards treating and curing cancer</li>
                                     </ul>
 
-                                    {user.permissions.donor ? '' : (
+                                    {user.permissions.donor && config.CREATE_AUCTIONS ? (
                                         <section>
-                                            <h2>Auction Donors</h2>
+                                            <h2>Donors</h2>
+                                            <p>Use the menu in the top right corner to access the Auction Editor</p>
+                                        </section>
+                                    ) : (
+                                        <section className="row">
+                                            <h2 className="col-xs-12">Auction Donors</h2>
 
-                                            <p>If you would like to create an auction item, please enter the access code here:</p>
+                                            <div style={{marginTop:-25}} className="col-xs-6">
+                                                <SpecialCodeForm
+                                                    codeKey='donorCode'
+                                                    codeLabel='Donor Code'
+                                                    codePermission='donor'
+                                                    style={{ paddingLeft: '1em'}}
+                                                />
+                                            </div>
 
-                                            <DonorCodeForm
-                                                className="col-xs-12"
-                                                style={{ paddingLeft: '1em' }}
-                                            />
+                                            <p className="col-xs-6">If you would like to create an auction item, enter the access code</p>
                                         </section>
                                     )}
 

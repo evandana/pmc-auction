@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
         config: state.config,
         auctionsWithUserBids: state.auctions.auctionsWithUserBids,
         auctionsOwned: state.auctions.auctionsOwned,
+        raffles: state.raffles,
     }
 };
 

@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import Checkbox from 'material-ui/Checkbox'
 import muiThemeable from 'material-ui/styles/muiThemeable';
 
-import { submitDonorCode } from 'actions';
+import { submitSpecialCode } from 'actions';
 
 const renderTextField = ({
     input,
@@ -29,7 +29,7 @@ const renderTextField = ({
         />
     )
 
-class DonorCodeForm extends Component {
+class SpecialCodeForm extends Component {
 
     constructor(props) {
         super(props);
@@ -43,24 +43,25 @@ class DonorCodeForm extends Component {
 
     submitForm(formData) {
         // console.log('form', formData);
-        const { dispatch, user } = this.props;
+        const { dispatch, user, codeKey, codePermission } = this.props;
 
-        dispatch(submitDonorCode({ formData, user }));
+        dispatch(submitSpecialCode({ formData, user, codeKey, codePermission }));
     }
 
     render() {
 
-        const { user, asyncForm, handleSubmit } = this.props;
+        const { user, asyncForm, handleSubmit, submit, codeKey, codeLabel, codePermission } = this.props;
 
         return (
             <form
                 onSubmit={handleSubmit(this.submitForm)}
             >
                 <Field
-                    name="donorCode"
+                    name={codeKey}
                     type="text"
+                    style={{width:'10em'}}
                     component={renderTextField}
-                    label={asyncForm && asyncForm.success === false ? 'Try code again' : 'Enter Donor Code'}
+                    label={asyncForm &&asyncForm[codeKey] && asyncForm[codeKey].success === false ? 'Try code again' : 'Enter ' + codeLabel}
                 />
             </form>
         );
@@ -68,5 +69,5 @@ class DonorCodeForm extends Component {
 }
 
 export default muiThemeable()(reduxForm({
-    form: 'donorCodeForm',
-})(DonorCodeForm));
+    form: 'specialCodeForm',
+})(SpecialCodeForm));

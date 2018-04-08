@@ -112,14 +112,14 @@ class AuctionList extends Component {
               subtitle={config && config.BIDDING_OPEN ? <span>with <b>{tile.owner.displayName}</b> - {tile.value}</span> : <span>with <b>{tile.owner.displayName}</b></span>}
               actionPosition="right"
               titlePosition="top"
-              titleBackground={!tile.bids || !tile.bids[user.uid] || tile.bids[user.uid].bidAmount !== tile.highestBid ?
+              titleBackground={!config || !config.BIDDING_OPEN || !tile.bids || !tile.bids[user.uid] || tile.bids[user.uid].bidAmount !== tile.highestBid ?
                 'linear-gradient(to bottom, rgba(5,10,30,0.8) 0%,rgba(5,10,30,0.6) 50%,rgba(0,0,0,0) 100%)' :
                 'linear-gradient(to bottom, ' + themePalette.successColor+' 0%,rgba(0,0,0,0) 100%)'
               }
               cols={tile.featured ? 2 : 1}
               rows={tile.featured ? 1 : 1}
               className="auction-list__tile"
-              actionIcon={!tile.bids || !tile.bids[user.uid] || tile.bids[user.uid].bidAmount !== tile.highestBid ? <div /> : <LooksOneIcon style={{fill:themePalette.errorColor, marginRight: 5, marginTop: -10}}/>}
+              actionIcon={!config || !config.BIDDING_OPEN || !tile.bids || !tile.bids[user.uid] || tile.bids[user.uid].bidAmount !== tile.highestBid ? <div /> : <LooksOneIcon style={{fill:themePalette.errorColor, marginRight: 5, marginTop: -10}}/>}
             >
               <img src={tile.img} alt="Auction Item teaser" />
             </GridTile>

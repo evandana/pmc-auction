@@ -27,6 +27,7 @@ import LocalPlayIcon from 'material-ui/svg-icons/maps/local-play';
 // import MailOutlineIcon from 'material-ui/svg-icons/communication/mail-outline';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import RemoveCircleOutlineIcon from 'material-ui/svg-icons/content/remove-circle-outline'
+import Chip from 'material-ui/Chip';
 
 import StatusStepper from './StatusStepper'
 
@@ -55,12 +56,13 @@ class Status extends Component {
 
     render() {
 
-        const { user, config, auctionsWithUserBids, auctionsOwned } = this.props;
+        const { user, config, auctionsWithUserBids, auctionsOwned, raffles } = this.props;
 
         const themePalette = this.props.muiTheme.palette;
 
-        const totalAmountDue = auctionsWithUserBids.reduce((acc, curr) => {
-            return acc + curr.userHighBid.bidAmount;
+        // debugger;
+        const totalAuctionAmountDue = auctionsWithUserBids.reduce((acc, curr) => {
+            return curr.userHighBid && curr.userHighBid.ownerConfirmed && curr.userHighBid.bidderConfirmed ? acc + curr.userHighBid.bidAmount : acc;
         }, 0);
 
         const amountPaid = user.amountPaid || 0; 
@@ -69,6 +71,19 @@ class Status extends Component {
         const raffleTicketsEarned = !user.bids ? 0 : Math.floor(bidCount/config.BIDS_PER_FREE_RAFFLE);
         const bidModulus = !user.bids ? 0 : bidCount % config.BIDS_PER_FREE_RAFFLE;
 
+        const totalAmountDue = totalAuctionAmountDue + (!user.raffle || !user.raffle.cost ? 0 : user.raffle.cost);
+
+        const wonRaffles = raffles.filter(raffle => {
+            return raffle.winningTicket && raffle.winningTicket.uid === user.uid;
+        });
+
+        function calculateTotalEarned (auctions, config) {
+            return auctions.reduce( (agg, curr) => {
+                return agg + (curr.topBids.reduce( (aggBid, currBid) => {
+                    return aggBid + (currBid.bidderConfirmed && currBid.ownerConfirmed ? currBid.bidAmount : 0)
+                }, 0))
+            }, 0);
+        }
 
         return (
             <div className='page'>
@@ -80,51 +95,12 @@ class Status extends Component {
                     open={this.state.snackbar.open}
                     message={this.state.snackbar.message}
                     autoHideDuration={4000}
-                    onRequestClose={this.handleRequestClose}
+                    // onRequestClose={this.handleRequestClose}
                     />
 
                 <div className='text-content' style={{padding:'1em'}}>
 
-                    <section className="row middle-xs"
-                        hidden={!config.BIDDING_OPEN || !config.CONFIRM_WINNERS}
-                        >
-                        <h2 className="col-xs-12">
-                            Raffle
-                        </h2>
-                        <div style={{display:'inline-block', marginTop:-5, marginRight:'.5rem', paddingLeft:'.5rem'}}>
-                            Total Bids Placed: {bidCount}
-                            <br/>
-                            Tickets Earned: {raffleTicketsEarned}
-                        </div>
-                        <div style={{display:'inline-block', paddingLeft:'.5rem'}}>
-                            {[...Array(raffleTicketsEarned + 1)].map( (emptyItem, i) => (
-                                <div key={i} style={{display:'inline-block', width: i + 1 <= raffleTicketsEarned ? '50px' : 10*bidModulus + 'px', overflow:'hidden'}}>
-                                    <LocalPlayIcon
-                                        style={{height:'50px',width:'50px', color: themePalette.accent1Color}}
-                                        />
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-                            
-                    <section className="row middle-xs">
-                        <h2 className="col-xs-10">Auctions with Your Bids</h2>
-                        <div className="col-xs-2" style={{textAlign:'right'}}>
-                            <IconButton
-                                tooltip={this.state.showAuctionsWithYourBidsText ? 'Hide description' : 'Show description'}
-                                tooltipPosition='top-left'
-                                onClick={() => this.setState({showAuctionsWithYourBidsText: !this.state.showAuctionsWithYourBidsText, snackbar: {open: false, message: ''}}) }
-                                style={{color: themePalette.secondaryLinkColor, minWidth: null}}
-                                >
-                                {this.state.showAuctionsWithYourBidsText ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-                            </IconButton>
-                        </div>
-                        {this.state.showAuctionsWithYourBidsText && (
-                            <div className="col-xs-12">
-                                <p>If you are the top bidder when the auction closes, you are expected to claim that item.</p>
-                                <p>If an auction owner is awarding multiple winners and you have one of the highest few bids, you may be offered a chance to accept this at your highest bid for that item.</p>
-                            </div>
-                        )}
+                    <section className="row">
                         <div 
                             className="col-xs-12" 
                             hidden={config.BIDDING_OPEN || ( totalAmountDue <= amountPaid )}
@@ -150,13 +126,85 @@ class Status extends Component {
                                 Thanks for your payments!
                             </span>
                         </div>
-
                         <span
                             className="col-xs-12"
                             hidden={totalAmountDue === 0 || config.BIDDING_OPEN}
                             style={{textAlign: 'right', color: themePalette.disabledColor, fontSize: '80%', paddingTop: '1em', paddingBottom: '1em', paddingRight: '2em'}}
                             > 
                             Payments not automatically reflected here
+                        </span>
+                    </section>
+
+                    <section className="row middle-xs"
+                        hidden={!config.BIDDING_OPEN || !config.CONFIRM_WINNERS || !user.permissions.attendee}
+                        >
+                        <h2 className="col-xs-12">
+                            Raffle
+                        </h2>
+                        {!config.RAFFLE_OPEN && config.CONFIRM_WINNERS && wonRaffles && wonRaffles.length && (
+                        <div className="col-xs-12" style={{marginBottom:'3em'}}>
+                            <h3>You Won {wonRaffles && wonRaffles.length > 1 ? wonRaffles.length + ' Raffles' : 'a Raffle'}!</h3>
+                            See the Raffles page for more details
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                }}>
+                                {wonRaffles.map(raffle => (
+                                    <Chip key={raffle.uid}>{raffle.title}</Chip>
+                                ))}
+                            </div>
+                        </div>)}
+                        <div style={{display:'inline-block', marginTop:-5, marginRight:'.5rem', paddingLeft:'.5rem'}}>
+                            Raffle Tickets Purchased: {!user.raffle || !user.raffle.purchasedCount ? 0 : user.raffle.purchasedCount}
+                            <br/>
+                            Total Spent on Raffle Tickets: ${!user.raffle || !user.raffle.cost ? 0 : user.raffle.cost }
+                        </div>
+                        <div style={{display:'inline-block', marginTop:-5, marginRight:'.5rem', paddingLeft:'.5rem'}}>
+                            Total Bids Placed: {bidCount}
+                            <br/>
+                            Tickets Earned: {raffleTicketsEarned}
+                        </div>
+                        <div style={{display:'inline-block', paddingLeft:'.5rem'}}>
+                            {[...Array(raffleTicketsEarned + 1)].map( (emptyItem, i) => (
+                                <div key={i} style={{display:'inline-block', width: i + 1 <= raffleTicketsEarned ? '50px' : 10*bidModulus + 'px', overflow:'hidden'}}>
+                                    <LocalPlayIcon
+                                        style={{height:'50px',width:'50px', color: themePalette.primary2Color}}
+                                        />
+                                </div>
+                            ))}
+                            {bidModulus != 0 && (<div style={{transform: 'scaleX(-1)', display:'inline-block', width: 10*(5-bidModulus) + 'px', overflow:'hidden'}}>
+                                <LocalPlayIcon
+                                    style={{height:'50px',width:'50px', color: themePalette.borderColor}}
+                                    />
+                            </div>)}
+                        </div>
+                    </section>
+                            
+                    <section className="row middle-xs">
+                        <h2 className="col-xs-10">Auctions with Your Bids</h2>
+                        <div className="col-xs-2" style={{textAlign:'right'}}>
+                            <IconButton
+                                tooltip={this.state.showAuctionsWithYourBidsText ? 'Hide description' : 'Show description'}
+                                tooltipPosition='top-left'
+                                onClick={() => this.setState({showAuctionsWithYourBidsText: !this.state.showAuctionsWithYourBidsText, snackbar: {open: false, message: ''}}) }
+                                style={{color: themePalette.secondaryLinkColor, minWidth: null}}
+                                >
+                                {this.state.showAuctionsWithYourBidsText ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                            </IconButton>
+                        </div>
+                        {this.state.showAuctionsWithYourBidsText && (
+                            <div className="col-xs-12">
+                                <p>If you are the top bidder when the auction closes, you are expected to claim that item.</p>
+                                <p>If an auction owner is awarding multiple winners and you have one of the highest few bids, you may be offered a chance to accept this at your highest bid for that item.</p>
+                            </div>
+                        )}
+                        <span
+                            className="col-xs-12"
+                            hidden={totalAuctionAmountDue === 0 || config.BIDDING_OPEN}
+                            style={{textAlign: 'right', color: themePalette.disabledColor, fontSize: '80%', paddingTop: '1em', paddingBottom: '1em', paddingRight: '2em'}}
+                            > 
+                            Total due from auction winnings: ${totalAuctionAmountDue}
                         </span>
                         {
                             !auctionsWithUserBids || auctionsWithUserBids.length < 1 ? 
@@ -186,6 +234,7 @@ class Status extends Component {
                                     <p>You will see three bids more than the number you are offering, in case you wish to skip one or two.</p>
                                 </div>
                             )}
+                            <h3>Total Earned: ${calculateTotalEarned(auctionsOwned, config)}</h3>
                             {this.createOwnedAuctionTable(auctionsOwned, config, themePalette)}
                         </section>
                     )}
@@ -207,7 +256,7 @@ class Status extends Component {
 
             if (BIDDING_OPEN) {
                 return 'Bidding Open';
-            } else if (CONFIRM_WINNERS && auction.userHighBid.ownerConfirmed && auction.userHighBid.bidderConfirmed === undefined) {
+            } else if (CONFIRM_WINNERS && auction.userHighBid && auction.userHighBid.ownerConfirmed && auction.userHighBid.bidderConfirmed === undefined) {
                 return <div style={{textAlign:'center'}}>
                     <RaisedButton style={{minWidth:undefined}} primary={true} label={'Confirm ($' + auction.userHighBid.bidAmount + ')'} onClick={() => this.bidderBidConfirmation({
                             bidderConfirmed: true,
@@ -222,13 +271,13 @@ class Status extends Component {
                             auctionUid
                         })}/>
                 </div>
-            } else if (CONFIRM_WINNERS && (auction.userHighBid.ownerConfirmed === false || auction.userHighBidRank > auction.numberOffered + NUM_OFFERED_BUFFER)) {
+            } else if (CONFIRM_WINNERS && auction.userHighBid && (auction.userHighBid.ownerConfirmed === false || auction.userHighBidRank > auction.numberOffered + NUM_OFFERED_BUFFER)) {
                 return 'Not won';
-            } else if (CONFIRM_WINNERS && auction.userHighBid.ownerConfirmed !== true && auction.userHighBid.ownerConfirmed !== false) {
+            } else if (CONFIRM_WINNERS && auction.userHighBid && auction.userHighBid.ownerConfirmed !== true && auction.userHighBid.ownerConfirmed !== false) {
                 return <span style={{color: themePalette.warningColor}}>Pending owner confirmation</span>;
-            } else if (CONFIRM_WINNERS && auction.userHighBid.bidderConfirmed === true && auction.userHighBid.ownerConfirmed === true) {
+            } else if (CONFIRM_WINNERS && auction.userHighBid && auction.userHighBid.bidderConfirmed === true && auction.userHighBid.ownerConfirmed === true) {
                 return <span style={{color: themePalette.accent1Color}}>Confirmed!</span>;
-            } else if (auction.userHighBid.bidderConfirmed === false) {
+            } else if (auction.userHighBid && auction.userHighBid.bidderConfirmed === false) {
                 return 'You declined'
             } else {
                 return 'Bidding closed';
@@ -242,12 +291,12 @@ class Status extends Component {
                         <Paper className='row middle-xs middle-sm' key={auctionWithUserBid.uid} style={{padding: '1em', marginBottom: '1.5em' }}>
                             <div className={'row middle-xs middle-sm middle-md ' + (BIDDING_OPEN ? 'col-xs-12 col-sm-12 col-md-5' : 'col-xs-12 col-sm-7 col-md-8')}>
                                 <h3 style={{ margin: 0, padding: '0 1em 0 0', display:'block'}}  
-                                    className={BIDDING_OPEN ? 'col-xs-12' : CONFIRM_WINNERS && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-9 col-sm-10 col-md-10' : 'col-xs-6 col-sm-6 col-md-6'}>{
+                                    className={BIDDING_OPEN ? 'col-xs-12' : CONFIRM_WINNERS && auctionWithUserBid.userHighBid && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-9 col-sm-10 col-md-10' : 'col-xs-6 col-sm-6 col-md-6'}>{
                                         auctionWithUserBid.title
                                     }</h3>
                                 {BIDDING_OPEN ? '' : <div 
                                     style={{padding:0, margin:0, display:'block'}} 
-                                    className={CONFIRM_WINNERS && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-3 col-sm-2 col-md-2' : 'col-xs-6 col-sm-6 col-md-6'}>{
+                                    className={CONFIRM_WINNERS && auctionWithUserBid.userHighBid && auctionWithUserBid.userHighBid.bidderConfirmed !== undefined && auctionWithUserBid.userHighBid.ownerConfirmed !== undefined ? 'col-xs-3 col-sm-2 col-md-2' : 'col-xs-6 col-sm-6 col-md-6'}>{
                                     getStatus(auctionWithUserBid)
                                 }</div>}
                             </div>
@@ -274,10 +323,10 @@ class Status extends Component {
                                         displayRowCheckbox={false}
                                     >
                                         <TableRow selectable={false} key={auctionWithUserBid.uid} style={{height:'1em'}}>
-                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}} colSpan={2}>{auctionWithUserBid.owner.displayName}</TableRowColumn>
-                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>${auctionWithUserBid.userHighBid.bidAmount}</TableRowColumn>
-                                            {BIDDING_OPEN && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.userHighBidRank} / {auctionWithUserBid.bidCount}</TableRowColumn>}
-                                            {BIDDING_OPEN && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.numberOffered}</TableRowColumn>}
+                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}} colSpan={2}>{auctionWithUserBid.owner && auctionWithUserBid.owner.displayName}</TableRowColumn>
+                                            <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>${auctionWithUserBid.userHighBid && auctionWithUserBid.userHighBid.bidAmount}</TableRowColumn>
+                                            {BIDDING_OPEN && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.userHighBidRank && auctionWithUserBid.userHighBidRank} / {auctionWithUserBid.bidCount}</TableRowColumn>}
+                                            {BIDDING_OPEN && <TableRowColumn style={{paddingTop: '1em', padding:0, height:'1em'}}>{auctionWithUserBid.numberOffered && auctionWithUserBid.numberOffered}</TableRowColumn>}
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -298,7 +347,7 @@ class Status extends Component {
             if (BIDDING_OPEN) {
                 return 'Bidding open'; // will never be shown
             } else if (bid.ownerConfirmed === false) {
-                return 'You declined';
+                return <span style={{color: themePalette.disabledColor}} >You declined</span>;
             } else if (CONFIRM_WINNERS && bid.ownerConfirmed === undefined) {
                 return <div>
                     {topBidIndex === 0 ? (
@@ -351,7 +400,7 @@ class Status extends Component {
                     </div>
                 </div>
             } else if ( bid.bidderConfirmed === false) {
-                return 'Bidder declined'
+                return <span style={{color: themePalette.disabledColor}} >Bidder declined</span>
             } else {
                 return 'Bidding closed';
             }
