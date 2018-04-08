@@ -16,9 +16,21 @@ import {
     // MODALS
     OPEN_MODAL,
 
+    // SNACKBAR
+    UPDATE_SNACKBAR,
+
     // CONFIG
     FETCH_CONFIG,
     REFRESH_CONFIG,
+
+    // RAFFLE
+    DEBOUNCE_REFRESH_RAFFLES,
+    PERSIST_RAFFLE_UPDATE,
+    FETCH_RAFFLES,
+    REFRESH_RAFFLES,
+    BUY_RAFFLE_TICKETS,
+    ENTER_RAFFLE_TICKET,
+    PULL_RAFFLE_TICKET,
 
     // AUCTIONS
     ASYNC_FORM_STATUS_UPDATE,
@@ -33,7 +45,7 @@ import {
     REFRESH_AUCTIONS,
     DEBOUNCE_REFRESH_AUCTIONS,
     SET_CLAIM_STEP,
-    SUBMIT_DONOR_CODE,
+    SUBMIT_SPECIAL_CODE,
     OWNER_BID_CONTACTED,
     OWNER_BID_PLANNED,
     // FILE UPLOAD
@@ -98,23 +110,33 @@ export function setUsers(users) {
     }
 }
 
-/** DONOR CODE */
+/** SPECIAL CODE */
 
-export function submitDonorCode({formData, user}) {
+export function submitSpecialCode({formData, user, codeKey, codePermission}) {
     return {
-        type: SUBMIT_DONOR_CODE,
+        type: SUBMIT_SPECIAL_CODE,
         formData,
         user,
+        codeKey,
+        codePermission,
     }
 }
 
 /** ASYNC FORM */
 
-export function asyncFormStatusUpdate({status, success}) {
+export function asyncFormStatusUpdate({statusObj}) {
     return {
         type: ASYNC_FORM_STATUS_UPDATE,
-        status,
-        success,
+        statusObj,
+    }
+}
+
+/** SNACKBAR */
+export function updateSnackbar({open, message}) {
+    return {
+        type: UPDATE_SNACKBAR,
+        open,
+        message,
     }
 }
 
@@ -128,6 +150,64 @@ export function refreshConfig(config) {
     return {
         type: REFRESH_CONFIG,
         config,
+    }
+}
+
+/** RAFFLES */
+export function fetchRaffles() {
+    return {
+        type: FETCH_RAFFLES
+    }
+}
+
+export function refreshRaffles(raffles) {
+    return {
+        type: REFRESH_RAFFLES,
+        raffles,
+    }
+}
+
+export function debounceRefreshRaffles(raffles) {
+    return {
+        type: DEBOUNCE_REFRESH_RAFFLES,
+        raffles,
+    }
+}
+
+export function persistRaffleUpdate(userInputData, user) {
+
+    const raffleData = {
+        ...userInputData,
+    };
+
+    return {
+        type: PERSIST_RAFFLE_UPDATE,
+        raffleData,
+    }
+
+}
+
+export function buyRaffleTickets({count, user, freebie}) {
+    return {
+        type: BUY_RAFFLE_TICKETS,
+        count,
+        user,
+        freebie,
+    }
+}
+
+export function enterRaffleTicket({raffle, user}) {
+    return {
+        type: ENTER_RAFFLE_TICKET,
+        raffle,
+        user,
+    }
+}
+
+export function pullRaffleTicket({raffle}) {
+    return {
+        type: PULL_RAFFLE_TICKET,
+        raffle,
     }
 }
 
@@ -209,14 +289,13 @@ export function createAuction(userInputData, user) {
 
     const auctionData = {
         image: '',
-        ...userInputData,
-        highestBid: 0,
         owner: {
             googleUid: user.googleUid,
             persona: user.persona,
             displayName: user.displayName,
         },
-        image: '',
+        ...userInputData,
+        highestBid: 0,
     };
 
     return {

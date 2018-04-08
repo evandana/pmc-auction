@@ -5,6 +5,8 @@ const mapStateToProps = (state) => {
     return {
         users: state.users,
         auctionCollection: state.auctions.auctionCollection,
+        raffles: state.raffles,
+        config: state.config,
     };
 };
 

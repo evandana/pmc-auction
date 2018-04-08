@@ -26,6 +26,12 @@ const Sponsors = ({ prop }) => {
             background: 'Honeydew',
         },
         {
+            name: 'Aeronaut',
+            link: 'http://aeronaut.net/',
+            subtext: 'Local brewer of fine beers, such as Tomorrow the World and Up Up and Away',
+            image: getImageForEnv('aeronaut-logo.png'),
+        },
+        {
             name: 'Broadsheet Coffee Roasters',
             link: 'https://www.broadsheetcoffee.com/',
             subtext: 'Locally roasted beans; best espresso in town',
@@ -90,6 +96,37 @@ const Sponsors = ({ prop }) => {
             subtext: 'Bratwurst and Darlin IPA combo, FTW',
             image: getImageForEnv('whb.png'),
             background: 'DimGray'
+        },
+
+        {
+            name: 'Veggie Crust',
+            link: 'http://www.vegcrust.com/',
+            subtext: 'Delicious local pizza spot with healthy toppings',
+            image: getImageForEnv('veggiecrust-logo.jpg'),
+        },
+        {
+            name: 'Perfectos Cafe',
+            link: 'http://www.perfectoscaffe.com/',
+            subtext: 'Muffins never looked so good',
+            image: getImageForEnv('perfectos.jpg')
+        },
+        {
+            name: 'Panera Bread',
+            link: 'https://www.panerabread.com',
+            subtext: 'Tasty soups in bread bowls',
+            image: getImageForEnv('panera.png'),
+        },
+        {
+            name: 'Union Square Donuts',
+            link: 'http://unionsquaredonuts.com/',
+            subtext: 'Featuring sea-salt bourbon caramel, chocolate ganache, and oh so many more!',
+            image: getImageForEnv('usd.png'),
+        },
+        {
+            name: 'Tewksbury Dental Associates',
+            link: 'http://tewksburydentalassociates.com/',
+            subtext: 'Featuring sea-salt bourbon caramel, chocolate ganache, and oh so many more!',
+            image: getImageForEnv('tda.png'),
         },
 
         

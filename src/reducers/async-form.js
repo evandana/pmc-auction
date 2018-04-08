@@ -5,13 +5,12 @@ import {
 const initialState = {};
 
 function asyncForm(state = initialState, action) {
-    const { type, status, success} = action;
+    const { type, statusObj} = action;
 
     if (type === ASYNC_FORM_STATUS_UPDATE) {
         return {
             ...state,
-            status,
-            success,
+            ...statusObj
         };
     } else {
         return initialState;

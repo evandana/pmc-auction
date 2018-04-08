@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import DonorCodeForm from 'components/view/DonorCodeForm';
+import SpecialCodeForm from 'components/view/SpecialCodeForm';
 
 const mapStateToProps = (state) => {
     return {
@@ -10,4 +10,4 @@ const mapStateToProps = (state) => {
   
 export default connect(
     mapStateToProps
-)(DonorCodeForm);
+)(SpecialCodeForm);

@@ -6,12 +6,13 @@ import animalList from './persona-animals'
 import {
     GET_USER,
     UPDATE_USER,
-    SUBMIT_DONOR_CODE,
+    SUBMIT_SPECIAL_CODE,
+    BUY_RAFFLE_TICKETS,
 } from '../constants';
 
 import { SubmissionError } from 'redux-form'
 
-import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner, asyncFormStatusUpdate, getUsers, fetchAuctions, fetchImages } from 'actions';
+import { setCurrentUser, updateUser as updateUserAction, showLoginSpinner, asyncFormStatusUpdate, getUsers, fetchAuctions, fetchImages, buyRaffleTickets, updateSnackbar, fetchRaffles } from 'actions';
 
 function* getUser({ googleUserData }) {
 
@@ -118,6 +119,7 @@ function* updateUser({ userData }) {
 
             window._UI_STORE_.dispatch(fetchAuctions());
             window._UI_STORE_.dispatch(fetchImages());
+            window._UI_STORE_.dispatch(fetchRaffles());
         })
         .catch(err => {
             window._UI_STORE_.dispatch(setCurrentUser({
@@ -132,20 +134,32 @@ function* updateUser({ userData }) {
     yield;
 }
 
-function* submitDonorCode({formData, user}) {
+function* submitSpecialCode({formData, user, codeKey, codePermission}) {
 
     const personaUid = transformPersonaStringIntoUid(user.persona);
 
+    let specialCodeObj = {};
+    specialCodeObj[codeKey] = formData[codeKey].toLowerCase();
+    specialCodeObj[codePermission] = true;
+
     const updatedPermissionsObj = {
         ...user.permissions,
-        donor: true,
-        donorCode: formData.donorCode,
+        ...specialCodeObj
     };
 
     window._FIREBASE_DB_.ref('users/' + personaUid + '/permissions/')
         .set(updatedPermissionsObj)
+        .then(success => {
+            if (codeKey === 'attendeeCode') {
+                window._UI_STORE_.dispatch(buyRaffleTickets({count:1, user, freebie: true}))
+                window._UI_STORE_.dispatch(updateSnackbar({open: true, message: 'You earned 1 raffle ticket!'}));
+            }
+
+        })
         .catch(err => {
-            window._UI_STORE_.dispatch(asyncFormStatusUpdate({status: err.message, success: false}));
+            const statusObj = {};
+            statusObj[codeKey] = {status: err.message, success: false};
+            window._UI_STORE_.dispatch(asyncFormStatusUpdate({statusObj}));
         });
 
     yield;
@@ -157,12 +171,12 @@ export default function* () {
     yield [
         takeEvery(GET_USER, getUser),
         takeEvery(UPDATE_USER, updateUser),
-        takeEvery(SUBMIT_DONOR_CODE, submitDonorCode),
+        takeEvery(SUBMIT_SPECIAL_CODE, submitSpecialCode),
     ];
 }
 
 function transformPersonaStringIntoUid (persona) {
-    return persona.replace(' ','');
+    return persona.replace(/[^\w\d]/g,'');
 }
 
 function generateUserPersona() {
