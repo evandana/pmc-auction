@@ -1,0 +1,4 @@
+.skinny-col-padding td, .skinny-col-padding th {
+    padding-right: .25em !important;
+    padding-left: .25em !important;
+}
