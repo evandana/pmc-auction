@@ -147,10 +147,10 @@ class DonorInfo extends Component {
                 {claimStep !== undefined && <div className="col-xs-2" >
                     <Avatar
                         color={this.themePalette.canvasColor}
-                        backgroundColor={claimStep >= 2 ? this.themePalette.successColor : this.themePalette.warningColor}
+                        backgroundColor={claimStep > 2 ? this.themePalette.successColor : this.themePalette.warningColor}
                         size={24}
                         >
-                        {claimStep+1}
+                        {claimStep}
                     </Avatar>
                 </div>}
             </div>
@@ -434,12 +434,12 @@ class DonorInfo extends Component {
                                                     <div className="col-xs-6" style={{...styles.detailCell}} >{allOwnedAuctionsConfirmed}</div>
                                                     <div className="col-xs-4" style={{...styles.detailLabel, ...styles.detailCell}}>All Top Bids Confirmed</div>
                                                     <div className="col-xs-6" style={{...styles.detailCell}} >{allBidsConfirmed}</div>
-                                                    <div className="col-xs-12"><h3>Owned Auctions</h3></div>
-                                                    <div className="col-xs-12" colSpan={4} >{ownedAuctionsStatusTable}</div>
-                                                    <div className="col-xs-12"><h3>Bids</h3></div>
-                                                    <div className="col-xs-12" colSpan={3} >{bidAuctionsStatusTable}</div>
-                                                    <div className="col-xs-12"><h3>Raffles</h3></div>
-                                                    <div className="col-xs-12" colSpan={1} >{wonRaffles.map(raffleTitle => <div key={raffleTitle}>{raffleTitle}</div>)}</div>
+                                                    <div className="col-xs-12 col-sm-3"><h3>Owned Auctions</h3></div>
+                                                    <div className="col-xs-12 col-sm-9" colSpan={4} >{ownedAuctionsStatusTable}</div>
+                                                    <div className="col-xs-12 col-sm-3"><h3>Bids</h3></div>
+                                                    <div className="col-xs-12 col-sm-9" colSpan={3} >{bidAuctionsStatusTable}</div>
+                                                    <div className="col-xs-12 col-sm-3"><h3>Raffles</h3></div>
+                                                    <div className="col-xs-12 col-sm-9" colSpan={1} >{wonRaffles.map(raffleTitle => <div key={raffleTitle}>{raffleTitle}</div>)}</div>
                                                 </div>
                                             </TableRowColumn>
                                         </TableRow>
